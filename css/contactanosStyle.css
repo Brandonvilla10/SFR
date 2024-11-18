@@ -1,0 +1,196 @@
+/* Color verde de las letras y de mas rgba(58,170,53,255) */
+/* azulito de la pagina rgba(101,172,223,255) */
+*{margin: 0;padding: 0;font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+a{ text-decoration: none ;}
+b{color: rgba(58,170,53,255);}
+
+header{
+    height: 80px;
+    width: 100%;
+    margin-bottom: 16px;
+}
+
+
+.logoNav{
+    padding-left: 40px;
+    padding-top: 8px;
+    height: 100px;
+}
+
+.imglogo{
+    float: left;
+    position: absolute;
+    left: 100px;
+    width: 77px;
+}
+
+
+.SENA_FAST_REGISTER{
+    width: 212px;
+    height: 40px;
+    float: left;
+    position: absolute;
+    left: 167px;
+    padding-top: 23px;
+    font-weight: 900;
+    font-size: x-large;
+    color: rgba(58, 170, 53, 255);
+
+}
+
+
+
+.listaheader{
+    list-style: none;
+    list-style-type: none;
+    float: right;
+    display: flex;
+    padding-right: 300px;
+    padding-top: 34px;
+    
+    
+}
+
+.listaMenu{
+    margin-right: 30px;
+    color: rgba(58,170,53,255);
+}
+
+.sombraNav{
+    height: 10px;
+    width: 100%;
+    background-color: black ;
+    opacity: 0.3;
+}
+.contactanos{
+    display: flex;
+    flex-direction: column;
+    margin-top: 150px;
+    margin-left: 150px ;
+}
+
+.h1Contactanos{
+    color: rgba(101,172,223,255) ;
+    padding-bottom: 30px;
+}
+
+.textoContactanos{
+    color: black;
+}
+
+.seccionIzquierda{
+    margin-left: 150px;
+    margin-top: 80px;
+    width: 35%;
+    height: 190px;
+}
+
+.SubChatVirtual{
+    font-weight: bolder;
+    font-size: 22px;
+    color: rgba(101,172,223,255) ;
+}
+
+.lineamiento{
+    padding-top: 20px;
+    display: flex;
+    width: 300px;
+}
+.logosWhastapp{
+    display: flex;
+    flex-direction: column;
+}
+
+.ImgWhastapp{
+    padding-bottom: 15px;
+}
+.numerosContacto{
+   
+    display: flex;
+    flex-direction: column;
+}
+
+.numeros{
+    color: black;
+    font-size: 20px;
+    padding-bottom: 18px;
+    padding-left: 6px;
+}
+
+.seccionDerecha{
+    width: 465px;
+    height: 200px;
+    float: right;
+    position: absolute;
+    right: 150px;
+    top: 470px;
+}
+
+.tituloCorreo{
+    color: rgba(101,172,223,255);
+    font-weight: bolder;
+    font-size: x-large;
+    margin-left: 34px;
+}
+
+.lineamiento2{
+    padding-top: 20px;
+    display: flex;
+    width: 300px;
+}
+
+.labelEmail{
+    font-size: large;
+    padding-top: 3px;
+    padding-left: 10px;
+}
+
+.labeldirreccionCorreo{
+    color: black;
+    font-size: 18px;
+}
+
+
+.horariosDeAtencion{
+    margin-left: 150px;
+    width: 70%;
+    height: 210px;
+}
+
+.lableHorarioDeAtencion{
+    font-size: 30px;
+    font-weight: 700;
+    color: rgba(101,172,223,255);
+}
+
+.textoHorarios{
+    padding-top: 60px;
+    font-size: larger;
+    font-weight: 400;
+    color: rgba(12, 4, 43);
+
+}
+
+
+
+.footer{
+    margin-top: 100px;
+    background-color: rgb(83, 155, 207);
+    height: 170px;
+    width: 100%;
+    border-top-left-radius: 100px;
+    border-top-right-radius: 100px;   
+    position: absolute;
+    bottom: -700px;
+    z-index: -1; 
+}
+.info{
+    position: absolute;
+    left: 100px;
+    margin-top: 30px;
+}
+.copyrigh{
+    position: absolute;
+    left: 660px;
+    margin-top: 120px;
+}

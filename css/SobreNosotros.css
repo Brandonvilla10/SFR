@@ -196,71 +196,26 @@
     color: rgb(97, 180, 239);
 }
 
-.iconsText{
-    display: flex;
-    flex-direction: column;
-}
+/* apartado nuestros valores con las imagenes  */
 
 
-.iconosImagenes{
-    width: 77px;
-    margin-top: 190px;
-    margin-bottom: 100px;
-    position: relative;
-    height: 90px;
-    float: right;
-    right: 148px;
-    margin-left: 345px;
-    margin-right: 97px;
-}
-
-
-.titulosValores{
-    width: 77px;
-    margin-top: 190px;
-    position: absolute;
-    height: 90px;
-    float: right;
-    right: 131px;
-    margin-left: 502px;
-    margin-right: 312px;
-}
-
-.subTitulos .subTitulosTexto{
-    display: flex;
-    flex-direction: row;
-}
-
-.subtitulosh3{
-    width: 77px;
-    margin-top: 190px;
-    position: relative;
-    height: 90px;
-    top: -654px;
-    float: right;
-    margin-bottom: 100px;
-    right: 137px;
-    margin-left: 302px;
-    margin-right: 153px;
-    color: rgb(97, 180, 239);
-    font-size: 30px;
-}
-
-.subtitulosh3V2{
-    font-weight: 500;
-    font-size: larger;
-    color: black;
-    margin-top: 190px;
-    width: 581px;
-    position: relative;
-    height: 83px;
-    top: -1357px;
-    float: right;
-    margin-bottom: 95px;
-    right: 1px;
-    margin-left: -43px;
+.divIconos{
+    display: grid ;
+    margin-top: 48px;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    gap: 79px;
+    width: 66%;
     text-align: center;
+    justify-items: center;
 }
+.iconosImagenes{
+    height: 80px;
+    width: 70px;
+}
+.subtitulosh3{color:rgb(97, 180, 239); font-size: 25px;}
+
+.subtitulosh3V2{width: 101%;font-weight: 400;color: black;}
 
 
 /*pie de pagina actualizaciones*/
@@ -273,7 +228,7 @@ footer{
     border-top-left-radius: 100px;
     border-top-right-radius: 100px;   
     position: absolute;
-    bottom: -5000px;
+    bottom: -1843px;
     z-index: -1; 
 }
 

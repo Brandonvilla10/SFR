@@ -1,0 +1,18 @@
+:root{
+    --color-barraLateral:rgb(83, 155, 207);
+}
+
+.barraLateral {
+    width: 100px;
+    margin: 20px;
+    height: 94%;
+    padding: 0px 15px;
+    background-color: var(--color-barraLateral);
+}
+.nombreIcono{
+    color: white !important;
+    font-weight: bolder;
+}
+.miniBarra{
+    width: 68px
+}

@@ -113,64 +113,52 @@
             </div>
        
 
-            <section class="valores">
-            
-
-
-            <h1 class="nuestrosvalores">Nuestros Valores</h1>
-
-            <div class="iconsText">
-
-                <div class="icons">
-                    <img src="assets/img/Nosotrosimg/tuerquita.png" class="iconosImagenes">
-
-                    <img src="assets/img/Nosotrosimg/reloj_mano.png" alt="" class="iconosImagenes">
-
-                </div>
-
-                <div class="icons">
-                    <img src="assets/img/Nosotrosimg/medalla.png" alt="" class="iconosImagenes">
-                    <img src="assets/img/Nosotrosimg/seguridad.png" alt="" class="iconosImagenes">
-                </div>
-
-            </div>
-
-            <div class="subTitulos">
-
-                <h3 class="subtitulosh3">Puntualidad</h3>
-                <h3 class="subtitulosh3">Innovacion</h3>
-
-            </div>
-
-            <div class="subTitulos">
-                <h3 class="subtitulosh3">Calidad</h3>
-                <h3 class="subtitulosh3">Seguridad</h3>
-            </div>
-
-
-            <div class="subTitulosTexto">
-
-            <p class="subtitulosh3V2">Valoramos y promevemos el respto por el <br> tiempo de todos los usuarios y colaboradoreas.
-            </p>
-
-            <p class="subtitulosh3V2">Nos esforzamos continuamente por desarrollar <br> y aplicar nuevas tecnologías para mejorar nuestros servicios.</p>
-
-            </div>
-
-            <div class="subTitulosTexto">
-
-            <p class="subtitulosh3V2">Garantizamos la excelencia en cada aspeto <br> de nuestro software y servicio.</p>
-
-            <p class="subtitulosh3V2">Prioridad en la proteccion de datos y la <br> seguirdad de nuestros usuarios</p>
-
-
-            </div>
+        
 
 
     </section>
     
 
 </section>
+
+<section class="valores">
+            
+
+
+<h1 class="nuestrosvalores">Nuestros Valores</h1>
+
+
+<div class="divIconos">
+
+    <div>
+        <img src="assets/img/Nosotrosimg/reloj_mano.png" alt="" class="iconosImagenes">
+        <h3 class="subtitulosh3">Puntualidad</h3>
+        <p class="subtitulosh3V2">Valoramos y promevemos el respeto por el <br> tiempo de todos los usuarios y colaboradoreas.</p>
+    </div>
+    <div>
+        <img src="assets/img/Nosotrosimg/tuerquita.png" class="iconosImagenes">
+        <h3 class="subtitulosh3">Innovacion</h3>  
+        <p class="subtitulosh3V2">Nos esforzamos continuamente por desarrollar <br> y aplicar nuevas tecnologías para mejorar nuestros servicios.</p>
+    </div>
+
+    
+    <div>
+        <img src="assets/img/Nosotrosimg/medalla.png" alt="" class="iconosImagenes">
+        <h3 class="subtitulosh3">Calidad</h3>
+        <p class="subtitulosh3V2">Garantizamos la excelencia en cada aspeto <br> de nuestro software y servicio.</p>
+    </div>
+    
+    <div>
+        <img src="assets/img/Nosotrosimg/seguridad.png" alt="" class="iconosImagenes">
+        <h3 class="subtitulosh3">Seguridad</h3>        
+        <p class="subtitulosh3V2">Prioridad en la proteccion de datos y la <br> seguirdad de nuestros usuarios</p>
+    </div>
+
+</div>    
+
+
+
+
 
 <footer>
         <img src="assets/img/indeximg/Info_Pag.png" alt="" class="info" height="110px" width="400px">

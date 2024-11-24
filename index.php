@@ -51,7 +51,7 @@
         <a href="recuperar_contraseña.php" class="">¿Olvidaste tu contraseña?</a>
     </div>
     <div class="registrarse">
-        <a href="../SFR/registro.php" class="">¡Registrate!</a>
+        <a href="registro.php" class="">¡Registrate!</a>
     </div>
 </section>
 

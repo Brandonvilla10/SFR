@@ -1,4 +1,4 @@
-<?php include('../SFR/database/database.php'); ?>
+<?php include('database/database.php'); ?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -10,7 +10,7 @@
 </head>
 <body>
 
-<?php include('templates/header.php')?>
+<?php include('template/header.php')?>
 
 
 <div class="center_square">

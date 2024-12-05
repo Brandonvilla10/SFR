@@ -12,17 +12,17 @@ session_start();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../../css/homePage.css">
+    <link rel="icon" href="../../assets/img/LogoFR.png">
     <title>Home</title>
 </head>
 <body>
 
     <div class="barraLateral ">
-        <div class="nombreIcono">
+        
             <img src="../../assets/img/imgAdmin/home.png" id="iconoHome" width="50px" height="50px" alt="">
-            <span>Inicio</span>
-        </div>
+           
     </div>
-    </div>
+   
 
 
 

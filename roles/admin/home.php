@@ -17,11 +17,9 @@ session_start();
 </head>
 <body>
 
-    <div class="barraLateral ">
+    
         
-            <img src="../../assets/img/imgAdmin/home.png" id="iconoHome" width="50px" height="50px" alt="">
-           
-    </div>
+     
    
 
 

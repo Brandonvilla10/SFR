@@ -1,0 +1,64 @@
+/* rgba(101,172,223,255) */
+
+a{
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+.sideBar{
+    background-color: rgba(101, 172, 223, 255);
+    border-radius: 34px;
+    height: 96vh;
+    width: 7%;
+    margin: 1% 1%;
+    z-index: -1;
+}
+.iconos{
+    position: absolute;
+    z-index: 2;
+}
+.divBotonHome{
+    display: grid;
+    justify-content: center;
+    position: relative;
+    left: -23px;
+    top: 11%;
+}
+
+.gota {
+    position: absolute;
+    left: 49px;
+    top: 2%; 
+    z-index: 1;
+    transition: top 0.5s ease-in-out, left 0.5s ease-in-out;
+}
+
+
+.gotaImg{
+    width: 12vh;
+    height: auto;
+    max-height: 364px;
+}
+
+.sectionBotones{
+    display: grid;
+    justify-content: center;
+    position: relative;
+    top: 50%;
+    left: -21px;
+    z-index: 2;
+}
+
+
+
+.visible {
+    opacity: 1;
+    transition: opacity 0.5s ease-in-out; 
+}
+
+
+.oculto {
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out; 
+}
+

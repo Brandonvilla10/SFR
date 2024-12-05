@@ -79,34 +79,36 @@
             </div>
 
             <div class="nosotros_3">
+
                 <div  class="titulo">Nuestro Equipo</div>
+
                 <div class="wrapper_four">
                     <div class ="only-wrapper">
 
                         <img src="assets/img/Nosotrosimg/recuadro.png" alt="Imagen de un desarrollador">
                         <h1>Devia Marin Gabriela</h1>
-                        <p>Especialista en desarrollo de software y lider del equipo.</p>
+                        <p>Especialista en desarrollo <br>de software y lider del equipo.</p>
                     
                     </div>
                     <div class ="only-wrapper">
 
                         <img src="assets/img/Nosotrosimg/recuadro.png" alt="Imagen de un desarrollador">
                         <h1>Villanueva Serrano Brandon</h1>
-                        <p>Experto en analisis de datos y optimizacion de procesos.</p>
+                        <p>Experto en analisis de datos y <br> optimizacion de procesos.</p>
                     
                     </div>
                     <div class ="only-wrapper">
 
                         <img src="assets/img/Nosotrosimg/recuadro.png" alt="Imagen de un desarrollador">
                         <h1>Velandia Machado Alejandro</h1>
-                        <p>Encargado de la seguridad informatica y soporte técnico.</p>
+                        <p>Encargado de la seguridad <br> informatica y soporte técnico.</p>
                     
                     </div>
                     <div class ="only-wrapper">
 
                         <img src="assets/img/Nosotrosimg/recuadro.png" alt="Imagen de un desarrollador">
                         <h1>Vallejo Rodriguez Juan Esteban</h1>
-                        <p>Responsable de la experiencia del usuario y diseño de interfaces.</p>
+                        <p>Responsable de la experiencia del <br> usuario y diseño de interfaces.</p>
                     
                     </div>
                 </div>
@@ -119,6 +121,18 @@
     </section>
     
 
+    <div class="daniel">
+        
+        <div>
+            <img src="assets/img/Nosotrosimg/recuadro.png" alt="Imagen de un agregado" class ="img_daniel">
+        </div>
+        <div>
+            <h3 class="subtitulosh3">Daniel Tovar</h3>        
+        </div>
+        <div>
+            <p class="subtitulosh3V2">Responsable y creador del apartado <br> asistencia</p>
+        </div>
+    </div>
 </section>
 
 <section class="valores">
@@ -154,16 +168,18 @@
         <p class="subtitulosh3V2">Prioridad en la proteccion de datos y la <br> seguirdad de nuestros usuarios</p>
     </div>
 
-</div>    
+</div>   
 
 
 
 
 
-<footer>
-        <img src="assets/img/indeximg/Info_Pag.png" alt="" class="info" height="110px" width="400px">
-        <img src="assets/img/indeximg/Copyright.png"  class="copyrigh" height="15px" width="200px">
-</footer>
+
+
+    <footer>
+            <img src="assets/img/indeximg/Info_Pag.png" alt="" class="info" height="110px" width="400px">
+            <img src="assets/img/indeximg/Copyright.png"  class="copyrigh" height="15px" width="200px">
+    </footer>
 
 
 

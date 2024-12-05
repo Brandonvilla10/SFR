@@ -38,7 +38,10 @@
 
         <div class="documento-contraseña">
             <input type="number" class="input-documento-contraseña" name="documento" placeholder="Documento">
+            <div id="documento-error" class="error-message"></div>
             <input type="password" class="input-documento-contraseña" name="contraseña" id="password" placeholder="Contraseña"/>
+            <div id="contraseña-error" class="error-message"></div>
+            
         </div>
 
         <div class="inicioDeSesion">
@@ -85,6 +88,8 @@
 
     <?php include("template/footer.php") ?>
 <script src="js/js.js"></script>
+
+
 </body>
 
 </html>

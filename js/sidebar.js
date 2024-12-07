@@ -1,25 +1,42 @@
-const imagenLaptopAzul = document.getElementById("imagenLaptopAzul")
 
-imagenLaptopAzul.style.display = "none";
 
-const botonOrdenador = document.getElementById("botonOrdenador")
 
-botonOrdenador.addEventListener("click", function (e) {
+let botonHomeAzul = document.getElementById("botonHomeAzul");
+let botonHomeblanco = document.getElementById("botonHomeblanco");
+
+let botonLaptopAzul = document.getElementById("botonLaptopAzul");
+let botonOrdenador = document.getElementById("botonLaptopBlanco");
+
+
+const gota = document.querySelector(".gota");
+
+
+function desaparecer(variable) {
+    variable.style.visibility = "hidden";
+}
+
+function aparecer(variable) {
+    variable.style.visibility = "visible";
+}
+
+botonHomeblanco.addEventListener("click", (e) => {
     e.preventDefault();
-    const gota = document.querySelector(".gota");
-    
-    
-    gota.style.top = "39%";
-    gota.style.left = "47px"; 
+    gota.style.top = "2%";
+    gota.style.left = "47px";
+    aparecer(botonOrdenador)
+    aparecer(botonHomeAzul)
+    desaparecer(botonHomeblanco)
 
-   
-    const imagen = botonOrdenador.querySelector("img")
 
-    imagen.classList.add("oculto")
-    setTimeout(() => {
-        imagen.src = "iconSideBar/ordenador-portatil (2).png"
-        imagen.classList.remove("oculto")
-        imagen.classList.add("visible")
-    }, 500);
-    
 });
+botonOrdenador.addEventListener("click", (e) => {
+    e.preventDefault();
+    gota.style.top = "39%";
+    gota.style.left = "47px";
+    aparecer(botonHomeblanco) 
+    aparecer(botonLaptopAzul)
+    desaparecer(botonHomeAzul)
+    desaparecer(botonOrdenador)
+
+});
+

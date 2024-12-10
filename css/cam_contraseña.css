@@ -57,9 +57,9 @@
     }
     
     .sombraNav {
-        height: 10px;
+        height: 2px;
         width: 100%;
-        box-shadow: 0px 4px 6px #000000;
+        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3);
     }
     
     .img_center_square {
@@ -88,13 +88,16 @@
     
     .imgFondoBlanco {
         position: absolute;
-        z-index: 0;
+        z-index: -1;
         width: 480px;
         height: 500px;
         top: 100px;
         left: 125px;
     }
-    
+    .mainContainer{
+        position: relative;
+        z-index: 3;
+    }
     .sectionrestablecer {
         border-radius: 2%;
         float: left;
@@ -104,6 +107,34 @@
         height: 500px;
     }
     
+    .labelrecuperar {
+        margin-left: -5%;
+        padding-top: 100px;
+        font-weight: 900;
+        font-size: 170%;
+        text-align: center;
+    }
+
+    .Aceptar {
+        display: flex;
+    justify-content: center;
+    margin-left: -8%;
+}
+
+    .codigo {
+        padding-top: 40px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    .digite-cod {
+        margin-left: 1%;
+        padding-top: 17px;
+        font-weight: 800;
+        font-size: 130%;
+        color: rgb(179, 179, 179);
+        text-align: left;
+    }
     .labelcontra {
         margin-left: 9%;
         padding-top: 100px;
@@ -111,7 +142,43 @@
         font-size: 170%;
         text-align: left;
     }
+    .input-codigo {
+        z-index: 5;
+        width: 291px;
+        height: 60px;
+        margin-bottom: 10px;
+        border-radius: 27px;
+        font-weight: bold;
+        font-size: medium;
+        border: none;
+        background-color: rgb(220, 220, 220);
+        color: rgb(134, 134, 134);
+        text-align: center;
+    }
     
+    .input-codigo::placeholder {
+        color: rgb(134, 134, 134);
+        padding-left: 10px;
+        font-size: x-large;
+        opacity: 50%;
+    }
+    
+
+    .boton-submit {
+        width: 270px;
+        height: 60px;
+        margin-top: 26px;
+        margin-bottom: 10px;
+        border-radius: 27px;
+        margin-left: 50px;
+        font-weight: bold;
+        font-size: x-large;
+        border: none;
+        background-color: #3AAA35;
+        color: white;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
     .contraseñas {
         padding-top: 40px;
         display: flex;
@@ -203,7 +270,7 @@
         border-top-right-radius: 100px;
         position: absolute;
         bottom: -182px;
-        z-index: -1;
+        z-index: 3;
     }
     
     .info {

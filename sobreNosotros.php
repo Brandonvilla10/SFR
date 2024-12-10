@@ -85,28 +85,28 @@
                 <div class="wrapper_four">
                     <div class ="only-wrapper">
 
-                        <img src="assets/img/Nosotrosimg/recuadro.png" alt="Imagen de un desarrollador">
+                        <img src="assets/img/Nosotrosimg/Gabi .png" alt="Imagen de un desarrollador" width="236px" height="208px">
                         <h1>Devia Marin Gabriela</h1>
                         <p>Especialista en desarrollo <br>de software y lider del equipo.</p>
                     
                     </div>
                     <div class ="only-wrapper">
 
-                        <img src="assets/img/Nosotrosimg/recuadro.png" alt="Imagen de un desarrollador">
+                        <img src="assets/img/Nosotrosimg/Brandon .png" alt="Imagen de un desarrollador" width="236px" height="208px">
                         <h1>Villanueva Serrano Brandon</h1>
                         <p>Experto en analisis de datos y <br> optimizacion de procesos.</p>
                     
                     </div>
                     <div class ="only-wrapper">
 
-                        <img src="assets/img/Nosotrosimg/recuadro.png" alt="Imagen de un desarrollador">
+                        <img src="assets/img/Nosotrosimg/Chiky .png" alt="Imagen de un desarrollador" width="236px" height="208px">
                         <h1>Velandia Machado Alejandro</h1>
                         <p>Encargado de la seguridad <br> informatica y soporte técnico.</p>
                     
                     </div>
                     <div class ="only-wrapper">
 
-                        <img src="assets/img/Nosotrosimg/recuadro.png" alt="Imagen de un desarrollador">
+                        <img src="assets/img/Nosotrosimg/Juan.png" alt="Imagen de un desarrollador" width="236px" height="208px" >
                         <h1>Vallejo Rodriguez Juan Esteban</h1>
                         <p>Responsable de la experiencia del <br> usuario y diseño de interfaces.</p>
                     
@@ -124,7 +124,7 @@
     <div class="daniel">
         
         <div>
-            <img src="assets/img/Nosotrosimg/recuadro.png" alt="Imagen de un agregado" class ="img_daniel">
+            <img src="assets/img/Nosotrosimg/Daniel .png" alt="Imagen de un agregado" class ="img_daniel" width="236px" height="230px">
         </div>
         <div>
             <h3 class="subtitulosh3">Daniel Tovar</h3>        

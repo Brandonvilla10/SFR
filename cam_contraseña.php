@@ -1,22 +1,4 @@
-<?php
-require_once('../SFR/database/database.php');
-$conexion = new dabatase;
-$con = $conexion->conectar();
 
-// Validación en PHP para verificar si el código ingresado es correcto
-if(isset($_POST['verificar'])) {
-    $codigo = $_POST['Codigo'];
-
-    // Verificar si el código es correcto, esto dependerá de cómo se maneja el código en tu sistema
-    // Por ejemplo, puedes comparar con un código almacenado en la base de datos.
-    if($codigo == '123456'){  // Esto es solo un ejemplo. Aquí deberías hacer la lógica real.
-        header('Location: cam_contraseña.php');  // Redirigir a la página para cambiar la contraseña
-        exit();
-    } else {
-        echo "<script>alert('Código de verificación incorrecto.');</script>";
-    }
-}
-?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -24,7 +6,7 @@ if(isset($_POST['verificar'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SFR - Recuperar Contraseña</title>
-    <link rel="stylesheet" href="css/env_correo.css">
+    <link rel="stylesheet" href="css/cam_contraseña.css">
 </head>
 <body>
 
@@ -34,7 +16,7 @@ if(isset($_POST['verificar'])) {
         <img src="assets/img/indeximg/Center_Square.png" class="img_center_square" alt="Centro">
     </div>
 
-    <section class="section">
+    <section class="mainContainer">
         <div class="CuadradoAzul">
             <div class="fondoBlanco">
                 <img src="assets/img/Base_White.png" class="imgFondoBlanco" height="100px" width="100px">
@@ -43,16 +25,16 @@ if(isset($_POST['verificar'])) {
             <section class="sectionrecuperar">
 
                 <div class="labelrecuperar">
-                    <label for="Codigo">Recuperar Contraseña</label>
+                    <label for="Codigo">Reestablecer Contraseña</label>
                 </div>
 
                 <form action="" method="post" onsubmit="return validarFormulario()"> 
 
                     <div class="codigo">
                         <div class="digite-cod">
-                            <label for="Codigo">Digite el código de verificación</label>
+                            <input class="input-codigo" type="text" placeholder="Nueva Contraseña">
                         </div>
-                        <input type="number" class="input-codigo" name="Codigo" id="Codigo" placeholder="*******" required>
+                        <input type="number" class="input-codigo" name="Codigo" id="Codigo" placeholder="Confirmar Contraseña" required>
                     </div>
 
                     <div class="Aceptar">
@@ -86,20 +68,6 @@ if(isset($_POST['verificar'])) {
 
 
 
-<script>
-    
-    function validarFormulario() {
-        var codigo = document.getElementById('Codigo').value;
-
-        
-        if (codigo == "") {
-            alert('Por favor ingrese el código de verificación.');
-            return false;
-        }
-
-        return true;  
-    }
-</script>
 
 </body>
 </html>

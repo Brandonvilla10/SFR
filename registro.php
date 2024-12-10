@@ -38,8 +38,6 @@
             <input type="text" class="input-documento-contraseña" name="nombreCompleto" placeholder="Nombre Completo">
             <input type="number" class="input-documento-contraseña" name="documento"  placeholder="Documento"/>
             <input type="email" class="input-documento-contraseña" name="correo"  placeholder="Email"/>
-            <input type="text" class="input-documento-contraseña" name="rol"  placeholder="Rol"/>
-            <input type="number" class="input-documento-contraseña" name="ficha"  placeholder="Ficha"/>
             <input type="password" class="input-documento-contraseña" name="contraseña" id="password" placeholder="Contraseña"/>
             <input type="password" class="input-documento-contraseña" name="contraseña" id="Confirmar password" placeholder="Confirmar Contraseña"/>
         </div>
@@ -48,6 +46,13 @@
             <input type="submit" value="Registrarse" class="boton-submit">
         </div>
         
+        <div class="-contraseña">
+        <p>¿Ya Tienes Cuenta?</p>
+    </div>
+
+    <div class="registrarse">
+        <a href="index.php" class="">¡Inicia Sesion!</a>
+    </div>
     </form>
 </section>
 

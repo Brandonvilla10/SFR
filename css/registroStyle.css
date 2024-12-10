@@ -61,12 +61,12 @@ header{
     margin-right: 30px;
 }
 
-.sombraNav{
-    height: 10px;
+.sombraNav {
+    height: 2px;
     width: 100%;
-    background-color: black ;
-    opacity: 0.3;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3);
 }
+
 
 .img_center_square{
     position: absolute;
@@ -98,12 +98,13 @@ header{
     position: absolute;
     z-index: 0;
     width: 480px;
-    height: 960px;
-    top: 100px;
+    height: 878px;
+    top: 56px;
     left: 125px;
 }
 
 .sectionLogin{
+    top: 1%;
     border-radius: 2%;
     float: left;
     position: absolute;
@@ -121,7 +122,7 @@ header{
 }
 
 .documento-contraseña{
-    padding-top: 40px ;
+    padding-top: 20px ;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -130,7 +131,7 @@ header{
 .input-documento-contraseña{
     width: 291px;
     height: 60px;
-    margin-bottom: 10px;
+    margin-bottom: 23px;
     border-radius: 27px;
     font-weight: bold;
     font-size: medium;
@@ -151,7 +152,6 @@ header{
 .boton-submit {
     width: 270px;
     height: 60px;
-    margin-top: 26px;
     margin-bottom: 10px;
     border-radius: 27px;
     margin-left: 50px;
@@ -169,17 +169,18 @@ header{
 }
 
 
-.-contraseña{
+.-contraseña {
     display: flex;
-    font-weight: 800;
-    margin-top: 12px;
-    margin-left: 65px;
+    font-weight: 600;
+    margin-top: 14px;
+    margin-left: -26px;
+    justify-content: center;
 }
 
 .registrarse{
     display: flex;
     font-weight: bolder;
-    margin-top: 12px;
+    
     margin-left:120px;
     font-weight: 800;
 }

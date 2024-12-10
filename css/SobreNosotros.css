@@ -163,7 +163,7 @@
 
 .only-wrapper img {
     width: auto; 
-    height: auto;
+
     object-fit: cover;
     margin-bottom: 10px;
 }
@@ -203,7 +203,7 @@
 
 .img_daniel{
     width: 236px;
-    height: 170px;
+
     padding: 15px;
 }
 /*SECCION VALORES*/

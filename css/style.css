@@ -1,259 +1,244 @@
-/* Color verde de las letras y de mas rgba(58,170,53,255) */
-
-
-/* azulito de la pagina rgba(101,172,223,255) */
-
+/* --- RESET GENERAL --- */
+/* Quitamos márgenes y padding por defecto para empezar de cero */
 * {
     margin: 0;
     padding: 0;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    color: rgba(58, 170, 53, 255);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Fuente bonita para todo */
 }
 
+/* Los links no tendrán subrayado */
 a {
     text-decoration: none;
 }
 
-header {
-    height: 80px;
-    width: 100%;
-    margin-bottom: 16px;
+/* Quitamos márgenes del body y html también */
+body, html {
+    margin: 0;
+    padding: 0;
 }
 
-.logoNav {
-    padding-left: 40px;
-    padding-top: 8px;
-    height: 100px;
-}
-
-.imglogo {
-    float: left;
-    position: absolute;
-    left: 100px;
-    width: 77px;
-}
-
-.SENA_FAST_REGISTER {
-    width: 212px;
-    height: 40px;
-    float: left;
-    position: absolute;
-    left: 167px;
-    padding-top: 23px;
-    font-weight: 900;
-    font-size: x-large;
-    color: rgba(58, 170, 53, 255);
-}
-
-.listaheader {
-    list-style: none;
-    list-style-type: none;
-    float: right;
-    display: flex;
-    padding-right: 300px;
-    padding-top: 34px;
-}
-
-.listaMenu {
-    margin-right: 30px;
-}
-
-.sombraNav {
-    height: 2px;
-    width: 100%;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3);
-}
-
-.img_center_square {
-    position: absolute;
-    z-index: 1;
-    height: 80px;
-    width: 100%;
-    object-fit: contain;
-    top: 204px;
-}
-
-.CuadradoAzul {
-    width: 50%;
-    height: 103vh;
-    z-index: -1;
-    float: left;
-    background-color: rgba(101, 172, 223, 255);
-    position: relative;
-}
-
-.columnaDerecha {
-    float: right;
-    right: 46px;
-    position: absolute;
-}
-
-.imgFondoBlanco {
-    position: absolute;
-    z-index: 0;
-    width: 480px;
-    height: 500px;
-    top: 100px;
-    left: 125px;
-}
-
-.sectionLogin {
-    border-radius: 2%;
-    float: left;
-    position: absolute;
-    left: 180px;
-    width: 50%;
-    height: 500px;
-}
-
-.labelLogin {
-    margin-left: 37%;
-    padding-top: 64px;
-    font-weight: 900;
-    font-size: xx-large;
-}
-
-.documento-contraseña {
-    padding-top: 40px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.input-documento-contraseña {
-    width: 291px;
-    height: 60px;
-    margin-bottom: 10px;
-    border-radius: 27px;
-    font-weight: bold;
-    font-size: medium;
-    border: none;
-    background-color: rgb(220, 220, 220);
-    color: rgba(58, 170, 53, 255);
-    padding-left: 8px;
-}
-
-.input-documento-contraseña::placeholder {
-    color: rgba(58, 170, 53, 255);
-    padding-left: 10px;
-    margin-left: 5px;
-    font-size: x-large;
-    opacity: 50%;
-}
-
-.boton-submit {
-    width: 270px;
-    height: 60px;
-    margin-top: 26px;
-    margin-bottom: 10px;
-    border-radius: 27px;
-    margin-left: 50px;
-    font-weight: bold;
-    font-size: x-large;
-    border: none;
-    background-color: #3AAA35;
-    color: white;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-.boton-submit:hover {
-    background-color: #1c5c1d;
-}
-
-.-contraseña {
-    display: flex;
-    font-weight: 800;
-    margin-top: 12px;
-    margin-left: 65px;
-}
-
-.registrarse {
-    display: flex;
-    font-weight: bolder;
-    margin-top: 12px;
-    margin-left: 120px;
-    font-weight: 800;
-}
-
-.fondoBlanco {
-    position: relative;
-    width: 100px;
-    height: 100px;
-}
-
-.imgPersonitas {
-    margin-top: 60px;
-    margin-left: 40px;
-}
-
-
-/* Barra de redes sociales */
-
-.social-bar {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    padding: 10px;
-}
-
-
-/* Botones de redes sociales esto dejarlo quieto ajaja*/
-
-.social-icon {
-    text-decoration: none;
-    text-align: center;
-    padding: 10px;
-    border-radius: 5px;
-    transition: background-color 0.3s, transform 0.3s;
-}
-
-.social-icon:hover {
-    transform: scale(1.5) rotate(10deg);
-}
-
-footer {
-    margin-top: 100px;
-    background-color: rgb(83, 155, 207);
-    height: 170px;
-    width: 100%;
-    border-top-left-radius: 100px;
-    border-top-right-radius: 100px;
-    position: absolute;
-    bottom: -182px;
-    z-index: -1;
-}
-
-.info {
-    position: absolute;
-    left: 100px;
-    margin-top: 30px;
-}
-
-.copyrigh {
-    position: absolute;
-    left: 660px;
-    margin-top: 120px;
-}
-
-@media (min-width: 769px) {
-    .documento-contraseña {
+/* --- ESTILOS RESPONSIVE A PARTIR DE 320px --- */
+@media (min-width:320px) {
+    /* Contenedor principal con flexbox en columna, ocupa el 100% del ancho */
+    .container {
         display: flex;
-        float: left;
-        position: relative;
-        left: 40px;
+        flex-direction: column;
+        width: 100%;
     }
-    .labelLogin {
-        position: relative;
-        left: -28px;
+
+    /* Parte izquierda con fondo azulito y centrado */
+    .columnaIzquierda {
+        display: flex;
+        width: 100%;
+        height: 80vh;
+        background-color: rgb(179 213 255); /* Fondo azulito */
+        justify-content: center;
+        align-items: center;
+    }
+
+    /* Fondo blanco que contiene cosas */
+    .fondoBlanco {
+        width: 47vh; /* Altura y ancho adaptables */
+        z-index: 1;
+        height: 54vh;
+    }
+
+    /* Tarjeta con cuadrícula para organizar el contenido */
+    .card {
+        display: grid;
+        grid-template-rows: 50px 144px 91px 45px; /* Dividimos la tarjeta en 4 filas */
+        text-align: center;
+        position: absolute;
+        z-index: 1;
+        height: 54vh;
+        width: 235px;
+        justify-items: center; /* Centramos todo en la tarjeta */
+        align-items: center;
+    }
+
+    /* Título en verde */
+    .tituloLogin {
+        color: rgba(58, 170, 53, 255); /* Verde chillón */
+    }
+
+    /* Estilo de los campos de entrada del login */
+    .datosLogin {
+        height: 9vh;
+        width: 100%;
+        margin-top: 5px; /* Espaciado superior */
+        border-radius: 59px; /* Bordes redondeados */
+        border: 3px solid #ffffff; /* Borde blanco */
+        color: rgba(58, 170, 53, 255); /* Texto en verde */
+        font-size: larger;
+        font-weight: 500;
+        background: #d6d5d4; /* Fondo gris clarito */
+    }
+
+    /* Placeholder en los inputs */
+    .datosLogin::placeholder {
+        color: green; /* Verde tenue */
+        opacity: 60%; /* Un poco transparente */
+    }
+
+    /* Botón de inicio de sesión */
+    .botonIniciarSesion {
+        height: 9vh;
+        width: 100%;
+        margin-top: 5px;
+        border-radius: 59px; /* Bordes redondeados */
+        color: white; /* Texto blanco */
+        border: 3px solid #ffffff; /* Borde blanco */
+        font-size: larger;
+        font-weight: bolder; /* Texto más grueso */
+        background: #1c8f05; /* Verde oscuro */
+    }
+
+    /* Placeholder en el botón */
+    .botonIniciarSesion::placeholder {
+        color: white; /* Placeholder blanco */
+    }
+
+    /* Imagen de las "personitas" */
+    .imgPersonitas {
+        width: 100%;
+        height: 40vh;
+    }
+
+    /* --- Barra de redes sociales (no mover esto jajaja) --- */
+    .social-bar {
+        z-index: 1000;
+        position: fixed;
+        bottom: -14px; /* Justo abajo */
+        right: -1px;
+        display: flex;
+        flex-direction: column; /* Redes sociales en columna */
+        gap: 10px; /* Espaciado entre botones */
+        padding: 11px;
+    }
+
+    /* Botones de redes sociales con efecto de hover */
+    .social-icon {
+        text-decoration: none;
+        text-align: center;
+        padding: 0px;
+        border-radius: 5px; /* Bordes redondeados */
+        transition: background-color 0.3s, transform 0.3s; /* Animación */
+    }
+
+    .social-icon:hover {
+        transform: scale(1.5) rotate(10deg); /* Crecen y giran al pasar el mouse */
     }
 }
 
-.error-message {
-    color: red;
-    font-size: 12px;
-    margin-top: 5px;
+/* --- ESTILOS PARA RESOLUCIONES MAYORES --- */
+
+/* A partir de 576px */
+@media (min-width:576px) {
+    /* Fondo blanco más grande */
+    .fondoBlanco {
+        width: 61vh;
+        height: 63vh;
+    }
+
+    /* Ajustamos el tamaño de la tarjeta */
+    .card {
+        height: 48vh;
+    }
+
+    /* Imagen de las "personitas" más alta */
+    .imgPersonitas {
+        height: 70vh;
+    }
+}
+
+/* A partir de 768px */
+@media (min-width:768px) {
+    .container {
+        flex-direction: row; /* Cambiamos de columna a fila */
+        align-items: center;
+    }
+
+    /* La columna izquierda ocupa la mitad */
+    .columnaIzquierda {
+        width: 50%;
+    }
+
+    /* Imagen de las "personitas" más pequeña */
+    .imgPersonitas {
+        height: 50vh;
+    }
+
+    /* Fondo blanco ajustado */
+    .fondoBlanco {
+        width: 53vh;
+        height: 61vh;
+    }
+}
+
+/* A partir de 1024px */
+@media (min-width:1024px) {
+    /* Fondo blanco más grande */
+    .fondoBlanco {
+        width: 60vh;
+        z-index: 1;
+        height: 70vh;
+    }
+
+    /* Tarjeta redimensionada */
+    .card {
+        grid-template-rows: 64px 176px 99px 78px; /* Más espacios */
+        height: 63vh;
+        width: 238px;
+    }
+
+    /* Campos de login más altos */
+    .datosLogin {
+        height: 11vh;
+    }
+
+    /* Imagen más grande */
+    .imgPersonitas {
+        height: 70vh;
+    }
+}
+
+/* A partir de 1440px */
+@media (min-width:1440px) {
+    /* Contenedor como fila */
+    .container {
+        flex-direction: row;
+        width: 100%;
+    }
+
+    /* Columna izquierda ajustada */
+    .columnaIzquierda {
+        width: 50%;
+        height: 86vh;
+        justify-content: center;
+        align-items: center;
+    }
+
+    /* Fondo blanco adaptado */
+    .fondoBlanco {
+        width: 57vh;
+        height: 69vh;
+    }
+
+    /* Tarjeta más alta */
+    .card {
+        grid-template-rows: 109px 150px 109px 53px;
+        height: 72vh;
+    }
+
+    /* Campos de login con diseño flex */
+    .datosLogin {
+        height: 59px;
+        background: #d6d5d4;
+    }
+
+    /* Botón más estilizado */
+    .botonIniciarSesion {
+        height: 59px;
+        background: rgba(58, 170, 53, 255);
+    }
 }

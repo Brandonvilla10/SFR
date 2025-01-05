@@ -92,7 +92,7 @@
                     </div>
                     <div class ="only-wrapper">
 
-                        <img src="assets/img/Nosotrosimg/Brandon .png" alt="Imagen de un desarrollador" width="236px" height="208px">
+                        <img src="assets/img/Nosotrosimg/Brandon  (1).png" alt="Imagen de un desarrollador" width="236px" height="208px">
                         <h1>Villanueva Serrano Brandon</h1>
                         <p>Experto en analisis de datos y <br> optimizacion de procesos.</p>
                     
@@ -122,7 +122,7 @@
     
 
     <div class="daniel">
-        
+        <h1 class="titulo">Apartado Asistencia</h1>
         <div>
             <img src="assets/img/Nosotrosimg/Daniel .png" alt="Imagen de un agregado" class ="img_daniel" width="236px" height="230px">
         </div>

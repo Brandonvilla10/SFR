@@ -2,7 +2,7 @@
 
 <?php
 
-class dabatase{
+class database{
 
     private $host ="localhost";
     private $database = "databasesft";

@@ -1,6 +1,6 @@
 <?php 
 require_once('database/database.php');
-$conexion = new dabatase;
+$conexion = new database;
 $con = $conexion->conectar();
 
 // Validación en PHP para verificar si el código ingresado es correcto

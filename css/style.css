@@ -63,8 +63,8 @@ body, html {
 
     /* Estilo de los campos de entrada del login */
     .datosLogin {
-        height: 9vh;
-        width: 100%;
+        height: 7vh;
+        width: 86%;
         margin-top: 5px; /* Espaciado superior */
         border-radius: 59px; /* Bordes redondeados */
         border: 3px solid #ffffff; /* Borde blanco */
@@ -82,8 +82,8 @@ body, html {
 
     /* Botón de inicio de sesión */
     .botonIniciarSesion {
-        height: 9vh;
-        width: 100%;
+        height: 7vh;
+        width: 86%;
         margin-top: 5px;
         border-radius: 59px; /* Bordes redondeados */
         color: white; /* Texto blanco */
@@ -163,6 +163,11 @@ body, html {
         width: 50%;
     }
 
+    .datosLogin {
+        height: 8vh;
+        width: 91%;
+    }
+
     /* Imagen de las "personitas" más pequeña */
     .imgPersonitas {
         height: 50vh;
@@ -173,6 +178,27 @@ body, html {
         width: 53vh;
         height: 61vh;
     }
+
+        /* --- Barra de redes sociales (no mover esto jajaja) --- */
+        .social-bar {
+            bottom: 47px;
+            right: 18px;
+            padding: 11px;
+        }
+    
+        /* Botones de redes sociales con efecto de hover */
+        .social-icon {
+            text-decoration: none;
+            text-align: center;
+            padding: 0px;
+            border-radius: 5px; /* Bordes redondeados */
+            transition: background-color 0.3s, transform 0.3s; /* Animación */
+        }
+    
+        .social-icon:hover {
+            transform: scale(1.5) rotate(10deg); /* Crecen y giran al pasar el mouse */
+        }
+
 }
 
 /* A partir de 1024px */
@@ -193,12 +219,15 @@ body, html {
 
     /* Campos de login más altos */
     .datosLogin {
-        height: 11vh;
+        height: 10vh;
     }
 
     /* Imagen más grande */
     .imgPersonitas {
         height: 70vh;
+    }
+    .botonIniciarSesion{
+        height: 10vh;
     }
 }
 
@@ -227,12 +256,12 @@ body, html {
     /* Tarjeta más alta */
     .card {
         grid-template-rows: 109px 150px 109px 53px;
-        height: 72vh;
+        height: 61vh;
     }
 
     /* Campos de login con diseño flex */
     .datosLogin {
-        height: 59px;
+        height: 78px;
         background: #d6d5d4;
     }
 
@@ -240,5 +269,32 @@ body, html {
     .botonIniciarSesion {
         height: 59px;
         background: rgba(58, 170, 53, 255);
+    }
+}
+
+@media (min-width:2560px) {
+    .card{
+        grid-template-rows: 221px 149px 158px 123px;
+        height: 69vh;
+        width: 500px;
+    }
+    .tituloLogin{
+        font-size: 70px;
+    }
+
+    .datosLogin{
+        height: 8vh;
+        font-size: large;
+    }
+
+    .botonIniciarSesion{
+        height: 81px;
+    }
+    .olvidaste-registrate{
+    display: flex;
+    flex-direction: column;
+    }
+    .colorVerde{
+        font-size: x-large;
     }
 }

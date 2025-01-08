@@ -1,6 +1,6 @@
-<?php require_once('../SFR/database/database.php');
+<?php require_once('database/database.php');
 $conexion = new database;
-$con =$conexion->conectar();
+$con = $conexion->conectar();
 session_start();
 
 if(isset($_POST['submit'])){
@@ -9,6 +9,7 @@ if(isset($_POST['submit'])){
     $documento = $_POST['documento'];
     $contraseña = $_POST['contraseña'];
 
+    
     
     if ($documento == "" && $contraseña == ""){
         echo "<script>alert('No has ingresado todos los datos!')</script>";
@@ -35,9 +36,6 @@ if(isset($_POST['submit'])){
         }
     
     }
-    
-
-
     
 }
 ?>
@@ -72,17 +70,21 @@ if(isset($_POST['submit'])){
                 <h2 class="tituloLogin">Login</h2>
             </div>
 
-            <div class="datos">
 
-                <input type="text" class="datosLogin" name="" id="" placeholder="Documento">
-                <input type="text" class="datosLogin" name="" id="" placeholder="Contraseña">
+            <form action="" id="formulario" name="sumbit">
 
-            </div>
-           
+                <div class="datos">
+                    <input type="number" class="datosLogin" name="documento" id="documento" placeholder="Documento">
+                    <p class="error" id="errorDocumento"></p>
 
-                <input class="botonIniciarSesion" type="button" value="Iniciar Sesion">
-                
-            
+                    <input type="text" class="datosLogin" name="contraseña" id="contraseña" placeholder="Contraseña">
+                    <p class="error" id="errorContraseña"></p>
+                </div>
+        
+                    <input class="botonIniciarSesion" type="submit"   placeholder="Iniciar Sesion"> </input>
+                    
+            </form>
+
             <div class="olvidaste-registrate">
 
                 <a class="colorVerde " href="recuperar_contraseña.php">¿Olvidaste Tu Contraseña?</a>
@@ -129,4 +131,40 @@ if(isset($_POST['submit'])){
 
 </body>
 
+
+<script>
+const docRegex = /^\d{10}$/;
+const passRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@#$!%*?&])[A-Za-z\d@#$!%*?&]{8,}$/;
+
+
+    const contraseña = document.getElementById("contraseña");
+    const errorContraseña = document.getElementById("errorContraseña")
+
+    const documento = document.getElementById("documento");
+    const errorDocumento = document.getElementById("errorDocumento")
+
+    function incorrecto(regex,dato,error,mensaje){
+        if(!regex.test(dato.value)){
+            error.textContent = mensaje
+            setTimeout(() => {
+                error.textContent = ""
+            }, 4000);
+            dato.style.borderColor = "red"
+            
+        }else{
+            dato.style.borderColor = "blue" 
+        }
+    }
+
+    const formulario = document.getElementById("formulario").addEventListener("submit",(e) =>{
+        e.preventDefault()
+
+        incorrecto(docRegex,documento,errorDocumento,"Error El Documento Debe Ser De 10 Digitos!")
+        incorrecto(passRegex,contraseña,errorContraseña,"Contraseña Incorrecta")
+
+    })
+</script>
+
 </html>
+
+

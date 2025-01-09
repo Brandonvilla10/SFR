@@ -1,181 +1,118 @@
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contáctenos</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #ffffff;
-            color: #333333;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-        }
-        .container {
-            width: 80%;
-            margin: 0 auto;
-            padding: 20px;
-            flex: 1;
-        }
-        h1 {
-            color: #3498db;
-            text-align: left;
-        }
-        .section {
-            margin: 40px 0;
-        }
-        .section h2 {
-            color: #3498db;
-            font-size: 24px;
-            text-align: left;
-        }
-        .section p {
-            font-size: 16px;
-            line-height: 1.5;
-            text-align: left;
-        }
-        .contact-info {
-            display: flex;
-            justify-content: flex-start;
-            align-items: center;
-            margin: 20px 0;
-        }
-        .contact-info i {
-            font-size: 24px;
-            margin-right: 10px;
-            color: #25d366;
-        }
-        .contact-info .email i {
-            color: #34a853;
-        }
-        .contact-info span {
-            font-size: 18px;
-        }
-        .email-section {
-            text-align: center;
-            margin-left: 20%;
-        }
-        .email-section h2 {
-            text-align: center;
-        }
-        .email-section .contact-info {
-            justify-content: center;
-        }
-        .compact-text {
-            max-width: 600px;
-        }
-        footer {
-            background-color: #3498db;
-            color: white;
-            padding: 20px;
-            text-align: left;
-            line-height: 1.2;
-            border-radius: 25px 25px 0 0;
-            position: relative;
-            height: auto;
-            overflow: hidden;
-        }
-        footer p {
-            margin: 0;
-            padding: 5px 0;
-        }
-        .footer-right {
-            text-align: right;
-            margin-top: 10px;
-            position: absolute;
-            right: 45%;
-            transform: translateX(20px);
-            top: 110px;
-        }
-        @media (max-width: 1024px) {
-            .container {
-                width: 90%;
-            }
-            .email-section {
-                margin-left: 0;
-            }
-            .footer-right {
-                right: 40%;
-            }
-        }
-        @media (max-width: 768px) {
-            .container {
-                width: 95%;
-            }
-            .contact-info {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-            .contact-info i {
-                margin-bottom: 10px;
-            }
-            .email-section {
-                text-align: center;
-                margin-left: 0;
-            }
-            .email-section .contact-info {
-                flex-direction: column;
-                align-items: center;
-            }
-            .compact-text {
-                max-width: 100%;
-            }
-            footer {
-                text-align: center;
-            }
-            .footer-right {
-                text-align: center;
-                position: static;
-                margin-top: 10px;
-                transform: none;
-            }
-        }
-    </style>
-</head>
-<body>
-    <?php include("../SFR/template/header.php"); ?>
-    <div class="container">
-        <div class="section compact-text">
-            <h1>Contáctenos</h1>
-            <p>¿Tienes alguna pregunta o necesitas más información sobre FastRegister? ¡Estamos aquí para ayudarte! Nuestro equipo está disponible para responder tus consultas y brindarte el soporte que necesitas.</p>
-        </div>
-        <div class="section">
-            <h2>Chat virtual</h2>
-            <div class="contact-info">
-                <i class="fab fa-whatsapp"></i>
-                <span>309 8768568</span>
-            </div>
-            <div class="contact-info">
-                <i class="fab fa-whatsapp"></i>
-                <span>301 7467158</span>
-            </div>
-        </div>
-        <div class="section email-section">
-            <h2>Correo Electrónico</h2>
-            <div class="contact-info email">
-                <i class="fas fa-envelope"></i>
-                <span>senafastregister@gmail.com</span>
-            </div>
-        </div>
-        <div class="section">
-            <h2>Horarios de atención</h2>
-            <p>Soporte Tecnico Y Servicio Al Cliente</p>
-            <p>Implementaciones</p>
-        </div>
+<html lang="en">
+ <head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>
+   Fast Register
+  </title>
+  <script src="https://cdn.tailwindcss.com">
+  </script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+ </head>
+ <body class="bg-white text-gray-800">
+  <div class="max-w-4xl mx-auto p-4">
+   <section class="mb-8">
+    <h2 class="text-2xl font-bold text-blue-500">
+     Contactanos
+    </h2>
+    <p class="text-gray-600 mt-2">
+     ¿Tienes alguna pregunta o necesitas más información sobre FastRegister? Estamos aquí para ayudarte! Nuestro equipo está disponible para responder tus consultas y brindarte el soporte que necesitas.
+    </p>
+    <div class="flex flex-col md:flex-row items-start mt-4">
+     <div class="mr-8">
+      <h3 class="text-lg font-semibold">
+       Chat Virtual
+      </h3>
+      <p class="text-green-500">
+       <i class="fab fa-whatsapp">
+       </i>
+       309 8768568
+      </p>
+      <p class="text-green-500">
+       <i class="fab fa-whatsapp">
+       </i>
+       301 7467158
+      </p>
+     </div>
+     <div>
+      <h3 class="text-lg font-semibold">
+       Correo Electronico
+      </h3>
+      <p class="text-green-500">
+       <i class="fas fa-envelope">
+       </i>
+       senafastregister@gmail.com
+      </p>
+     </div>
     </div>
-    <footer>
-        <p>Sena FastRegister - Dirección General</p>
-        <p>141-Sector, Cra. 45 No. 1255, Ibagué, Tolima</p>
-        <p>Contacto: 309 8768568</p>
-        <p>Atención al cliente: Lunes a Viernes 8:00 am a 5:00 pm</p>
-        <p>Correo: senafastregister@gmail.com</p>
-        <div class="footer-right">
-            <p>Copyright © 2024 FastRegister</p>
-        </div>
-    </footer>
-</body>
+   </section>
+   <section class="mb-8 flex flex-col md:flex-row items-start">
+    <div class="md:mr-8">
+     <h2 class="text-2xl font-bold text-blue-500">
+      Horarios de Atencion
+     </h2>
+     <p class="text-gray-600 mt-2">
+      Soporte Tecnico y servicio al Cliente
+     </p>
+     <p class="text-gray-600">
+      Implementaciones
+     </p>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-0 md:mt-1">
+     <div>
+      <h3 class="text-lg text-blue-500">
+       Lunes a Viernes
+      </h3>
+      <p class="text-green-500">
+       8:00 am - 5:00 pm
+      </p>
+      <p class="text-green-500">
+       8:00 am - 12:00 pm
+      </p>
+      <p class="text-green-500">
+       2:00 pm - 5:00 pm
+      </p>
+     </div>
+     <div>
+      <h3 class="text-lg text-blue-500">
+       Sábados
+      </h3>
+      <p class="text-green-500">
+       8:00 am - 4:00 pm
+      </p>
+      <p class="text-green-500">
+       8:00 am - 12:00 pm
+      </p>
+      <p class="text-green-500">
+       2:00 pm - 4:00 pm
+      </p>
+     </div>
+     <div>
+      <h3 class="text-lg text-blue-500">
+       Domingos y Festivos
+      </h3>
+      <p class="text-green-500">
+       No atendemos
+      </p>
+     </div>
+    </div>
+   </section>
+   <section class="mb-8 flex flex-col md:flex-row items-start">
+   <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1989.0246716860893!2d-75.14883548094592!3d4.401870274949088!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8e38daac36ef33ef%3A0xc4167c4b60b14a15!2sSENA%20Centro%20de%20Industria%20y%20de%20la%20Construcci%C3%B3n!5e0!3m2!1ses!2sco!4v1736385326864!5m2!1ses!2sco" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>    <div>
+     <h2 class="text-2xl font-bold text-blue-500">
+      Encuentranos
+     </h2>
+     <p class="text-gray-600 mt-2">
+      SENA Centro de Industria y la Construcción
+     </p>
+     <p class="text-gray-600">
+      141 - Sector, Cra. 45 Sur #1255, Ibagué, Tolima
+     </p>
+     <p class="text-gray-600">
+      Te esperamos!
+     </p>
+    </div>
+   </section>
+  </div>
+ </body>
 </html>

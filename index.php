@@ -1,44 +1,20 @@
-<?php require_once('database/database.php');
+
+<?php
+require_once("database/database.php");
 $conexion = new database;
 $con = $conexion->conectar();
 session_start();
 
-if(isset($_POST['submit'])){
-
-
+if (isset($_POST['enviar'])){
     $documento = $_POST['documento'];
     $contraseña = $_POST['contraseña'];
+    echo '<script>alert("Funcionando")</script>';
 
-    
-    
-    if ($documento == "" && $contraseña == ""){
-        echo "<script>alert('No has ingresado todos los datos!')</script>";
-        echo "<script>window.location = 'index.php'</script>";
-    }else{
-
-        $query = $con->query("SELECT * FROM usuario where id_documento = '$documento'");
-        $query->execute();
-        $fila= $query->fetch();
-
-
-
-
-        if($fila['id_documento'] == $documento && $contraseña == $fila['contraseña'] && $fila['id_estado'] == 1 ){
-
-
-            if($fila['id_rol'] == 1){
-
-                echo "<script>window.location ='roles/admin/home.php'</script>";
-
-            }
-
-
-        }
-    
-    }
-    
 }
+
 ?>
+
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -71,7 +47,7 @@ if(isset($_POST['submit'])){
             </div>
 
 
-            <form action="" id="formulario" name="sumbit">
+            <form action="" id="formulario" method="POST" >
 
                 <div class="datos">
                     <input type="number" class="datosLogin" name="documento" id="documento" placeholder="Documento">
@@ -81,9 +57,11 @@ if(isset($_POST['submit'])){
                     <p class="error" id="errorContraseña"></p>
                 </div>
         
-                    <input class="botonIniciarSesion" type="submit"   placeholder="Iniciar Sesion"> </input>
+                    <input class="botonIniciarSesion" name="enviar" type="submit" value="Iniciar Sesion"> 
                     
             </form>
+
+
 
             <div class="olvidaste-registrate">
 
@@ -132,16 +110,20 @@ if(isset($_POST['submit'])){
 </body>
 
 
+
+
+</html>
+
+
 <script>
-const docRegex = /^\d{10}$/;
+const docRegex = /^\d{6,10}$/;
 const passRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@#$!%*?&])[A-Za-z\d@#$!%*?&]{8,}$/;
-
-
-    const contraseña = document.getElementById("contraseña");
-    const errorContraseña = document.getElementById("errorContraseña")
 
     const documento = document.getElementById("documento");
     const errorDocumento = document.getElementById("errorDocumento")
+
+    const contraseña = document.getElementById("contraseña");
+    const errorContraseña = document.getElementById("errorContraseña")
 
     function incorrecto(regex,dato,error,mensaje){
         if(!regex.test(dato.value)){
@@ -150,21 +132,19 @@ const passRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@#$!%*?&])[A-Za-z\d@#$!%
                 error.textContent = ""
             }, 4000);
             dato.style.borderColor = "red"
-            
+            return false
         }else{
             dato.style.borderColor = "blue" 
+            return true
         }
     }
 
-    const formulario = document.getElementById("formulario").addEventListener("submit",(e) =>{
-        e.preventDefault()
-
-        incorrecto(docRegex,documento,errorDocumento,"Error El Documento Debe Ser De 10 Digitos!")
+    documento.addEventListener("blur",() =>{
+        incorrecto(docRegex,documento,errorDocumento,"Error El Documento Debe Ser De 6-10 Digitos!")
+    })
+    
+    contraseña.addEventListener("blur",() =>{
         incorrecto(passRegex,contraseña,errorContraseña,"Contraseña Incorrecta")
-
+        
     })
 </script>
-
-</html>
-
-

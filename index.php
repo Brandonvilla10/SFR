@@ -116,14 +116,19 @@ if (isset($_POST['enviar'])){
 
 
 <script>
+    // expresiones regulares para validacion de documento y contraseña
 const docRegex = /^\d{6,10}$/;
 const passRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@#$!%*?&])[A-Za-z\d@#$!%*?&]{8,}$/;
+// ------------------------------------------------------------------------------------------------
 
     const documento = document.getElementById("documento");
     const errorDocumento = document.getElementById("errorDocumento")
 
     const contraseña = document.getElementById("contraseña");
     const errorContraseña = document.getElementById("errorContraseña")
+// declaro las variables que voy a usar durante el codigo generalmnente suelo declararlas arriba
+
+// esta function tiene como proposito manejar el flujo del codigo sin repetirlo ya que hace una comprobacion gracias a los palametros que le estoy pasando para poner de color rojo si lo que introduce el ususario no es correcto y pues valida todo, aunque realmente lo que exactamente ahce es manjear estilos 
 
     function incorrecto(regex,dato,error,mensaje){
         if(!regex.test(dato.value)){
@@ -138,6 +143,9 @@ const passRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@#$!%*?&])[A-Za-z\d@#$!%
             return true
         }
     }
+// ---------------------------------------------------------------------------
+
+// e aqui los eventos de para el tema de los inputs el blur hace que cuando pierda el foco el input pues active el evento y ahi va toda la logica :)
 
     documento.addEventListener("blur",() =>{
         incorrecto(docRegex,documento,errorDocumento,"Error El Documento Debe Ser De 6-10 Digitos!")

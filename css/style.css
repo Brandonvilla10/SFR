@@ -23,6 +23,18 @@ body, html {
     font-size: x-small;
 }
 
+.botonIniciarSesion:hover{
+    transform: scale(1.1);
+    background-color: #2e931a;
+    border-color: rgb(0, 60, 255);
+}
+
+.botonSinHover:hover{
+    transform: scale(1);
+    background-color: #15480b;
+    border-color: rgb(255, 17, 0);
+}
+
 /* --- ESTILOS RESPONSIVE A PARTIR DE 320px --- */
 @media (min-width:320px) {
     /* Contenedor principal con flexbox en columna, ocupa el 100% del ancho */
@@ -105,10 +117,7 @@ body, html {
         color: white; /* Placeholder blanco */
     }
 
-    .botonIniciarSesion:hover{
-        transform: scale(1.1);
-        background-color: #1f6f0f;
-    }
+    
 
     
 

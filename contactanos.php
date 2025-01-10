@@ -1,122 +1,118 @@
-<!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contactanos</title>
-    <link rel="stylesheet" href="css/contactanosStyle.css">
-</head>
-<body>
-    
-
-    <?php include("../SFR/template/header.php") ?>
-
-    <div class="contactanos">
-
-    <h1 class="h1Contactanos">Contactanos</h1>
-
-    <label for="" class="textoContactanos">¿Tienes alguna pregunta o necesitas más información sobre FastRegister? <br>
-    ¡Estamos aquí para ayudarte! Nuestro equipo esta disponible para responder <br>
-    tus consultas y brindarte el soporte que necesitas.</label>
+ <head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>
+   Fast Register
+  </title>
+  <script src="https://cdn.tailwindcss.com">
+  </script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+ </head>
+ <body class="bg-white text-gray-800">
+  <div class="max-w-4xl mx-auto p-4">
+   <section class="mb-8">
+    <h2 class="text-2xl font-bold text-blue-500">
+     Contactanos
+    </h2>
+    <p class="text-gray-600 mt-2">
+     ¿Tienes alguna pregunta o necesitas más información sobre FastRegister? Estamos aquí para ayudarte! Nuestro equipo está disponible para responder tus consultas y brindarte el soporte que necesitas.
+    </p>
+    <div class="flex flex-col md:flex-row items-start mt-4">
+     <div class="mr-8">
+      <h3 class="text-lg font-semibold">
+       Chat Virtual
+      </h3>
+      <p class="text-green-500">
+       <i class="fab fa-whatsapp">
+       </i>
+       309 8768568
+      </p>
+      <p class="text-green-500">
+       <i class="fab fa-whatsapp">
+       </i>
+       301 7467158
+      </p>
+     </div>
+     <div>
+      <h3 class="text-lg font-semibold">
+       Correo Electronico
+      </h3>
+      <p class="text-green-500">
+       <i class="fas fa-envelope">
+       </i>
+       senafastregister@gmail.com
+      </p>
+     </div>
     </div>
-
-    
-        <section class="seccionIzquierda">
-            <p class="SubChatVirtual">Chat Virtual</p>
-
-
-            <div class="lineamiento">
-                <div class="logosWhastapp">
-                    <img src="assets/img/iconosRedesSociales/whatsapp (1).png" height="30px" width="30px" alt="" class="ImgWhastapp">
-                    <img src="assets/img/iconosRedesSociales/whatsapp (1).png" height="30px" width="30px" alt="" class="ImgWhastapp">
-
-                </div>
-            
-                <div class="numerosContacto">
-                    <label for="" class="numeros">309 8768568</label>
-                    <label for="" class="numeros">301 7467158   </label>
-                </div>
-                
-            </div>
-
-
-
-            <section class="seccionDerecha">
-                <p class="tituloCorreo">Correo Electronico</p> 
-            
-            <div class="lineamiento2">
-
-            
-                <div class="imgEmail">
-                    <img src="assets/img/iconosRedesSociales/correo-electronico.png" height="30px" width="35px" alt="">
-                </div>
-
-                <div class="labelEmail">
-                    <label for="" class="labeldirreccionCorreo">senafastregister@gmail.com</label>
-                </div>
-            </div>    
-            </section>
-
-        </section>
-
-
-        <section class="horariosDeAtencion">   
-
-            <label class="lableHorarioDeAtencion">Horarios De Atencion</label>
-
-            <section class="sectionhorariosIzquiera">
-
-
-
-                <div class="textoHorarios">    
-                    <label for="" class="labelTextoHorarios">Soporte Tecnico Y Servicio Al Cliente</label>
-                    <br>
-                    <br>
-                    <label for="" class="labelTextoHorarios">Implementaciones</label>
-                </div>
-                    
-
-                
-            </section>
-
-
-            
-                <div class="dias">
-                    <b class="diasB">Lunes a Viernes</b>
-                    <b class="diasB">Sábados</b>
-                    <b class="diasB">Domingos y Festivos</b>
-
-                    
-                </div>
-                <img class="imgHoras" src="assets/img/Nosotrosimg/horarios.jpg" width="714px" height="106px" alt="">
-
-        </section>
-
-
-
-    <section class="iframeMapa">
-
-    <div class="map-container">
-    <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d5625.808341939808!2d-75.14808455518151!3d4.402266005832154!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8e38daac36ef33ef%3A0xc4167c4b60b14a15!2sSENA%20Centro%20de%20Industria%20y%20de%20la%20Construcci%C3%B3n!5e0!3m2!1ses!2sco!4v1731805156126!5m2!1ses!2sco" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-
-    
-
-
+   </section>
+   <section class="mb-8 flex flex-col md:flex-row items-start">
+    <div class="md:mr-8">
+     <h2 class="text-2xl font-bold text-blue-500">
+      Horarios de Atencion
+     </h2>
+     <p class="text-gray-600 mt-2">
+      Soporte Tecnico y servicio al Cliente
+     </p>
+     <p class="text-gray-600">
+      Implementaciones
+     </p>
     </div>
-    <img class="encuentranos" src="assets/img/Nosotrosimg/ubicacion.jpg" width="330px" height="330px" alt="">
-
-
-    </section>
-
-
-
-        
-    
-   <footer class="footer">
-        <img src="assets/img/indeximg/Info_Pag.png" alt="" class="info" height="110px" width="400px">
-        <img src="assets/img/indeximg/Copyright.png"  class="copyrigh" height="15px" width="200px">
-    </footer>
-
-    
-</body>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-0 md:mt-1">
+     <div>
+      <h3 class="text-lg text-blue-500">
+       Lunes a Viernes
+      </h3>
+      <p class="text-green-500">
+       8:00 am - 5:00 pm
+      </p>
+      <p class="text-green-500">
+       8:00 am - 12:00 pm
+      </p>
+      <p class="text-green-500">
+       2:00 pm - 5:00 pm
+      </p>
+     </div>
+     <div>
+      <h3 class="text-lg text-blue-500">
+       Sábados
+      </h3>
+      <p class="text-green-500">
+       8:00 am - 4:00 pm
+      </p>
+      <p class="text-green-500">
+       8:00 am - 12:00 pm
+      </p>
+      <p class="text-green-500">
+       2:00 pm - 4:00 pm
+      </p>
+     </div>
+     <div>
+      <h3 class="text-lg text-blue-500">
+       Domingos y Festivos
+      </h3>
+      <p class="text-green-500">
+       No atendemos
+      </p>
+     </div>
+    </div>
+   </section>
+   <section class="mb-8 flex flex-col md:flex-row items-start">
+   <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1989.0246716860893!2d-75.14883548094592!3d4.401870274949088!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8e38daac36ef33ef%3A0xc4167c4b60b14a15!2sSENA%20Centro%20de%20Industria%20y%20de%20la%20Construcci%C3%B3n!5e0!3m2!1ses!2sco!4v1736385326864!5m2!1ses!2sco" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>    <div>
+     <h2 class="text-2xl font-bold text-blue-500">
+      Encuentranos
+     </h2>
+     <p class="text-gray-600 mt-2">
+      SENA Centro de Industria y la Construcción
+     </p>
+     <p class="text-gray-600">
+      141 - Sector, Cra. 45 Sur #1255, Ibagué, Tolima
+     </p>
+     <p class="text-gray-600">
+      Te esperamos!
+     </p>
+    </div>
+   </section>
+  </div>
+ </body>
 </html>

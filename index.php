@@ -5,10 +5,25 @@ $conexion = new database;
 $con = $conexion->conectar();
 session_start();
 
-if (isset($_POST['enviar'])){
+if (isset($_POST['submit'])){
     $documento = $_POST['documento'];
-    $contraseña = $_POST['contraseña'];
-    echo '<script>alert("Funcionando")</script>';
+    $password = $_POST['password'];
+    echo "<script>console.log('$documento')</script>";
+
+    $validacion = $con->prepare("SELECT * FROM usuario where id_documento = '$documento' and contraseña = '$password'");
+
+    $validacion-> execute();
+
+    $fila = $validacion->fetch(PDO::FETCH_ASSOC);
+
+    if ($fila) {
+        // Usuario válido, redirige o muestra mensaje
+        echo "<script>alert('Usuario válido. Bienvenido');</script>";
+        echo "<script>window.location.href = 'roles/admin/home.php';</script>";
+    } else {
+        // Credenciales incorrectas
+        echo "<script>alert('Documento o contraseña incorrectos.');</script>";
+    }
 
 }
 
@@ -24,14 +39,14 @@ if (isset($_POST['enviar'])){
     <title>SFR</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/footer.css">
-    
+
 </head>
 <body>
 
 
    <?php include('template/header.php')?>
-   
-    
+
+
 <section class="container">
 
 <!-- en la columna izquierda tuve que usar una propiedad de z index en el div con clase "card", ya que la imagen(El fondo blanco) no estaba poniendose de manera adecuada asi que lo resolvi usando una posicion absoluta y colocando los elementos dentro de card encima de la imagen los elementos me refiero a los inputs-->
@@ -53,12 +68,12 @@ if (isset($_POST['enviar'])){
                     <input type="number" class="datosLogin" name="documento" id="documento" placeholder="Documento">
                     <p class="error" id="errorDocumento"></p>
 
-                    <input type="text" class="datosLogin" name="contraseña" id="contraseña" placeholder="Contraseña">
+                    <input type="text" class="datosLogin" name="password" id="contraseña" placeholder="Contraseña">
                     <p class="error" id="errorContraseña"></p>
                 </div>
-        
-                    <input class="botonIniciarSesion" name="enviar" type="submit" value="Iniciar Sesion"> 
-                    
+
+                    <input class="botonIniciarSesion" id="botonIniciarSesion" name="submit" type="submit" value="Iniciar Sesion">
+
             </form>
 
 
@@ -77,7 +92,7 @@ if (isset($_POST['enviar'])){
     <section class="columnaDerecha">
         <img src="assets/img/indeximg/Image_Index.png" height="500px" width="679px" class="imgPersonitas" alt="">
     </section>
-    
+
 <!-- ------------------------------------------------------------------------------------------------------------------------     -->
 
 </section>
@@ -95,7 +110,7 @@ if (isset($_POST['enviar'])){
         </a>
     </div>
 
-    
+
 
 
 
@@ -126,11 +141,16 @@ const passRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@#$!%*?&])[A-Za-z\d@#$!%
 
     const contraseña = document.getElementById("contraseña");
     const errorContraseña = document.getElementById("errorContraseña")
+    
+    const botonIniciarSesion = document.getElementById("botonIniciarSesion")
+    botonIniciarSesion.classList.add("botonSinHover")
+    botonIniciarSesion.disabled = true;
+
 // declaro las variables que voy a usar durante el codigo generalmnente suelo declararlas arriba
 
-// esta function tiene como proposito manejar el flujo del codigo sin repetirlo ya que hace una comprobacion gracias a los palametros que le estoy pasando para poner de color rojo si lo que introduce el ususario no es correcto y pues valida todo, aunque realmente lo que exactamente ahce es manjear estilos 
+// esta function tiene como proposito manejar el flujo del codigo sin repetirlo ya que hace una comprobacion gracias a los palametros que le estoy pasando para poner de color rojo si lo que introduce el ususario no es correcto y pues valida todo, aunque realmente lo que exactamente ahce es manjear estilos
 
-    function incorrecto(regex,dato,error,mensaje){
+    function incorrecto(regex,dato,error,mensaje,validacion){
         if(!regex.test(dato.value)){
             error.textContent = mensaje
             setTimeout(() => {
@@ -139,20 +159,34 @@ const passRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@#$!%*?&])[A-Za-z\d@#$!%
             dato.style.borderColor = "red"
             return false
         }else{
-            dato.style.borderColor = "blue" 
-            return true
+            dato.style.borderColor = "blue"
+            
+            return validacion = true;
         }
     }
 // ---------------------------------------------------------------------------
+let validarDocumento = false
+let validarContraseña = false
 
-// e aqui los eventos de para el tema de los inputs el blur hace que cuando pierda el foco el input pues active el evento y ahi va toda la logica :)
+function actualizarBoton(){
+
+    if(validarDocumento && validarContraseña){
+            document.getElementById("botonIniciarSesion").disabled = false;
+            botonIniciarSesion.classList.remove("botonSinHover")
+    }
+
+}
+
+// e aqui los eventos de para el tema de los inputs el blur hace que cuando pierda el foco el input pues active el evento y ahi va toda la logica :)    
 
     documento.addEventListener("blur",() =>{
-        incorrecto(docRegex,documento,errorDocumento,"Error El Documento Debe Ser De 6-10 Digitos!")
+        validarDocumento =  incorrecto(docRegex,documento,errorDocumento,"Error El Documento Debe Ser De 6-10 Digitos!",validarDocumento)
+        actualizarBoton()    
     })
-    
+
     contraseña.addEventListener("blur",() =>{
-        incorrecto(passRegex,contraseña,errorContraseña,"Contraseña Incorrecta")
-        
+       validarContraseña = incorrecto(passRegex,contraseña,errorContraseña,"Contraseña Incorrecta",validarContraseña)   
+       actualizarBoton()
     })
+
 </script>

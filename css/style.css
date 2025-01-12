@@ -124,7 +124,8 @@ body, html {
     /* Imagen de las "personitas" */
     .imgPersonitas {
         width: 100%;
-        height: 40vh;
+        height: 45vh;
+        
     }
 
     /* --- Barra de redes sociales (no mover esto jajaja) --- */
@@ -185,6 +186,7 @@ body, html {
     /* La columna izquierda ocupa la mitad */
     .columnaIzquierda {
         width: 50%;
+        margin-right: 33px;
     }
 
     .datosLogin {
@@ -269,6 +271,7 @@ body, html {
         height: 86vh;
         justify-content: center;
         align-items: center;
+        margin-right: 114px;
     }
 
     /* Fondo blanco adaptado */
@@ -279,7 +282,7 @@ body, html {
 
     /* Tarjeta más alta */
     .card {
-        grid-template-rows: 137px 148px 163px 51px;
+        grid-template-rows: 118px 148px 163px 51px;
         height: 61vh;
     }
 
@@ -298,21 +301,23 @@ body, html {
 
 @media (min-width:2560px) {
     .card{
-        grid-template-rows: 221px 149px 158px 123px;
+        grid-template-rows: 298px 198px 202px 123px;
         height: 69vh;
         width: 500px;
     }
     .tituloLogin{
-        font-size: 70px;
+        font-size: 50px;
     }
 
     .datosLogin{
         height: 8vh;
         font-size: large;
+        width: 400px;
     }
 
     .botonIniciarSesion{
         height: 81px;
+        width: 400px;
     }
     .olvidaste-registrate{
     display: flex;

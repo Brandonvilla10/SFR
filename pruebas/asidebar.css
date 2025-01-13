@@ -1,7 +1,7 @@
 *{
     margin: 0;
     padding: 0;
-    transition: 0.5s;
+    transition: 1s;
 }
 .container-lateral{
     position: fixed;
@@ -40,4 +40,5 @@
     z-index: 3;
     width: 5vh;
     height: 5vh;
+    transition: 1.5s ease-in;
 }

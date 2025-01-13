@@ -11,6 +11,7 @@ let gota = document.getElementById("gota")
 function manejadorEvento(elemento,direccion,src = null){
     elemento.addEventListener("click",(e) => {
         e.preventDefault()
+        resetearIconos()
         gota.style.left = direccion
         if(src){
             elemento.src = src
@@ -18,7 +19,20 @@ function manejadorEvento(elemento,direccion,src = null){
     })
 }
 
-// tengo que resetear todos los elementos a blanco para despues pasarlo a azul recuerdoo
+const iconos = [
+    { elemento: homeAzul, azul: "iconSideBar/homeAzul.png", blanco: "iconSideBar/homeBlanco.png" },
+    { elemento: laptopBlanco, azul: "iconSideBar/laptopAzul.png", blanco: "iconSideBar/laptopBlanco.png" },
+    { elemento: carroBlanco, azul: "iconSideBar/carroAzul.png", blanco: "iconSideBar/carroBlanco.png" },
+    { elemento: escanearBlanco, azul: "iconSideBar/escanearAzul.png", blanco: "iconSideBar/escanearBlanco.png" },
+    { elemento: calendarioBlanco, azul: "iconSideBar/calendarioAzul.png.png", blanco: "iconSideBar/calendarioBlanco.png" },
+    { elemento: danielBlanco, azul: "iconSideBar/danielAzul.png", blanco: "iconSideBar/danielBlanco.png" },
+];
+
+function resetearIconos() {
+    iconos.forEach((icono) => {
+        icono.elemento.src = icono.blanco; 
+    });
+}
 
 manejadorEvento(homeAzul, "10px", "iconSideBar/homeAzul.png");
 manejadorEvento(laptopBlanco, "63px", "iconSideBar/laptopAzul.png");

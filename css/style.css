@@ -1,37 +1,39 @@
 /* Color verde de las letras y de mas rgba(58,170,53,255) */
+
+
 /* azulito de la pagina rgba(101,172,223,255) */
-*{
+
+* {
     margin: 0;
     padding: 0;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    color: rgba(58,170,53,255);
-}
-a{
-    text-decoration: none ;
+    color: rgba(58, 170, 53, 255);
 }
 
-header{
+a {
+    text-decoration: none;
+}
+
+header {
     height: 80px;
     width: 100%;
     margin-bottom: 16px;
 }
 
-
-.logoNav{
+.logoNav {
     padding-left: 40px;
     padding-top: 8px;
     height: 100px;
 }
 
-.imglogo{
+.imglogo {
     float: left;
     position: absolute;
     left: 100px;
     width: 77px;
 }
 
-
-.SENA_FAST_REGISTER{
+.SENA_FAST_REGISTER {
     width: 212px;
     height: 40px;
     float: left;
@@ -41,33 +43,28 @@ header{
     font-weight: 900;
     font-size: x-large;
     color: rgba(58, 170, 53, 255);
-
 }
 
-
-
-.listaheader{
+.listaheader {
     list-style: none;
     list-style-type: none;
     float: right;
     display: flex;
     padding-right: 300px;
     padding-top: 34px;
-    
 }
 
-.listaMenu{
+.listaMenu {
     margin-right: 30px;
 }
 
-.sombraNav{
-    height: 10px;
+.sombraNav {
+    height: 2px;
     width: 100%;
-    background-color: black ;
-    opacity: 0.3;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3);
 }
 
-.img_center_square{
+.img_center_square {
     position: absolute;
     z-index: 1;
     height: 80px;
@@ -76,24 +73,22 @@ header{
     top: 204px;
 }
 
-
-.CuadradoAzul{
+.CuadradoAzul {
     width: 50%;
     height: 103vh;
     z-index: -1;
     float: left;
-    background-color: rgba(101,172,223,255);
+    background-color: rgba(101, 172, 223, 255);
     position: relative;
-    
 }
 
-.columnaDerecha{
+.columnaDerecha {
     float: right;
     right: 46px;
     position: absolute;
 }
 
-.imgFondoBlanco{
+.imgFondoBlanco {
     position: absolute;
     z-index: 0;
     width: 480px;
@@ -102,31 +97,30 @@ header{
     left: 125px;
 }
 
-.sectionLogin{
+.sectionLogin {
     border-radius: 2%;
     float: left;
     position: absolute;
     left: 180px;
     width: 50%;
     height: 500px;
-   
 }
 
-.labelLogin{
+.labelLogin {
     margin-left: 37%;
     padding-top: 64px;
     font-weight: 900;
     font-size: xx-large;
 }
 
-.documento-contraseña{
-    padding-top: 40px ;
+.documento-contraseña {
+    padding-top: 40px;
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
-.input-documento-contraseña{
+.input-documento-contraseña {
     width: 291px;
     height: 60px;
     margin-bottom: 10px;
@@ -135,14 +129,14 @@ header{
     font-size: medium;
     border: none;
     background-color: rgb(220, 220, 220);
-    color:  rgba(58,170,53,255) ;
-
-    
+    color: rgba(58, 170, 53, 255);
+    padding-left: 8px;
 }
 
-.input-documento-contraseña::placeholder{
-    color: rgba(58,170,53,255) ;
+.input-documento-contraseña::placeholder {
+    color: rgba(58, 170, 53, 255);
     padding-left: 10px;
+    margin-left: 5px;
     font-size: x-large;
     opacity: 50%;
 }
@@ -157,86 +151,89 @@ header{
     font-weight: bold;
     font-size: x-large;
     border: none;
-    background-color: #3AAA35; 
-    color: white; 
+    background-color: #3AAA35;
+    color: white;
     cursor: pointer;
     transition: background-color 0.3s ease;
 }
 
 .boton-submit:hover {
-    background-color: #1c5c1d; 
+    background-color: #1c5c1d;
 }
 
-
-.-contraseña{
+.-contraseña {
     display: flex;
     font-weight: 800;
     margin-top: 12px;
     margin-left: 65px;
 }
 
-.registrarse{
+.registrarse {
     display: flex;
     font-weight: bolder;
     margin-top: 12px;
-    margin-left:120px;
+    margin-left: 120px;
     font-weight: 800;
 }
 
-.fondoBlanco{
+.fondoBlanco {
     position: relative;
     width: 100px;
     height: 100px;
 }
 
-.imgPersonitas{
+.imgPersonitas {
     margin-top: 60px;
     margin-left: 40px;
 }
 
+
 /* Barra de redes sociales */
+
 .social-bar {
-    position: fixed; 
-    bottom: 20px; 
-    right: 20px; 
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
     display: flex;
-    flex-direction: column; 
+    flex-direction: column;
     gap: 10px;
     padding: 10px;
 }
 
+
 /* Botones de redes sociales esto dejarlo quieto ajaja*/
+
 .social-icon {
     text-decoration: none;
     text-align: center;
     padding: 10px;
     border-radius: 5px;
-    transition: background-color 0.3s , transform 0.3s;
+    transition: background-color 0.3s, transform 0.3s;
 }
 
 .social-icon:hover {
     transform: scale(1.5) rotate(10deg);
-    
 }
 
-footer{
+footer {
     margin-top: 100px;
     background-color: rgb(83, 155, 207);
     height: 170px;
     width: 100%;
     border-top-left-radius: 100px;
-    border-top-right-radius: 100px;   
+    border-top-right-radius: 100px;
     position: absolute;
     bottom: -182px;
-    z-index: -1; 
+    z-index: -1;
 }
 
-.info{
+.info {
     position: absolute;
     left: 100px;
     margin-top: 30px;
 }
-.copyrigh{
+
+.copyrigh {
     position: absolute;
     left: 660px;
     margin-top: 120px;
@@ -249,4 +246,14 @@ footer{
         position: relative;
         left: 40px;
     }
-  }
+    .labelLogin {
+        position: relative;
+        left: -28px;
+    }
+}
+
+.error-message {
+    color: red;
+    font-size: 12px;
+    margin-top: 5px;
+}

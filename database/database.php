@@ -2,11 +2,11 @@
 
 <?php
 
-class dabatase{
+class database{
 
     private $host ="localhost";
     private $database = "databasesft";
-    private $user = "usuario";
+    private $user = "root";
     private $password = "";
     private $charset = "utf8";
 

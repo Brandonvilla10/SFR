@@ -3,11 +3,12 @@
     padding: 0%;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
-body{
+.contenido{
     align-items: center;
-    display: block;
+    display: flex;
+    flex-direction: column;
 }
-section{
+.section{
     
     width: 95%;
     height: auto;
@@ -29,8 +30,8 @@ section{
 }
 
 .izquierda img{
-    width: 300px;
-    height: 300px;
+    width: 320px;
+    height: 320px;
 }
 .derecha{
     width: 50%;
@@ -44,6 +45,7 @@ section{
     color: rgba(101,172,223,255) ;
     padding-bottom: 20px;
     align-self: flex-start;
+    font-size: 40px;
 }
 
 .nosotros_1 .derecha p{
@@ -75,7 +77,6 @@ section{
 .seccion1 .titulo h1{
     color: rgba(101,172,223,255) ;
     padding-top: 2%;
-    padding-bottom: 4%;
     font-size: 35px;
 }
 .seccion1 .izquierda .texto{
@@ -94,8 +95,9 @@ section{
     display: inline-flex;
 }
 .seccion2 .derecha img{
+    padding-top: 30px;;
     width: 200px;
-    height: 200px;
+    height: 150px;
 }
 
 .seccion2 .izquierda{
@@ -108,7 +110,6 @@ section{
 .seccion2 .titulo h1{
     color: rgba(101,172,223,255) ;
     padding-top: 3%;
-    padding-bottom: 4%;
     font-size: 35px;
 }
 .seccion2 .izquierda .texto{
@@ -122,7 +123,7 @@ section{
 
 .nosotros_2{
     padding-top: 4%;
-    padding-bottom: 15%;
+    padding-bottom: 4%;
 }
 
 /* SECCION NOSOTROS TRES */
@@ -141,10 +142,17 @@ section{
     margin-bottom: 30px;
 }
 
+.nosotros_3 .titulo{
+    width: auto;
+    text-align: center;
+    font-size: 38px;
+}
+
+
 .wrapper_four {
     display: grid; /* Cambia de flexbox a grid */
     grid-template-columns: 1fr 1fr; /* Define dos columnas de igual tamaño */
-    gap: 20px; /* Espacio entre columnas y filas */
+    gap: 5px; /* Espacio entr   e columnas y filas */
 }
 
 .only-wrapper {
@@ -154,8 +162,8 @@ section{
 }
 
 .only-wrapper img {
-    width: 150px; 
-    height: 150px;
+    width: auto; 
+
     object-fit: cover;
     margin-bottom: 10px;
 }
@@ -167,12 +175,40 @@ section{
 }
 
 .only-wrapper p {
-    font-size: 14px;
-    color: #555;
+    font-weight: 400;
+    color: black;
+
+}
+
+
+.daniel{
+    margin-top: 2%;
+    height: 300px;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+}
+
+.daniel p{
+    font-weight: 400;
+    color: black;
+    margin-top: 12px;
     
+}
+
+.daniel h3{
+    font-size: 18px;
+    color: #4A90E2;
+}
+
+.img_daniel{
+    width: 236px;
+
+    padding: 15px;
 }
 /*SECCION VALORES*/
 .valores{
+    padding-top: 4%;
     width: 100%;
     height: 500px;
     display: flex;
@@ -187,73 +223,52 @@ section{
     color: rgb(97, 180, 239);
 }
 
-.iconsText{
-    display: flex;
-    flex-direction: column;
-}
+/* apartado nuestros valores con las imagenes  */
 
 
-.iconosImagenes{
-    width: 77px;
-    margin-top: 190px;
-    margin-bottom: 100px;
-    position: relative;
-    height: 90px;
-    float: right;
-    right: 148px;
-    margin-left: 345px;
-    margin-right: 97px;
-}
-
-
-.titulosValores{
-    width: 77px;
-    margin-top: 190px;
-    position: absolute;
-    height: 90px;
-    float: right;
-    right: 131px;
-    margin-left: 502px;
-    margin-right: 312px;
-}
-
-.subTitulos .subTitulosTexto{
-    display: flex;
-    flex-direction: row;
-}
-
-.subtitulosh3{
-    width: 77px;
-    margin-top: 190px;
-    position: relative;
-    height: 90px;
-    top: -654px;
-    float: right;
-    margin-bottom: 100px;
-    right: 137px;
-    margin-left: 302px;
-    margin-right: 153px;
-    color: rgb(97, 180, 239);
-    font-size: 30px;
-}
-
-.subtitulosh3V2{
-    font-weight: 500;
-    font-size: larger;
-    color: black;
-    margin-top: 190px;
-    width: 581px;
-    position: relative;
-    height: 83px;
-    top: -1357px;
-    float: right;
-    margin-bottom: 95px;
-    right: 1px;
-    margin-left: -43px;
+.divIconos{
+    display: grid ;
+    margin-top: 48px;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    gap: 79px;
+    width: 66%;
     text-align: center;
+    justify-items: center;
+}
+.iconosImagenes{
+    height: 80px;
+    width: 70px;
+}
+.subtitulosh3{color:rgb(97, 180, 239); font-size: 25px;}
+
+.subtitulosh3V2{width: 101%;font-weight: 400;color: black;}
+
+
+/*pie de pagina actualizaciones*/
+
+footer{
+    margin-top: 100px;
+    background-color: rgb(83, 155, 207);
+    height: 170px;
+    width: 100%;
+    border-top-left-radius: 100px;
+    border-top-right-radius: 100px;   
+    position: absolute;
+    bottom: -2200px;
+    z-index: -1; 
 }
 
-
+.info{
+    position: absolute;
+    left: 100px;
+    margin-top: 30px;
+}
+.copyrigh{
+    position: absolute;
+    left: 660px;
+    margin-top: 120px;
+}
 
 @media screen {
     .izquierda{

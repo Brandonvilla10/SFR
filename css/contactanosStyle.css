@@ -57,10 +57,9 @@ header{
 }
 
 .sombraNav{
-    height: 10px;
+    height: 2px;
     width: 100%;
-    background-color: black ;
-    opacity: 0.3;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3);
 }
 .contactanos{
     display: flex;
@@ -153,7 +152,7 @@ header{
 
 .horariosDeAtencion{
     margin-left: 150px;
-    width: 70%;
+    
     height: 210px;
 }
 
@@ -163,12 +162,69 @@ header{
     color: rgba(101,172,223,255);
 }
 
+.sectionhorariosIzquiera{
+    width: 50%;
+}
+
 .textoHorarios{
     padding-top: 60px;
     font-size: larger;
     font-weight: 400;
     color: rgba(12, 4, 43);
 
+}
+
+
+.labelTextoHorarios{
+    color: rgb(39, 110, 161) ;
+    font-weight: bolder;
+}
+
+
+.dias{
+    float: right;
+    right: 235px;
+    position: absolute;
+    bottom: -16px;
+}
+
+.diasB{
+    margin-left: 155px;
+    color: rgba(101,172,223,255);
+    font-weight: 600;
+    font-size: large;
+    
+}
+
+.imgHoras{
+    float: right;
+    right: 230px;
+    position: absolute;
+    bottom: -127px;
+}
+.map-container {
+    width: 100%;
+    max-width: 850px;
+    margin: auto;
+    border-radius: 23px;
+    overflow: hidden;
+    position: absolute;
+    margin-top: 80px ;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    left: 100px;
+}
+
+iframe {
+    width: 100%;
+    height: 400px;
+    border: none;
+}
+
+.encuentranos{
+    float: right;
+    position: absolute;
+    right: 91px;
+    margin-top: 109px;
 }
 
 
@@ -181,7 +237,7 @@ header{
     border-top-left-radius: 100px;
     border-top-right-radius: 100px;   
     position: absolute;
-    bottom: -700px;
+    bottom: -1000px;
     z-index: -1; 
 }
 .info{
@@ -189,6 +245,13 @@ header{
     left: 100px;
     margin-top: 30px;
 }
+
+
+
+
+
+
+
 .copyrigh{
     position: absolute;
     left: 660px;

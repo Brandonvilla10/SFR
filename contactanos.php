@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -67,15 +66,50 @@
 
             <section class="sectionhorariosIzquiera">
 
+
+
                 <div class="textoHorarios">    
-                    <label for="" >Soporte Tecnico Y Servicio Al Cliente</label>
+                    <label for="" class="labelTextoHorarios">Soporte Tecnico Y Servicio Al Cliente</label>
                     <br>
                     <br>
-                    <label for=""class="">Implementaciones</label>
+                    <label for="" class="labelTextoHorarios">Implementaciones</label>
                 </div>
+                    
+
+                
             </section>
 
+
+            
+                <div class="dias">
+                    <b class="diasB">Lunes a Viernes</b>
+                    <b class="diasB">Sábados</b>
+                    <b class="diasB">Domingos y Festivos</b>
+
+                    
+                </div>
+                <img class="imgHoras" src="assets/img/Nosotrosimg/horarios.jpg" width="714px" height="106px" alt="">
+
         </section>
+
+
+
+    <section class="iframeMapa">
+
+    <div class="map-container">
+    <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d5625.808341939808!2d-75.14808455518151!3d4.402266005832154!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8e38daac36ef33ef%3A0xc4167c4b60b14a15!2sSENA%20Centro%20de%20Industria%20y%20de%20la%20Construcci%C3%B3n!5e0!3m2!1ses!2sco!4v1731805156126!5m2!1ses!2sco" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+
+    
+
+
+    </div>
+    <img class="encuentranos" src="assets/img/Nosotrosimg/ubicacion.jpg" width="330px" height="330px" alt="">
+
+
+    </section>
+
+
+
         
     
    <footer class="footer">

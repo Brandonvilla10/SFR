@@ -1,4 +1,4 @@
-<?php include('../SFR/database/database.php'); ?>
+<?php include('database/database.php'); ?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -6,63 +6,129 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registro</title>
+    <link rel="stylesheet" href="css/footer.css">
     <link rel="stylesheet" href="css/registroStyle.css">
 </head>
 <body>
 
-<?php include('templates/header.php')?>
+<?php include('template/header.php')?>
 
+<?php
+$conex = new database;
+$con = $conex->conectar();
 
-<div class="center_square">
-        <img src="assets/img/indeximg/Center_Square.png" class="img_center_square" alt="">
-    </div>
+if(isset($_POST["botoncito"])){
+
+    $nombre = $_POST['nombreCompleto'];
+    $documento = $_POST['documento'];
+    $correo  = $_POST['correo'];
+    $contrasena = $_POST['contrasena'];
+    $ficha = 1;
+    $codigo = $_POST['documento'];
+    $estado = 1;
+    $rol = 2;
 
     
-    <section class="section">
+    $encriptacion = password_hash($contrasena,PASSWORD_DEFAULT,array("pass"=>12));
+    
+    $validacion = $con->prepare("SELECT * FROM usuario where id_documento = '$documento'");
+    $validacion -> execute();
 
-        <div class="CuadradoAzul">
+    $fila = $validacion->fetchAll(PDO::FETCH_ASSOC);
 
-        <div class="fondoBlanco">
-            <img src="assets/img/imgRegistro/Base_White (1).png" class="imgFondoBlanco" height="100px" width="100px">
-        </div>
+    if($fila){
+        echo "<script>alert('El usuario ya existente')</script>";
+    }
 
-        <section class="sectionLogin">
 
-    <div class="labelRegistro">
-        <label for="">¡Regístrate!</label>
-    </div>
+    if($nombre == "" ||$documento == "" ||$correo == "" || $contrasena == "" || $codigo == "" || $estado == "" || $rol == ""){
+        echo "<script>alert('Elementos vacios, Error de sistema')</script>";
+    }else{
+            $query = "INSERT INTO usuario(id_documento,nombre_completo,correo,contraseña,ficha,codigo_barras,id_estado,id_rol) 
+            VALUES ('$documento','$nombre','$correo','$encriptacion','$ficha','$codigo','$estado','$rol')";
 
-    <form action="" method="post" onsubmit="return redirigir()"> 
+            $insert = $con->prepare($query);
+            $insert->execute();
 
-        <div class="documento-contraseña">
-            <input type="text" class="input-documento-contraseña" name="nombreCompleto" placeholder="Nombre Completo">
-            <input type="number" class="input-documento-contraseña" name="documento"  placeholder="Documento"/>
-            <input type="email" class="input-documento-contraseña" name="correo"  placeholder="Email"/>
-            <input type="text" class="input-documento-contraseña" name="rol"  placeholder="Rol"/>
-            <input type="number" class="input-documento-contraseña" name="ficha"  placeholder="Ficha"/>
-            <input type="password" class="input-documento-contraseña" name="contraseña" id="password" placeholder="Contraseña"/>
-            <input type="password" class="input-documento-contraseña" name="contraseña" id="Confirmar password" placeholder="Confirmar Contraseña"/>
-        </div>
+            echo "<script>alert('Registro exitoso')</script>";
+            echo "<script>window.location = 'index.php' </script>";
 
-        <div class="BotonRegistro">
-            <input type="submit" value="Registrarse" class="boton-submit">
-        </div>
+    }
+
+
+
+};
+
+?>
+
+
+
+
+
+
+
+
+
+
+    
+    
+    <section class="container">
+        <!-- cree un section llamado container que contuviera ambos section los cuales son los de columna derecha y columna izquierda que tambien lo agregue ya que teniamos era un div llamado cuadrado azul y no se podia acomodar de la mejor manera  -->
+        <section class="ColumnaIzquierda">
+<!-- 
+        elimine el div en el que estaba la imagen ya que no era necesario, asi mismo elimine el cuadrado que iba en el centro porque al minimizar el ancho no habia forma en la que se viera bien -->
+         
         
-    </form>
-</section>
+
+        <div class="sectionRegistro">
+
+         <div class="divForm">
+             <h2 class="RegistroTitulo">¡Regístrate!</h2>
+
+             <form action="" method="post" name="formulario" id ="formulario"> 
+        
+                    <div class="inputs">
+                        <input type="text" class="datos" name="nombreCompleto" placeholder="Nombre Completo">
+                        <span class="invisible">No se permite numeros, ni caracteres especiales</span>
+                        <input type="number" class="datos" name="documento"  placeholder="Documento"/>
+                        <span class="invisible">No se permiten letras, ni caracteres especiales</span>
+                        <input type="email" class="datos" name="correo"  placeholder="Email"/>
+                        <span class="invisible">No se permiten simbolos diferentes del @</span>
+                        <input type="password" class="datos" name="contrasena" id="password" placeholder="Contraseña"/>
+                        <span class="invisible">Minimo 8 caracteres, 1 Mayuscula, 1 simbolo </span>
+                        <input type="password" class="datos" name="verify" id="passVerify" placeholder="Confirmar Contraseña"/>
+                        <span class="invisible">Las contraseñas no coinciden</span>
+                    </div>
+                
+                    <div class="BotRegistro">
+                        <input type="submit" value="Registrarse" class="BotonRegistro" id="Button_registro" name ="botoncito">
+                    </div>
+                    
+                    <div class="-contraseña">
+                        <p>¿Ya Tienes Cuenta?</p>
+                    </div>
+                
+                    <div class="registrarse">
+                        <a href="index.php" class="">¡Inicia Sesion!</a>
+                    </div>
+
+             </form>    
+         </div>
+        
+         
+        
 
 
-          
         </div>
-
-    
-
-    </section>
+        </section>
+        
+       
 
     <section class="columnaDerecha">
-        <img src="assets/img/imgRegistro/Image_RG.png" height="597px" width="515px" class="imgPersonitas" alt="">
+        <img src="assets/img/imgRegistro/Image_RG.png" height="550px" width="515px" class="imgPersonitas" alt="">
     </section>
     
+    </section>
 
     <div class="social-bar">
         <a href="https://www.facebook.com" target="_blank" class="social-icon">
@@ -75,16 +141,12 @@
             <img src="assets/img/iconosRedesSociales/logotipo-de-instagram.png"  width="28px" height="28px">
         </a>
     </div>
-
     
-    <footer>
-        <img src="assets/img/indeximg/Info_Pag.png" alt="" class="info" height="110px" width="400px">
-        <img src="assets/img/indeximg/Copyright.png"  class="copyrigh" height="15px" width="200px">
-    </footer>
-
     
-<script src="js/js.js"></script>
+    <?php require_once("template/footer.php") ?>
+    
+<script src="js/registro.js"></script>
 </body>
 
-</body>
+
 </html>

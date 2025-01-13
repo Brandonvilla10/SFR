@@ -1,0 +1,27 @@
+
+* {
+padding: 0;
+margin: 0;
+}
+body {
+height: 100vh;
+background-color: #f0f0f0;
+}
+
+:root {
+--color-barraLateral:#63AEE8 
+}
+
+
+.barraLateral {
+width: 123px;
+margin: 20px;
+height: 94%;
+padding: 0px 15px;
+background-color: var(--color-barraLateral);
+transition: width 0.5s ease;
+}
+
+.miniBarra {
+width: 68px;
+}

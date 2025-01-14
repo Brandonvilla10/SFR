@@ -10,12 +10,13 @@ let gota = document.getElementById("gota")
 
 
 
-    const width = window.innerWidth
-    function manejadorEvento(elemento,direccion,src = null){
+    function manejadorEvento(elemento,src = null){
         elemento.addEventListener("click",(e) => {
             e.preventDefault()
             resetearIconos()
-            gota.style.left = direccion
+
+            const rect1 = elemento.getBoundingClientRect();
+            gota.style.left = `${rect1.left-7}px`;
             
             if(src){
                 elemento.src = src
@@ -26,11 +27,14 @@ let gota = document.getElementById("gota")
 // :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 // En esta seccion separo las funciones dependiendo de la direccion a la que funciona osea hacia donde dirije la gota
 // :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-    function manejadorEventoPG(elemento,direccion,src = null){
+    function manejadorEventoPG(elemento,src = null){
         elemento.addEventListener("click",(e) => {
             e.preventDefault()
+
             resetearIconos()
-            gota.style.top = direccion
+
+            const rect1 = elemento.getBoundingClientRect();
+            gota.style.top = `${rect1.top-48}px`
             
             if(src){
                 elemento.src = src
@@ -45,7 +49,6 @@ let gota = document.getElementById("gota")
         { elemento: carroBlanco, azul: "iconSideBar/carroAzul.png", blanco: "iconSideBar/carroBlanco.png" },
         { elemento: escanearBlanco, azul: "iconSideBar/escanearAzul.png", blanco: "iconSideBar/escanearBlanco.png" },
         { elemento: calendarioBlanco, azul: "iconSideBar/calendarioAzul.png.png", blanco: "iconSideBar/calendarioBlanco.png" },
-        { elemento: danielBlanco, azul: "iconSideBar/danielAzul.png", blanco: "iconSideBar/danielBlanco.png" },
     ];
     
     function resetearIconos() {
@@ -54,46 +57,25 @@ let gota = document.getElementById("gota")
         });
     }
 
-    if(width >= 320 && width < 375 ){
 
-        manejadorEvento(homeAzul, "10px", "iconSideBar/homeAzul.png");
-        manejadorEvento(laptopBlanco, "63px", "iconSideBar/laptopAzul.png");
-        manejadorEvento(carroBlanco, "114px", "iconSideBar/carroAzul.png");
-        manejadorEvento(escanearBlanco, "161px", "iconSideBar/escanearAzul.png");
-        manejadorEvento(calendarioBlanco, "214px", "iconSideBar/calendarioAzul.png");
-        manejadorEvento(danielBlanco, "268px", "iconSideBar/danielAzul.png");
+    const width = window.innerWidth
+
+    if(width >= 320 && width < 768 ){
+
+        manejadorEvento(homeAzul, "iconSideBar/homeAzul.png");
+        manejadorEvento(laptopBlanco, "iconSideBar/laptopAzul.png");
+        manejadorEvento(carroBlanco,  "iconSideBar/carroAzul.png");
+        manejadorEvento(escanearBlanco,  "iconSideBar/escanearAzul.png");
+        manejadorEvento(calendarioBlanco,  "iconSideBar/calendarioAzul.png");
         
-    }else if(width >= 375 && width < 425){
+        
+    }else if(width >= 768 ){
+        manejadorEventoPG(homeAzul, "iconSideBar/homeAzul.png");
+        manejadorEventoPG(laptopBlanco,  "iconSideBar/laptopAzul.png");
+        manejadorEventoPG(carroBlanco,  "iconSideBar/carroAzul.png");
+        manejadorEventoPG(escanearBlanco,  "iconSideBar/escanearAzul.png");
+        manejadorEventoPG(calendarioBlanco,  "iconSideBar/calendarioAzul.png");
 
-        manejadorEvento(homeAzul, "10px", "iconSideBar/homeAzul.png");
-        manejadorEvento(laptopBlanco, "68px", "iconSideBar/laptopAzul.png");
-        manejadorEvento(carroBlanco, "126px", "iconSideBar/carroAzul.png");
-        manejadorEvento(escanearBlanco, "182px", "iconSideBar/escanearAzul.png");
-        manejadorEvento(calendarioBlanco, "241px", "iconSideBar/calendarioAzul.png");
-        manejadorEvento(danielBlanco, "300px", "iconSideBar/danielAzul.png");
-
-    }else if(width >= 425 && width < 768){
-
-        manejadorEvento(homeAzul, "10px", "iconSideBar/homeAzul.png");
-        manejadorEvento(laptopBlanco, "82px", "iconSideBar/laptopAzul.png");
-        manejadorEvento(carroBlanco, "151px", "iconSideBar/carroAzul.png");
-        manejadorEvento(escanearBlanco, "222px", "iconSideBar/escanearAzul.png");
-        manejadorEvento(calendarioBlanco, "292px", "iconSideBar/calendarioAzul.png");
-        manejadorEvento(danielBlanco, "361px", "iconSideBar/danielAzul.png");
-    }else if(width >= 768 && width < 1536){
-        manejadorEventoPG(homeAzul, "4%", "iconSideBar/homeAzul.png");
-        manejadorEventoPG(laptopBlanco, "30%", "iconSideBar/laptopAzul.png");
-        manejadorEventoPG(carroBlanco, "43%", "iconSideBar/carroAzul.png");
-        manejadorEventoPG(escanearBlanco, "55%", "iconSideBar/escanearAzul.png");
-        manejadorEventoPG(calendarioBlanco, "68%", "iconSideBar/calendarioAzul.png");
-        manejadorEventoPG(danielBlanco, "81%", "iconSideBar/danielAzul.png");
-    }else if(width >= 1536){
-        manejadorEventoPG(homeAzul, "4%", "iconSideBar/homeAzul.png");
-        manejadorEventoPG(laptopBlanco, "27%", "iconSideBar/laptopAzul.png");
-        manejadorEventoPG(carroBlanco, "40%", "iconSideBar/carroAzul.png");
-        manejadorEventoPG(escanearBlanco, "52%", "iconSideBar/escanearAzul.png");
-        manejadorEventoPG(calendarioBlanco, "64%", "iconSideBar/calendarioAzul.png");
-        manejadorEventoPG(danielBlanco, "78%", "iconSideBar/danielAzul.png");
     }
     
 

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost:3306
--- Tiempo de generación: 13-01-2025 a las 03:42:23
+-- Tiempo de generación: 14-01-2025 a las 17:07:21
 -- Versión del servidor: 8.0.30
 -- Versión de PHP: 8.1.10
 
@@ -164,9 +164,7 @@ CREATE TABLE `usuario` (
 --
 
 INSERT INTO `usuario` (`id_documento`, `nombre_completo`, `correo`, `contraseña`, `ficha`, `codigo_barras`, `id_estado`, `id_rol`) VALUES
-(1106227432, 'Gabriela Devia Marin', 'gabilinses@hotmail.com', '$2y$10$URAvTspBb1YjebC8ac9NduB4E7h5pvcDzjqaODuyQabiP2OP04Dp6', 1, 1106227432, 1, 2),
-(1107978187, 'Alejandro Velandia', 'alejoreyvm@hotmail.com', '$2y$10$f7/K3UeIo.FUHyLmW3U8zu3lRynVuRnRcanh9UMSRYRVU96IcJsp6', 1, 1107978187, 1, 2),
-(1107978188, 'Brandon Yulian', 'alejoreyvm@hotmail.com', '$2y$10$mRv4ssbWFSK1txEjB76jyeoMDYoK.j3wtt7t4oxwk1ZyaB93GOeeC', 1, 1107978188, 1, 2);
+(1107978187, 'Alejandro Velandia Machado', 'alejoreyvm@hotmail.com', '$2y$10$8/XyJlsagPNGpqFDDau5NO2oFrSirIiN/g.zvE1be0A.JJh8EMd46', 1, 1107978187, 1, 1);
 
 -- --------------------------------------------------------
 

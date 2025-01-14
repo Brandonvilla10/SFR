@@ -25,23 +25,21 @@ if(isset($_POST["botoncito"])){
     $contrasena = $_POST['contrasena'];
     $ficha = 1;
     $codigo = $_POST['documento'];
-    $estado = 1;
+    $estado = 2;
     $rol = 2;
 
     
     $encriptacion = password_hash($contrasena,PASSWORD_DEFAULT,array("pass"=>12));
     
-    $validacion = $con->prepare("SELECT * FROM usuario where id_documento = '$documento'");
+    $validacion = $con->prepare("SELECT * FROM usuario where id_documento = '$documento' or correo = '$correo'");
     $validacion -> execute();
 
     $fila = $validacion->fetchAll(PDO::FETCH_ASSOC);
 
     if($fila){
-        echo "<script>alert('El usuario ya existente')</script>";
+        echo "<script>alert('El usuario ya existente o correos repetidos')</script>";
     }
-
-
-    if($nombre == "" ||$documento == "" ||$correo == "" || $contrasena == "" || $codigo == "" || $estado == "" || $rol == ""){
+    else if($nombre == "" ||$documento == "" ||$correo == "" || $contrasena == "" || $codigo == "" || $estado == "" || $rol == ""){
         echo "<script>alert('Elementos vacios, Error de sistema')</script>";
     }else{
             $query = "INSERT INTO usuario(id_documento,nombre_completo,correo,contraseña,ficha,codigo_barras,id_estado,id_rol) 

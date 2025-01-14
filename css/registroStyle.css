@@ -79,6 +79,7 @@ a {
     }
     .datos {
         height: 6vh;
+        min-height: 22px;
         width: 218px;
         margin-bottom: 5px;
         /* Espaciado superior */
@@ -102,6 +103,7 @@ a {
     .BotonRegistro {
         height: 7vh;
         width: 62%;
+        min-height: 35px;
         margin-top: 5px;
         border-radius: 59px;
         /* Bordes redondeados */
@@ -252,16 +254,31 @@ a {
     .imgPersonitas{
         width: 66%;
         margin: 40px;
-        max-height: 500px;
+        max-height: 500px;  
     }
 }
 
-@media (max-height:540px){
+@media (max-height:530px){
     
     .imgPersonitas{
-        height: 415px;
+        height: 397px;
+        width: 400px;
     }
+    .sectionRegistro {
+        background-color: white;
+        box-shadow: 0 10px 20px 0    black;
+        width: 350px;
+    }
+    .ColumnaIzquierda{
+        height:108vh;
+        min-height: 499px;
+    }
+
 }
+
+
+
+
 
 
 

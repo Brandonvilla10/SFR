@@ -93,6 +93,39 @@
 
 }
 
+@media (min-height:768px ) and (min-height:1024px) {
+    .iconos{
+        width: 5vh;
+        height: 5vh;
+        margin-left: unset;
+    }
+
+    .container-iconos{
+        margin-left: unset;
+    }
+    .gota{
+        width: 8vh;
+        height: 6.1vh;
+        left: 4px;
+        top: 3%;
+    }
+
+}
+
+@media (min-height:1180px) and (min-height:1366px) {
+    .iconos{
+        width: 3vh;
+        height: 3vh;
+        margin-left: unset;
+    }
+    .gota{
+        width: 6vh;
+        height: 4.1vh;
+        
+        top: 2%;
+    }
+}
+
 @media (min-width:1024px) {
     .container-lateral{
         width: 8%;

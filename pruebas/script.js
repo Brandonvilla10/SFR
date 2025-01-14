@@ -17,7 +17,7 @@ let gota = document.getElementById("gota")
 
             const rect1 = elemento.getBoundingClientRect();
             gota.style.left = `${rect1.left-7}px`;
-            
+
             if(src){
                 elemento.src = src
             }
@@ -27,6 +27,7 @@ let gota = document.getElementById("gota")
 // :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 // En esta seccion separo las funciones dependiendo de la direccion a la que funciona osea hacia donde dirije la gota
 // :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+const height = window.innerHeight
     function manejadorEventoPG(elemento,src = null){
         elemento.addEventListener("click",(e) => {
             e.preventDefault()
@@ -34,7 +35,12 @@ let gota = document.getElementById("gota")
             resetearIconos()
 
             const rect1 = elemento.getBoundingClientRect();
-            gota.style.top = `${rect1.top-48}px`
+
+            if(height >= 1024){
+                gota.style.top = `${rect1.top-65}px`
+            }else{
+                gota.style.top = `${rect1.top-45}px`
+            }
             
             if(src){
                 elemento.src = src

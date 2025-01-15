@@ -1,245 +1,284 @@
-/* Color verde de las letras y de mas rgba(58,170,53,255) */
-/* azulito de la pagina rgba(101,172,223,255) */
-*{
-    margin: 0;
-    padding: 0;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    color: rgba(58,170,53,255);
-    
-}
-a{
-    text-decoration: none ;
+/* Estilos generales */
+
+* {
+    transition: 0.5s;
 }
 
-header{
-    height: 80px;
-    width: 100%;
-    margin-bottom: 16px;
-}
-
-
-.logoNav{
-    padding-left: 40px;
-    padding-top: 8px;
-    height: 100px;
-}
-
-.imglogo{
-    float: left;
-    position: absolute;
-    left: 100px;
-    width: 77px;
-}
-
-
-.SENA_FAST_REGISTER{
-    width: 212px;
-    height: 40px;
-    float: left;
-    position: absolute;
-    left: 167px;
-    padding-top: 23px;
-    font-weight: 900;
-    font-size: x-large;
-    color: rgba(58, 170, 53, 255);
-
-}
-
-
-
-.listaheader{
-    list-style: none;
-    list-style-type: none;
-    float: right;
-    display: flex;
-    padding-right: 300px;
-    padding-top: 34px;
-    
-}
-
-.listaMenu{
-    margin-right: 30px;
-}
-
-.sombraNav {
-    height: 2px;
-    width: 100%;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3);
-}
-
-
-.img_center_square{
-    position: absolute;
-    z-index: 1;
-    height: 80px;
-    width: 100%;
-    object-fit: contain;
-    top: 204px;
-}
-
-
-.CuadradoAzul{
-    width: 50%;
-    height: 139vh;
-    z-index: -1;
-    float: left;
-    background-color: rgba(101,172,223,255);
-    position: relative;
-    
-}
-
-.columnaDerecha{
-    float: right;
-    right: 46px;
-    position: absolute;
-}
-
-.imgFondoBlanco{
-    position: absolute;
-    z-index: 0;
-    width: 480px;
-    height: 878px;
-    top: 56px;
-    left: 125px;
-}
-
-.sectionLogin{
-    top: 1%;
-    border-radius: 2%;
-    float: left;
-    position: absolute;
-    left: 180px;
-    width: 50%;
-    height: 500px;
-   
-}
-
-.labelRegistro{
-    margin-left: 26%;
-    padding-top: 64px;
-    font-weight: 900;
-    font-size: xx-large;
-}
-
-.documento-contraseña{
-    padding-top: 20px ;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.input-documento-contraseña{
-    width: 291px;
-    height: 60px;
-    margin-bottom: 23px;
-    border-radius: 27px;
-    font-weight: bold;
-    font-size: medium;
-    border: none;
-    background-color: rgb(220, 220, 220);
-    color:  rgba(58,170,53,255) ;
-
-    
-}
-
-.input-documento-contraseña::placeholder{
-    color: rgba(58,170,53,255) ;
-    padding-left: 10px;
-    font-size: x-large;
-    opacity: 50%;
-}
-
-.boton-submit {
-    width: 270px;
-    height: 60px;
-    margin-bottom: 10px;
-    border-radius: 27px;
-    margin-left: 50px;
-    font-weight: bold;
-    font-size: x-large;
-    border: none;
-    background-color: #3AAA35; 
-    color: white; 
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-.boton-submit:hover {
-    background-color: #1c5c1d; 
-}
-
-
-.-contraseña {
-    display: flex;
-    font-weight: 600;
-    margin-top: 14px;
-    margin-left: -26px;
-    justify-content: center;
-}
-
-.registrarse{
-    display: flex;
-    font-weight: bolder;
-    
-    margin-left:120px;
-    font-weight: 800;
-}
-
-.fondoBlanco{
-    position: relative;
-    width: 100px;
-    height: 100px;
-}
-
-.imgPersonitas{
-    margin-top: 60px;
-    margin-right: 29px;
-}
-
-/* Barra de redes sociales */
-.social-bar {
-    position: fixed; 
-    bottom: 20px; 
-    right: 20px; 
-    display: flex;
-    flex-direction: column; 
-    gap: 10px;
-    padding: 10px;
-}
-
-/* Botones de redes sociales esto dejarlo quieto ajaja*/
-.social-icon {
+a {
     text-decoration: none;
-    text-align: center;
-    padding: 10px;
-    border-radius: 5px;
-    transition: background-color 0.3s , transform 0.3s;
 }
 
-.social-icon:hover {
-    transform: scale(1.5) rotate(10deg);
+.invisible{
+    display: none;
+}
+
+.errores{
+    display: block;
+    color: red;
+    font-size: x-small;
+    width: auto;
     
 }
 
-footer{
-    margin-top: 100px;
-    background-color: rgb(83, 155, 207);
-    height: 170px;
-    width: 100%;
-    border-top-left-radius: 100px;
-    border-top-right-radius: 100px;   
-    position: absolute;
-    bottom: -437px;
-    z-index: -1; 
+
+
+
+@media(min-width:320px) {
+    /* el contenedor creado anteriormente le asigno que ocupe todo el ancho de la pantalla y que va a estar organizado por columnas para que sea mas facil la distribucion de estos*/
+    .container {
+        display: grid;
+        grid-template-columns: 1fr;
+        width: 100%;
+    }
+    .ColumnaIzquierda {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        height: 90vh;
+        background-color: rgb(179 213 255);
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        color: rgba(58, 170, 53, 255);
+        justify-content: center;
+        align-items: center;
+    }   
+
+    .columnaDerecha{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        box-sizing: border-box;
+    }
+   
+    .sectionRegistro {
+        background-color: #ffffff;
+        box-sizing: content-box;
+        align-self: center;
+        align-items: center;
+        border-radius: 30px;
+        box-shadow: 0 10px 20px 0    black;
+
+        display: flex;
+        flex-direction: column;
+        text-align: center;
+        width: 271px;
+        height: auto;
+        justify-items: center;
+        align-items: center;
+        overflow: visible;
+        
+    }
+    .divForm{
+
+        width: 80%;
+
+    }
+    .RegistroTitulo {
+        /* color: rgba(58, 170, 53, 255); */
+        margin-bottom: 20px;
+    }
+    .datos {
+        height: 6vh;
+        min-height: 22px;
+        width: 218px;
+        margin-bottom: 5px;
+        /* Espaciado superior */
+        border-radius: 59px;
+        /* Bordes redondeados */
+        border: 3px solid #ffffff;
+        /* Borde blanco */
+        color: rgba(58, 170, 53, 255);
+        /* Texto en verde */
+        font-size: 15px;
+        font-weight: 250;
+        background: #d6d5d4;
+    }
+    .datos::placeholder {
+        color: green;
+        /* Verde tenue */
+        opacity: 60%;
+        /* Un poco transparente */
+        font-weight: bold;
+    }
+    .BotonRegistro {
+        height: 7vh;
+        width: 62%;
+        min-height: 35px;
+        margin-top: 5px;
+        border-radius: 59px;
+        /* Bordes redondeados */
+        color: white;
+        /* Texto blanco */
+        border: 3px solid #ffffff;
+        /* Borde blanco */
+        font-size: 17px;
+        font-weight: bolder;
+        /* Texto más grueso */
+        background: #1c8f05;
+        /* Verde oscuro */
+        max-height: 61px;
+        pointer-events: none;
+        opacity: 0.75; 
+        
+    }
+    .imgPersonitas {
+        width: 65%;
+        height: auto;
+        
+        margin: 20px;
+       
+    }
+    .social-bar {
+        z-index: 1000;
+        position: fixed;
+        bottom: -14px;
+        /* Justo abajo */
+        right: -1px;
+        display: flex;
+        flex-direction: column;
+        /* Redes sociales en columna */
+        gap: 10px;
+        /* Espaciado entre botones */
+        padding: 11px;
+    }
+    /* Botones de redes sociales con efecto de hover */
+    .social-icon {
+        text-decoration: none;
+        text-align: center;
+        padding: 0px;
+        border-radius: 5px;
+        /* Bordes redondeados */
+        transition: background-color 0.3s, transform 0.3s;
+        /* Animación */
+    }
+    .social-icon:hover {
+        transform: scale(1.5) rotate(10deg);
+        /* Crecen y giran al pasar el mouse */
+    }
 }
 
-.info{
-    position: absolute;
-    left: 100px;
-    margin-top: 30px;
+
+/* Aqui empece a acomodar la imagen de a poco ya que si hacia un cambio demasiado grande iba a saltar y verse cortado (poco agradable para el usuario) y tambien cambiar el tamaño de la letra*/
+
+
+
+
+@media (min-width:500px) {
+
+    .sectionRegistro {
+        background-color: transparent;
+        background-image: url("../assets/img/Base_White.png");
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        width: 400px;
+        height: auto;
+        box-shadow: none;
+    }
+
+    .datos{
+        width: 265px;
+        max-height: 48px;
+    }
+
+    .errores{
+        font-size: x-small
+    }
+    
 }
-.copyrigh{
-    position: absolute;
-    left: 660px;
-    margin-top: 120px;
+
+@media (min-width:842px) {
+    .container {
+        grid-template-columns: 1fr 1fr;
+        text-align: center;
+        align-items: center;
+        
+        width: 100%;
+    }
+
+
+    .imgPersonitas {
+        width: 350px;
+        height: 437px;
+        max-height: 500px;
+       
+    }
 }
+
+
+
+@media (min-width:1220px) {
+
+    
+    .ColumnaIzquierda {
+        height: 75vh;
+    }
+    .sectionRegistro {
+        width:511px ;
+        height: auto;;
+    }
+
+    .inputs{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .datos{
+        width: 300px;
+        height: 40px;
+    }
+
+    .divForm{
+        margin-top: 20px;
+        padding: 10px 0 34px 0;
+    }
+    .imgPersonitas{
+        margin: 0;
+        width: auto;
+        height: 500px
+    }
+
+    
+    
+}
+
+@media (min-width:768px) and (max-width:1200px) and (min-height:1024px) and (max-height:1400px){
+    .ColumnaIzquierda{
+        height: 50vh;
+    }
+    .sectionRegistro{
+        width: 462px;
+    }
+
+    .imgPersonitas{
+        width: 66%;
+        margin: 40px;
+        max-height: 500px;  
+    }
+}
+
+@media (max-height:530px){
+    
+    .imgPersonitas{
+        height: 397px;
+        width: 400px;
+    }
+    .sectionRegistro {
+        background-color: white;
+        box-shadow: 0 10px 20px 0    black;
+        width: 350px;
+    }
+    .ColumnaIzquierda{
+        height:108vh;
+        min-height: 499px;
+    }
+
+}
+
+
+
+
+
+
+

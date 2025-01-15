@@ -33,7 +33,7 @@
 .container-iconos{
     display: grid;
     margin-left: 17px;
-    grid-template-columns: repeat(6, minmax(50px, 11vh));
+    grid-template-columns:  repeat(5, minmax(65px, 25vh));
     box-sizing: border-box;
 }
 

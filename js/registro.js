@@ -1,4 +1,14 @@
 const formulario = document.getElementById("formulario");
+
+
+            // Este codigo es para que no se pueda enviar con el enter
+document.getElementById('formulario').addEventListener('keydown', function(event) {
+    if (event.key === 'Enter') {
+      event.preventDefault(); // Evita el envío del formulario
+    }
+  });
+
+
 const inputs = document.querySelectorAll("#formulario input")
 
 const expresiones = {
@@ -58,7 +68,8 @@ const validacionCampos = (expresion,input) => {
         let errores = document.querySelector(`[name="${input.name}"]`)
         errores.nextElementSibling.classList.remove("errores");
         errores.nextElementSibling.classList.add("invisible");
-        input.style.border = "2px solid blue";
+        input.style.border = "1.8px solid blue";
+        input.style.backgroundColor = '#E8F0FE';
         campos[input.name] = true;
 
     }else{
@@ -66,6 +77,7 @@ const validacionCampos = (expresion,input) => {
         errores.nextElementSibling.classList.remove("invisible");
         errores.nextElementSibling.classList.add("errores"); 
         input.style.border = "2px solid red";
+        input.style.backgroundColor='#D6D5D4';
         campos[input.name] = false;
 
         setTimeout(() => {
@@ -87,6 +99,7 @@ const valContrasena = () => {
         password2.nextElementSibling.classList.remove("invisible");
         password2.nextElementSibling.classList.add("errores");
         password2.style.border = "2px solid red";
+        password2.style.backgroundColor = '#D6D5D4';
         campos["verify"] = false;
 
         setTimeout(() => {
@@ -99,12 +112,14 @@ const valContrasena = () => {
 
         password2.nextElementSibling.classList.remove("errores")
         password2.nextElementSibling.classList.add("invisible");
-        password2.style.border = "2px solid blue";
+        password2.style.border = "1.8px solid blue";
+        password2.style.backgroundColor= '#E8F0FE';
         campos["verify"] = true;
     }else {
         password2.nextElementSibling.classList.remove("invisible");
         password2.nextElementSibling.classList.add("errores");
         password2.style.border = "2px solid red";
+        password2.style.backgroundColor = '#D6D5D4';
         campos["verify"] = false;
 
         setTimeout(() => {
@@ -123,18 +138,18 @@ const formBoton = () =>{
         const boton = document.getElementById("Button_registro");
         boton.style.pointerEvents = "auto";
         boton.style.opacity = '1';
+        boton.style.scale = '1.05';
         
     }else{
         
         const boton = document.getElementById("Button_registro");
         boton.style.pointerEvents = "none";
-        boton.style.opacity = '0.75';
+        boton.style.opacity = '0.60';
+        boton.style.scale = '1';
     }
 
 }
-
 inputs.forEach(input=>{
-    input.addEventListener("keyup", validacion);
     input.addEventListener('blur', validacion);
 });
 

@@ -16,7 +16,7 @@ let gota = document.getElementById("gota")
             resetearIconos()
 
             const rect1 = elemento.getBoundingClientRect();
-            gota.style.left = `${rect1.left-10}px`;
+            gota.style.left = `${rect1.left-7}px`;
 
             if(src){
                 elemento.src = src

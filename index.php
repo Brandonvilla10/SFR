@@ -62,7 +62,6 @@ if (isset($_POST['submit'])){
 
 
         <div class="card">
-            <!-- usar grid -->
             <div>
                 <h2 class="tituloLogin">Login</h2>
             </div>

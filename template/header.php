@@ -135,6 +135,7 @@
         }
 
         .nav-visible{
+            z-index: 1000;
             opacity: 1;
             visibility: visible;
         }

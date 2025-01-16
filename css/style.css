@@ -265,6 +265,10 @@ body, html {
         width: 100%;
     }
 
+    .tituloLogin{
+        font-size: xxx-large;
+    }
+
     /* Columna izquierda ajustada */
     .columnaIzquierda {
         width: 50%;
@@ -282,13 +286,16 @@ body, html {
 
     /* Tarjeta más alta */
     .card {
-        grid-template-rows: 135px 166px 129px 51px;
+        grid-template-rows: 182px 238px 128px 51px;
         height: 61vh;
     }
 
     /* Campos de login con diseño flex */
     .datosLogin {
         background: #d6d5d4;
+        height: 76px;
+        width: 100%;
+
     }
 
     /* Botón más estilizado */

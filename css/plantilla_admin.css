@@ -1,35 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ADMINISTRADOR</title>
-</head>
-<body>
-<div class="container_grid">
-
-    <aside class="bar">
-        <?php include('asideBar.html')?>
-    </aside>
-    <nav class ="menu">
-            <div class="imagenes"><a href="../../index.php"> <img src="imgAdmin/ex.png" alt=" imagen de salida" width="38px" height= "38px"></a></div>
-            <div class="imagenes"> <img src="imgAdmin/confi.png" alt="imagen de configuracion" width="38px" height= "38px"></div>
-            <div class="imagenes"> <img src="imgAdmin/notf.png" alt="imagen de notificaciones" width="38px" height= "38px"></div>
-            <div class="imagenes"> <img src="imgAdmin/usu.png" alt="imagen del usuario" width="38px" height= "38px"></div>
-            <div>Brandon  ADMIN</div>
-    </nav>
-
-    <main class="contenido">
-        
-        <?php echo isset($contenido) ? $contenido : '<p>Bienvenido al sistema</p>'; ?>
-            
-    </main>
-
-</div>
-
-<!-- <style>
-
-    *{
+*{
         margin: 0;
         padding: 0;
         box-sizing: border-box;
@@ -134,12 +103,12 @@
             gap: 25px;
         }
 
-        .contenido{
+        /* .contenido{
             grid-area: main;
             width: 100%;
             height: 100%;
            
-        }
+        } */
 
         .bar{
             grid-area: sidebar;
@@ -203,11 +172,3 @@
             height: 50px;
         }
     }
-
-    
-
-
-</style> -->
-
-</body>
-</html>

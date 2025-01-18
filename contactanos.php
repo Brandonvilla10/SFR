@@ -7,10 +7,10 @@
    Fast Register
   </title>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
-    <link href="../Daniel Pedroz/css/contactanosStyle.css" rel="stylesheet"/>
+    <link href="../SFR-GABRIELA/css/contactanosStyle.css" rel="stylesheet"/>
  </head>
  <body>
- <?php include("../Daniel Pedroz/template/header.php") ?>
+ <?php include("../SFR-GABRIELA/template/header.php") ?>
   <div class="container">
    <section class="section contact-info">
     <h2>
@@ -116,13 +116,15 @@
       <p>
        141- Sector, Cra. 45 Sur #1255, Ibagué, Tolima
       </p>
-      <p>
+      <div>
+      <h2>
        Te esperamos!
-      </p>
+      </h2>
+      </div>
      </div>
     </div>
    </section>
   </div>
-  <?php include("../Daniel Pedroz/template/footer.php") ?>
+  <?php include("../SFR-GABRIELA/template/footer.php") ?>
  </body>
 </html>

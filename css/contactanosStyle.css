@@ -143,6 +143,12 @@
         grid-template-columns: 3fr 2fr 2fr 2fr;
         align-items: center;
         }
+
+
+    .title,.textoHorarios,.soporte{
+        font-size: large;
+    }
+    
 }
 
 @media (min-width:1496px) {

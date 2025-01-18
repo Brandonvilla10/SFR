@@ -56,8 +56,8 @@
       <div class="servicioHora">
 
         <div class="servicios">
-          <h5>Soporte Tecnico y Servicio Al Cliente</h5>
-          <h5>Implementaciones</h5>
+          <h5 class="soporte">Soporte Tecnico y Servicio Al Cliente</h5>
+          <h5 class="soporte">Implementaciones</h5>
         </div>
 
         <div class="hora">

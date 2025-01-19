@@ -7,6 +7,10 @@
     margin-top: 10vh;
 }
 
+.telefono{
+        font-weight: 500;
+}
+
 @media (min-width:320px) {
     *{
         text-align: center;
@@ -30,7 +34,7 @@
     }
 
     .horarios{
-        margin-top: 40px;
+        margin-top: 9%;
         color: cornflowerblue;
         font-size: 30px;
     }
@@ -50,6 +54,7 @@
     }
 
     .whatsapp{
+        margin-top: 9%;
         display: flex;
         flex-direction: row;
     }
@@ -129,13 +134,21 @@
 @media (min-width:1024px){
 
     .informacionDatos{
-        margin-top: 10%;
+        margin-top: 5%;
     }
 
     .ubicacion{
     display: flex;
     flex-direction: row;
     align-items: center;
+    }
+
+    iframe{
+        margin-top: 100px;
+        width: 100%;
+        height: 401px;
+        padding: 0px;
+        border-radius: 42px;
     }
 
     .servicioHora{
@@ -159,12 +172,6 @@
         margin-top: 15%;
     }
 
-    iframe{
-        padding: unset;
-        margin-top: 30px;
-        width: 70%;
-        height: 400px;
-    }
 
     .direccionCorreo{
         margin-right: 50px;
@@ -174,4 +181,10 @@
         margin-left: 50px;
     }
 
+}
+
+@media (min-width: 2560px){
+    .descrip,.whatsapp,.telefono,.tituloCorreo,.direccionCorreo,.horarios,.title,.hora{
+        font-size: larger;
+    }
 }

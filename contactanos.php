@@ -15,7 +15,7 @@
   <div class="contactanos">
       <h1 class="tituloContactanos" style="padding-bottom: 20px; font-size: 30px; color: cornflowerblue;">Contactanos</h1>
       
-      <p>¿Tienes alguna pregunta o necesitas más informacion sobre FasRegister? <br> ¡Estamos aqui para ayudarte! Nuestro equipo esta disponible para responder <br> tus consultas y brindarte el soporte que necesitas.</p>
+      <p class="descrip">¿Tienes alguna pregunta o necesitas más informacion sobre FasRegister? <br> ¡Estamos aqui para ayudarte! Nuestro equipo esta disponible para responder <br> tus consultas y brindarte el soporte que necesitas.</p>
   </div>
 
   <div class="informacionDatos" >
@@ -27,12 +27,12 @@
       <h3 style="color:cornflowerblue ;">Chat Virtual</h3>
         <div class="whatsapp">
           <img style="object-fit: cover;" height="30px" width="30px" src="assets/img/iconosRedesSociales/whatsapp (1).png" alt="Whatassp">
-          <p>3228023705</p>
+          <p class="telefono">3228023705</p>
         </div>
 
         <div class="whatsapp">
           <img style="object-fit: cover;" height="30px" width="30px" src="assets/img/iconosRedesSociales/whatsapp (1).png" alt="Whatassp">
-          <p>3228023705</p>
+          <p class="telefono">3228023705</p>
         </div>
       </div>
       

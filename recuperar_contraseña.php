@@ -1,4 +1,42 @@
-<?php include('database/database.php'); ?>
+<?php
+require_once("database/database.php");
+
+$conexion = new database;
+$con = $conexion->conectar();
+
+if(isset($_POST['sumbit'])){
+    
+    $correo = $_POST['correo'];
+
+    $sql = $con->prepare("SELECT * FROM usuario where correo = '$correo'");
+    $sql->execute();
+    $fila = $sql->fetch(PDO::FETCH_ASSOC);
+
+    if(!$fila){
+        $correoNoExiste = true;
+    }else{
+
+        
+    require __DIR__ . '/vendor/autoload.php';
+
+    $resend = Resend::client('re_123456789');
+
+    $resend->emails->send([
+    'from' => 'Acme <onboarding@resend.dev>',
+    'to' => ['delivered@resend.dev'],
+    'subject' => 'hello world',
+    'html' => '<strong>it works!</strong>',
+    ]);
+
+
+
+        echo "<script>window.location.href = 'cam_contraseña.php';</script>";
+    }
+    
+
+
+}
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -6,60 +44,84 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Recuperar Contraseña</title>
-    <link rel="stylesheet" href="css/footer.css">
     <link rel="stylesheet" href="css/recuperar_contraseña.css">
+    <link rel="stylesheet" href="css/footer.css">
 </head>
 <body>
 
-<?php include('template/header.php')?>
+    <?php include('template/header.php')?>
 
-<section class="container">
-    <!-- Contenedor principal con dos secciones: una para el formulario y otra para la imagen -->
-    <section class="ColumnaIzquierda">
-        <img src="assets/img/imgRegistro/Base_White (1).png" class="fondoBlanco">
-        
-        <div class="sectionContraseña">
-            <div>
-                <h2 class="Tcontraseña">Recuperar Contraseña</h2>
-            </div>
+    <main class="division">
 
-            <!-- Formulario para recuperar contraseña -->
-            <form action="" method="post" onsubmit="return redirigir()"> 
-                <div class="inputs">
-                    <input type="email" class="datos" name="correo" placeholder="@soy.sena.edu.co" required>
-                </div>
-        
-                <div class="Enviar">
-                    <input type="submit" value="Enviar Correo" class="BotonEnviar">
-                </div>
+        <section class="form_place">
+
+            <section class="env_correo">
+
+                <form action="" class="datos_form" method="post">
+                    <h1 style="padding-bottom: 50px; color: rgba(58, 170, 53, 255);">Recuperar contraseña</h1>  
+                    <label for="correo" class="texto">Ingresar correo electrónico</label>
+                    <input type="text" id="correo" class="datos" name="correo" placeholder="ej.@soy.sena.edu.co">
+                    <div id="correo-error" class="error"></div> 
+                    <input type="submit" class="boton-submit" id="submit" name="sumbit" value="Enviar correo">
+                </form>
+
+            </section>
+
+        </section>
+
+        <img src="assets/img/recuperarContraseña/Image_RC.png" class="imgPersonitas" alt="Imagen de recuperación de contraseña">
+    </main>
+
+    <?php include("template/footer.html") ?>
+
+    <script>
+        let errorDiv = document.getElementById('correo-error');
+        let regexCorreo = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        let submit = document.getElementById("submit");
+
+
+        submit.addEventListener('click', function(e){
+            let correo = document.getElementById('correo').value;
+            if(correo === ""){
+                e.preventDefault();
+                errorDiv.innerHTML = "El campo no puede estar vacío";
+                errorDiv.style.display = "block";
+                setTimeout(() => {
+                    errorDiv.style.display = "none";
+                }, 3000);
+                errorDiv.style.visibility = "visible";
+
+            } else if(!regexCorreo.test(correo)){
+                e.preventDefault();
+                errorDiv.innerHTML = "El correo no es válido";
+                errorDiv.style.display = "block";
+                setTimeout(() => {
+                    errorDiv.style.display = "none";
+                }, 3000);
                 
-                <div class="registrarse">
-                    <a href="index.php" class="">¡Inicia Sesión!</a>
-                </div>
-            </form>
-        </div>
-    </section>
+            } else {
+                errorDiv.style.display = "none";
+            }
+        });
 
-    <section class="columnaDerecha">
-        <img src="assets/img/recuperarContraseña/Image_RC.png" height="500px" width="679px" class="imgPersonitas" alt="Imagen de recuperación de contraseña">
-    </section>
+        function noexiste(){
+            errorDiv.innerHTML = "Correo no encontrado";
+            errorDiv.style.visibility = "visible"
+            setTimeout(() => {
+                errorDiv.style.display = "none";
+            }, 3000);
+        }
 
-</section>
 
-<div class="social-bar">
-    <a href="https://www.tiktok.com" target="_blank" class="social-icon">
-        <img src="assets/img/iconosRedesSociales/tik-tok.png" width="28px" height="28px" alt="">
-    </a>
-    <a href="https://www.facebook.com" target="_blank" class="social-icon">
-        <img src="assets/img/iconosRedesSociales/facebook.png" width="28px" height="28px" alt="">
-    </a>
-    <a href="https://www.instagram.com" class="social-icon">
-        <img src="assets/img/iconosRedesSociales/logotipo-de-instagram.png" width="28px" height="28px">
-    </a>
-</div>
 
-<?php require_once("template/footer.php") ?>
+    <?php if($correoNoExiste): ?>
+        noexiste();
+    <?php endif; ?>    
 
-<script src="js/js.js"></script>
+    </script>
+
+
+
+
 </body>
 </html>

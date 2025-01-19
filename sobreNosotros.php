@@ -22,6 +22,7 @@
                 <div class="izquierda">
 
                 <img src="assets/img/Nosotrosimg/SobreNosotros.png" alt="">
+                
                 </div>
                 <div class="derecha"> 
                     <h1>Sobre Nosotros</h1>

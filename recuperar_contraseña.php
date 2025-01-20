@@ -3,6 +3,8 @@ require_once("database/database.php");
 
 $conexion = new database;
 $con = $conexion->conectar();
+session_start();
+
 
 if(isset($_POST['sumbit'])){
     
@@ -16,26 +18,25 @@ if(isset($_POST['sumbit'])){
         $correoNoExiste = true;
     }else{
 
-        
-    require __DIR__ . '/vendor/autoload.php';
-
-    $resend = Resend::client('re_123456789');
-
-    $resend->emails->send([
-    'from' => 'Acme <onboarding@resend.dev>',
-    'to' => ['delivered@resend.dev'],
-    'subject' => 'hello world',
-    'html' => '<strong>it works!</strong>',
-    ]);
+        $ramdon = random_int(10000, 99999);
+        $_SESSION['ramdon'] = $ramdon;
+        $_SESSION['correo'] = $correo;
 
 
+        require __DIR__ . '/vendor/autoload.php';
+        $resend = Resend::client('re_c9Up38Jk_DoVPUAVkxmha4pRAsQGyWupG');
+        $resend->emails->send([
+        'from' => 'Acme <onboarding@resend.dev>',
+        'to' => [$correo],
+        'subject' => 'NO COMPARTAS este codigo con NADIE ' .$ramdon,
+        'html' => '<strong>Codigo De Verificacion '. $ramdon . ' </strong>',
+        ]);
 
         echo "<script>window.location.href = 'cam_contraseña.php';</script>";
-    }
-    
-
-
+    }   
 }
+
+// primero
 ?>
 
 <!DOCTYPE html>

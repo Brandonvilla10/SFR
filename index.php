@@ -5,6 +5,7 @@ $conexion = new database;
 $con = $conexion->conectar();
 session_start();
 
+
 if (isset($_POST['submit'])){
     $documento = $_POST['documento'];
     $password = $_POST['password'];

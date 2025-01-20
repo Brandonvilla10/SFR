@@ -24,7 +24,17 @@ a {
     height: 100vh;
 } */
 
+.botonIniciarSesion:hover{
+    transform: scale(1.1);
+    background-color: #2e931a;
+    border-color: rgb(0, 60, 255);
+}
 
+.botonSinHover:hover{
+    transform: scale(1);
+    background-color: #15480b;
+    border-color: rgb(255, 17, 0);
+}
 
 
 @media (min-width: 320px){

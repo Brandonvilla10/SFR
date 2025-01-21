@@ -28,7 +28,7 @@ let gota = document.getElementById("gota")
 // En esta seccion separo las funciones dependiendo de la direccion a la que funciona osea hacia donde dirije la gota
 // :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 const height = window.innerHeight
-    function manejadorEventoPG(elemento,src = null,correccion,correccionElse){
+    function manejadorEventoPG(elemento,src = null,correccionElse){
         elemento.addEventListener("click",(e) => {
             e.preventDefault()
 
@@ -36,11 +36,9 @@ const height = window.innerHeight
 
             const rect1 = elemento.getBoundingClientRect();
 
-            if(height >= 1024){
-                gota.style.top = `${rect1.top-correccion}px`
-            }else{
-                gota.style.top = `${rect1.top-correccionElse}px`
-            }
+            
+            gota.style.top = `${rect1.top-correccionElse}px`
+            
             
             if(src){
                 elemento.src = src
@@ -76,18 +74,18 @@ const height = window.innerHeight
         
         
     }else if(width >= 768 && width <= 1869 ){
-        manejadorEventoPG(homeAzul, "iconSideBar/homeAzul.png",65,52);
-        manejadorEventoPG(laptopBlanco,  "iconSideBar/laptopAzul.png",65,52);
-        manejadorEventoPG(carroBlanco,  "iconSideBar/carroAzul.png",65,52);
-        manejadorEventoPG(escanearBlanco,  "iconSideBar/escanearAzul.png",65,52);
-        manejadorEventoPG(calendarioBlanco,  "iconSideBar/calendarioAzul.png",65,52);
+        manejadorEventoPG(homeAzul, "iconSideBar/homeAzul.png",22);
+        manejadorEventoPG(laptopBlanco,  "iconSideBar/laptopAzul.png",22);
+        manejadorEventoPG(carroBlanco,  "iconSideBar/carroAzul.png",22);
+        manejadorEventoPG(escanearBlanco,  "iconSideBar/escanearAzul.png",22);
+        manejadorEventoPG(calendarioBlanco,  "iconSideBar/calendarioAzul.png",23);
 
     }else if(width >= 1870){
-        manejadorEventoPG(homeAzul, "iconSideBar/homeAzul.png",75,64);
-        manejadorEventoPG(laptopBlanco,  "iconSideBar/laptopAzul.png",75,64);
-        manejadorEventoPG(carroBlanco,  "iconSideBar/carroAzul.png",75,64);
-        manejadorEventoPG(escanearBlanco,  "iconSideBar/escanearAzul.png",75,64);
-        manejadorEventoPG(calendarioBlanco,  "iconSideBar/calendarioAzul.png",75,64);
+        manejadorEventoPG(homeAzul, "iconSideBar/homeAzul.png",27);
+        manejadorEventoPG(laptopBlanco,  "iconSideBar/laptopAzul.png",27);
+        manejadorEventoPG(carroBlanco,  "iconSideBar/carroAzul.png",27);
+        manejadorEventoPG(escanearBlanco,  "iconSideBar/escanearAzul.png",27);
+        manejadorEventoPG(calendarioBlanco,  "iconSideBar/calendarioAzul.png",27);
     }
     
 

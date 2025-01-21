@@ -37,7 +37,7 @@ const height = window.innerHeight
             const rect1 = elemento.getBoundingClientRect();
 
             
-            gota.style.top = `${rect1.top-correccionElse}px`
+            gota.style.top = `${rect1.top-correccionElse}px`;
             
             
             if(src){

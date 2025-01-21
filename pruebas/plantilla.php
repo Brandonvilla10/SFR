@@ -12,7 +12,7 @@
         <?php include('asideBar.html')?>
     </aside>
     <nav class ="menu">
-            <div class="imagenes"><a href="../../index.php"> <img src="../roles/admin/imgAdmin/ex.png" alt=" imagen de salida" width="38px" height= "38px"></a></div>
+            <div class="imagenes"><a href="../index.php"> <img src="../roles/admin/imgAdmin/ex.png" alt=" imagen de salida" width="38px" height= "38px"></a></div>
             <div class="imagenes"> <img src="../roles/admin/imgAdmin/confi.png" alt="imagen de configuracion" width="38px" height= "38px"></div>
             <div class="imagenes"> <img src="../roles/admin/imgAdmin/notf.png" alt="imagen de notificaciones" width="38px" height= "38px"></div>
             <div class="imagenes"> <img src="../roles/admin/imgAdmin/usu.png" alt="imagen del usuario" width="38px" height= "38px"></div>

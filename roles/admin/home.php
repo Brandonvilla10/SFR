@@ -13,16 +13,36 @@ session_start();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="../../assets/img/LogoFR.png">
     <title>Home</title>
-    <link rel="stylesheet" href="../../css/plantilla_admin.css">
-
+    <link rel="stylesheet" href="css/home.css">
+    <link rel="stylesheet" href="../../pruebas/asidebar.css">
 </head>
 <body>
-
-    <?php 
+<div class="container_grid">
     
-    $contenido =''; 
-    include "../../pruebas/plantilla.php";
-    ?>
+    <aside class="aside_barra">
+        <?php  include "../../pruebas/asideBar.html"?>
+    </aside>
+
+    <nav class ="barrita_iconos">
+    
+        <?php   include "menu_iconos.php";?>
+
+    </nav>
+
+   
+
+
+    
+
+    <main class="grid_contenido_plantilla">
+            
+                
+    </main>
+
+</div>
+    
+
+
 
 
 <style>

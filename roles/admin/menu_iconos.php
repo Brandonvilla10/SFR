@@ -19,7 +19,7 @@ $con = $conex->conectar();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    <link rel="stylesheet" href="../../css/plantilla_admin.css">
+    <link rel="stylesheet" href="css/plantilla_iconos.css">
 </head>
 <body>
 

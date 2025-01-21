@@ -11,18 +11,22 @@
     <aside class="bar">
         <?php include('asideBar.html')?>
     </aside>
-    
-    <?php include('menu_iconos.php')?>
+    <nav class ="menu">
+            <div class="imagenes"><a href="../../index.php"> <img src="../roles/admin/imgAdmin/ex.png" alt=" imagen de salida" width="38px" height= "38px"></a></div>
+            <div class="imagenes"> <img src="../roles/admin/imgAdmin/confi.png" alt="imagen de configuracion" width="38px" height= "38px"></div>
+            <div class="imagenes"> <img src="../roles/admin/imgAdmin/notf.png" alt="imagen de notificaciones" width="38px" height= "38px"></div>
+            <div class="imagenes"> <img src="../roles/admin/imgAdmin/usu.png" alt="imagen del usuario" width="38px" height= "38px"></div>
+            <div>Brandon  ADMIN</div>
+    </nav>
 
     <main class="contenido">
-        
-        <?php echo isset($contenido) ? $contenido : ''; ?>
+          
             
     </main>
 
 </div>
 
-<!-- <style>
+<style>
 
     *{
         margin: 0;
@@ -55,7 +59,8 @@
         grid-area: main;
         justify-self: center;
         align-self: end;
-           
+       
+       
     }
     .bar{
         grid-area: sidebar;
@@ -202,7 +207,7 @@
     
 
 
-</style> -->
+</style>
 
 </body>
 </html>

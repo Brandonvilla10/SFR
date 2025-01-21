@@ -16,6 +16,8 @@
     height: 60px;
     min-height: 60px;
 }
+
+
 .main{
     display: flex;
     flex-direction: row;
@@ -69,8 +71,8 @@
         background-color: cornflowerblue;
         width: 76px;
         min-width: 76px;
-        height: 600px;
         min-height: 600px;
+        height: 92vh;
         bottom: 4%;
         border-radius: 21px;
         margin-left: 15px;
@@ -119,8 +121,8 @@
 
 @media (min-height:768px ) and (min-height:1024px) {
     .iconos{
-        width: 5vh;
-        height: 5vh;
+        width: 50px;
+        height: 50px;
         margin-left: unset;
     }
 
@@ -128,8 +130,8 @@
         margin-left: unset;
     }
     .gota{
-        width: 8vh;
-        height: 6.1vh;
+        width: 90px;
+        height: 70px;
         left: 4px;
         top: 3%;
     }
@@ -138,8 +140,8 @@
 
 @media (min-height:1180px) and (min-height:1366px) {
     .iconos{
-        width: 3vh;
-        height: 3vh;
+        width: 50px;
+        height: 50px;
         margin-left: unset;
     }
     .gota{
@@ -174,11 +176,7 @@
     }
 }
 
-@media (min-width:1500px) {
-    .container-lateral{
-        min-height: 680px
-    }
-}
+
 
 @media (min-width:1920px) {
     
@@ -188,8 +186,6 @@
 
 
 .container-lateral{
-    height: 110px;
-    min-height: 1100px;
     width: 100px;
     min-width: 100px;
 }

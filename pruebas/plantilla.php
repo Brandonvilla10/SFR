@@ -11,17 +11,12 @@
     <aside class="bar">
         <?php include('asideBar.html')?>
     </aside>
-    <nav class ="menu">
-            <div class="imagenes"><a href="../../index.php"> <img src="imgAdmin/ex.png" alt=" imagen de salida" width="38px" height= "38px"></a></div>
-            <div class="imagenes"> <img src="imgAdmin/confi.png" alt="imagen de configuracion" width="38px" height= "38px"></div>
-            <div class="imagenes"> <img src="imgAdmin/notf.png" alt="imagen de notificaciones" width="38px" height= "38px"></div>
-            <div class="imagenes"> <img src="imgAdmin/usu.png" alt="imagen del usuario" width="38px" height= "38px"></div>
-            <div>Brandon  ADMIN</div>
-    </nav>
+    
+    <?php include('menu_iconos.php')?>
 
     <main class="contenido">
         
-        <?php echo isset($contenido) ? $contenido : '<p>Bienvenido al sistema</p>'; ?>
+        <?php echo isset($contenido) ? $contenido : ''; ?>
             
     </main>
 

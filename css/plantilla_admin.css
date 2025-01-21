@@ -36,6 +36,45 @@
        
     }
 
+
+
+
+    /* CAMBIOS DEL MENU  */
+
+
+    .estado{
+        display: none;
+        
+    }
+
+    .menu2{
+        display: block;
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-right: 26px;
+        padding-left: 26px;
+
+    }
+    .menu2 span{
+
+        width: 100%;
+        display: flex;
+        text-align: center;
+        padding: 20px;
+
+    }
+    .menu2 a{
+        text-decoration: none;
+        color: black;
+    }
+   
+
+    
+
+
+
     @media (min-width:320px), (max-width:320px){
 
         .container_grid{
@@ -50,27 +89,76 @@
         }
 
         .menu{
-            justify-self: center;
-            align-self: center;
-            padding-left: 20px;
-            padding-right: 0;
-            column-gap: 10%;
+            display: flex;
+            flex-direction: column-reverse;
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            background-color: #062E5E;
+            width: 200px;
+            padding: 20px;
+            align-items: start;
+            justify-content: start;
+            gap: 15px;
+            transition: 1s;
         }
+        .estado-menu{
+            display: none;
+
+        }
+
         .menu .imagenes img{
             width: 30px;
             height: 30px;
         }
+
+
+            /* CAMBIOS 1 */
+        .estado{
+            display: block;
+            
+        }
+
+        .menu_iconos_burguer{
+            border: 0;
+            font-size: 2.5rem;
+            background-color: transparent;
+            cursor: pointer;
+            color:  cornflowerblue;
+            
+        }
+        .menu_cerrar_button{
+            border: 0;
+            font-size: 2.5rem;
+            background-color: transparent;
+            cursor: pointer;
+            color:  cornflowerblue;
+           
+        }
+
+        .menu span{
+            color: white;
+            align-self: center;
+        }
+
+        .menu .nombre{
+
+            justify-content: center;
+        }
+        
+        .imagenes a{
+            display: flex;
+            gap: 20px;
+            text-decoration: none;
+            color: white;
+        }
     }
 
+
+   
     @media (min-width:425px){
-        .menu{
-            gap: 8%;
-            padding-left: 20px;
-            padding-right: 10px;
-            width: 100%;
-            justify-content: space-evenly;
-            align-items: center;
-        }
+        
         .menu .imagenes img{
             
             width: 38px;
@@ -94,6 +182,10 @@
                     /* aqui termine de revisar  */
         .menu{
             grid-area: menu;
+            position: static;
+            display: flex;
+            background-color: white;
+            flex-direction: row;
             justify-self: end;
             width: auto;
             column-gap: 10%;
@@ -113,6 +205,41 @@
         .bar{
             grid-area: sidebar;
         }
+
+        /* CAMBIOS  2 */
+
+
+        .estado{
+            display: none;
+        }
+
+        .menu span{
+            color: black;
+        }
+
+        .nombre{
+            display: block;
+        }
+
+        .menu2{
+            display: none;
+        }
+
+        .estado-menu{
+            display: flex;
+
+        }
+        .menu a{
+            text-decoration: none;
+        }
+        .nombre{
+            display: flex;
+    
+            text-align: center;
+        }
+       
+
+
     }
     
     

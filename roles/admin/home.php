@@ -20,10 +20,15 @@ session_start();
 
     <?php 
     
-    $contenido =' <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptas quasi tempore nihil ad possimus reprehenderit debitis soluta officia a fugiat.</p>
-    ';
-    include "../../pruebas/plantilla.php"?>
+    $contenido =''; 
+    include "../../pruebas/plantilla.php";
+    ?>
 
+
+<style>
+
+    
+</style>
 
     
 

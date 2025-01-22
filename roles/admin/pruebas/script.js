@@ -37,7 +37,7 @@ const height = window.innerHeight
             const rect1 = elemento.getBoundingClientRect();
 
             
-            gota.style.top = `${rect1.top-correccionElse}px`
+            gota.style.top = `${rect1.top-correccionElse}px`;
             
             
             if(src){
@@ -48,11 +48,11 @@ const height = window.innerHeight
 //  :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::    
 
     const iconos = [
-        { elemento: homeAzul, azul: "iconSideBar/homeAzul.png", blanco: "iconSideBar/homeBlanco.png" },
-        { elemento: laptopBlanco, azul: "iconSideBar/laptopAzul.png", blanco: "iconSideBar/laptopBlanco.png" },
-        { elemento: carroBlanco, azul: "iconSideBar/carroAzul.png", blanco: "iconSideBar/carroBlanco.png" },
-        { elemento: escanearBlanco, azul: "iconSideBar/escanearAzul.png", blanco: "iconSideBar/escanearBlanco.png" },
-        { elemento: calendarioBlanco, azul: "iconSideBar/calendarioAzul.png.png", blanco: "iconSideBar/calendarioBlanco.png" },
+        { elemento: homeAzul, azul: "pruebas/iconSideBar/homeAzul.png", blanco: "pruebas/iconSideBar/homeBlanco.png" },
+        { elemento: laptopBlanco, azul: "pruebas/iconSideBar/laptopAzul.png", blanco: "pruebas/iconSideBar/laptopBlanco.png" },
+        { elemento: carroBlanco, azul: "pruebas/iconSideBar/carroAzul.png", blanco: "pruebas/iconSideBar/carroBlanco.png" },
+        { elemento: escanearBlanco, azul: "pruebas/iconSideBar/escanearAzul.png", blanco: "pruebas/iconSideBar/escanearBlanco.png" },
+        { elemento: calendarioBlanco, azul: "pruebas/iconSideBar/calendarioAzul.png.png", blanco: "pruebas/iconSideBar/calendarioBlanco.png" },
     ];
     
     function resetearIconos() {
@@ -66,26 +66,24 @@ const height = window.innerHeight
 
     if(width >= 320 && width < 768 ){
 
-        manejadorEvento(homeAzul, "iconSideBar/homeAzul.png");
-        manejadorEvento(laptopBlanco, "iconSideBar/laptopAzul.png");
-        manejadorEvento(carroBlanco,  "iconSideBar/carroAzul.png");
-        manejadorEvento(escanearBlanco,  "iconSideBar/escanearAzul.png");
-        manejadorEvento(calendarioBlanco,  "iconSideBar/calendarioAzul.png");
+        manejadorEvento(homeAzul, "pruebas/iconSideBar/homeAzul.png");
+        manejadorEvento(laptopBlanco, "pruebas/iconSideBar/laptopAzul.png");
+        manejadorEvento(carroBlanco,  "pruebas/iconSideBar/carroAzul.png");
+        manejadorEvento(escanearBlanco,  "pruebas/iconSideBar/escanearAzul.png");
+        manejadorEvento(calendarioBlanco,  "pruebas/iconSideBar/calendarioAzul.png");
         
         
     }else if(width >= 768 && width <= 1869 ){
-        manejadorEventoPG(homeAzul, "iconSideBar/homeAzul.png",22);
-        manejadorEventoPG(laptopBlanco,  "iconSideBar/laptopAzul.png",22);
-        manejadorEventoPG(carroBlanco,  "iconSideBar/carroAzul.png",22);
-        manejadorEventoPG(escanearBlanco,  "iconSideBar/escanearAzul.png",22);
-        manejadorEventoPG(calendarioBlanco,  "iconSideBar/calendarioAzul.png",23);
+        manejadorEventoPG(homeAzul, "pruebas/iconSideBar/homeAzul.png",22);
+        manejadorEventoPG(laptopBlanco,  "pruebas/iconSideBar/laptopAzul.png",22);
+        manejadorEventoPG(carroBlanco,  "pruebas/iconSideBar/carroAzul.png",22);
+        manejadorEventoPG(escanearBlanco,  "pruebas/iconSideBar/escanearAzul.png",22);
+        manejadorEventoPG(calendarioBlanco,  "pruebas/iconSideBar/calendarioAzul.png",23);
 
     }else if(width >= 1870){
-        manejadorEventoPG(homeAzul, "iconSideBar/homeAzul.png",27);
-        manejadorEventoPG(laptopBlanco,  "iconSideBar/laptopAzul.png",27);
-        manejadorEventoPG(carroBlanco,  "iconSideBar/carroAzul.png",27);
-        manejadorEventoPG(escanearBlanco,  "iconSideBar/escanearAzul.png",27);
-        manejadorEventoPG(calendarioBlanco,  "iconSideBar/calendarioAzul.png",27);
+        manejadorEventoPG(homeAzul, "pruebas/iconSideBar/homeAzul.png",27);
+        manejadorEventoPG(laptopBlanco,  "pruebas/iconSideBar/laptopAzul.png",27);
+        manejadorEventoPG(carroBlanco,  "pruebas/iconSideBar/carroAzul.png",27);
+        manejadorEventoPG(escanearBlanco,  "pruebas/iconSideBar/escanearAzul.png",27);
+        manejadorEventoPG(calendarioBlanco,  "pruebas/iconSideBar/calendarioAzul.png",27);
     }
-    
-

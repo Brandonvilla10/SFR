@@ -1,9 +1,16 @@
 <?php
+session_start();
 
 require_once('../../database/database.php');
+include('../../includes/sesion_validar.php');
 $conexion = new database;
 $con = $conexion->conectar();
-session_start();
+
+
+    $codigo = $_SESSION['documento'];
+    $nombre = explode(" ", $_SESSION['nombre'])[0];
+    $rol =$_SESSION['rol_name'];
+
 ?>
 
 <!DOCTYPE html>
@@ -14,13 +21,13 @@ session_start();
     <link rel="icon" href="../../assets/img/LogoFR.png">
     <title>Home</title>
     <link rel="stylesheet" href="css/home.css">
-    <link rel="stylesheet" href="../../pruebas/asidebar.css">
+    <link rel="stylesheet" href="pruebas/asidebar.css">
 </head>
 <body>
 <div class="container_grid">
     
     <aside class="aside_barra">
-        <?php  include "../../pruebas/asideBar.html"?>
+        <?php  include ('pruebas/asideBar.php')?>
     </aside>
 
     <nav class ="barrita_iconos">
@@ -31,11 +38,12 @@ session_start();
 
    
 
-
+    <script src="pruebas/script.js"></script>
     
 
     <main class="grid_contenido_plantilla">
             
+    
                 
     </main>
 

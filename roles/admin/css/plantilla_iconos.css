@@ -30,7 +30,7 @@
     }
     .menu2 span{
 
-        width: 100%;
+        width: auto;
         display: flex;
         text-align: center;
         padding: 20px;
@@ -59,11 +59,13 @@
             bottom: 0;
             background-color: #062E5E;
             width: 200px;
+            height: 100vh;
             padding: 20px;
             align-items: start;
             justify-content: start;
             gap: 15px;
             transition: 1s;
+            
         }
         .estado-menu{
             display: none;
@@ -136,7 +138,7 @@
             justify-content: end;
         }
         .menu{
-          
+            height: auto;
             position: static;
             display: flex;
             background-color: white;

@@ -1,9 +1,5 @@
 <?php
-
 require_once('../../database/database.php');
-
-
-
 $conex = new dataBase;
 $con = $conex->conectar();
 
@@ -27,16 +23,16 @@ $con = $conex->conectar();
 
     <nav class="menu2">
         <button class="menu_iconos_burguer"  id="abrir"><i class="bi bi-list"></i></button>
-        <div class="nombre"><a href=""><span id ="name">Brandon <br> Administrador</span> </a></div>
+        <div class="nombre"><a href=""><span id ="name"><?php echo isset($nombre) ? $nombre : 'Usuario' ?><br><?php echo isset($rol) ? $rol : "uknown"?></span> </a></div>
     </nav>
 
     <nav class ="menu estado-menu" id="barrita_iconos">
 
-                <div class="imagenes"><a href="../../index.php"> <img src="imgAdmin/ex.png" alt=" imagen de salida"> <span class="estado"> Cerrar Sesion</span></a></div>
+                <div class="imagenes"><a href="../../includes/sesion_destroy.php"> <img src="imgAdmin/ex.png" alt=" imagen de salida"> <span class="estado"> Cerrar Sesion</span></a></div>
                 <div class="imagenes"><a href="#"><img src="imgAdmin/confi.png" alt="imagen de configuracion"> <span class="estado"> Configuracion</span></a></div>
                 <div class="imagenes"><a href="#"><img src="imgAdmin/notf.png" alt="imagen de notificaciones"><span class="estado">Notificaciones</span></a></div>
                 <div class="imagenes"><a href="#"><img src="imgAdmin/usu.png" alt="imagen del usuario"><span class="estado">Perfil</span></a></div>
-                <div class="nombre"><a href=""><span class="estado nombre" id ="name">Brandon </span><span class="nombre">Administrador</span> </a></div>      <!-- ESTE ES EL TEXTO -->
+                <div class="nombre"><a href=""><span class="estado nombre" id ="name"><?php echo isset($nombre) ? $nombre : 'usuario' ?></span><span class="nombre"><?php echo isset($rol) ? $rol : "uknown"?></span> </a></div>      <!-- ESTE ES EL TEXTO -->
                 <button class="menu_cerrar_button estado" id="close"><i class="bi bi-x-lg"></i></button>      <!-- ESTE ES EL TEXTO -->
             
                 

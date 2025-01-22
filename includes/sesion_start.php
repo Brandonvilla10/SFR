@@ -33,22 +33,22 @@ session_start();
             if($_SESSION['rol'] == 1){
 
                             // ADMINISTRADOR
-                echo "entro aqui";
+                $_SESSION['rol_name'] ="Administrador";
                 header("location: ../roles/admin/home.php");
-                exit();
+                exit(); 
 
             }elseif($_SESSION['rol'] == 2){
 
                             // APRENDIZ
-                echo "nooo entro aqui";
-                header("location: ..roles/aprendiz/index.php");
+                $_SESSION['rol_name'] ="Aprendiz";
+                header("location: ../roles/aprendiz/index.php");
                 exit();
 
             }elseif($_SESSION['rol'] ==3){
 
                             // FUNCIONARIO
-                echo "ni fruta idea";
-                header("location: ..roles/funcionario/index.php");
+                $_SESSION['rol_name'] ="Funcionario";
+                header("location: ../roles/funcionario/index.php");
                 exit();
             }
         }

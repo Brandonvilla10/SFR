@@ -1,23 +1,30 @@
-
+*{
 margin: 0;
 padding: 0;
 transition: 1s;
 }
+
 .container-lateral{
+
 position: fixed;
 bottom: 0;
 background-color: cornflowerblue;
 width: 100%;
 height: 10vh;
+
 }
+
 .main{
+
 display: flex;
 flex-direction: row;
 height: 10vh;
 align-items: center;
+
 }
 
 .gota{
+
 width: 7vh;
 height: 8.1vh;
 left: 10px;
@@ -28,20 +35,25 @@ border-top-right-radius: 2px;
 position: absolute;
 top: 0%;
 z-index: -1;
+
 }
 
 .container-iconos{
+
 display: grid;
 margin-left: 17px;
 grid-template-columns:  repeat(5, minmax(65px, 25vh));
 box-sizing: border-box;
+
 }
 
 .iconos{
+
 z-index: 3;
 width: 5vh;
 height: 5vh;
 transition: 1.5s ease-in;
+
 }
 
 @media (min-width:768px) {

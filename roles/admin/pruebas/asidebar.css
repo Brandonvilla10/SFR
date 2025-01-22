@@ -173,6 +173,12 @@
     }
 }
 
+@media (min-width:1500px) {
+    .container-lateral{
+        min-height: 680px
+    }
+}
+
 @media (min-width:1920px) {
     
 #homeAzul{
@@ -195,4 +201,3 @@
 
 
 }
-

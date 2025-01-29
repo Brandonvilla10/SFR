@@ -17,7 +17,11 @@ $rol =$_SESSION['rol_name'];
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<<<<<<< HEAD
     <link rel="stylesheet" href="asideBar/asideBar.css">
+=======
+    <link rel="stylesheet" href="/asideBar/asideBar.css">
+>>>>>>> 6f949ae (Commit adelanto admin)
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     
     
@@ -41,7 +45,11 @@ $rol =$_SESSION['rol_name'];
             <p class="seccionTexto">Inicio</p>
         </div></a>
 
+<<<<<<< HEAD
         <a href="objetos_index.php"> <div class="seccion">
+=======
+        <a href=""> <div class="seccion">
+>>>>>>> 6f949ae (Commit adelanto admin)
             <img class="icono" src="asidebar/icons/objetos.png" alt="">
             <p class="seccionTexto">Objetos</p>
         </div></a>
@@ -109,6 +117,7 @@ $rol =$_SESSION['rol_name'];
 
     <script>
 
+<<<<<<< HEAD
     const hamburguesa = document.getElementById('abrir');
     const cerrar = document.getElementById('close');
     const barralateral = document.getElementById('barraLateral');
@@ -125,5 +134,12 @@ $rol =$_SESSION['rol_name'];
 
 </script>
     <script src="asidebar/script.js"></script>
+=======
+
+    
+
+</script>
+    <script src="./asidebar/script.js"></script>
+>>>>>>> 6f949ae (Commit adelanto admin)
 </body>
 </html>

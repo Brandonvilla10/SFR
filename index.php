@@ -52,8 +52,7 @@ if (isset($_POST['submit'])){
 <!-- en la columna izquierda tuve que usar una propiedad de z index en el div con clase "card", ya que la imagen(El fondo blanco) no estaba poniendose de manera adecuada asi que lo resolvi usando una posicion absoluta y colocando los elementos dentro de card encima de la imagen los elementos me refiero a los inputs-->
 
     <section class="columnaIzquierda">
-        <img src="assets/img/Base_White.png" class="fondoBlanco" alt="">
-
+        
 
         <div class="card">
             <!-- usar grid -->

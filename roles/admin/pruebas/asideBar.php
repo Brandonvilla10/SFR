@@ -13,9 +13,15 @@
 
             <div class="container-iconos">
 
+<<<<<<< HEAD
                 <a  href="#"><img id="homeAzul" class="iconos" src="pruebas/iconSideBar/homeAzul.png" alt="home"></a>
                 <a  href="#"><img id="laptopBlanco" class="iconos" src="pruebas/iconSideBar/laptopBlanco.png" alt="home"></a>
                 <a  href="#"><img id="carroBlanco" class="iconos" src="pruebas/iconSideBar/carroBlanco.png" alt="home"></a>
+=======
+                <a  href="# "><img id="homeAzul" class="iconos" src="pruebas/iconSideBar/homeAzul.png" alt="home"></a>
+                <a  href="#"><img id="laptopBlanco" class="iconos" src="pruebas/iconSideBar/laptopBlanco.png" alt="home"></a>
+                <a  href="#"><img id="usuarioBlanco" class="iconos" src="pruebas/iconSideBar/usuarioBlanco.png" alt="home"></a>
+>>>>>>> 6f949ae (Commit adelanto admin)
                 <a  href="#"><img id="escanearBlanco" class="iconos" src="pruebas/iconSideBar/escanearBlanco.png" alt="home"></a>
                 <a  href="#"><img id="calendarioBlanco" class="iconos" src="pruebas/iconSideBar/calendarioBlanco.png" alt="home"></a>
 

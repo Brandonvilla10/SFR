@@ -1,0 +1,310 @@
+.gota{
+    top: 347.8px ;
+}
+
+.menu{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-left : 50px;
+}
+
+.AgregarUsuarioDiv{
+    margin-right: 200px; ;
+}
+
+.botonAgregar{
+  height: 40px;
+  width: 180px;
+  display: flex;
+  font-weight: 600;
+  border-radius: 7px;
+  border: 2px solid black;
+  font-size: medium;
+  cursor: pointer;
+  justify-content: center;
+  align-items: center;
+}
+
+#textoAbrir{
+  padding-right: 10px;
+}
+
+.CrearUsuario{
+    display: none;
+    opacity: 0;
+    position: fixed;
+    left: 30%;
+    margin-top: 50px;
+    transition:  0.2s;
+}
+
+.CrearUsuario.mostrar{
+   display: flex;
+   position: fixed;
+   z-index: 10000;
+   opacity: 1;
+   left: 30%;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-width: 350px;
+  background-color: #fff;
+  padding: 20px;
+  border: 1px solid black;
+  padding-right: 36px;
+  border-radius: 20px;
+  position: relative;
+  }
+  
+  .title {
+    font-size: 28px;
+    color: royalblue;
+    font-weight: 600;
+    letter-spacing: -1px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    padding-left: 30px;
+  }
+  
+  .title::before,.title::after {
+    position: absolute;
+    content: "";
+    height: 16px;
+    width: 16px;
+    border-radius: 50%;
+    left: 0px;
+    background-color: royalblue;
+  }
+  
+  .title::before {
+    width: 18px;
+    height: 18px;
+    background-color: royalblue;
+  }
+  
+  .title::after {
+    width: 18px;
+    height: 18px;
+    animation: pulse 1s linear infinite;
+  }
+  
+  .message, .signin {
+    color: rgba(88, 87, 87, 0.822);
+    font-size: 14px;
+  }
+  
+  .signin {
+    text-align: center;
+  }
+  
+  .signin a {
+    color: royalblue;
+  }
+  
+  .signin a:hover {
+    text-decoration: underline royalblue;
+  }
+  
+  .flex {
+    display: flex;
+    width: 100%;
+    gap: 6px;
+  }
+  
+  .form label {
+    position: relative;
+  }
+  
+  .form label .input {
+    width: 100%;
+    padding: 10px 10px 20px 10px;
+    outline: 0;
+    border: 1px solid rgba(105, 105, 105, 0.397);
+    border-radius: 10px;
+  }
+  
+  .form label .input + span {
+    position: absolute;
+    left: 10px;
+    top: 15px;
+    color: grey;
+    font-size: 0.9em;
+    cursor: text;
+    transition: 0.3s ease;
+  }
+  
+  .form label .input:placeholder-shown + span {
+    top: 15px;
+    font-size: 0.9em;
+  }
+  
+  .form label .input:focus + span,.form label .input:valid + span {
+    top: 30px;
+    font-size: 0.7em;
+    font-weight: 600;
+  }
+  
+  .form label .input:valid + span {
+    color: green;
+  }
+  
+  .submit {
+    border: none;
+    outline: none;
+    background-color: royalblue;
+    padding: 10px;
+    border-radius: 10px;
+    color: #fff;
+    font-size: 16px;
+    transform: 0.3s ease;
+  }
+  
+  .submit:hover {
+    background-color: rgb(56, 90, 194);
+  }
+  
+  @keyframes pulse {
+    from {
+      transform: scale(0.9);
+      opacity: 1;
+    }
+  
+    to {
+      transform: scale(1.8);
+      opacity: 0;
+    }
+  }
+
+
+.tabla{
+  text-align: left;
+  width: clamp(500px,88%,100%);
+  border: 2px solid rgb(84, 84, 84);
+  border-top-right-radius: 8px;
+  border-top-left-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin: 60px 0;
+  font-family: Arial, sans-serif;
+  border-collapse: collapse;
+  
+}
+
+th{
+  border-top: 1px solid rgb(116, 115, 115);
+  padding-right: 10px;
+
+}
+
+.filaUsuario,.filaRol,.filaFicha,.filaPrograma,.filaFormacion,.filaJornada,.filaEstado{
+ border: unset;
+ text-overflow: ellipsis;
+ height: 40px;
+ background-color: #f8f9fa;
+ border-right: none;
+}
+
+.filaUsuario{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.datos{
+  height: 60px;
+  padding: 10px;
+  font-weight: 300;
+}
+
+.datosNombre{
+  display: flex;
+  align-items: center;
+}
+
+.inputEdicion{
+  background: none;
+  border: none;
+  width: 100%;
+  text-overflow: ellipsis;
+}
+
+
+.editarNombre::placeholder{
+  color: black;
+  
+}
+.editarNombre{
+  font-weight: 700;
+}
+
+
+.botonTresPuntos{
+  border: none;
+  background-color: transparent  ;
+}
+
+.opcionesTresPuntos{
+  display: flex;
+  position: fixed;
+  right: 190px;
+  z-index: 1000;
+  box-shadow: 1px 3px 11px black;
+  background: slategray;
+  width: 200px;
+  height: 150px;
+  opacity: 0;
+  display: none;
+
+}
+
+.opcionesTresPuntos.mostrar{
+  display: flex;
+  position: fixed;
+  
+  opacity: 1;
+  
+
+}
+
+
+.paginacion {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.paginacion a {
+  display: inline-block;
+  padding: 8px 12px;
+  margin: 5px;
+  text-decoration: none;
+  background: #007bff;
+  color: white;
+  border-radius: 5px;
+}
+
+.paginacion a.activo {
+  background: #0056b3;
+  font-weight: bold;
+}
+
+
+@media (min-width:320px) and (max-width:694px) {
+    .tabla-container{
+      overflow-x: auto;
+      width: 100%;
+    }
+
+    .paginacion{
+      text-align: left;
+      margin-left: 100px;
+    }
+
+    .filaUsuario{
+      width: 300px;
+    }
+}

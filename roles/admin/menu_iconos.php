@@ -5,6 +5,12 @@ $con = $conex->conectar();
 
 
 
+<<<<<<< HEAD
+=======
+$codigo = $_SESSION['documento'];
+$nombre = explode(" ", $_SESSION['nombre'])[0];
+$rol =$_SESSION['rol_name'];
+>>>>>>> 6f949ae (Commit adelanto admin)
 ?>
 
 
@@ -29,9 +35,29 @@ $con = $conex->conectar();
     <nav class ="menu estado-menu" id="barrita_iconos">
 
                 <div class="imagenes"><a href="../../includes/sesion_destroy.php"> <img src="imgAdmin/ex.png" alt=" imagen de salida"> <span class="estado"> Cerrar Sesion</span></a></div>
+<<<<<<< HEAD
                 <div class="imagenes"><a href="objetos_index.php"><img src="imgAdmin/confi.png" alt="imagen de configuracion"> <span class="estado"> Configuracion</span></a></div>
                 <div class="imagenes"><a href="#"><img src="imgAdmin/notf.png" alt="imagen de notificaciones"><span class="estado">Notificaciones</span></a></div>
                 <div class="imagenes"><a href="#"><img src="imgAdmin/usu.png" alt="imagen del usuario"><span class="estado">Perfil</span></a></div>
+=======
+                <div class="imagenes"><a href="./configuracion.php"><img src="imgAdmin/confi.png" alt="imagen de configuracion"> <span class="estado"> Configuracion</span></a></div>
+                <div class="imagenes"><a href="#"><img src="imgAdmin/notf.png" alt="imagen de notificaciones"><span class="estado">Notificaciones</span></a></div>
+
+                <!-- aqui aplico otra consulta para mostrar la foto de perfil del usuario  -->
+                 <?php 
+                 $sql = $con->prepare("SELECT foto FROM usuario WHERE id_documento = $codigo");
+                 $sql->execute();
+
+                 $resultado = $sql->fetch(PDO::FETCH_ASSOC);
+                 $foto = $resultado['foto'];
+                 $fotoActual = "../../uploads/" . $foto;
+                 $usu = "../../uploads/usu.png"
+
+                  ?>
+                  
+                <div class="imagenes"><a href="#"><img src=<?php echo !empty($foto) ?$fotoActual : $usu  ?> alt="imagen del usuario"> <span class="estado">Perfil</span></a></div>
+                <!-- ------------------------------------------------------------------------------------------- -->
+>>>>>>> 6f949ae (Commit adelanto admin)
                 <div class="nombre"><a href=""><span class="estado nombre" id ="name"><?php echo isset($nombre) ? $nombre : 'usuario' ?></span><span class="nombre"><?php echo isset($rol) ? $rol : "uknown"?></span> </a></div>      <!-- ESTE ES EL TEXTO -->
                 <button class="menu_cerrar_button estado" id="close"><i class="bi bi-x-lg"></i></button>      <!-- ESTE ES EL TEXTO -->
             

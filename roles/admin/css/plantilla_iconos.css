@@ -2,6 +2,10 @@
         margin: 0;
         padding: 0;
         transition: 0.5s;
+<<<<<<< HEAD
+=======
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+>>>>>>> 6f949ae (Commit adelanto admin)
     }
 
 
@@ -65,7 +69,11 @@
             justify-content: start;
             gap: 15px;
             transition: 1s;
+<<<<<<< HEAD
             z-index: 1;         /* OJO AQUI ESTA EL Z index */
+=======
+            
+>>>>>>> 6f949ae (Commit adelanto admin)
         }
         .estado-menu{
             display: none;
@@ -75,6 +83,10 @@
         .menu .imagenes img{
             width: 30px;
             height: 30px;
+<<<<<<< HEAD
+=======
+            border-radius: 15px;
+>>>>>>> 6f949ae (Commit adelanto admin)
         }
 
 
@@ -117,11 +129,14 @@
             text-decoration: none;
             color: white;
         }
+<<<<<<< HEAD
 
         .home_title img{
             width: 300px;
             height: 200px;
         }
+=======
+>>>>>>> 6f949ae (Commit adelanto admin)
     }
 
 

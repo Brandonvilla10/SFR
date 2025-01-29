@@ -35,4 +35,54 @@ aside.addEventListener("mouseout", () => {
         element.style.justifyContent = "center";
     })
 });
+<<<<<<< HEAD
+=======
+
+
+}
+
+
+
+if(window.innerWidth >= 320 && window.innerWidth <= 767){
+
+const hamburguesa = document.getElementById('abrir');
+const barralateral = document.getElementById('barraLateral');
+const enlaces = document.querySelectorAll('a'); 
+
+enlaces.forEach(enlace => {
+        enlace.style.pointerEvents = 'none' 
+    });
+
+
+
+
+
+hamburguesa.addEventListener("click", () => {
+    barralateral.classList.toggle("dentro");
+    barralateral.style.backgroundColor = "#63AEE8";
+
+    if(barralateral.classList.contains("dentro")){
+        enlaces.forEach(enlace => {
+            enlace.style.pointerEvents = 'auto' 
+            
+        });
+        texto.forEach((element) => {
+            element.style.visibility = "hidden"; 
+            element.style.display = "none"; 
+        });
+
+    }else if(barralateral.classList.contains("fuera")){
+        enlaces.forEach(enlace => {
+            enlace.style.pointerEvents = 'none' 
+            
+         });
+
+         texto.forEach((element) => {
+            element.style.visibility = "hidden"; 
+            element.style.display = "none"; 
+        });
+    }
+});
+
+>>>>>>> 6f949ae (Commit adelanto admin)
 }

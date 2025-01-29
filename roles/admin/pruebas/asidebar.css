@@ -11,7 +11,7 @@
 .container-lateral{
     position: fixed;
     bottom: 0;
-    background-color: cornflowerblue;
+    background-color: #63aee8;
     width: 100%;
     height: 60px;
     min-height: 60px;
@@ -71,8 +71,8 @@
         background-color: cornflowerblue;
         width: 76px;
         min-width: 76px;
-        min-height: 600px;
-        height: 92vh;
+        min-height: 483px;
+        height: clamp(90%,100%,93%);
         bottom: 4%;
         border-radius: 21px;
         margin-left: 15px;
@@ -80,6 +80,8 @@
 
     .main{
         flex-direction: column;
+        height: 90vh;
+        min-height: 420px;
     }
 
     .container-iconos{
@@ -87,6 +89,9 @@
         display: flex;
         flex-direction: column;
         margin-left: unset;
+        height: 100vh;
+        min-height: 420px;
+        justify-content: space-around;
     }
 
     .gota {
@@ -100,8 +105,9 @@
         border-top-right-radius: 19px;
         border-bottom-right-radius: 23px;
         position: absolute;
-        top: 4%;
+        top: 43.3625px;
         z-index: -1;
+        transition: 1s ease ;
     }
 
     .iconos{
@@ -109,11 +115,9 @@
         min-width: 35px;
         height: 45px;
         min-height: 35px;
-        margin-bottom: 25px;
     }
 
     #homeAzul{
-        margin-top: 10px;
         margin-bottom: 100px;
     }
 
@@ -128,29 +132,19 @@
 
     .container-iconos{
         margin-left: unset;
+        height: 47vh;
+        min-height: 420px;
+        justify-content: space-around;
     }
     .gota{
         width: 90px;
-        height: 70px;
         left: 4px;
         top: 3%;
     }
 
 }
 
-@media (min-height:1180px) and (min-height:1366px) {
-    .iconos{
-        width: 50px;
-        height: 50px;
-        margin-left: unset;
-    }
-    .gota{
-        width: 6vh;
-        height: 4.1vh;
-        
-        top: 2%;
-    }
-}
+
 
 @media (min-width:1024px) {
     .container-lateral{
@@ -158,9 +152,7 @@
         min-width: 80px;
     }
 
-    .gota{
-        left: 5px;
-    }
+
 }
 
 @media  (min-width:1440px){
@@ -174,6 +166,7 @@
         min-width: 94px;
         left: 6px;
     }
+
 }
 
 
@@ -193,8 +186,9 @@
 .gota{
     width: 96px;
     min-width: 96px;
+    top: 72px;
+    height: 73px;
 }
-
 
 
 }

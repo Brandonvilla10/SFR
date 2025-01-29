@@ -1,0 +1,153 @@
+
+*{
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    transition: 0.5s;
+}
+
+a{
+    color: white;
+    text-decoration: none;
+}
+
+
+
+
+
+
+aside{
+    height: clamp(600px,100%,100%);
+    border-top-right-radius: 6px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #63AEE8;
+    width: 91px;
+    transition: 0.5s;
+}
+
+.Logo{
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    width: clamp(60px, 100%, 280px);
+}
+
+
+hr{
+    margin-top: 20px;
+    width: 88%;
+    border: 1px solid midnightblue;
+}
+.logoSenaFast{
+    width: 40px;
+    height: 50px;
+}
+
+.seccion{
+    display: flex;
+    margin-top: 20px;
+    align-items: center;
+    margin-left: 10px;
+    width: 150px;
+    justify-content: center;
+    transition: 1.0s;
+}
+
+
+.icono{
+    padding-right: 10px;
+    width: 30px;
+    height: 30px;
+    transition: 1s;
+}
+
+.seccionTexto{
+    color: white;
+    font-weight: 600;
+    visibility: hidden;
+    display: none;
+    transition: 0.5s;
+    
+}
+
+.contenedorUsuario{
+    width: 100%;
+    margin-top: auto;
+}
+.seccionUsuario{
+    background-color: #498ad4;
+    width: 100%;
+    height: 127px;
+    display: flex;
+    text-align: center;
+    flex-direction: column-reverse;
+    align-items: center;
+    transition: 1s;
+}
+
+.iconoPersona{
+    width: 50px;
+    height: 50px;
+    border-radius: 45px;
+}
+.menu_iconos_burguer{
+    display: none;
+}
+
+@media (min-width:320px) and (max-width:768px){
+    aside{
+        overflow: auto;
+        position: fixed;
+        z-index: 1000;
+        background-color: unset;
+        
+    }
+
+    .fuera{
+        opacity: 0%;
+    }
+
+    .dentro{
+        opacity: 100%;
+    }
+
+   
+    .menu_iconos_burguer{
+        display: block;
+        border: 0;
+        right: 56px;
+        font-size: 2.5rem;
+        background-color: transparent;
+        cursor: pointer;
+        color:  rgb(5, 59, 159);
+        position: absolute;
+        z-index: 1011;
+        visibility: visible;
+    }
+    .seccionUsuario{
+        flex-direction: column;
+    }
+    .contenedorUsuario{
+        width: 100%;
+        margin-top: auto;
+    }
+    
+}
+
+@media (min-width: 769px){
+    
+    
+    .seccion:hover{
+        background-color: #498ad4;
+        border-radius: 5px;
+        padding-left: 20px;
+        transition: 0.5s;
+    }
+    aside:hover{
+        min-width: 100px;
+        width: 180px;
+        transition: 0.5s;
+    }
+}

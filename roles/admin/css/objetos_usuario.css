@@ -1,0 +1,182 @@
+*{
+    padding: 0;
+    margin: 0;
+}
+body{
+    background-color: #f7f7f7;
+}
+
+.container_grid{
+    display: grid;
+    grid-template: 
+        "sidebar menu" 100px
+        "sidebar main" auto 
+        /
+        130px auto;
+    width: 100vw;
+    height: 100vh;
+   
+}
+
+@media (min-width:320px), (max-width:320px){
+
+    .container_grid{
+        display: grid;
+        grid-template: 
+            "sidebar menu" auto
+            "sidebar main" 100px
+            /
+        auto 1fr;
+        width: 100vw;
+        height: 100vh;
+        }
+
+    .aside_barra{
+        grid-area: sidebar;
+    }
+    .grid_contenido_plantilla{
+        grid-area: main;
+       
+    }
+
+
+    
+}
+
+@media (min-width: 767px) {
+    .container_grid{
+    display: grid;
+    grid-template: 
+       
+        "sidebar main" auto 
+        /
+        auto 1fr;
+    width: 100vw;
+    height: 100vh;
+    }
+    .aside_barra{
+        grid-area: sidebar;
+    }
+    .grid_contenido_plantilla{
+        grid-area: main;
+        padding: 15px;
+        display: flex;
+        flex-direction: column;
+        justify-content: start;
+        align-items: center;
+        box-sizing: border-box;
+    }
+
+    .titulo_objetos_usuario{
+        margin: 20px;
+        padding-left: 80px;
+        box-sizing: border-box;
+        align-self: start;
+        width: 100%;
+
+    }
+    .titulo_objetos_usuario hr{
+       
+        margin-top: 10px;
+        
+    }
+
+    .objetos{
+        margin-top: 10px;
+        width: 80%;
+        height: 500px;
+        background-color: #ffff;
+        display: flex;
+        flex-wrap: wrap;
+        border-radius: 15px;
+        overflow-y: auto;
+        overflow-x: hidden;
+
+    }
+
+    .objects_cards{
+        background-color: #f7f7f7;
+        display: flex;
+        width: 300px;
+        flex-direction: column;
+        height: 285px;
+        box-sizing: border-box;
+        border-radius: 15px;
+        margin: 20px;
+        box-shadow: 5px 5px;
+    }
+
+    .formulario_tarjetas{
+        display: flex;
+        justify-content: center;
+    }
+
+    .objects_cards .image{
+        background-color: #ffff;
+        display: flex;  
+        flex-direction: column;
+        width: 80%;
+        height: 50%;
+        align-self: center;
+        margin-top: 15px;
+        text-align: center;
+        font-size: 13px;
+        padding-top: 5px;
+        box-sizing: border-box;
+        overflow: hidden;
+        border-radius: 10px;
+
+    }
+    .objects_cards .image img{
+        align-self: center;
+        border-radius: 10px;
+        object-fit: cover;
+        width: 200px;
+        height: 115px;
+    }
+
+    .name_cart{
+        align-self: center;
+        text-align: center;
+        text-transform: capitalize;
+        font-size: 14px;
+        margin-top: 10px;
+        width: 80%;
+    }
+
+    .options_card{
+        align-self: center;
+        display: flex;
+        justify-content: space-evenly;
+        color: gray;
+        font-size: 12px;
+        box-sizing: border-box;
+        padding: 10px;
+        width: 80%;
+    }
+    .options_card i{
+        font-size: 1.5rem; 
+        background-color: #ffff;   
+        border-radius: 10px;
+    }
+    .options_card button{
+       border: none
+    }
+
+    .options_card button:hover i{
+        scale: 1.5;
+        animation: variante_color 6s infinite alternate;
+     }
+   
+}
+
+@keyframes variante_color{
+    0%{
+        background-color: cornflowerblue;
+
+    }
+
+    100%{
+        background-color: white;
+    }
+}

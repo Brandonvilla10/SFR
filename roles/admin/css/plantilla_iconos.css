@@ -65,7 +65,7 @@
             justify-content: start;
             gap: 15px;
             transition: 1s;
-            
+            z-index: 1;         /* OJO AQUI ESTA EL Z index */
         }
         .estado-menu{
             display: none;
@@ -116,6 +116,11 @@
             gap: 20px;
             text-decoration: none;
             color: white;
+        }
+
+        .home_title img{
+            width: 300px;
+            height: 200px;
         }
     }
 

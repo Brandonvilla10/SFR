@@ -29,7 +29,7 @@ $con = $conex->conectar();
     <nav class ="menu estado-menu" id="barrita_iconos">
 
                 <div class="imagenes"><a href="../../includes/sesion_destroy.php"> <img src="imgAdmin/ex.png" alt=" imagen de salida"> <span class="estado"> Cerrar Sesion</span></a></div>
-                <div class="imagenes"><a href="#"><img src="imgAdmin/confi.png" alt="imagen de configuracion"> <span class="estado"> Configuracion</span></a></div>
+                <div class="imagenes"><a href="objetos_index.php"><img src="imgAdmin/confi.png" alt="imagen de configuracion"> <span class="estado"> Configuracion</span></a></div>
                 <div class="imagenes"><a href="#"><img src="imgAdmin/notf.png" alt="imagen de notificaciones"><span class="estado">Notificaciones</span></a></div>
                 <div class="imagenes"><a href="#"><img src="imgAdmin/usu.png" alt="imagen del usuario"><span class="estado">Perfil</span></a></div>
                 <div class="nombre"><a href=""><span class="estado nombre" id ="name"><?php echo isset($nombre) ? $nombre : 'usuario' ?></span><span class="nombre"><?php echo isset($rol) ? $rol : "uknown"?></span> </a></div>      <!-- ESTE ES EL TEXTO -->

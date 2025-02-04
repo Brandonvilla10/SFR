@@ -13,7 +13,6 @@ aside.addEventListener("mouseover", () => {
         element.style.display = "block"; 
     });
     
-    
     fotoPersona.style.height = "100px";
     fotoPersona.style.width = "80px";
     seccion.forEach((element) =>{
@@ -41,7 +40,6 @@ aside.addEventListener("mouseout", () => {
 
 
 
-if(window.innerWidth >= 320 && window.innerWidth <= 767){
 
 const hamburguesa = document.getElementById('abrir');
 const barralateral = document.getElementById('barraLateral');
@@ -50,8 +48,6 @@ const enlaces = document.querySelectorAll('a');
 enlaces.forEach(enlace => {
         enlace.style.pointerEvents = 'none' 
     });
-
-
 
 
 
@@ -82,4 +78,3 @@ hamburguesa.addEventListener("click", () => {
     }
 });
 
-}

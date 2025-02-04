@@ -5,6 +5,7 @@ $con = $conexion->conectar();
 session_start();
 
 
+
 // seccion para registrar un nuevo usuario 
 if(isset($_POST['submit'])){
     $documento = $_POST['documento'];
@@ -13,7 +14,7 @@ if(isset($_POST['submit'])){
     $contraseña = $_POST['contraseña'];
     $confirmarContraseña = $_POST['confirmarContraseña'];
 
-    $ficha = 1;
+    $ficha = 2901879;
     $estado = 2;
     $rol = 2;
 
@@ -87,7 +88,32 @@ if($paginaActual < 1){
     $paginaActual = 1;
 }
 
-$offset = ($paginaActual - 1) * $registrosPorPagina
+$offset = ($paginaActual - 1) * $registrosPorPagina;
+
+
+
+
+if(isset($_POST['Eliminar'])){
+    $fichaUsuario = $_POST['fichaUsuario'];
+    $documentoUsuario = $_POST['documentoUsuario'];
+    $contraseñaAdmin = $_POST['contraseñaAdmin'];
+    
+    
+    $consulta = $con->prepare("SELECT * FROM usuario WHERE id_documento = '$codigo'");
+    $consulta->execute();
+    
+    $fila = $consulta->fetch(PDO::FETCH_ASSOC);
+    if($fila && password_verify($contraseñaAdmin, $fila['contraseña'])){
+        $precuacion = $con->prepare("DELETE FROM usuario WHERE ficha = :ficha AND id_documento = :documentoUsuario");
+        $precuacion->bindParam(":documentoUsuario",$documentoUsuario,PDO::PARAM_INT);
+        $precuacion->bindParam(":ficha",$fichaUsuario,PDO::PARAM_INT);
+        $precuacion->execute();
+    
+    }
+    }
+
+
+
 ?>
 
 <!DOCTYPE html>
@@ -111,51 +137,91 @@ $offset = ($paginaActual - 1) * $registrosPorPagina
                 <h1>Usuarios</h1>
                 <p style="color:#858585">Administra los usuarios según la necesidad aquí.</p>
             </div>
+            <div class="botonFuncionales">
+
+            <div class="EliminarUsuarioDiv">
+                <button class="botonEliminar" id="botonEliminar" type="button"><p id="textoEliminar">+</p>Eliminar Usuario</button>
+            </div>
+
             <div class="AgregarUsuarioDiv">
                 <button class="botonAgregar" id="botonAgregar" type="button"><p id="textoAbrir">+</p>Agregar Usuario</button>
             </div>
+
+            </div>
+
         </nav>
 
         <main class="grid_contenido_plantilla">
             <hr style="border: 1px solid black;">
-            <div class="CrearUsuario" id="CrearUsuario">
-                <form class="form" method="POST">
-                    <p class="title">Registro De Usuario</p>
-                    <p class="message">Registrar Usuario En La Plataforma.</p>
 
-                    <div class="flex">
-                        <label>
-                            <input name="nombre" required type="text" class="input" placeholder="">
-                            <span>Nombre Completo</span>
-                        </label>
-                        <label>
-                            <input name="documento" required type="text" class="input" placeholder="">
-                            <span>Documento</span>
-                        </label>
-                    </div>
+<div class="CrearUsuario" id="CrearUsuario">
+    <form class="form" method="POST">
+        <p class="title" id="tituloRegistro">Registro De Usuario</p>
+        <p class="message" id="mensajeRegistro">Registrar Usuario En La Plataforma.</p>
 
-                    <label>
-                        <input name="email" required type="email" class="input" placeholder="">
-                        <span>Email</span>
-                    </label>
+        <div class="direccion" id="direccionRegistro">
+            <div class="flex" id="flexRegistro">
+                <span class="spanRegistro" id="labelNombre">Nombre Completo</span>
+                <input id="nombre" name="nombre"  type="text" class="input inputsNuevoRegistro" placeholder="">
 
-                    <label>
-                        <input name="contraseña" required type="password" class="input" placeholder="">
-                        <span>Contraseña</span>
-                    </label>
+                <span class="spanRegistro" id="labelDocumento">Documento</span>
+                <input id="documento" name="documento"  type="text" class="input inputsNuevoRegistro" placeholder="">
 
-                    <label>
-                        <input name="confirmarContraseña" required type="password" class="input" placeholder="">
-                        <span>Confirmar Contraseña</span>
-                    </label>
+                <span class="spanRegistro" id="labelEmail">Email</span>
+                <input id="email" name="email"  type="email" class="input inputsNuevoRegistro" placeholder="">
+            </div>  
 
-                    <input type="submit" value="Registrar" name="submit" class="submit">
+            <div id="grupoContraseñas">
+                <span class="spanRegistro" id="labelContraseña">Contraseña</span>
+                <input id="contraseña" name="contraseña"  type="password" class="input inputsNuevoRegistro" placeholder="">
+
+                <span class="spanRegistro" id="labelConfirmarContraseña">Confirmar Contraseña</span>
+                <input id="confirmarContraseña" name="confirmarContraseña"  type="password" class="input inputsNuevoRegistro" placeholder="">
+            </div>                
+        </div>
+
+        <input type="submit" value="Registrar" name="submit" id="registrarCrearUsuario" class="submit">
+    </form>
+</div>
+
+
+
+
+
+            <div class="EliminarUsuario" id="EliminarUsuario">
+                <form class="formEliminar" method="POST">
+                    <p class="EliminarTitulo">Eliminar Usuario</p>
+                    <p class="messageelimnar">Tenga En Cuenta Que Los Cambios No Son Reversibles.</p>
+
+                        <span>Ficha Del Usuario</span>
+                        <input name="fichaUsuario" required type="number" class="fichaUsuarioEliminar" placeholder="Ficha Del Usuario">
+                        <span>Documento Del Usuario</span>
+                        <input name="documentoUsuario" required type="number" class="documentoUsuario" placeholder="Documento Del Usuario">
+                        <span>Contraseña Administrador</span>
+
+                        <input name="contraseñaAdmin" required type="text" class="contraseñaAdmin" placeholder="Contraseña Administrador">
+
+
+                    <input type="submit" value="Eliminar" name="Eliminar" class="EliminarUsuarioboton">
                 </form>
             </div>
 
+
+
+                        
+
+
+
             <section class="verUsuarios" id="verUsuarios">
+
+            <div class="buscador">
+                <input type="text" id="buscarUsuario" placeholder="Buscar Usuario..." oninput="buscarUsuarios()">
+            </div>
+
+            
+
             <div class="tabla-container">
-                <table class="tabla">
+                <table class="tabla" id="tablaUsuarios">
                     <tr>
                         <th class="filaUsuario">Usuario</th>
                         <th class="filaRol">Rol</th>
@@ -169,19 +235,25 @@ $offset = ($paginaActual - 1) * $registrosPorPagina
 
                     <?php 
                     // aqui me esttroy trayendo varias tablas para poder usarlas a lo largo de la interfaz
-                    $sql = $con->prepare("SELECT * FROM usuario INNER JOIN rol ON rol.id_rol = usuario.id_rol
-                                          INNER JOIN fichas ON fichas.n_ficha = usuario.ficha
-                                          INNER JOIN estado ON estado.id_estado = usuario.id_estado
-                                          LIMIT :limit OFFSET :offset");
-                    $sql->bindParam(":limit",$registrosPorPagina, PDO::PARAM_INT);
-                    $sql->bindParam(":offset",$offset,PDO::PARAM_INT);
-                    $sql->execute();
 
                     // aqui estoy contando la cantidad de registros para la paginacion
                     $totalRegistrosQuery = $con->query("SELECT COUNT(*) as total FROM usuario");
                     $totalRegistros = $totalRegistrosQuery->fetch(PDO::FETCH_ASSOC)['total'];
 
                     $totalPaginas = ceil($totalRegistros / $registrosPorPagina);
+                    
+                $sql = $con->prepare("SELECT usuario.*, usuario.foto, fichas.n_ficha, programa.nombrePrograma,rol.nombre_rol,estado.estado, nivelformacion.nivelDeFormacion, jornada.jornada  FROM usuario            INNER JOIN rol ON rol.id_rol = usuario.id_rol
+                                        INNER JOIN fichas ON fichas.n_ficha = usuario.ficha
+                                        INNER JOIN estado ON estado.id_estado = usuario.id_estado
+                                        INNER JOIN programa ON fichas.id_programaFormacion = programa.id_programaFormacion
+                                        INNER JOIN nivelformacion ON fichas.id_nivelFormacion = nivelformacion.id_nivelFormacion
+                                        INNER JOIN jornada ON fichas.id_jornada = jornada.id_jornada
+                                        LIMIT :limit OFFSET :offset");
+                    $sql->bindParam(":limit",$registrosPorPagina, PDO::PARAM_INT);
+                    $sql->bindParam(":offset",$offset,PDO::PARAM_INT);
+                    $sql->execute();
+
+                    
 
 // este codigo de aqui es para las fotos de los ususairos gracias a esto pueod dar direcciones a las iamgenes e indntificarlas
                     $fila = $sql->fetchAll(PDO::FETCH_ASSOC);
@@ -196,20 +268,20 @@ $offset = ($paginaActual - 1) * $registrosPorPagina
                         <th class="datos datosNombre">
                             <img style="border-radius: 15px;" width="30px" height="30px" src="<?php echo !empty($resultado['foto']) ? $mostrar : $usu ?>" alt="">
                             <div style="flex-direction: column;">
-                                <input class="editarNombre inputEdicion" type="text" placeholder="<?php echo $resu['nombre_completo'] ?>">   
-                                <input class="editarCorreo inputEdicion" type="email" placeholder="<?php echo $resu['correo'] ?>">
-                                <input class="editarCorreo inputEdicion" type="email" placeholder="<?php echo $resu['id_documento'] ?>">
+                                <input class="editarNombre inputEdicion" disabled type="text" placeholder="<?php echo $resu['nombre_completo'] ?>">   
+                                <input class="editarCorreo inputEdicion" disabled type="email" placeholder="<?php echo $resu['correo'] ?>">
+                                <input class="editarCorreo inputEdicion" disabled type="email" placeholder="<?php echo $resu['id_documento'] ?>">
                             </div>
                         </th>
                         <th class="datos"><?php echo $resu['nombre_rol'] ?></th>
                         <th class="datos"><?php echo $resu['ficha'] ?></th>
-                        <th class="datos"><?php echo $resu['nombre_formacion'] ?></th>
+                        <th class="datos"><?php echo $resu['nombrePrograma'] ?></th>
                         <th class="datos"><?php echo $resu['nivelDeFormacion'] ?></th>
                         <th class="datos"><?php echo $resu['jornada'] ?></th>
                         <th class="datos"><?php echo $resu['estado'] ?></th>
                         <th class="datos">
                             <input type="button" id="botonTresPuntos" class="botonTresPuntos">
-                                <img src="./imgAdmin/tres puntos.png" width="30px" onclick="abrirVentana('actualizar.php?documento=<?php echo $resu['id_documento']; ?>')" height="30px"alt="" >
+                                <img class="imagenDeLostrespuntos" src="./imgAdmin/tres puntos.png" width="30px" onclick="abrirVentana('actualizar.php?documento=<?php echo $resu['id_documento']; ?>')" height="30px"alt="" >
 
 
 
@@ -244,20 +316,21 @@ $offset = ($paginaActual - 1) * $registrosPorPagina
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
     <script src="../../js/js.js"></script>
     <script src="./js/crearUsuario.js"></script>
+    <script src="js/buscarUsuario.js"></script>
 
 
     <script>
         function abrirVentana(url) {
-    const ancho = window.screen.width / 2
-    const alto =   window.screen.height / 2
+    const ancho = window.screen.width / 1.5
+    const alto =   window.screen.height / 1.5
 
     const x = (window.screen.width / 2) - (ancho / 2);
     const y = (window.screen.height / 2) - (alto / 2);
     
     const opciones = `width=${ancho},height=${alto},top=${y},left=${x},toolbar=no,menubar=no,scrollbars=no,resizable=no,location=no,status=no`;
     window.open(url, '', opciones);
-}
 
+}
     </script>
 </body>
 </html>

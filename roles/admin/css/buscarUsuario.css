@@ -1,6 +1,4 @@
-.gota{
-    top: 347.8px ;
-}
+
 
 .menu{
     display: flex;
@@ -10,10 +8,21 @@
 }
 
 .AgregarUsuarioDiv{
-    margin-right: 200px; ;
+    margin-right: 100px; ;
 }
 
-.botonAgregar{
+.botonFuncionales{
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+}
+
+.botonAgregar:hover{
+  transform: scale(1.1);
+  background-color: rgb(228, 252, 251);
+}
+
+.botonAgregar,.botonEliminar{
   height: 40px;
   width: 180px;
   display: flex;
@@ -24,6 +33,86 @@
   cursor: pointer;
   justify-content: center;
   align-items: center;
+}
+
+.botonEliminar{
+  background-color: crimson;
+  color: white;
+}
+
+.botonEliminar:hover{
+  background-color: red;
+  transform: scale(1.1);
+}
+
+
+.EliminarUsuario{
+  opacity: 0;
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 65%;
+  transition: 1s;
+}
+
+.direccion{
+  display: flex;
+  gap: 30px;
+}
+
+.formEliminar{
+  background-color: rgb(0 13 32);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-width: 350px;
+  padding: 20px;
+  border: 1px solid black;
+  padding-right: 36px;
+  border-radius: 20px;
+}
+
+.EliminarTitulo{
+  font-size: 23px;
+  color:white;
+  font-weight: bold;
+}
+
+.messageelimnar{
+  font-size: small;
+  color: crimson;
+}
+.fichaUsuarioEliminar,.documentoUsuario,.contraseñaAdmin{
+    width: 100%;
+    height: 45px;
+    border-radius: 10px;
+    border: none;
+    background-color: rgb(7, 24, 51);;
+    color: white;
+}
+
+
+
+.EliminarUsuarioboton{
+  text-align: center;
+  color: white;
+  width: 100%;
+  height: 45px;
+  border-radius: 10px;
+  border: none;
+  background-color: crimson;
+}
+span{
+  color: rgb(255, 255, 255);
+}
+
+.spanRegistro{
+  color: black;
+  font-size: small;
+}
+
+#textoEliminar{
+  padding-right: 10px;
 }
 
 #textoAbrir{
@@ -51,8 +140,8 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
-  max-width: 350px;
-  background-color: #fff;
+  max-width: 500px;
+  background-color: white;
   padding: 20px;
   border: 1px solid black;
   padding-right: 36px;
@@ -62,7 +151,7 @@
   
   .title {
     font-size: 28px;
-    color: royalblue;
+    color: #63aee8;
     font-weight: 600;
     letter-spacing: -1px;
     position: relative;
@@ -110,49 +199,8 @@
     text-decoration: underline royalblue;
   }
   
-  .flex {
-    display: flex;
-    width: 100%;
-    gap: 6px;
-  }
   
-  .form label {
-    position: relative;
-  }
-  
-  .form label .input {
-    width: 100%;
-    padding: 10px 10px 20px 10px;
-    outline: 0;
-    border: 1px solid rgba(105, 105, 105, 0.397);
-    border-radius: 10px;
-  }
-  
-  .form label .input + span {
-    position: absolute;
-    left: 10px;
-    top: 15px;
-    color: grey;
-    font-size: 0.9em;
-    cursor: text;
-    transition: 0.3s ease;
-  }
-  
-  .form label .input:placeholder-shown + span {
-    top: 15px;
-    font-size: 0.9em;
-  }
-  
-  .form label .input:focus + span,.form label .input:valid + span {
-    top: 30px;
-    font-size: 0.7em;
-    font-weight: 600;
-  }
-  
-  .form label .input:valid + span {
-    color: green;
-  }
-  
+
   .submit {
     border: none;
     outline: none;
@@ -168,6 +216,14 @@
     background-color: rgb(56, 90, 194);
   }
   
+  .inputsNuevoRegistro{
+    background-color: #85c1ef;
+    width: 100%;
+    height: 45px;
+    border-radius: 7px;
+    border: 2px solid gray;
+  }
+
   @keyframes pulse {
     from {
       transform: scale(0.9);
@@ -180,6 +236,29 @@
     }
   }
 
+#buscarUsuario{
+  height: 30px;
+  padding-left: 10px;
+  margin-left: 70px;
+  width: 20%;
+  border-radius: 25px;
+  text-transform: capitalize;
+  border: none;
+  color: black;
+  box-shadow: 1px 2px 10px black;
+}
+
+#buscarUsuario::placeholder{
+  color: black;
+  border: none;
+}
+
+#buscarUsuario:focus{
+  border: none;
+  outline: none;
+  width: 23%;
+  background-color:#d7e7f8;
+}
 
 .tabla{
   text-align: left;
@@ -189,7 +268,6 @@
   border-top-left-radius: 8px;
   overflow: hidden;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  margin: 60px 0;
   font-family: Arial, sans-serif;
   border-collapse: collapse;
   
@@ -248,6 +326,10 @@ th{
   background-color: transparent  ;
 }
 
+.imagenDeLostrespuntos:hover{
+  transform: scale(1.4);
+}
+
 .opcionesTresPuntos{
   display: flex;
   position: fixed;
@@ -299,12 +381,44 @@ th{
       width: 100%;
     }
 
+    .formEliminar{
+      position: fixed;
+      left: 1%;
+    }
+
     .paginacion{
       text-align: left;
       margin-left: 100px;
     }
 
+    .CrearUsuario.mostrar{
+      left: 0%;
+    }
+
     .filaUsuario{
       width: 300px;
     }
+}
+@media (min-width:768px) {
+    .datosNombre{
+      width: 175px;
+    }
+    
+    .formEliminar{
+      left: 65%;
+      position: fixed;
+    }
+
+    .CrearUsuario.mostrar{
+      left: 30%;
+    }
+}
+
+@media (min-width:1024px){
+  .datosNombre{
+    width: unset;
+  }
+  .form{
+    left: 65%;
+  }
 }

@@ -31,8 +31,9 @@ html,body{
             "main" auto 
             "sidebar" auto
             / auto;  /* El grid se ajusta para dispositivos móviles */
-        width: 100%;
-        height: 100%;
+            width: 100%;
+            height: 100%;
+            overflow-y: auto;
     }
 
     /* Ajustes para la barra lateral y contenido principal */
@@ -52,7 +53,7 @@ html,body{
         grid-template: 
             "sidebar header" 130px
             "sidebar main" auto 
-            / auto 1fr;  /* El grid se ajusta para dispositivos más grandes */
+            / 100px 1fr;  /* El grid se ajusta para dispositivos más grandes */
         width: 100%;
         height: 100%;
     }
@@ -209,6 +210,8 @@ html,body{
         max-height: 338px;
     }
 
+    
+
     .grafica_dona {
         max-height: 338px;
     }
@@ -216,5 +219,18 @@ html,body{
     .graficas{
         min-height: 381px;
         height: 50%;
+    }
+}
+
+@media (min-width:720px) {
+    
+    .container_grid{
+        display: grid;
+        grid-template: 
+            "sidebar header" 130px
+            "sidebar main" auto 
+            / auto 1fr;  /* El grid se ajusta para dispositivos más grandes */
+        width: 100%;
+        height: 100%;
     }
 }

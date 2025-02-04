@@ -4,15 +4,19 @@ $conexion = new database;
 $con = $conexion->conectar();
 session_start();
 
-$documento = $_GET['documento'];
-$_SESSION['documentoUpload'] = $documento;
+$documentoVentana = $_GET['documento'];
+$_SESSION['documentoUpload'] = $documentoVentana;
 
 // Consulta principal para obtener los datos del usuario
-$sql = $con->prepare("SELECT * FROM usuario 
-                      INNER JOIN rol ON rol.id_rol = usuario.id_rol
-                      INNER JOIN fichas ON fichas.n_ficha = usuario.ficha
-                      INNER JOIN estado ON estado.id_estado = usuario.id_estado 
-                      WHERE id_documento = '$documento'");
+$sql = $con->prepare("SELECT usuario.*, usuario.foto, fichas.n_ficha, programa.*,rol.nombre_rol,estado.estado, nivelformacion.*, 
+
+jornada.*  FROM usuario            INNER JOIN rol ON rol.id_rol = usuario.id_rol
+                                        INNER JOIN fichas ON fichas.n_ficha = usuario.ficha
+                                        INNER JOIN estado ON estado.id_estado = usuario.id_estado
+                                        INNER JOIN programa ON fichas.id_programaFormacion = programa.id_programaFormacion
+                                        INNER JOIN nivelformacion ON fichas.id_nivelFormacion = nivelformacion.id_nivelFormacion
+                                        INNER JOIN jornada ON fichas.id_jornada = jornada.id_jornada
+                                        WHERE id_documento = '$documentoVentana'");
 $sql->execute();
 $fila = $sql->fetch(PDO::FETCH_ASSOC);
 
@@ -57,16 +61,39 @@ if (isset($_POST['submit'])) {
             $params[':id_rol'] = $_POST['id_rol'];
         }
 
+
         // Ejecutar actualización si hay datos
         if (!empty($updates)) {
             $sql = "UPDATE usuario SET " . implode(', ', $updates) . " WHERE id_documento = :documento";
-            $params[':documento'] = $documento;
+            $params[':documento'] = $documentoVentana;
 
             $actualizacion = $con->prepare($sql);
             $actualizacion->execute($params);
         } else {
             echo "No hay datos para actualizar.";
         }
+
+        if(!empty($_POST['jornada'])){
+            $jornada = $_POST['jornada'];        
+            $sql = $con->prepare("UPDATE fichas SET id_jornada = $jornada WHERE n_ficha = :n_ficha ");;
+            $sql->execute([':n_ficha' => $fila['n_ficha']]);
+        }
+
+        if(!empty($_POST['nivelDeformacion'])){
+            $nivelDeformacion = $_POST['nivelDeformacion'];        
+            $sql = $con->prepare("UPDATE fichas SET id_nivelFormacion = $nivelDeformacion WHERE n_ficha = :n_ficha  ");;
+            $sql->execute([':n_ficha' => $fila['n_ficha']]);
+        }
+
+        if(!empty($_POST['programa'])){
+            $programa = $_POST['programa'];        
+            $sql = $con->prepare("UPDATE fichas SET id_programaFormacion = $programa WHERE n_ficha = :n_ficha  ");;
+            $sql->execute([':n_ficha' => $fila['n_ficha']]);
+        }
+
+        echo "<script>window.opener.location.reload()</script>";
+        echo "<script>window.opener.location.reload()</script>";
+
     } catch (PDOException $e) {
         echo "Error: " . $e->getMessage();
     }
@@ -74,7 +101,7 @@ if (isset($_POST['submit'])) {
 
 // Consultar foto de perfil
 $foto = $con->prepare("SELECT foto FROM usuario WHERE id_documento = :documento");
-$foto->bindParam(':documento', $documento, PDO::PARAM_STR);
+$foto->bindParam(':documento', $documentoVentana, PDO::PARAM_STR);
 $foto->execute();
 
 $resultado = $foto->fetch(PDO::FETCH_ASSOC);
@@ -95,12 +122,14 @@ $usu = "../../uploads/usu.png";
 <body>
 
     <section class="mainSection">
+
+    <div class="backgrond">
         <div class="personaCard">
             <div class="FotoDePerfil">
                 <div class="ContainerImagen">
                     <img class="imgDeLaPersona" id="fotoUsuario" src="<?php echo !empty($resultado['foto']) ? $mostar : $usu ?>" alt="Foto de perfil">
                     <div class="containerr">
-                        <form action="../../uploadsAdmin/upload.php?" style="margin-top: 6px;" method="POST" enctype="multipart/form-data">
+                        <form action="../../uploadsAdmin/upload.php?documento=<?php echo $documentoVentana ?>" style="margin-top: 6px;" method="POST" enctype="multipart/form-data">
                             <label class="custom-file-upload">
                                 <input type="file" name="foto" id="fileInput" onchange="previewFoto(event)" />
                                 Subir Foto
@@ -115,37 +144,95 @@ $usu = "../../uploads/usu.png";
                 <form action="" method="POST">
                     <div class="column">
                         <p class="TipoCampo">Documento</p>
-                        <input name="id_documento" class="inputsClaseGeneral" type="text" value="<?php echo $fila['id_documento']; ?>" >
+                        <input id="documento" name="id_documento" class="inputsClaseGeneral" type="text" value="<?php echo $fila['id_documento']; ?>" >
                     </div>
                     <div class="column">
                         <p class="TipoCampo">Nombre</p>
-                        <input name="nombre_completo" class="inputsClaseGeneral" type="text" value="<?php echo $fila['nombre_completo']; ?>" >
+                        <input id="nombreCompleto" name="nombre_completo" class="inputsClaseGeneral" type="text" value="<?php echo $fila['nombre_completo']; ?>" >
                     </div>
+
                     <div class="column">
                         <p class="TipoCampo">Correo</p>
-                        <input name="correo" class="inputsClaseGeneral" type="text" value="<?php echo $fila['correo']; ?>" >
+                        <input id="correo" name="correo" class="inputsClaseGeneral" type="text" value="<?php echo $fila['correo']; ?>" >
                     </div>
+                   
                     <div class="column">
-                    <p class="TipoCampo">Ficha</p>
-                        <select name="ficha" class="inputsClaseGeneral"  id="">
-                            <option class="" value="">Ficha Actual:  <?php echo $fila['ficha']; ?></option>
+                    <p class="TipoCampo">Formacion</p>
+                        <select name="programa" class="inputsClaseGeneral"  id="">
+                            <option class="" value=""><?php echo $fila['nombrePrograma']; ?></option>
                             <?php 
-                            $sqlrol = $con->prepare("SELECT * FROM fichas WHERE n_ficha != :n_ficha");
-                            $sqlrol->bindParam(':n_ficha', $fila['n_ficha']);
+                            $sqlrol = $con->prepare("SELECT * FROM programa  WHERE id_programaFormacion != :id_programaFormacion");
+                            $sqlrol->bindParam(':id_programaFormacion', $fila['id_programaFormacion']);
                             $sqlrol->execute();
                             $sqlrol = $sqlrol->fetchAll(PDO::FETCH_ASSOC);
 
                             foreach($sqlrol as $resu){
                             ?>
-                                <option value="<?php echo $resu['n_ficha']; ?> " ><?php echo $resu['nombre_formacion']; ?> </option>
+                                <option value="<?php echo $resu['id_programaFormacion']; ?> "><?php echo $resu['nombrePrograma']; ?> </option>
                             <?php 
                             }
                             ?>
                         </select>
                     </div>
+
+                    <div class="column">
+                    <p class="TipoCampo">Nivel De Formacion</p>
+                        <select name="nivelDeformacion" class="inputsClaseGeneral"  id="">
+                            <option class="" value=""><?php echo $fila['nivelDeformacion']; ?></option>
+                            <?php 
+                            $sqlrol = $con->prepare("SELECT * FROM nivelformacion  WHERE id_nivelFormacion != :id_nivelFormacion");
+                            $sqlrol->bindParam(':id_nivelFormacion', $fila['id_nivelFormacion']);
+                            $sqlrol->execute();
+                            $sqlrol = $sqlrol->fetchAll(PDO::FETCH_ASSOC);
+
+                            foreach($sqlrol as $resu){
+                            ?>
+                                <option value="<?php echo $resu['id_nivelFormacion']; ?> "><?php echo $resu['nivelDeformacion']; ?> </option>
+                            <?php 
+                            }
+                            ?>
+                        </select>
+                    </div>
+
+                    <div class="column">
+                    <p class="TipoCampo">Ficha</p>
+                        <select name="ficha" class="inputsClaseGeneral"  id="">
+                            <option class="" value="">Ficha Actual:  <?php echo $fila['ficha']; ?></option>
+                            <?php 
+                            $sqlrol = $con->prepare("SELECT * FROM fichas INNER JOIN programa on programa.id_programaFormacion = fichas.id_programaFormacion WHERE n_ficha != :n_ficha");
+                            $sqlrol->bindParam(':n_ficha', $fila['n_ficha']);
+                            $sqlrol->execute();
+                            foreach($sqlrol as $resu){
+                            ?>
+                                <option value="<?php echo $resu['n_ficha']; ?> " ><?php echo $resu['n_ficha']; ?> </option>
+                            <?php 
+                            }
+                            ?>
+                        </select>
+                    </div>
+                    
+                    <div class="column">
+                    <p class="TipoCampo">Jornada</p>
+                        <select name="jornada" class="inputsClaseGeneral"  id="">
+                            <option class="" value="">Jornada Actual:  <?php echo $fila['jornada']; ?></option>
+                            <?php 
+                            $sqlrol = $con->prepare("SELECT * FROM jornada  WHERE jornada != :jornada");
+                            $sqlrol->bindParam(':jornada', $fila['id_jornada']);
+                            $sqlrol->execute();
+                            $sqlrol = $sqlrol->fetchAll(PDO::FETCH_ASSOC);
+
+                            foreach($sqlrol as $resu){
+                            ?>
+                                <option value="<?php echo $resu['id_jornada']; ?>" ><?php echo $resu['jornada']; ?> </option>
+                            <?php 
+                            }
+                            ?>
+                        </select>
+                    </div>
+
                     <div class="column">
                         <p class="TipoCampo">Código de Barras</p>
-                        <input name="codigo_barras" class="inputsClaseGeneral" type="text" value="<?php echo $fila['codigo_barras']; ?>" >
+                        <input id="codigoDeBarras" name="codigo_barras" class="inputsClaseGeneral" type="text" value="<?php echo $fila['codigo_barras']; ?>" >
                     </div>
                     <div class="column">
                     <p class="TipoCampo">Estado</p>
@@ -184,13 +271,14 @@ $usu = "../../uploads/usu.png";
                         </select>
                     </div>
 
-                    <input type="submit" name="submit" class="enviarConfig" value="Confirmar">
+                    <input id="submit" type="submit" name="submit" class="enviarConfig" value="Confirmar">
                 </form>
             </div>
         </div>
-    </section>
+    </div>
+</section>
 
-    <script>
+<script>
         let botonGuardar = document.getElementById("botonGuardar");
 
         function previewFoto(event) {
@@ -210,6 +298,44 @@ $usu = "../../uploads/usu.png";
                 fotoUsuario.src = "<?php echo $usu; ?>";
             }
         }
-    </script>
+
+</script>
+
+<script>
+    
+    const expresiones = {
+    documento: /^\d{6,10}$/,
+    nombre: /^[a-zA-ZÀ-ÿ\s]{4,40}$/,
+    password: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@#$!%?&])[A-Za-z\d@#$!%?&]{8,16}$/,
+    correo: /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/,
+    }
+
+const documento = document.getElementById("documento");
+const nombreCompleto = document.getElementById("nombreCompleto");
+const correo = document.getElementById("correo");
+const codigoDeBarras = document.getElementById("docucodigoDeBarrasmento");
+const submit = document.getElementById("submit");
+
+
+
+submit.addEventListener("click",(e)=>{
+    
+    if(!expresiones.documento.test(documento.value) || documento.value == "" || !expresiones.nombre.test(nombreCompleto.value) || nombreCompleto.value == "" || !expresiones.correo.test(correo.value) || correo.value == "" || !expresiones.documento.test(codigoDeBarras.value) || codigoDeBarras.value == ""){
+        validar =  false
+    }
+
+    if(validar == false){
+        e.preventDefault()
+        submit.disabled = true
+        setTimeout(() => {
+            submit.disabled = false
+        }, 1000);
+    }else{
+        submit.disabled = false
+    }
+    
+})
+
+</script>
 </body>
 </html>

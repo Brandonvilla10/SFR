@@ -18,6 +18,7 @@ $rol =$_SESSION['rol_name'];
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/asideBar/asideBar.css">
+    <link rel="stylesheet" href="css/home.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     
     
@@ -56,7 +57,7 @@ $rol =$_SESSION['rol_name'];
             <p class="seccionTexto">Usuarios</p>
         </div></a>
 
-        <a href=""> <div class="seccion">
+        <a href="./asistencia.php"> <div class="seccion">
             <img class="icono" src="asidebar/icons/asistencia.png" alt="">
             <p class="seccionTexto">Asistencia</p>
         </div></a>

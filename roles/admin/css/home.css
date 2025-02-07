@@ -229,7 +229,7 @@ html,body{
         grid-template: 
             "sidebar header" 130px
             "sidebar main" auto 
-            / auto 1fr;  /* El grid se ajusta para dispositivos más grandes */
+            / 100px 1fr;  /* El grid se ajusta para dispositivos más grandes */
         width: 100%;
         height: 100%;
     }

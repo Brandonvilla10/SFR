@@ -9,13 +9,13 @@ $_SESSION['documentoUpload'] = $documentoVentana;
 
 // Consulta principal para obtener los datos del usuario
 $sql = $con->prepare("SELECT usuario.*, usuario.foto, fichas.n_ficha, programa.*,rol.nombre_rol,estado.estado, nivelformacion.*, 
-
-jornada.*  FROM usuario            INNER JOIN rol ON rol.id_rol = usuario.id_rol
-                                        INNER JOIN fichas ON fichas.n_ficha = usuario.ficha
-                                        INNER JOIN estado ON estado.id_estado = usuario.id_estado
-                                        INNER JOIN programa ON fichas.id_programaFormacion = programa.id_programaFormacion
-                                        INNER JOIN nivelformacion ON fichas.id_nivelFormacion = nivelformacion.id_nivelFormacion
-                                        INNER JOIN jornada ON fichas.id_jornada = jornada.id_jornada
+jornada.*  
+FROM usuario                            LEFT JOIN rol ON rol.id_rol = usuario.id_rol
+                                        LEFT JOIN fichas ON fichas.n_ficha = usuario.ficha
+                                        LEFT JOIN estado ON estado.id_estado = usuario.id_estado
+                                        LEFT JOIN programa ON fichas.id_programaFormacion = programa.id_programaFormacion
+                                        LEFT JOIN nivelformacion ON fichas.id_nivelFormacion = nivelformacion.id_nivelFormacion
+                                        LEFT JOIN jornada ON fichas.id_jornada = jornada.id_jornada
                                         WHERE id_documento = '$documentoVentana'");
 $sql->execute();
 $fila = $sql->fetch(PDO::FETCH_ASSOC);
@@ -93,6 +93,10 @@ if (isset($_POST['submit'])) {
 
         echo "<script>window.opener.location.reload()</script>";
         echo "<script>window.opener.location.reload()</script>";
+        echo "<script>function cerrarVentana(){
+                        window.close()
+                         }
+            cerrarVentana()</script>";
 
     } catch (PDOException $e) {
         echo "Error: " . $e->getMessage();
@@ -155,20 +159,41 @@ $usu = "../../uploads/usu.png";
                         <p class="TipoCampo">Correo</p>
                         <input id="correo" name="correo" class="inputsClaseGeneral" type="text" value="<?php echo $fila['correo']; ?>" >
                     </div>
+
+                    <div class="column">
+                    <p class="TipoCampo">Ficha</p>
+                        <select name="ficha" class="inputsClaseGeneral"  id="">
+                            <option class="" value="">Ficha Actual:  <?php echo empty($fila['ficha']) ? "No tiene ficha" : $fila['ficha']; ?></option>
+                            <?php 
+
+                            
+
+                            $sqlrol = $con->prepare("SELECT * FROM fichas   ");
+                            // $sqlrol->bindParam(':n_ficha', $fila['n_ficha'], PDO::PARAM_INT);
+                            $sqlrol->execute();
+                            $sqlrol = $sqlrol->fetchAll(PDO::FETCH_ASSOC);
+                            foreach($sqlrol as $resu){
+                            ?>
+                                <option value="<?php echo $resu['n_ficha'] ?> " ><?php echo $resu['n_ficha']; ?> </option>
+                            <?php 
+                            }
+                            ?>
+                        </select>
+                    </div>
+
                    
                     <div class="column">
                     <p class="TipoCampo">Formacion</p>
                         <select name="programa" class="inputsClaseGeneral"  id="">
-                            <option class="" value=""><?php echo $fila['nombrePrograma']; ?></option>
+                            <option class="" value=""><?php echo empty($fila['nombrePrograma']) ? "No Tiene Programa" : $fila['nombrePrograma'] ; ?></option>
                             <?php 
-                            $sqlrol = $con->prepare("SELECT * FROM programa  WHERE id_programaFormacion != :id_programaFormacion");
-                            $sqlrol->bindParam(':id_programaFormacion', $fila['id_programaFormacion']);
+                            $sqlrol = $con->prepare("SELECT * FROM programa ");
                             $sqlrol->execute();
                             $sqlrol = $sqlrol->fetchAll(PDO::FETCH_ASSOC);
 
                             foreach($sqlrol as $resu){
                             ?>
-                                <option value="<?php echo $resu['id_programaFormacion']; ?> "><?php echo $resu['nombrePrograma']; ?> </option>
+                                <option value="<?php echo empty($resu['id_programaFormacion']) ? 'vacio' : $resu['id_programaFormacion']; ?> "><?php echo $resu['nombrePrograma']; ?> </option>
                             <?php 
                             }
                             ?>
@@ -178,10 +203,9 @@ $usu = "../../uploads/usu.png";
                     <div class="column">
                     <p class="TipoCampo">Nivel De Formacion</p>
                         <select name="nivelDeformacion" class="inputsClaseGeneral"  id="">
-                            <option class="" value=""><?php echo $fila['nivelDeformacion']; ?></option>
+                            <option class="" value=""><?php echo empty($fila['nivelDeformacion']) ? "Sin Formacion" : $fila['nivelDeformacion'] ; ?></option>
                             <?php 
-                            $sqlrol = $con->prepare("SELECT * FROM nivelformacion  WHERE id_nivelFormacion != :id_nivelFormacion");
-                            $sqlrol->bindParam(':id_nivelFormacion', $fila['id_nivelFormacion']);
+                            $sqlrol = $con->prepare("SELECT * FROM nivelformacion ");
                             $sqlrol->execute();
                             $sqlrol = $sqlrol->fetchAll(PDO::FETCH_ASSOC);
 
@@ -194,30 +218,14 @@ $usu = "../../uploads/usu.png";
                         </select>
                     </div>
 
-                    <div class="column">
-                    <p class="TipoCampo">Ficha</p>
-                        <select name="ficha" class="inputsClaseGeneral"  id="">
-                            <option class="" value="">Ficha Actual:  <?php echo $fila['ficha']; ?></option>
-                            <?php 
-                            $sqlrol = $con->prepare("SELECT * FROM fichas INNER JOIN programa on programa.id_programaFormacion = fichas.id_programaFormacion WHERE n_ficha != :n_ficha");
-                            $sqlrol->bindParam(':n_ficha', $fila['n_ficha']);
-                            $sqlrol->execute();
-                            foreach($sqlrol as $resu){
-                            ?>
-                                <option value="<?php echo $resu['n_ficha']; ?> " ><?php echo $resu['n_ficha']; ?> </option>
-                            <?php 
-                            }
-                            ?>
-                        </select>
-                    </div>
                     
                     <div class="column">
                     <p class="TipoCampo">Jornada</p>
                         <select name="jornada" class="inputsClaseGeneral"  id="">
                             <option class="" value="">Jornada Actual:  <?php echo $fila['jornada']; ?></option>
                             <?php 
-                            $sqlrol = $con->prepare("SELECT * FROM jornada  WHERE jornada != :jornada");
-                            $sqlrol->bindParam(':jornada', $fila['id_jornada']);
+                            $sqlrol = $con->prepare("SELECT * FROM jornada ");
+                            // $sqlrol->bindParam(':jornada', $fila['id_jornada']);
                             $sqlrol->execute();
                             $sqlrol = $sqlrol->fetchAll(PDO::FETCH_ASSOC);
 
@@ -271,7 +279,7 @@ $usu = "../../uploads/usu.png";
                         </select>
                     </div>
 
-                    <input id="submit" type="submit" name="submit" class="enviarConfig" value="Confirmar">
+                    <input id="submit" type="submit" name="submit" class="enviarConfig"  value="Confirmar">
                 </form>
             </div>
         </div>
@@ -332,9 +340,12 @@ submit.addEventListener("click",(e)=>{
         }, 1000);
     }else{
         submit.disabled = false
+         
     }
-    
+
+
 })
+
 
 </script>
 </body>

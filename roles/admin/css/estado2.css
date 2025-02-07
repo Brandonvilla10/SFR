@@ -1,0 +1,62 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f8ff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+.container {
+    background-color: #00a2ff;
+    border-radius: 15px;
+    padding: 20px;
+    width: 90%;
+    max-width: 400px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+.container h1 {
+    color: #ffffff;
+    text-align: center;
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+.container label {
+    color: #ffffff;
+    font-size: 16px;
+    display: block;
+    margin-bottom: 5px;
+}
+.container select, .container input, .container textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: none;
+    border-radius: 5px;
+}
+.container select {
+    appearance: none;
+    background: #ffffff url('https://placehold.co/15x15') no-repeat right 10px center;
+    background-size: 15px;
+}
+.container input[type="text"] {
+    background-color: #ffffff;
+}
+.container textarea {
+    height: 80px;
+    resize: none;
+    background-color: #ffffff;
+}
+.button-container {
+    display: flex;
+    justify-content: space-between;
+}
+.button-container button {
+    width: 48%;
+    padding: 10px;
+    background-color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+}

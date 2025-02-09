@@ -130,7 +130,8 @@ $rol = $_SESSION['rol_name']; // Rol del usuario
                 label: "Usuarios Activos días anteriores", // Título del gráfico
                 data: [15, 50, 70, 20, 80, 90], // Datos de usuarios activos
                 backgroundColor: 'blue', // Color de fondo de las barras
-                borderWidth: 3 // Grosor del borde de las barras
+                borderWidth: 3, // Grosor del borde de las barras
+                
             }]
         },
         options: {

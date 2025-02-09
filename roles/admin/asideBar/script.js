@@ -35,8 +35,6 @@ aside.addEventListener("mouseout", () => {
         element.style.justifyContent = "center";
     })
 });
-<<<<<<< HEAD
-=======
 
 
 }
@@ -84,5 +82,4 @@ hamburguesa.addEventListener("click", () => {
     }
 });
 
->>>>>>> 6f949ae (Commit adelanto admin)
 }

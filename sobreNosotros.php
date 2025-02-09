@@ -5,8 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sobre Nosotros</title>
-    <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/SobreNosotros.css">
+    <link rel="stylesheet" href="css/footer.css">
 </head>
 
 <body>
@@ -22,7 +22,6 @@
                 <div class="izquierda">
 
                 <img src="assets/img/Nosotrosimg/SobreNosotros.png" alt="">
-                
                 </div>
                 <div class="derecha"> 
                     <h1>Sobre Nosotros</h1>
@@ -36,47 +35,47 @@
 
             </div>
 
+                 <!-- A PARTIR DE ACA EMPIEZO CON LOS CAMBIOS DEL RESPONSIVE -->
+
             <div class ="nosotros_2">
 
-                <div class="seccion1">
-
-                    <div class="izquierda">
-                        <div class="titulo"><h1>Nuestra Misión</h1> </div>
-                        <div class="texto">
-                            <p>
-                            Nuestra misión es revolucionar la gestión de entradas en instituciones educativas,
-                            proporcionando herramientas tecnológicas avanzadas que mejoren la puntualidad, la seguridad y la 
-                            eficiencia en los procesos administrativos.
-                            </p>
-                        </div>
-                    </div>
-
-
-                    <div class="derecha"> 
-                        <img src="assets/img/Nosotrosimg/cohete.png">
+                <div class="izquierda-1">
+                    <div class="titulo"><h1>Nuestra Misión</h1> </div>
+                    <div class="texto">
+                        <p>
+                        Nuestra misión es revolucionar la gestión de entradas en instituciones educativas,
+                        proporcionando herramientas tecnológicas avanzadas que mejoren la puntualidad, la seguridad y la 
+                        eficiencia en los procesos administrativos.
+                        </p>
                     </div>
                 </div>
 
-                <!-- parte dos-->
-                
-                <div class="seccion2">
 
-                    <div class="izquierda">
-                        <div class="titulo"><h1>Nuestra Visión</h1></div>
+                <div class="derecha-1"> 
+                    <img src="assets/img/Nosotrosimg/cohete.png">
+                </div>
+            
 
-                        <div class="texto">
-                            <p>
-                            Aspiramos a ser líderes en la automatización de accesos en el ámbito educativo, 
-                            siendo reconocidos por nuestra innovación, calidad y compromiso con la excelencia en cada solución
-                            que ofrecemos.
-                            </p>
-                        </div>
+            <!-- parte dos-->
+            
+            
+
+                <div class="izquierda-2">
+                    <div class="titulo"><h1>Nuestra Visión</h1></div>
+
+                    <div class="texto">
+                        <p>
+                        Aspiramos a ser líderes en la automatización de accesos en el ámbito educativo, 
+                        siendo reconocidos por nuestra innovación, calidad y compromiso con la excelencia en cada solución
+                        que ofrecemos.
+                        </p>
                     </div>
-                    <div class ="derecha">
-                        <img src="assets/img/Nosotrosimg/binoculares.png" alt="Imagen de unos binoculares">
-                    </div>
+                </div>
+                <div class ="derecha-2">
+                    <img src="assets/img/Nosotrosimg/binoculares.png" alt="Imagen de unos binoculares">
+                </div>
                     
-                </div>
+                
             </div>
 
             <div class="nosotros_3">
@@ -93,7 +92,7 @@
                     </div>
                     <div class ="only-wrapper">
 
-                        <img src="assets/img/Nosotrosimg/Brandon .png" alt="Imagen de un desarrollador" width="236px" height="208px">
+                        <img src="assets/img/Nosotrosimg/Brandon  (1).png" alt="Imagen de un desarrollador" width="236px" height="208px">
                         <h1>Villanueva Serrano Brandon</h1>
                         <p>Experto en analisis de datos y <br> optimizacion de procesos.</p>
                     
@@ -128,7 +127,7 @@
             <img src="assets/img/Nosotrosimg/Daniel .png" alt="Imagen de un agregado" class ="img_daniel" width="236px" height="230px">
         </div>
         <div>
-            <h3 class="subtitulosh3">Daniel Tovar</h3>        
+            <h1>Daniel Tovar</h1>        
         </div>
         <div>
             <p class="subtitulosh3V2">Responsable y creador del apartado <br> asistencia</p>
@@ -166,21 +165,23 @@
     <div>
         <img src="assets/img/Nosotrosimg/seguridad.png" alt="" class="iconosImagenes">
         <h3 class="subtitulosh3">Seguridad</h3>        
-        <p class="subtitulosh3V2">Prioridad en la proteccion de datos y la <br> seguirdad de nuestros usuarios</p>
+        <p class="subtitulosh3V2">Prioridad en la proteccion de datos y la  seguridad <br> de nuestros usuarios</p>
     </div>
 
 </div>   
 
+    
+        <?php include('template/footer.html')?>
+    
+   
 
 
 
 
 
 
-    <footer>
-            <img src="assets/img/indeximg/Info_Pag.png" alt="" class="info" height="110px" width="400px">
-            <img src="assets/img/indeximg/Copyright.png"  class="copyrigh" height="15px" width="200px">
-    </footer>
+
+    
 
 
 

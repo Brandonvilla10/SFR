@@ -15,6 +15,7 @@ body{
         130px auto;
     width: 100vw;
     height: 100vh;
+    overflow-x: hidden;
    
 }
 
@@ -83,27 +84,29 @@ body{
 
     .objetos{
         margin-top: 10px;
-        width: 80%;
-        height: 500px;
+        width: 85%;
+        min-width: 600px;
+        height: 600px;
         background-color: #ffff;
         display: flex;
         flex-wrap: wrap;
         border-radius: 15px;
         overflow-y: auto;
         overflow-x: hidden;
+        justify-content: center;
 
     }
 
     .objects_cards{
         background-color: #f7f7f7;
         display: flex;
-        width: 300px;
+        width: 230px;
         flex-direction: column;
         height: 285px;
         box-sizing: border-box;
         border-radius: 15px;
         margin: 20px;
-        box-shadow: 5px 5px;
+        box-shadow: 0 0 3px;;
     }
 
     .formulario_tarjetas{
@@ -115,8 +118,8 @@ body{
         background-color: #ffff;
         display: flex;  
         flex-direction: column;
-        width: 80%;
-        height: 50%;
+        width: 90%;
+        height: 60%;
         align-self: center;
         margin-top: 15px;
         text-align: center;
@@ -130,9 +133,9 @@ body{
     .objects_cards .image img{
         align-self: center;
         border-radius: 10px;
-        object-fit: cover;
+        object-fit: contain;
         width: 200px;
-        height: 115px;
+        height: 140px;
     }
 
     .name_cart{
@@ -167,6 +170,9 @@ body{
         scale: 1.5;
         animation: variante_color 6s infinite alternate;
      }
+
+
+     
    
 }
 

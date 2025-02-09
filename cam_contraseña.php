@@ -1,3 +1,24 @@
+<?php
+require_once("database/database.php");
+$conexion = new database;
+$con = $conexion->conectar();
+session_start(); 
+$correo = $_SESSION['correo'];
+
+if (isset($_POST['submit'])) {
+
+    $ramdon = $_SESSION['ramdon']; 
+    $validar = $_POST['codigo'];
+
+    if ($ramdon == $validar) {
+        echo "<script>window.location = 'restablecer_contrasena.php'</script>";
+    } 
+}
+
+if(!isset($correo)){
+    header("Location: template/destruirSesion.php");
+}
+?>
 
 
 
@@ -21,12 +42,12 @@
     <section class="form_place">
 
         <section class ="env_correo">
-            <form action="restablecer_contrasena.php" class="datos_form">
+            <form action="" class="datos_form" method="post">
             <h1 style="padding-bottom: 50px; color: rgba(58, 170, 53, 255);">Recuperar contraseña</h1>  
                 <label for="" class="texto">ingrese el codigo </label>
-                <input type="password" class="datos" placeholder="*****">
-                <label for="" class="error">prueba</label>
-                <input type="submit" class="boton-submit" value="Siguiente" >
+                <input type="number" id="datos" class="datos" name="codigo" placeholder="*****">
+                <label for="" id="error" class="error">prueba</label>
+                <input type="submit" id="boton-submit" class="boton-submit" name="submit" value="Siguiente" >
             
             </form>
         </section>
@@ -39,11 +60,32 @@
 
     </main>
 
-    <?php include("template/footer.php") ?>
+    <?php include("template/footer.html") ?>
 
 
+    <script>
 
+        let errorDiv = document.getElementById('error');
+        let submit = document.getElementById("boton-submit");
+        let codigo = document.getElementById('datos');
 
+        codigo.addEventListener("input", () =>{
+            codigo.value = codigo.value.replace(/[^0-9]/g, "");
+        })
+        
+        submit.addEventListener("click", (e) =>{
+            if(codigo.value.trim() === ""){
+                    e.preventDefault();
+                    errorDiv.style.visibility = "visible";
+                    errorDiv.innerHTML = "El campo no puede estar vacio";
+                    setTimeout(() => {
+                        errorDiv.style.visibility = "hidden";
+                    }, 2000);
+
+            }}); 
+
+    
+    </script>
 
 </body>
 </html>

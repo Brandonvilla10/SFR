@@ -16,6 +16,8 @@
     height: 60px;
     min-height: 60px;
 }
+
+
 .main{
     display: flex;
     flex-direction: row;
@@ -43,7 +45,11 @@
 .container-iconos{
     display: grid;
     margin-left: 17px;
+<<<<<<< HEAD
+    grid-template-columns:  repeat(5, minmax(65px, 25vh));
+=======
     grid-template-columns:  repeat(5, minmax(66px, 25vh));
+>>>>>>> 5c6b80ef449c8c77edac47147cc5ab48011fa1f3
     box-sizing: border-box;
 }
 
@@ -69,13 +75,8 @@
         background-color: cornflowerblue;
         width: 76px;
         min-width: 76px;
-<<<<<<< HEAD
-        height: 600px;
-        min-height: 600px;
-=======
         min-height: 483px;
         height: clamp(90%,100%,93%);
->>>>>>> 6f949ae (Commit adelanto admin)
         bottom: 4%;
         border-radius: 21px;
         margin-left: 15px;
@@ -128,8 +129,8 @@
 
 @media (min-height:768px ) and (min-height:1024px) {
     .iconos{
-        width: 5vh;
-        height: 5vh;
+        width: 50px;
+        height: 50px;
         margin-left: unset;
     }
 
@@ -140,35 +141,14 @@
         justify-content: space-around;
     }
     .gota{
-<<<<<<< HEAD
-        width: 8vh;
-        height: 6.1vh;
-=======
         width: 90px;
->>>>>>> 6f949ae (Commit adelanto admin)
         left: 4px;
         top: 3%;
     }
 
 }
 
-<<<<<<< HEAD
-@media (min-height:1180px) and (min-height:1366px) {
-    .iconos{
-        width: 3vh;
-        height: 3vh;
-        margin-left: unset;
-    }
-    .gota{
-        width: 6vh;
-        height: 4.1vh;
-        
-        top: 2%;
-    }
-}
-=======
 
->>>>>>> 6f949ae (Commit adelanto admin)
 
 @media (min-width:1024px) {
     .container-lateral{
@@ -183,20 +163,23 @@
     .container-lateral{
         width: 85px;
         min-width: 85px;
+        
     }
     .gota{
         width: 94px;
         min-width: 94px;
         left: 6px;
     }
+<<<<<<< HEAD:pruebas/asidebar.css
+<<<<<<< HEAD
+}
+=======
+=======
 
+>>>>>>> 6f949ae0289662dc51b6a81b9d1a354abdd6e8bb:roles/admin/pruebas/asidebar.css
 }
 
-@media (min-width:1500px) {
-    .container-lateral{
-        min-height: 680px
-    }
-}
+
 
 @media (min-width:1920px) {
     
@@ -206,8 +189,6 @@
 
 
 .container-lateral{
-    height: 110px;
-    min-height: 1100px;
     width: 100px;
     min-width: 100px;
 }
@@ -220,10 +201,6 @@
 }
 
 
-<<<<<<< HEAD
-
-}
-=======
 }
 
->>>>>>> 6f949ae (Commit adelanto admin)
+>>>>>>> 5c6b80ef449c8c77edac47147cc5ab48011fa1f3

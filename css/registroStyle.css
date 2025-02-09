@@ -211,7 +211,7 @@ a {
 
     
     .ColumnaIzquierda {
-        height: 90vh;
+        height: 75vh;
     }
     .sectionRegistro {
         width:511px ;
@@ -238,13 +238,9 @@ a {
         width: auto;
         height: 500px
     }
-}
 
-
-@media (min-width: 1900px){
-    .ColumnaIzquierda {
-        height: 75vh;
-    }
+    
+    
 }
 
 @media (min-width:768px) and (max-width:1200px) and (min-height:1024px) and (max-height:1400px){
@@ -252,11 +248,11 @@ a {
         height: 50vh;
     }
     .sectionRegistro{
-        width: 392px;
+        width: 462px;
     }
 
     .imgPersonitas{
-        width: 75%;
+        width: 66%;
         margin: 40px;
         max-height: 500px;  
     }
@@ -279,7 +275,6 @@ a {
     }
 
 }
-
 
 
 

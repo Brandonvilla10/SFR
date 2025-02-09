@@ -15,11 +15,7 @@ a{
 
 
 aside{
-<<<<<<< HEAD
-    height: clamp(600px,100%,1140px);
-=======
     height: clamp(600px,100%,100%);
->>>>>>> 6f949ae (Commit adelanto admin)
     border-top-right-radius: 6px;
     display: flex;
     flex-direction: column;

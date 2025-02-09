@@ -5,23 +5,30 @@ $conexion = new database;
 $con = $conexion->conectar();
 session_start();
 
+
 if (isset($_POST['submit'])){
     $documento = $_POST['documento'];
     $password = $_POST['password'];
-    echo "<script>console.log('$documento')</script>";
 
-    $validacion = $con->prepare("SELECT * FROM usuario where id_documento = '$documento' and contraseña = '$password'");
-
+    $validacion = $con->prepare("SELECT * FROM usuario where id_documento = :documento");
+    $validacion->bindParam(":documento", $documento);
     $validacion-> execute();
-
     $fila = $validacion->fetch(PDO::FETCH_ASSOC);
 
-    if ($fila) {
-        // Usuario válido, redirige o muestra mensaje
-        echo "<script>alert('Usuario válido. Bienvenido');</script>";
-        echo "<script>window.location.href = 'roles/admin/home.php';</script>";
+    if ($fila && password_verify($password, $fila['contraseña'])) {
+ 
+        switch($fila['id_rol']){
+            case 1:
+                echo "<script>alert('Usuario válido. Bienvenido " . $fila['nombre_completo'] . "');</script>";
+                echo "<script>window.location.href = 'roles/admin/home.php';</script>";
+                break;
+            case 2:
+                echo "<script>alert('Usuario válido. Bienvenido " . $fila['nombre_completo'] . "');</script>";
+                echo "<script>window.location.href = 'roles/aprendiz/home.php';</script>";
+                break;
+        }
+       
     } else {
-        // Credenciales incorrectas
         echo "<script>alert('Documento o contraseña incorrectos.');</script>";
     }
 
@@ -55,7 +62,6 @@ if (isset($_POST['submit'])){
         
 
         <div class="card">
-            <!-- usar grid -->
             <div>
                 <h2 class="tituloLogin">Login</h2>
             </div>
@@ -67,7 +73,7 @@ if (isset($_POST['submit'])){
                     <input type="number" class="datosLogin" name="documento" id="documento" placeholder="Documento">
                     <p class="error" id="errorDocumento"></p>
 
-                    <input type="text" class="datosLogin" name="password" id="contraseña" placeholder="Contraseña">
+                    <input type="password" class="datosLogin" name="password" id="contraseña" placeholder="Contraseña">
                     <p class="error" id="errorContraseña"></p>
                 </div>
 
@@ -137,6 +143,12 @@ const passRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@#$!%*?&])[A-Za-z\d@#$!%
 
     const documento = document.getElementById("documento");
     const errorDocumento = document.getElementById("errorDocumento")
+
+documento.addEventListener("input",() => {
+    
+    documento.value = documento.value.replace(/[^0-9]/g, "");
+    
+})
 
     const contraseña = document.getElementById("contraseña");
     const errorContraseña = document.getElementById("errorContraseña")

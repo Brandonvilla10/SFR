@@ -111,7 +111,7 @@ body, html {
     .botonIniciarSesion {
         height: 52px;
         width: 86%;
-        margin-top: 5px;
+        margin-top: 22px;
         border-radius: 59px; /* Bordes redondeados */
         color: white; /* Texto blanco */
         border: 3px solid #ffffff; /* Borde blanco */
@@ -229,7 +229,7 @@ body, html {
 
     /* Campos de login más altos */
     .datosLogin {
-        height: 65px;
+        height: 54px;
     }
 
     /* Imagen más grande */
@@ -237,12 +237,12 @@ body, html {
         height: 70vh;
     }
     .botonIniciarSesion{
-        height: 10vh;
+        height: 54px;
     }
 }
 
 /* A partir de 1440px */
-@media (min-width:1440px) {
+@media (min-width:1519px) {
     /* Contenedor como fila */
     .container {
         flex-direction: row;
@@ -266,24 +266,17 @@ body, html {
 
     /* Tarjeta más alta */
     .card {
-<<<<<<< HEAD
-        grid-template-rows: 118px 148px 163px 51px;
-        height: 61vh;
-=======
         grid-template-rows: 135px 166px 129px;
 
->>>>>>> 6f949ae (Commit adelanto admin)
     }
 
     /* Campos de login con diseño flex */
     .datosLogin {
-        height: 65px;
         background: #d6d5d4;
     }
 
     /* Botón más estilizado */
     .botonIniciarSesion {
-        height: 59px;
         background: rgba(58, 170, 53, 255);
     }
 }

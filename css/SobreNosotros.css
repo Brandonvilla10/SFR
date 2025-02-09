@@ -4,9 +4,11 @@
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 .contenido{
-    align-items: center;
+    
     display: flex;
     flex-direction: column;
+    align-items: center;
+    justify-items: center;
 }
 .section{
     
@@ -18,15 +20,18 @@
     width: 100%;
     display: flex;
     padding-top: 5%;
+    justify-content: center;
+    gap:30px;
 }
 
 .nosotros_1.izquierda{
 
-    width: 30%;
+    
     padding-left: 330px;
     display: flex;
     align-items: center;
     justify-content: center;
+    
 }
 
 .izquierda img{
@@ -54,77 +59,68 @@
 
 /*SECCION NOSOTROS DOS */
 
-.seccion1 .derecha img{
+/*  DISEÑO GRID Y ARREGLO DE ESPACIOS ENTRE SECCIONES 1 Y 3*/
+
+.nosotros_2{
+    display: grid;
+    grid-template: 1fr 1fr/ 3fr 1fr;
+    grid-template-areas: 
+    "Mision" "img-mision"
+    "Vision" "img-vision"
+    ;
+    padding-top: 4%;
+    padding-bottom: 4%;
+    box-sizing: border-box;
+}
+
+/* arreglos entre los container de la seccion nosotros 2 apartado de nuestra vision y mision*/
+
+
+.derecha-1{
+    grid-area:"img-mision";
+    place-self: center;
+
+}
+
+.derecha-2{
+    grid-area:"img-vision";
+    place-self: center;
+}
+.izquierda-1{
+    padding-left: 100px;
+    grid-area: "mision";
+
+}
+.izquierda-2{
+    padding-left: 100px;
+    grid-area: "vision";
+}
+
+.derecha-1 img{
     width: 180px;
     height: 200px;
 }
 
-.seccion1{
-    width: 100%;
-    display: flex;
-    display: inline-flex;
-}
-
-.seccion1 .derecha{
-    width: 40%;
-}
-
-.seccion1 .izquierda{
-    display: block;
-    width: 60%;
-    
-}
-.seccion1 .titulo h1{
-    color: rgba(101,172,223,255) ;
-    padding-top: 2%;
-    font-size: 35px;
-}
-.seccion1 .izquierda .texto{
-    width: 610px;
-}
-.seccion1 .izquierda .texto p{
-    color: black;
-}
-
-
-/* parte dos del  container seccion dos*/
-
-.seccion2{
-    width: 100%;
-    display: flex;
-    display: inline-flex;
-}
-.seccion2 .derecha img{
-    padding-top: 30px;;
+.derecha-2 img{
     width: 200px;
-    height: 150px;
+    height:150px
+
 }
 
-.seccion2 .izquierda{
-    display: block;
-    width: 60%;
-}
-.seccion2 .derecha{
-    width: 40%;
-}
-.seccion2 .titulo h1{
+.nosotros_2 .izquierda-1 .titulo h1,
+.nosotros_2 .izquierda-2 .titulo h1{
+
     color: rgba(101,172,223,255) ;
     padding-top: 3%;
     font-size: 35px;
 }
-.seccion2 .izquierda .texto{
-    width: 610px;
-}
-.seccion2 .izquierda .texto p{
+
+.nosotros_2 .izquierda-1 .texto p,
+.nosotros_2 .izquierda-2 .texto p{
     color: black;
 }
 
-/*  ARREGLO DE ESPACIOS ENTRE SECCIONES*/
 
-.nosotros_2{
-    padding-top: 4%;
-    padding-bottom: 4%;
-}
 
 /* SECCION NOSOTROS TRES */
 
@@ -145,7 +141,9 @@
 .nosotros_3 .titulo{
     width: auto;
     text-align: center;
-    font-size: 38px;
+    font-weight: bolder;
+    font-size: 40px;
+    color: rgb(97, 180, 239);
 }
 
 
@@ -187,6 +185,7 @@
     display: flex;
     flex-direction: column;
     text-align: center;
+    margin-bottom: 30px;
 }
 
 .daniel p{
@@ -196,7 +195,7 @@
     
 }
 
-.daniel h3{
+.daniel h1{
     font-size: 18px;
     color: #4A90E2;
 }
@@ -215,6 +214,8 @@
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
+    text-align: center;
+    margin-bottom: 50px;
 }
 
 .nuestrosvalores{
@@ -235,48 +236,317 @@
     width: 66%;
     text-align: center;
     justify-items: center;
+    margin-bottom: 50px;
 }
 .iconosImagenes{
     height: 80px;
     width: 70px;
+    margin-bottom: 15px;
 }
-.subtitulosh3{color:rgb(97, 180, 239); font-size: 25px;}
+.subtitulosh3{color:rgb(97, 180, 239); font-size: 25px;padding-bottom: 10px;}
 
 .subtitulosh3V2{width: 101%;font-weight: 400;color: black;}
 
 
-/*pie de pagina actualizaciones*/
 
-footer{
-    margin-top: 100px;
-    background-color: rgb(83, 155, 207);
-    height: 170px;
-    width: 100%;
-    border-top-left-radius: 100px;
-    border-top-right-radius: 100px;   
-    position: absolute;
-    bottom: -2200px;
-    z-index: -1; 
+
+
+@media (min-width:1440px) {
+
+     /* Cambios en la parte de la imagen con el texto */
+
+     .nosotros_1{
+        width: 100%;
+        display: flex;
+        padding-top: 5%;
+        justify-content: center;
+        gap:60px;
+    }
+
+    .izquierda img{
+        width: 400px;
+        height: 400px;
+    }
+    .nosotros_1 .derecha p{
+        color: black;
+        font-size: 18px;
+    }
+
+    /* cambios en la parte de la mision y vision */
+
+    .derecha-1 img{
+        width: 200px;
+        height: 220px;
+    }
+
+    .derecha-2 img{
+        width: 250px;
+        height:200px
+
+    }
+    .izquierda-1{
+        padding-left: 150px;
+        grid-area: "mision";
+    
+    }
+    .izquierda-2{
+        padding-left: 150px;
+        grid-area: "vision";
+    }
+
+    .nosotros_2 .izquierda-1 .texto p,
+    .nosotros_2 .izquierda-2 .texto p{
+
+    color: black;
+    font-size: 18px;
+
+
+    }
+
+
+
+    /* cambios en la parte de nuestro equipo */
+    
+    .nosotros_3 .titulo {
+    font-size: 45px;
+    font-weight: bold;
+    color: #4A90E2;
+    margin-bottom: 30px;
+    }
+
+    .only-wrapper {
+        text-align: center; /* Centra el contenido de cada tarjeta */
+        padding: 17px;
+       
+    }
+    
+    .only-wrapper h1 {
+        font-size: 23px;
+        margin: 10px 0;
+        color: #4A90E2;
+    }
+
+    .only-wrapper img {
+        width: 240px; 
+        height: 240px;
+        object-fit: cover;
+        margin-bottom: 10px;
+    }
+
+    .only-wrapper p {
+        font-size:18px;
+        color: black;
+    
+    }
+
+    .daniel p{
+        font-size: 18px;
+        color: black;
+        margin-top: 12px;
+        
+    }
+
+    .daniel h1{
+        font-size: 23px;
+        color: #4A90E2
+    }
+
+    .img_daniel {
+        width: 270px;
+        height: 270px;
+        padding: 15px;
+    }
+
+
+
+    /* areglos del apartado Nuestros valores */
+
+    .divIconos{
+        margin-top: 100px;
+    }
+
+    .iconosImagenes{
+        height: 100px;
+        width: 100px;
+    }
+    .subtitulosh3{
+        font-size: 35px;
+        padding-bottom: 10px;
+    }
+
+    .subtitulosh3V2{
+        width: auto;
+        font-size: 18px;
+    }
+
 }
 
-.info{
-    position: absolute;
-    left: 100px;
-    margin-top: 30px;
-}
-.copyrigh{
-    position: absolute;
-    left: 660px;
-    margin-top: 120px;
+
+
+
+@media (max-width:992px){
+    
+
+    /* cambios en la parte del sobre nosotros */
+
+    .izquierda img{
+        width: 270px;
+        height: 270px;
+    }
+
+    .derecha h1{
+        font-size: 34px;
+    }
+
+    .nosotros_1 .derecha p{
+        font-size: 14px;
+        text-align: justify;
+    }
+
+    /* cambios en la segunda parte de la mision y vision */
+
+    .izquierda-1{
+        padding-left: 50px;
+        grid-area: "mision";
+    
+    }
+    .izquierda-2{
+        padding-left: 50px;
+        grid-area: "vision";
+    }
+
+    .nosotros_2 .izquierda-1 .titulo h1,
+    .nosotros_2 .izquierda-2 .titulo h1{
+        font-size: 32px; 
+    }
+    .nosotros_2 .izquierda-1 .texto p,
+    .nosotros_2 .izquierda-2 .texto p{
+        font-size: 13px;
+        text-align: justify;
+    }
+
+    .derecha-1 img{
+        width: 150px;
+        height: 170px;
+    }
+    
+    .derecha-2 img{
+        width: 170px;
+        height: 135px
+    
+    }
+
+    /* cambios en la tercera parte de nuestro equipo */
+
+    .nosotros_3 .titulo{
+        font-size: 36px;
+    }
+    .only-wrapper h1 {
+        font-size: 15px;
+    }
+    .only-wrapper p{
+        font-size: 13px;
+    } 
+
+
+    /* cambios en la parte de nuestros valores */
+
+    .nuestrosvalores{
+        font-size: 36px;
+    }
+    .subtitulosh3{
+        font-size: 18px;
+    }
+    .subtitulosh3V2{
+        font-size: 13px;
+    }   
 }
 
-@media screen {
-    .izquierda{
-        padding-left: 150px ;
-        padding-right: 100px;
+@media (max-width:600px){
+
+    
+
+    /* cambios de la parte del sobre nosotros */
+    .nosotros_1{
+        flex-direction: column-reverse;
+        justify-content: center;
+        align-items: center;
     }
     .derecha{
-        width: 700px;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;  
     }
+    .derecha h1{
+        align-self: center;
+    }
+
+    /* cambios en la parte de la mision y vision  */
+
+    .nosotros_2{
+        grid-template: 1fr/ 1fr;
+        gap: 20px;
+        
+    }
+    .izquierda-1{
+        padding-left: 0px;
+        grid-area: "mision";
+    
+    }
+    .izquierda-2{
+        padding-left: 0px;
+        grid-area: "vision";
+    }
+    .nosotros_2 .izquierda-1 .titulo h1,
+    .nosotros_2 .izquierda-2 .titulo h1{
+        text-align: center;
+
+    }
+
+    .derecha-1 img{
+        width: 180px;
+        height: 170px;
+    }
+    
+    .derecha-2 img{
+        width: 170px;
+        height: 135px
+    
+    }
+
+    /* arreglos seccion nuestro equipo */
+
+    .wrapper_four {
+        grid-template-columns: 1fr;
+    }
+
+    /* arreglos seccion nuestros valores */
+    
+    .divIconos{
+        grid-template-columns: 1fr;
+        gap: 20px;
+
+    }
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     
 }

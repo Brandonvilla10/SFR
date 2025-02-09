@@ -141,7 +141,7 @@ if(isset($_POST["botoncito"])){
     </div>
     
     
-    <?php require_once("template/footer.php") ?>
+    <?php require_once("template/footer.html") ?>
     
 <script src="js/registro.js"></script>
 </body>

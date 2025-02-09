@@ -93,6 +93,20 @@ p{
 
 
 
+.volver{
+    color: black;
+    width: 100px;
+    height: 35px;
+    border-radius: 6px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.volver:hover{
+    background-color: #63aee84a
+}
+
+
 @media (min-width:320px) {
     .mainSection{
         display: flex;
@@ -107,6 +121,11 @@ p{
         border: none;
         background-color: #63AEE8;
         border-radius: 9px;
+        color: white;
+    }
+
+    .submit:hover{
+        transform: scale(0.9);
     }
 
     .card{

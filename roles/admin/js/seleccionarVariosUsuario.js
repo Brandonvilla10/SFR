@@ -1,10 +1,10 @@
-const seleccionados = document.querySelectorAll('table input[type="checkbox"]')
+
 const boton = document.getElementById("boton")
 
 
-const ArrayCheckBox = [];
-
 function validarCheck(){
+    const seleccionados = document.querySelectorAll('table input[type="checkbox"]')
+    const ArrayCheckBox = [];
     seleccionados.forEach(checbox=>{
         if(checbox.checked){
             if (!ArrayCheckBox.includes(checbox.value))
@@ -21,7 +21,6 @@ function validarCheck(){
 function enviarDatos(){
     
     const datos = validarCheck();
-    console.log(datos)
     if(datos.length > 0){
         
         fetch("./json/usuariosSeleccionados.php",{
@@ -38,7 +37,8 @@ function enviarDatos(){
     })
     
 }else{
-    console.log("chochada no se envio")
+    console.log(ArrayCheckBox)
+    console.log("Sin Seleccionar usuarios")
 }
 
 }

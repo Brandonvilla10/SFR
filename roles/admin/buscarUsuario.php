@@ -236,11 +236,11 @@ if(isset($_POST['Eliminar'])){
 
             <section class="verUsuarios" id="verUsuarios">
 
-            <div class="buscador">
+            <div class="buscador" id>
                 <input type="text" id="buscarUsuario" placeholder="Buscar Usuario..." oninput="buscarUsuarios()">
 
-                <section>
-                    <div><button onclick="enviarDatos()" id="boton">Click</button></div>
+                <section id="Actualizar">
+                    <div><button onclick="enviarDatos()" id="boton">Actualizar Usuarios</button></div>
                 </section>
             </div>
 

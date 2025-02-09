@@ -3,6 +3,18 @@ include ('../../database/database.php');
 $conexion = new database;
 $con = $conexion->conectar();
 
+
+
+$registrosPorPagina = 30;
+
+$paginaActual = isset($_GET['pagina']) ? (int)$_GET['pagina'] : 1;
+
+if($paginaActual < 1){
+    $paginaActual = 1;
+}
+
+$offset = ($paginaActual - 1) * $registrosPorPagina;
+
 $buscar = isset($_GET['buscar']) ? $_GET['buscar'] : '';
 
 
@@ -23,7 +35,13 @@ $stmt->execute();
 
 $fila = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+
+
+
+
 echo "
+
+                
     <tr>
                         <th class='filaUsuario'>Usuario</th>
                         <th class='filaRol'>Rol</th>
@@ -43,7 +61,9 @@ foreach ($fila as $resu) {
     echo "
 
     <tr>
-        <th class='datos datosNombre'>
+    <th class='datos datosNombre'>
+    <input type='checkbox' class='checkBoX' name='seleccionados[]' id='seleccionados' value='" .  $resu['id_documento']  . "' >
+
             <img style='border-radius: 15px;' width='30px' height='30px' src='" . (!empty($resu['foto']) ? $mostrar : $usu) . "' alt=''>
             <div style='flex-direction: column;'>
                 <input class='editarNombre inputEdicion' type='text' placeholder='" . $resu['nombre_completo'] . "'>   
@@ -64,3 +84,6 @@ foreach ($fila as $resu) {
     </tr>";
 }
 ?>
+
+<script src="js/buscarUsuario.js"></script>
+<script src="./js/seleccionarVariosUsuario.js"></script>

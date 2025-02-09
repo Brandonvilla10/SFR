@@ -60,7 +60,9 @@ if(isset($_POST['submit'])){
         </aside>
 
         <nav class="menu estado-menu" style="margin-top: 40px;">
-            
+                <div class="divVolver" style="display:flex;align-items: end;margin-right: 10%;justify-content: flex-end;">
+                    <a class="volver" href="buscarUsuario.php"><img  width="15px" height="15px" src="../../assets/img/volver.png" alt="">Regresar</a>
+                </div>
             </nav>
             
             
@@ -123,7 +125,7 @@ if(isset($_POST['submit'])){
                         ?>
                     </select>
 
-                        <input type="submit" class="submit" name="submit" value="Enviar">
+                        <input type="submit" class="submit" name="submit" value="Confirmar Cambios">
                 </form>
 
 

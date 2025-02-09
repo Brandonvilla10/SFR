@@ -222,14 +222,14 @@ html,body{
     }
 }
 
-@media (min-width:720px) {
+@media (min-width:768px) {
     
     .container_grid{
         display: grid;
         grid-template: 
             "sidebar header" 130px
             "sidebar main" auto 
-            / 100px 1fr;  /* El grid se ajusta para dispositivos más grandes */
+            / auto 1fr;  /* El grid se ajusta para dispositivos más grandes */
         width: 100%;
         height: 100%;
     }

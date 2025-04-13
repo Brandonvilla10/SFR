@@ -46,7 +46,7 @@ if (isset($_POST['submit'])){
     <title>SFR</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/footer.css">
-
+    <link rel="stylesheet" href="./css/output.css">
 </head>
 <body>
 
@@ -63,7 +63,7 @@ if (isset($_POST['submit'])){
 
         <div class="card">
             <div>
-                <h2 class="tituloLogin">Login</h2>
+                <h2 class="tituloLogin text-3xl font-bold">Login</h2>
             </div>
 
 

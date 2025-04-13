@@ -46,6 +46,7 @@ if (isset($_POST['submit'])){
     <title>SFR</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/footer.css">
+    <link rel="stylesheet" href="./output.css">
 
 </head>
 <body>

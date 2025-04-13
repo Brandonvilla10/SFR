@@ -226,13 +226,6 @@
     border-style: var(--tw-border-style);
     border-width: 1px;
   }
-<<<<<<< HEAD
-=======
-  .text-5xl {
-    font-size: var(--text-5xl);
-    line-height: var(--tw-leading, var(--text-5xl--line-height));
-  }
->>>>>>> 4e0949a309110db7d76db9192a22122214b9ae1b
   .lowercase {
     text-transform: lowercase;
   }

@@ -289,7 +289,7 @@ if(isset($_POST['Eliminar'])){
                     foreach($fila as $resu){
                         $fotoActual = $resu['foto'];
                         $mostrar = "../../uploads/" . $fotoActual;
-                        $usu = "../../uploadsAdmin/usu.png";
+                        $usu = "../../uploads/usu.png";
 
 
                     ?>
@@ -300,7 +300,7 @@ if(isset($_POST['Eliminar'])){
                                 <input type="checkbox" class="checkBoX" name="seleccionados[]" id="seleccionados" value="<?php echo $resu['id_documento'] ?>">
                             
                             
-                            <img style="border-radius: 15px;" width="30px" height="30px" src="<?php echo !empty($resultado['foto']) ? $mostrar : $usu ?>" alt="">
+                            <img style="border-radius: 15px;" width="30px" height="30px" src="<?php echo (!empty($resu['foto']) ? $mostrar : $usu) ?>" alt="">
                             <div style="flex-direction: column;">
                                 <input class="editarNombre inputEdicion" disabled type="text" placeholder="<?php echo $resu['nombre_completo'] ?>">   
                                 <input class="editarCorreo inputEdicion" disabled type="email" placeholder="<?php echo $resu['correo'] ?>">

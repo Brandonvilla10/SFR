@@ -8,6 +8,23 @@ session_start();
 $json = file_get_contents("./json/usuariosSeleccionados.json");
 $datos = json_decode($json, true); 
 
+$datosJson = json_encode($datos);
+
+$arrayDocumentos = array();
+$arrayDetalleId = array();
+
+foreach($datos as $item){
+    $partes = explode(",", $item);
+    $documentos = $partes[0];
+    $detalles = isset($partes[1] ) ? $partes[1] : null;
+
+    array_push($arrayDocumentos,$documentos);
+    array_push($arrayDetalleId, $detalles);
+    
+}
+
+
+
 
 if(isset($_POST['submit'])){
     $listaParaAgregar = [];
@@ -26,13 +43,13 @@ if(isset($_POST['submit'])){
     }
 
     if(!empty($ficha)){
-        $listaParaAgregar[] = 'ficha  = ' . $ficha ;
+        $listaParaAgregar[] = 'id_ficha  = ' . $ficha ;
     }
 
     if(!empty($listaParaAgregar)){
 
         foreach($datos as $dato){
-            $actualizar = $con->prepare("UPDATE usuario SET ". implode(', ', $listaParaAgregar) . " WHERE id_documento = $dato");
+            $actualizar = $con->prepare("UPDATE detallematricula SET ". implode(', ', $listaParaAgregar) . " WHERE id_documento = $dato");
             $actualizar->execute();
         }
     }
@@ -138,17 +155,28 @@ if(isset($_POST['submit'])){
         <?php
         
 
-        foreach($datos as $dato){
+        foreach($arrayDocumentos as $dato){
             
-        $consulta = $con->prepare("SELECT usuario.*, fichas.*, programa.*, nivelFormacion.*, jornada.*, estado.*, rol.*
-        FROM usuario 
-        LEFT JOIN fichas on fichas.n_ficha = usuario.ficha 
-        LEFT JOIN programa on programa.id_programaFormacion = fichas.id_programaFormacion  
-        LEFT JOIN nivelformacion on nivelformacion.id_nivelFormacion = fichas.id_nivelFormacion
-        LEFT JOIN jornada on jornada.id_jornada = fichas.id_jornada
-        LEFT JOIN estado on estado.id_estado = usuario.id_estado
-        LEFT JOIN rol on rol.id_rol = usuario.id_rol
-        WHERE id_documento = $dato");
+        $consulta = $con->prepare("SELECT 
+                            usuario.nombre_completo, 
+                            usuario.foto, 
+                            usuario.id_documento, 
+                            usuario.correo, 
+                            fichas.n_ficha, 
+                            programa.nombrePrograma, 
+                            rol.nombre_rol, 
+                            estado.estado, 
+                            nivelformacion.nivelDeformacion, 
+                            jornada.jornada 
+                            FROM usuario
+                            LEFT JOIN detallematricula ON usuario.id_documento = detallematricula.id_documento 
+                            LEFT JOIN fichas ON fichas.n_ficha = detallematricula.id_ficha
+                            LEFT JOIN estado ON estado.id_estado = detallematricula.id_estado
+                            LEFT JOIN rol ON rol.id_rol = usuario.id_rol
+                            LEFT JOIN programa ON programa.id_programaFormacion = fichas.id_programaFormacion
+                            LEFT JOIN nivelformacion ON nivelformacion.id_nivelFormacion = fichas.id_nivelFormacion
+                            LEFT JOIN jornada ON jornada.id_jornada = fichas.id_jornada
+        WHERE usuario.id_documento = $dato");
 
         $consulta->execute();
         $fila = $consulta->fetch(PDO::FETCH_ASSOC);
@@ -177,7 +205,7 @@ if(isset($_POST['submit'])){
                     <p class="infoFicha"><?php echo $fila['nombrePrograma']  ?></p>
                     <p class="infoFicha"><?php echo $fila['nivelDeformacion']  ?></p>
                     <p class="infoFicha"><?php echo $fila['jornada']  ?></p>
-                    <p class="infoFicha">Ficha Actual: <?php echo $fila['ficha']  ?></p>
+                    <p class="infoFicha">Ficha Actual: <?php echo $fila['n_ficha']  ?></p>
                     </div>
 
                     <div class="CamposMain">

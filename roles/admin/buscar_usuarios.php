@@ -18,7 +18,8 @@ $offset = ($paginaActual - 1) * $registrosPorPagina;
 $buscar = isset($_GET['buscar']) ? $_GET['buscar'] : '';
 
 
-$sql = "SELECT 
+$sql = "SELECT
+                            detallematricula.id_detalle, 
                             usuario.nombre_completo, 
                             usuario.foto, 
                             usuario.id_documento, 
@@ -73,10 +74,12 @@ foreach ($fila as $resu) {
     $mostrar = "../../uploads/" . $fotoActual;
     $usu = "../../uploads/usu.png";
 
+    
     echo "
     <tr>
+    
         <th class='datos datosNombre'>
-            <input type='checkbox' class='checkBoX' name='seleccionados[]' value='{$resu['id_documento']}'>
+            <input type='checkbox' class='checkBoX' name='seleccionados[]' value='" . $resu['id_documento']  . "," . $resu['id_detalle']. "'>
 
             <img style='border-radius: 15px;' width='30px' height='30px' src='" . (!empty($resu['foto']) ? $mostrar : $usu) . "' alt=''>
             <div style='flex-direction: column;'>

@@ -6,53 +6,77 @@ session_start();
 
 
 $json = file_get_contents("./json/usuariosSeleccionados.json");
-$datos = json_decode($json, true); 
+$datos = json_decode($json, true);
 
 $datosJson = json_encode($datos);
 
 $arrayDocumentos = array();
 $arrayDetalleId = array();
 
-foreach($datos as $item){
+foreach ($datos as $item) {
     $partes = explode(",", $item);
     $documentos = $partes[0];
-    $detalles = isset($partes[1] ) ? $partes[1] : null;
+    $detalles = isset($partes[1]) ? $partes[1] : null;
 
-    array_push($arrayDocumentos,$documentos);
+    array_push($arrayDocumentos, $documentos);
     array_push($arrayDetalleId, $detalles);
-    
 }
 
 
 
 
-if(isset($_POST['submit'])){
+if (isset($_POST['submit'])) {
     $listaParaAgregar = [];
 
-    $id_rol = $_POST['id_rol'];
+    
     $estado = $_POST['estado'];
     $ficha = $_POST['ficha'];
 
+    if (!empty($ficha)) {
 
-    if(!empty($id_rol)){
-        $listaParaAgregar[] = 'id_rol  = ' . $id_rol ;
+
+        for ($i = 0; $i < count($arrayDocumentos); $i++) {
+            $documento = $arrayDocumentos[$i];
+            $detalleId = $arrayDetalleId[$i]; 
+
+            $validar = $con->prepare("SELECT * FROM detallematricula WHERE id_documento = $documento");
+            $validar->execute();
+            $usuarioExiste = $validar->fetch(PDO::FETCH_ASSOC);
+
+            if (empty($usuarioExiste)) {
+                $insertar = $con->prepare("INSERT INTO detallematricula(id_ficha,id_documento,id_estado)VALUES($ficha,$documento,1)");
+                $insertar->execute();
+            } else {
+                
+                $actualizar = $con->prepare("UPDATE detallematricula SET id_ficha = :ficha WHERE id_detalle = :detalle");
+                $actualizar->bindParam(':ficha', $ficha, PDO::PARAM_INT);
+                $actualizar->bindParam(':detalle', $detalleId, PDO::PARAM_INT);
+              
+                $actualizar->execute();
+            }
+
+           
+            
+        }
+
+
+       
     }
-    
-    if(!empty($estado)){
-        $listaParaAgregar[] = 'id_estado  = ' . $estado ;
-    }
 
-    if(!empty($ficha)){
-        $listaParaAgregar[] = 'id_ficha  = ' . $ficha ;
-    }
+    foreach($arrayDetalleId as $detalleId){
 
-    if(!empty($listaParaAgregar)){
+        if(!empty($estado)){
+            try{
 
-        foreach($datos as $dato){
-            $actualizar = $con->prepare("UPDATE detallematricula SET ". implode(', ', $listaParaAgregar) . " WHERE id_documento = $dato");
-            $actualizar->execute();
+                $actualizar = $con->prepare("UPDATE detallematricula SET id_estado = $estado WHERE id_detalle = $detalleId");
+                $actualizar->execute();
+            }catch (Exception $e) {
+                echo '<script>alert("Lo siento un usuario no tiene una ficha asignada o vuelve a seleccionar el usuario desde la interfaz de usuarios.")</script> ';
+            }
         }
     }
+
+   
 
 }
 
@@ -61,6 +85,7 @@ if(isset($_POST['submit'])){
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -69,95 +94,82 @@ if(isset($_POST['submit'])){
     <link rel="stylesheet" href="css/variosActualizar.css">
     <title>Actualizar</title>
 </head>
+
 <body>
-    
-<div class="container_grid">
+
+    <div class="container_grid">
         <aside class="aside_barra">
             <?php include('asidebar/asideBar.php') ?>
         </aside>
 
         <nav class="menu estado-menu" style="margin-top: 40px;">
-                <div class="divVolver" style="display:flex;align-items: end;margin-right: 10%;justify-content: flex-end;">
-                    <a class="volver" href="buscarUsuario.php"><img  width="15px" height="15px" src="../../assets/img/volver.png" alt="">Regresar</a>
-                </div>
-            </nav>
-            
-            
-            <main class="grid_contenido_plantilla">
-                
-                <section class="menuDeArriba">
-                    
-                    <h1>Editar Usuarios</h1>
+            <div class="divVolver" style="display:flex;align-items: end;margin-right: 10%;justify-content: flex-end;">
+                <a class="volver" href="buscarUsuario.php"><img width="15px" height="15px" src="../../assets/img/volver.png" alt="">Regresar</a>
+            </div>
+        </nav>
+
+
+        <main class="grid_contenido_plantilla">
+
+            <section class="menuDeArriba">
+
+                <h1>Editar Usuarios</h1>
                 <div class="botonesEdicion">
 
-                <form action="" class="formulario" method="post">
+                    <form action="" class="formulario" method="post">
 
-                    
 
-                    <select class="selects" name="ficha" id="">
-                        <option value="">Cambiar Ficha</option>
-                        <?php
-                        
-                        $consultaFicha = $con->prepare("SELECT * FROM fichas");
-                        $consultaFicha->execute();
-                        $fila2 = $consultaFicha->fetchAll(PDO::FETCH_ASSOC);
 
-                        foreach($fila2 as $resu){
-                        ?>
-                        <option value="<?php echo $resu['n_ficha'] ?>"><?php echo $resu['n_ficha'] ?> </option>
-                        <?php 
-                        } 
-                        ?>
-                    </select>
+                        <select class="selects" name="ficha" id="">
+                            <option value="">Cambiar Ficha</option>
+                            <?php
 
-                    <select class="selects" name="estado" id="">
-                        <option value="">Cambiar Estado</option>
-                        <?php
+                            $consultaFicha = $con->prepare("SELECT * FROM fichas");
+                            $consultaFicha->execute();
+                            $fila2 = $consultaFicha->fetchAll(PDO::FETCH_ASSOC);
 
-                        $consultaFicha = $con->prepare("SELECT * FROM estado");
-                        $consultaFicha->execute();
-                        $fila2 = $consultaFicha->fetchAll(PDO::FETCH_ASSOC);
+                            foreach ($fila2 as $resu) {
+                            ?>
+                                <option value="<?php echo $resu['n_ficha'] ?>"><?php echo $resu['n_ficha'] ?> </option>
+                            <?php
+                            }
+                            ?>
+                        </select>
 
-                        foreach($fila2 as $resu){
-                        ?>
-                        <option class="option" value="<?php echo $resu['id_estado'] ?>"><?php echo $resu['estado'] ?> </option>
-                        <?php 
-                        } 
-                        ?>
-                    </select>
+                        <select class="selects" name="estado" id="">
+                            <option value="">Cambiar Estado</option>
+                            <?php
 
-                    <select class="selects" name="id_rol" id="">
-                        <option value="">Cambiar Rol</option>
-                        <?php
+                            $consultaFicha = $con->prepare("SELECT * FROM estado");
+                            $consultaFicha->execute();
+                            $fila2 = $consultaFicha->fetchAll(PDO::FETCH_ASSOC);
 
-                        $consultaFicha = $con->prepare("SELECT * FROM rol");
-                        $consultaFicha->execute();
-                        $fila2 = $consultaFicha->fetchAll(PDO::FETCH_ASSOC);
+                            foreach ($fila2 as $resu) {
+                            ?>
+                                <option class="option" value="<?php echo $resu['id_estado'] ?>"><?php echo $resu['estado'] ?> </option>
+                            <?php
+                            }
+                            ?>
+                        </select>
 
-                        foreach($fila2 as $resu){
-                        ?>
-                        <option value="<?php echo $resu['id_rol'] ?>"><?php echo $resu['nombre_rol'] ?> </option>
-                        <?php 
-                        } 
-                        ?>
-                    </select>
+                     
 
                         <input type="submit" class="submit" name="submit" value="Confirmar Cambios">
-                </form>
+                    </form>
 
 
                 </div>
             </section>
 
 
-        <section class="mainSection">
+            <section class="mainSection">
 
-        <?php
-        
+                <?php
 
-        foreach($arrayDocumentos as $dato){
-            
-        $consulta = $con->prepare("SELECT 
+
+                foreach ($arrayDocumentos as $dato) {
+
+                    $consulta = $con->prepare("SELECT 
                             usuario.nombre_completo, 
                             usuario.foto, 
                             usuario.id_documento, 
@@ -178,61 +190,59 @@ if(isset($_POST['submit'])){
                             LEFT JOIN jornada ON jornada.id_jornada = fichas.id_jornada
         WHERE usuario.id_documento = $dato");
 
-        $consulta->execute();
-        $fila = $consulta->fetch(PDO::FETCH_ASSOC);
+                    $consulta->execute();
+                    $fila = $consulta->fetch(PDO::FETCH_ASSOC);
 
-        $sinFoto = "../../uploads/usu.png";
-        $conFoto = "../../uploads/" . $fila['foto'];
+                    $sinFoto = "../../uploads/usu.png";
+                    $conFoto = "../../uploads/" . $fila['foto'];
 
-        ?>
-            <div class="card">
-                <div class="img">
-                    <img style="border-radius: 300px; border:solid" width="80px" height="80px" src=<?php echo empty($fila['foto']) ? $sinFoto : $conFoto ?> alt="">
-                    <div class="divInformacion">
-                        <p class="nombreCompleto"><?php echo $fila['nombre_completo'] ?></p>
-                        <p class="correo"><?php echo $fila['correo'] ?></p>
-                        <p class="documento"><?php echo $fila['id_documento'] ?></p>
-                        <p class="documento"><?php echo $fila['nombre_rol'] ?></p>
+                ?>
+                    <div class="card">
+                        <div class="img">
+                            <img style="border-radius: 300px; border:solid" width="80px" height="80px" src=<?php echo empty($fila['foto']) ? $sinFoto : $conFoto ?> alt="">
+                            <div class="divInformacion">
+                                <p class="nombreCompleto"><?php echo $fila['nombre_completo'] ?></p>
+                                <p class="correo"><?php echo $fila['correo'] ?></p>
+                                <p class="documento"><?php echo $fila['id_documento'] ?></p>
+                                <p class="documento"><?php echo $fila['nombre_rol'] ?></p>
+                            </div>
+                        </div>
+
+                        <div class="informacion">
+                            <div class="CamposMain">
+                                <p class="camposDeInfo">Ficha</p>
+                            </div>
+
+                            <div>
+                                <p class="infoFicha"><?php echo $fila['nombrePrograma']  ?></p>
+                                <p class="infoFicha"><?php echo $fila['nivelDeformacion']  ?></p>
+                                <p class="infoFicha"><?php echo $fila['jornada']  ?></p>
+                                <p class="infoFicha">Ficha Actual: <?php echo $fila['n_ficha']  ?></p>
+                            </div>
+
+                            <div class="CamposMain">
+                                <p class="camposDeInfo">Estado</p>
+                            </div>
+
+                            <div>
+                                <p class="infoFicha"><?php echo $fila['estado']  ?></p>
+                            </div>
+                        </div>
                     </div>
-                </div>
 
-                <div class="informacion">
-                    <div class="CamposMain">
-                        <p class="camposDeInfo">Ficha</p>
-                    </div>
- 
-                    <div>
-                    <p class="infoFicha"><?php echo $fila['nombrePrograma']  ?></p>
-                    <p class="infoFicha"><?php echo $fila['nivelDeformacion']  ?></p>
-                    <p class="infoFicha"><?php echo $fila['jornada']  ?></p>
-                    <p class="infoFicha">Ficha Actual: <?php echo $fila['n_ficha']  ?></p>
-                    </div>
+                <?php
+                }
 
-                    <div class="CamposMain">
-                        <p class="camposDeInfo">Estado</p>
-                    </div>
+                ?>
+            </section>
 
-                    <div>
-                    <p class="infoFicha"><?php echo $fila['estado']  ?></p>
-                    </div>
-                </div>
-            </div>
-
-        <?php 
-        }
-        
-        ?>
-        </section>
-
-    </main>
-</div>
+        </main>
+    </div>
 </body>
 
-<script >
-
-const no = document.getElementById("no")
-let nombres = document.getElementById("nombres")
-
-
+<script>
+    const no = document.getElementById("no")
+    let nombres = document.getElementById("nombres")
 </script>
+
 </html>

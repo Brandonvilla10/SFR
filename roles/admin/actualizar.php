@@ -8,15 +8,27 @@ $documentoVentana = $_GET['documento'];
 $_SESSION['documentoUpload'] = $documentoVentana;
 
 // Consulta principal para obtener los datos del usuario
-$sql = $con->prepare("SELECT usuario.*, usuario.foto, fichas.n_ficha, programa.*,rol.nombre_rol,estado.estado, nivelformacion.*, 
-jornada.*  
-FROM usuario                            LEFT JOIN rol ON rol.id_rol = usuario.id_rol
-                                        LEFT JOIN fichas ON fichas.n_ficha = usuario.ficha
-                                        LEFT JOIN estado ON estado.id_estado = usuario.id_estado
-                                        LEFT JOIN programa ON fichas.id_programaFormacion = programa.id_programaFormacion
-                                        LEFT JOIN nivelformacion ON fichas.id_nivelFormacion = nivelformacion.id_nivelFormacion
-                                        LEFT JOIN jornada ON fichas.id_jornada = jornada.id_jornada
-                                        WHERE id_documento = '$documentoVentana'");
+$sql = $con->prepare("SELECT 
+    usuario.nombre_completo, 
+    usuario.foto, 
+    usuario.id_documento, 
+    usuario.correo, 
+    fichas.n_ficha, 
+    programa.nombrePrograma, 
+    rol.nombre_rol, 
+    estado.estado, 
+    nivelformacion.nivelDeformacion, 
+    jornada.jornada 
+FROM usuario
+LEFT JOIN detallematricula ON usuario.id_documento = detallematricula.id_documento 
+LEFT JOIN fichas ON fichas.n_ficha = detallematricula.id_ficha
+LEFT JOIN estado ON estado.id_estado = detallematricula.id_estado
+LEFT JOIN rol ON rol.id_rol = usuario.id_rol
+LEFT JOIN programa ON programa.id_programaFormacion = fichas.id_programaFormacion
+LEFT JOIN nivelformacion ON nivelformacion.id_nivelFormacion = fichas.id_nivelFormacion
+LEFT JOIN jornada ON jornada.id_jornada = fichas.id_jornada
+ WHERE usuario.id_documento = $documentoVentana ");
+
 $sql->execute();
 $fila = $sql->fetch(PDO::FETCH_ASSOC);
 
@@ -24,6 +36,8 @@ if (isset($_POST['submit'])) {
     try {
         $updates = [];
         $params = [];
+
+        
 
         // Verificar si hay datos para actualizar
         if (!empty($_POST['id_documento'])) {
@@ -41,10 +55,7 @@ if (isset($_POST['submit'])) {
             $params[':correo'] = $_POST['correo'];
         }
 
-        if (!empty($_POST['ficha'])) {
-            $updates[] = 'ficha = :ficha';
-            $params[':ficha'] = $_POST['ficha'];
-        }
+       
         
         if (!empty($_POST['codigo_barras'])) {
             $updates[] = 'codigo_barras = :codigo_barras';
@@ -89,6 +100,21 @@ if (isset($_POST['submit'])) {
             $programa = $_POST['programa'];        
             $sql = $con->prepare("UPDATE fichas SET id_programaFormacion = $programa WHERE n_ficha = :n_ficha  ");;
             $sql->execute([':n_ficha' => $fila['n_ficha']]);
+        }
+
+
+        $detalleMatricula = $con->prepare("SELECT * FROM detallematricula WHERE id_documento = $documentoVentana");
+        $detalleMatricula->execute();
+        $validarMatricula = $detalleMatricula->fetch(PDO::FETCH_ASSOC);
+
+        $ficha = $_POST['ficha'];
+        if($validarMatricula){
+            $sql = $con->prepare("UPDATE detallematricula set id_ficha = $ficha WHERE id_documento = $documentoVentana");
+            $sql->execute();
+        }else{
+            
+            $sql = $con->prepare("INSERT INTO detallematricula (id_ficha, id_documento, id_estado) VALUES ($ficha,$documentoVentana,1)");
+            $sql->execute();
         }
 
         echo "<script>window.opener.location.reload()</script>";
@@ -163,10 +189,8 @@ $usu = "../../uploads/usu.png";
                     <div class="column">
                     <p class="TipoCampo">Ficha</p>
                         <select name="ficha" class="inputsClaseGeneral"  id="">
-                            <option class="" value="">Ficha Actual:  <?php echo empty($fila['ficha']) ? "No tiene ficha" : $fila['ficha']; ?></option>
+                            <option class="" value="">Ficha Actual:  <?php echo empty($fila['n_ficha']) ? "No tiene ficha" : $fila['n_ficha']; ?></option>
                             <?php 
-
-                            
 
                             $sqlrol = $con->prepare("SELECT * FROM fichas   ");
                             // $sqlrol->bindParam(':n_ficha', $fila['n_ficha'], PDO::PARAM_INT);
@@ -239,16 +263,12 @@ $usu = "../../uploads/usu.png";
                     </div>
 
                     <div class="column">
-                        <p class="TipoCampo">Código de Barras</p>
-                        <input id="codigoDeBarras" name="codigo_barras" class="inputsClaseGeneral" type="text" value="<?php echo $fila['codigo_barras']; ?>" >
-                    </div>
-                    <div class="column">
                     <p class="TipoCampo">Estado</p>
                         <select name="id_estado" class="inputsClaseGeneral"  id="">
                             <option class="" value="">Estado Actual:  <?php echo $fila['estado']; ?></option>
                             <?php 
-                            $sqlrol = $con->prepare("SELECT * FROM estado WHERE id_estado != :id_estado");
-                            $sqlrol->bindParam(':id_estado', $fila['id_estado']);
+                            $sqlrol = $con->prepare("SELECT * FROM estado ");
+                            // $sqlrol->bindParam(':id_estado', $fila['id_estado']);
                             $sqlrol->execute();
                             $sqlrol = $sqlrol->fetchAll(PDO::FETCH_ASSOC);
 
@@ -265,8 +285,8 @@ $usu = "../../uploads/usu.png";
                         <select name="id_rol" class="inputsClaseGeneral"  id="">
                             <option  value="">Rol Actual:  <?php echo $fila['nombre_rol']; ?></option>
                             <?php 
-                            $sqlrol = $con->prepare("SELECT * FROM rol WHERE id_rol != :id_rol");
-                            $sqlrol->bindParam(':id_rol', $fila['id_rol']);
+                            $sqlrol = $con->prepare("SELECT * FROM rol ");
+                            // $sqlrol->bindParam(':id_rol', $fila['id_rol']);
                             $sqlrol->execute();
                             $sqlrol = $sqlrol->fetchAll(PDO::FETCH_ASSOC);
 

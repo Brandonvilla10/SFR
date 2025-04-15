@@ -140,15 +140,26 @@ if(isset($_POST['submit'])){
 
         foreach($datos as $dato){
             
-        $consulta = $con->prepare("SELECT usuario.*, fichas.*, programa.*, nivelFormacion.*, jornada.*, estado.*, rol.*
-        FROM usuario 
-        LEFT JOIN fichas on fichas.n_ficha = usuario.ficha 
-        LEFT JOIN programa on programa.id_programaFormacion = fichas.id_programaFormacion  
-        LEFT JOIN nivelformacion on nivelformacion.id_nivelFormacion = fichas.id_nivelFormacion
-        LEFT JOIN jornada on jornada.id_jornada = fichas.id_jornada
-        LEFT JOIN estado on estado.id_estado = usuario.id_estado
-        LEFT JOIN rol on rol.id_rol = usuario.id_rol
-        WHERE id_documento = $dato");
+        $consulta = $con->prepare("SELECT 
+                            usuario.nombre_completo, 
+                            usuario.foto, 
+                            usuario.id_documento, 
+                            usuario.correo, 
+                            fichas.n_ficha, 
+                            programa.nombrePrograma, 
+                            rol.nombre_rol, 
+                            estado.estado, 
+                            nivelformacion.nivelDeformacion, 
+                            jornada.jornada 
+                            FROM usuario
+                            LEFT JOIN detallematricula ON usuario.id_documento = detallematricula.id_documento 
+                            LEFT JOIN fichas ON fichas.n_ficha = detallematricula.id_ficha
+                            LEFT JOIN estado ON estado.id_estado = detallematricula.id_estado
+                            LEFT JOIN rol ON rol.id_rol = usuario.id_rol
+                            LEFT JOIN programa ON programa.id_programaFormacion = fichas.id_programaFormacion
+                            LEFT JOIN nivelformacion ON nivelformacion.id_nivelFormacion = fichas.id_nivelFormacion
+                            LEFT JOIN jornada ON jornada.id_jornada = fichas.id_jornada
+        WHERE usuario.id_documento = $dato");
 
         $consulta->execute();
         $fila = $consulta->fetch(PDO::FETCH_ASSOC);
@@ -177,7 +188,7 @@ if(isset($_POST['submit'])){
                     <p class="infoFicha"><?php echo $fila['nombrePrograma']  ?></p>
                     <p class="infoFicha"><?php echo $fila['nivelDeformacion']  ?></p>
                     <p class="infoFicha"><?php echo $fila['jornada']  ?></p>
-                    <p class="infoFicha">Ficha Actual: <?php echo $fila['ficha']  ?></p>
+                    <p class="infoFicha">Ficha Actual: <?php echo $fila['n_ficha']  ?></p>
                     </div>
 
                     <div class="CamposMain">

@@ -12,6 +12,7 @@ function validarCheck(){
         }
     })
 
+
     
     return ArrayCheckBox
 

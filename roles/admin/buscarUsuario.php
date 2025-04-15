@@ -270,7 +270,8 @@ if (isset($_POST['Eliminar'])) {
 
                         $totalPaginas = ceil($totalRegistros / $registrosPorPagina);
 
-                        $sql = $con->prepare("SELECT 
+                        $sql = $con->prepare("SELECT
+                            detallematricula.id_detalle, 
                             usuario.nombre_completo, 
                             usuario.foto, 
                             usuario.id_documento, 
@@ -312,7 +313,7 @@ if (isset($_POST['Eliminar'])) {
                             <tr>
                                 <th class="datos datosNombre">
 
-                                    <input type="checkbox" class="checkBoX" name="seleccionados[]" id="seleccionados" value="<?php echo $resu['id_documento'] ?>">
+                                    <input type="checkbox" class="checkBoX" name="seleccionados[]" id="seleccionados" value="<?php echo $resu['id_documento'] . "," . $resu['id_detalle'] ?>">
 
 
                                     <img style="border-radius: 15px;" width="30px" height="30px" src="<?php echo (!empty($resu['foto']) ? $mostrar : $usu) ?>" alt="">

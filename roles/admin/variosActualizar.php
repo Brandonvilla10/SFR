@@ -8,6 +8,23 @@ session_start();
 $json = file_get_contents("./json/usuariosSeleccionados.json");
 $datos = json_decode($json, true); 
 
+$datosJson = json_encode($datos);
+
+$arrayDocumentos = array();
+$arrayDetalleId = array();
+
+foreach($datos as $item){
+    $partes = explode(",", $item);
+    $documentos = $partes[0];
+    $detalles = isset($partes[1] ) ? $partes[1] : null;
+
+    array_push($arrayDocumentos,$documentos);
+    array_push($arrayDetalleId, $detalles);
+    
+}
+
+
+
 
 if(isset($_POST['submit'])){
     $listaParaAgregar = [];
@@ -26,13 +43,13 @@ if(isset($_POST['submit'])){
     }
 
     if(!empty($ficha)){
-        $listaParaAgregar[] = 'ficha  = ' . $ficha ;
+        $listaParaAgregar[] = 'id_ficha  = ' . $ficha ;
     }
 
     if(!empty($listaParaAgregar)){
 
         foreach($datos as $dato){
-            $actualizar = $con->prepare("UPDATE usuario SET ". implode(', ', $listaParaAgregar) . " WHERE id_documento = $dato");
+            $actualizar = $con->prepare("UPDATE detallematricula SET ". implode(', ', $listaParaAgregar) . " WHERE id_documento = $dato");
             $actualizar->execute();
         }
     }
@@ -138,7 +155,7 @@ if(isset($_POST['submit'])){
         <?php
         
 
-        foreach($datos as $dato){
+        foreach($arrayDocumentos as $dato){
             
         $consulta = $con->prepare("SELECT 
                             usuario.nombre_completo, 

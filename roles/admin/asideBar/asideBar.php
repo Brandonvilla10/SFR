@@ -25,6 +25,8 @@ $rol =$_SESSION['rol_name'];
     
     
 </head>
+
+
 <body>
     
     <button class="menu_iconos_burguer"  id="abrir"><i class="bi bi-list"></i></button>
@@ -58,7 +60,7 @@ $rol =$_SESSION['rol_name'];
         </div></a>
 
 
-        <a href=""> <div class="seccion">
+        <a href="./scanner.php"> <div class="seccion">
             <img class="icono" src="asidebar/icons/escanearBlanco.png" alt="">
             <p class="seccionTexto">Escanear</p>
         </div></a>

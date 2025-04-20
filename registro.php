@@ -23,8 +23,6 @@ if(isset($_POST["botoncito"])){
     $documento = $_POST['documento'];
     $correo  = $_POST['correo'];
     $contrasena = $_POST['contrasena'];
-    $ficha = 1;
-    $codigo = $_POST['documento'];
     $estado = 2;
     $rol = 2;
 
@@ -39,11 +37,11 @@ if(isset($_POST["botoncito"])){
     if($fila){
         echo "<script>alert('El usuario ya existente o correos repetidos')</script>";
     }
-    else if($nombre == "" ||$documento == "" ||$correo == "" || $contrasena == "" || $codigo == "" || $estado == "" || $rol == ""){
+    else if($nombre == "" ||$documento == "" ||$correo == "" || $contrasena == ""  || $estado == "" || $rol == ""){
         echo "<script>alert('Elementos vacios, Error de sistema')</script>";
     }else{
-            $query = "INSERT INTO usuario(id_documento,nombre_completo,correo,contraseña,ficha,codigo_barras,id_estado,id_rol) 
-            VALUES ('$documento','$nombre','$correo','$encriptacion','$ficha','$codigo','$estado','$rol')";
+            $query = "INSERT INTO usuario(id_documento,nombre_completo,correo,contraseña,id_estado,id_rol) 
+            VALUES ('$documento','$nombre','$correo','$encriptacion','$estado','$rol')";
 
             $insert = $con->prepare($query);
             $insert->execute();

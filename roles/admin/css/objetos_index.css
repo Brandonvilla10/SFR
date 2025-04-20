@@ -109,6 +109,22 @@
    
 }
 
+.edit{
+    display: flex;
+    flex-direction: column;
+    color:white;
+    padding: 5px;
+    background-color: green;
+    border-radius: 5px;
+    border: transparent;
+    width: auto;
+}
+
+.edit:hover{
+    background-color: #1c8f05;
+    scale: 1.1;
+    cursor: pointer;
+}
 
 
 
@@ -135,8 +151,6 @@
         }
 
         
-
-
         /* cambios de la ventana que aparece */
 
         .img_fondo{
@@ -471,5 +485,4 @@
         width: 150px;
     }
 }
-
 

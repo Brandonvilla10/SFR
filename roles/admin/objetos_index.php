@@ -29,6 +29,8 @@ $consulta = $con->prepare("SELECT *, objetos.foto AS ob_pic FROM objetos
 $consulta->bindParam(':start', $start_record, PDO::PARAM_INT);
 $consulta->bindParam(':limit', $limite_registros, PDO::PARAM_INT);
 $consulta->execute();
+
+
 ?>
 
 <!DOCTYPE html>
@@ -57,6 +59,10 @@ $consulta->execute();
             <button class="buscar_objeto_titulo" onclick="plantilla()">Buscar Objetos</button>
         </div>
         <hr class="separador">
+
+
+        <!-------------------------------- TABLA DE OBJETOS ------------------------------------->
+        
         <div class="contenido_tabla">
             <input class="BOTON_FILTRAR" placeholder="Filtrar objeto por serial" oninput="filtrarPorSerial(this.value)">
             <div class="regulador_tamaño">
@@ -74,14 +80,15 @@ $consulta->execute();
                     </thead>
                     <tbody>
                         <?php foreach ($consulta as $generales) { ?>
-                            <tr>
-                                <td><img src="../../uploads/<?php echo $generales['ob_pic'] ?>" alt="img" height="60px" width="60px"></td>
+                            <tr>  
+                         
+                                <td><img src="../../uploads/<?php echo isset($generales['ob_pic']) && $generales['ob_pic'] !== '' ? $generales['ob_pic'] : 'default_iconos.png'; ?>" alt="img" height="60px" width="60px"></td>
                                 <td><?php echo $generales['id_serial']; ?></td>
                                 <td><?php echo $generales['nombre']; ?></td>
                                 <td><?php echo $generales['id_documento']; ?></td>
                                 <td><?php echo $generales['nombre_completo']; ?></td>
                                 <td><?php echo $generales['estado']; ?></td>
-                                <td><img src="./imgAdmin/tres puntos.png" alt="" width="30px"></td>
+                                <td><button  class="edit" onclick="window.open('ventana_objetos_usu.php?id=<?php echo $generales['id_serial']?>' ,'','width=700px, height=700px, toolbar=NO, menubar=no,status=no')"><i class="bi bi-pencil-square"></i> </button>  </td>
                             </tr>
                         <?php } ?>
                     </tbody>
@@ -106,7 +113,7 @@ $consulta->execute();
         </div>
 
 
-
+<!------------------------------------------------ MODAL DE BUSQUEDA DE OBJETOS ----------------------------------->
 
         <div class="buscar_user estadoDeobjetos" id ="estado-objetos">
             <button class="objetos_cerrar_button" id="close-objects" onclick="retirarPlantilla()"><i class="bi bi-x-lg"></i></button>      <!-- ESTE ES EL TEXTO -->
@@ -129,6 +136,8 @@ $consulta->execute();
 </div>
 
 <script>
+
+    // <----------------------------- CERRAR Y ABRIR MODAL DE BUSQUEDA DE OBJETOS --------------------------->
     const plant = document.getElementById('estado-objetos');
 
     function plantilla(){
@@ -138,13 +147,10 @@ $consulta->execute();
         plant.classList.add('estadoDeobjetos');
     }
 
-</script>
-<script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
-<script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
-<script src="../../js/js.js"></script>
-<script> 
 
-function filtrarPorSerial(serial) {
+//<----------------------------- FILTRO PARA BUSCAR POR EL SERIAL ---------------------------> 
+
+    function filtrarPorSerial(serial) {
     const tabla = document.querySelector('.tabla_de_objetos');
     const filas = tabla.getElementsByTagName('tbody')[0].getElementsByTagName('tr');
 
@@ -164,5 +170,8 @@ function filtrarPorSerial(serial) {
 }
 
 </script>
+<script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+<script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+<script src="../../js/js.js"></script>
 </body>
 </html>

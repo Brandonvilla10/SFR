@@ -1,122 +1,146 @@
-*{
+* {
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
 }
-body{
-    background-color: #0F1022;
-    color: white;
+
+body {
+    background-color: #FFFFFF;
+    color: #1B3C73;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    box-sizing: border-box;
     padding-top: 50px;
+    font-family: Arial, sans-serif;
 }
 
-.formulario{
+.formulario {
     display: flex;
     width: 400px;
-    height: 800px;
+    height: auto;
+    padding: 20px 0;
     flex-direction: column;
     border-radius: 15px;
     align-items: center;
-    color: white;
-    background: linear-gradient(to bottom,  #2C2C3B, #161525);
-}
-.formulario label,input, input::placeholder,.selectos{
-    color: white;
+    background: linear-gradient(to bottom, #e7f0fa, #ffffff);
+    box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.1);
 }
 
-.label_titulo{
+.formulario label,
+input,
+input::placeholder,
+.selectos,
+textarea {
+    color: #1B3C73;
+}
+
+.label_titulo {
     width: 270px;
     padding: 5px;
+    font-weight: bold;
 }
-.data_input,.selectos{
-    background-color:#53535F;
-    border-color: transparent;
+
+.data_input,
+.selectos {
+    border: 1px solid #1B3C73;
     height: 40px;
     border-radius: 10px;
-    margin-bottom: 10px;
+    margin-bottom: 12px;
     width: 279px;
+    padding-left: 10px;
+    background-color: #f0f8ff;
 }
 
-
-.imagen{
+.imagen {
     height: 155px;
     padding: 15px;
     margin: 15px;
     width: 205px;
     display: flex;
-    flex-direction: column;
-    background-color: #7F7F89;
-    box-sizing: border-box;
-    object-fit: contain;
+    justify-content: center;
+    align-items: center;
+    background-color: #D6E6F2;
     border-radius: 30px;
+    object-fit: contain;
 }
-.imagen img{
+
+.imagen img {
     height: 150px;
 }
 
-.image_options{
-    font-size: 10px;
-    background: white;
-    width: 200px;
+.image_options {
+    width: 220px;
     display: flex;
-    justify-content: space-evenly;
-    height: 30px;
-    margin: 15px;
+    justify-content: space-between;
+    align-items: center;
+    margin: 15px 0;
+}
+
+.label_file_input {
     background-color: transparent;
+    color: #1B3C73;
+    font-weight: bold;
+    cursor: pointer;
 }
 
-.label_file_input{
-  
-    align-self: center;
-    background-color:transparent;
-    color: white;
-}
-.label_file_input i{
+.label_file_input i {
     font-size: 20px;
-
 }
 
-.caracteristica{
+textarea.caracteristica {
     height: 100px;
-    border-radius: 0;
-    text-align: start;
-    align-items: start;
+    border-radius: 10px;
     resize: none;
-    color: white;
-    padding: 5px;
-}
-textarea::-webkit-scrollbar {
-    width: 9px; /* Ancho de la barra de desplazamiento */
-    height: 12px; /* Altura para barra horizontal (si se muestra) */
+    padding: 10px;
+    background-color: #f0f8ff;
 }
 
-.enviar_foto{
+textarea::-webkit-scrollbar {
+    width: 8px;
+}
+
+.enviar_foto {
     border-radius: 30px;
     font-size: 10px;
-    padding: 9px;
-    text-align: center;
-    box-sizing: border-box;
-    align-self: center;
-    background-color: green;
+    padding: 9px 15px;
+    background-color: #4CAF50;
     color: white;
-    border-color: white;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
 }
 
-.basura{
-    border: 0;
+.enviar_foto:hover {
+    background-color: #45a049;
+}
+
+.basura {
     background-color: transparent;
     font-size: 20px;
-    color: white;
+    color: red;
+    border: none;
+    cursor: pointer;
 }
 
-.datos_basicos{
-    display: flex   ;
+.datos_basicos {
+    display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
-    /* align-self: center; */
     width: 100%;
+}
+
+input[type="submit"] {
+    background-color: #1B3C73;
+    color: white;
+    padding: 10px 25px;
+    border: none;
+    border-radius: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+input[type="submit"]:hover {
+    background-color: #145296;
 }

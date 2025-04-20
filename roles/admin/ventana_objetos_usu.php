@@ -62,14 +62,12 @@ $con = $conexion->conectar();
 
         <form action="../../uploads/upload_objetos.php" method ="POST" enctype="multipart/form-data" >
 
-            <img src="../../uploads/<?php echo $consulta_1['foto'] ?>" alt="" class="imagen" id="imagen_objeto">
-
+            <img src="../../uploads/<?php echo isset($consulta_1['foto']) && $consulta_1['foto'] !== '' ? $consulta_1['foto'] : 'default_iconos.png' ?>" alt="" class="imagen" id="imagen_objeto">
+           
 
 
             <div class="image_options"> 
 
-                
-            
                 <button class="basura" onclick="" id="Borrar foto"><i class="bi bi-trash-fill"></i></button>
                 <input type="submit" class="enviar_foto" id ="enviar_foto" name = "submit"  placeholder="ACTUALIZAR FOTO">
                 <label for="fileUpload" class="label_file_input"> <i class="bi bi-upload"></i></label>
@@ -85,6 +83,7 @@ $con = $conexion->conectar();
 
             <label for="name" class="label_titulo">Serial</label>
             <input type="text" id="name" name ="serial_nuevo" class="data_input" placeholder="nombre" value="<?php echo $consulta_1['id_serial'] ?>">
+            <input type="text" id="name" name ="serial" class="data_input" placeholder="nombre" value="<?php echo $consulta_1['id_serial'] ?>" hidden>
 
             <label for="" class="label_titulo">Nombre</label>
             <input type="text" name ="nombre_nuevo" class="data_input" value="<?php echo $consulta_1['nombre'] ?>">
@@ -93,7 +92,7 @@ $con = $conexion->conectar();
             <textarea class="data_input caracteristica" name ="carac_nueva" placeholder="Escribe aquí..."><?php echo $consulta_1['caracteristica'] ?></textarea>
 
             <label for="" class="label_titulo">Marca</label>
-                <select name="marca_nueva" id="" class="selectos" >
+            <select name="marca_nueva" id="" class="selectos" >
                     
                     
                         <option value="<?php echo $consulta_1['id_marca'] ?> ">
@@ -114,10 +113,10 @@ $con = $conexion->conectar();
                             <?php  } ?>
 
 
-                </select>
+            </select>
                 
             <label for="estado" class="label_titulo">Estado</label>
-                <select name="estado_nuevo" id="" class="selectos">
+            <select name="estado_nuevo" id="" class="selectos">
                     <option value="<?php echo $consulta_1['id_estado'] ?>"> 
                         ACTUAL:
                         <?php echo $consulta_1['estado'] ?>
@@ -135,7 +134,7 @@ $con = $conexion->conectar();
 
                     <option value="<?php  echo $estados['id_estado'] ?>"> <?php  echo $estados['estado'] ?></option>
                     <?php } ?>
-                </select>
+            </select>
 
             <input type="submit" name="enviar">
             
@@ -146,7 +145,7 @@ $con = $conexion->conectar();
 <?php if(isset($_POST['enviar'])){
 
            $id_serial = $_POST['serial_nuevo'];
-           $serial_anterior = $_POST['serial_nuevo'];
+           $serial_anterior = $_POST['serial'];
            $nombre_objeto =$_POST['nombre_nuevo'];
            $caracteristica =$_POST['carac_nueva'];
            $marca = $_POST['marca_nueva'];

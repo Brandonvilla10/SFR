@@ -45,6 +45,7 @@ body{
 }
 
 @media (min-width: 767px) {
+
     .container_grid{
     display: grid;
     grid-template: 
@@ -66,123 +67,266 @@ body{
         justify-content: start;
         align-items: center;
         box-sizing: border-box;
+        min-height: 100vh;
+        overflow: hidden;
+        gap: 20px;
     }
 
-    .titulo_objetos_usuario{
-        margin: 20px;
-        padding-left: 80px;
-        box-sizing: border-box;
-        align-self: start;
+
+    /* SECCION 1 en el codigo */
+    .descriptionOwner{
+        display: flex;
+        min-height: 10%;
         width: 100%;
-
+        overflow: hidden;
+        padding: 5px;
+        justify-content: space-around;
     }
-    .titulo_objetos_usuario hr{
-       
-        margin-top: 10px;
-        
+
+    .Owner{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        width: 78%;
+        background-color: #FFFFFF;
+        border-radius: 10px;
+        padding: 10px;
+        font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
+    }
+    
+    .addObject{
+        display: flex;
+        flex-direction: column;
+        width: 18%;
+        align-items: center;
+        background-color: #345C7A;
+        border-radius: 10px;
+        border-color: transparent;
+        padding: 10px;
+        color: white;
+        font-size: clamp(0.8rem, 1vw, 1.2rem);
+        font-weight: 500;
+    }
+
+    .addObject i{
+        font-size: clamp(1rem, 2.5vw, 2rem);
+        color: white;
     }
 
     .objetos{
-        margin-top: 10px;
-        width: 85%;
-        min-width: 600px;
-        height: 600px;
-        background-color: #ffff;
+        background-color: #FFFFFF;
         display: flex;
         flex-wrap: wrap;
+        width: 98%;
+        min-height: 450px;
+        height: 75%;
+        padding: 10px;
+        justify-content: space-around;
+        overflow-y: scroll;
         border-radius: 15px;
-        overflow-y: auto;
-        overflow-x: hidden;
-        justify-content: center;
-
+        row-gap: 5%;
     }
-
-    .objects_cards{
-        background-color: #f7f7f7;
+    .ObjectCard{
         display: flex;
-        width: 230px;
-        flex-direction: column;
-        height: 285px;
-        box-sizing: border-box;
-        border-radius: 15px;
-        margin: 20px;
-        box-shadow: 0 0 3px;;
-    }
-
-    .formulario_tarjetas{
-        display: flex;
-        justify-content: center;
-    }
-
-    .objects_cards .image{
-        background-color: #ffff;
-        display: flex;  
-        flex-direction: column;
-        width: 90%;
-        height: 60%;
-        align-self: center;
-        margin-top: 15px;
-        text-align: center;
-        font-size: 13px;
-        padding-top: 5px;
-        box-sizing: border-box;
+        background-color: #F7F7F7;
+        border-radius: 10px;
+        width: 45%;
+        height: 30%;
+        min-height: 180px;
+        padding: 10px;
         overflow: hidden;
-        border-radius: 10px;
-
+        gap: 10px;
+        max-height: 180px; 
     }
-    .objects_cards .image img{
-        align-self: center;
-        border-radius: 10px;
+
+    .image{
+        width: 150px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 5px;
+        height: 120px;
+        padding: 10px;
+        
+        
+    }
+    .image img{
+        width: 100%;
         object-fit: contain;
-        width: 200px;
-        height: 140px;
+        height: 100%;
+        
+    }
+
+    .data{
+        width: 75%;
+        display: flex;
+        flex-direction: column;
+        padding-left: 10px;
+        justify-content: space-around;
     }
 
     .name_cart{
-        align-self: center;
-        text-align: center;
-        text-transform: capitalize;
-        font-size: 14px;
-        margin-top: 10px;
-        width: 80%;
+        font-size: clamp(1rem, 2vw, 1.5rem);
+        font-weight: 600;
+        color: black;
     }
 
     .options_card{
-        align-self: center;
         display: flex;
-        justify-content: space-evenly;
-        color: gray;
-        font-size: 12px;
-        box-sizing: border-box;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        padding: 5px;
+        gap: 15px;
+    }
+
+    .caracteristica{
+        text-align: start;
+        width: 100%;
+        text-wrap: unset;
+    }
+    .consulta{
+        display: flex;
+        width: 90%;
+        color: rgb(128, 128, 128);
+        justify-content: space-between; 
+        font-size: 14px;
+    }
+
+
+    .actions{
+        display: flex;
+        justify-content: end;
+        align-self: end;
         padding: 10px;
-        width: 80%;
+        gap: 10px;
+        
     }
-    .options_card i{
-        font-size: 1.5rem; 
-        background-color: #ffff;   
+    
+    .delete{
+        display: flex;
+        flex-direction: column;
+        color:white;
+        padding: 5px;
+        background-color: red;
         border-radius: 10px;
+        border: transparent;
+        width: 56px;
     }
-    .options_card button{
-       border: none
+    .edit{
+        display: flex;
+        flex-direction: column;
+        color:white;
+        padding: 5px;
+        background-color: green;
+        border-radius: 10px;
+        border: transparent;
+        width: 56px;
     }
 
-    .options_card button:hover i{
-        scale: 1.5;
-        animation: variante_color 6s infinite alternate;
-     }
+    .delete:hover,.addObject:hover,.edit:hover, .cameBack:hover{
+        background-color: #345C7A;
+        transition: 0.3s;
+        cursor: pointer;
+       cursor: pointer;
+        scale: 1.1;
+    }
+
+    .cameBack{
+        display: flex;
+        flex-direction: column;
+       
+        padding: 5px;
+        width: 20%;
+        height: 50px;
+        background-color: #708493;
+        border-radius: 10px;
+        border: transparent;
+        justify-content: center;
+        font-size: clamp(1rem, 2vw, 1.5rem);
+        color: white;
+    }
 
 
-     
-   
+    /* APARTADO DEL MODAL */
+
+  .modal{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 500px;
+    border-radius: 10px;
+
+    }
+
+    .datos_basicos {
+        max-width: 500px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+      
+    .label_titulo {
+        font-weight: bold;
+        font-size: 16px;
+        color: #333;
+        margin-bottom: 5px;
+    }
+
+    .data_input{
+        height: 30px;
+        border-radius: 20px;
+        padding-left: 10px;
+    }
+    
+    .selectos{
+        height: 35px;
+        border-radius: 20px;
+    }
+    .input_caracteristica{
+        height:100px;
+        resize: none;
+        border-radius: 10px;
+        padding: 5px;
+    }
+
+    .CrearObjeto{
+        display: flex;
+        text-align: center;
+        justify-content: center;
+        color: white;
+        border-radius: 10px;
+        background-color: green;
+    }
+    .regresar{
+        display: flex;
+        text-align: center;
+        justify-content: center;
+        color: white;
+        border-radius: 10px;
+        background-color: gray;
+    }
 }
 
-@keyframes variante_color{
-    0%{
-        background-color: cornflowerblue;
 
-    }
 
-    100%{
-        background-color: white;
-    }
+/* SOMBRAS */
+.Owner,
+.addObject,
+.objetos,
+.ObjectCard,
+.cameBack {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
+
+.ObjectCard {
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+

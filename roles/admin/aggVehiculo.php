@@ -1,0 +1,303 @@
+<?php
+session_start();
+require_once('../../database/database.php');
+$conexion = new database;
+$con = $conexion->conectar();
+
+// Obtener el documento si viene de vehiculos usuario
+$id_documento_preseleccionado = isset($_GET['id_documento']) ? trim($_GET['id_documento']) : '';
+
+
+if (isset($_POST['buscar_usuario'])) {
+    $id_documento = trim($_POST['id_documento']);
+
+    $consulta_usuario = $con->prepare("SELECT id_documento, nombre_completo, correo, foto FROM usuario WHERE id_documento = :id_documento");
+    $consulta_usuario->bindParam(':id_documento', $id_documento);
+    $consulta_usuario->execute();
+    $usuario = $consulta_usuario->fetch(PDO::FETCH_ASSOC);
+
+    if (!$usuario) {
+        echo "<script>alert('Usuario no encontrado');</script>";
+    }
+}
+
+
+$origen = isset($_GET['origen']) ? $_GET['origen'] : '';
+$user_id = isset($_GET['user_id']) ? $_GET['user_id'] : '';
+
+
+if (isset($_POST['registrar'])) {
+    $placa = strtoupper(trim($_POST['placa']));
+    $id_documento = trim($_POST['id_documento']);
+    $caracteristicas = trim($_POST['caracteristicas']);
+    $id_estado = (int)$_POST['id_estado'];
+    $id_tipoVehiculo = (int)$_POST['id_tipoVehiculo'];
+    $id_marca = (int)$_POST['id_marca'];
+    $id_modelo = (int)$_POST['id_modelo'];
+
+    // Verificar si la placa ya existe
+    $verificar = $con->prepare("SELECT id_placa FROM vehiculos WHERE id_placa = :placa");
+    $verificar->bindParam(':placa', $placa);
+    $verificar->execute();
+
+    if ($verificar->rowCount() > 0) {
+        echo "<script>alert('La placa ya se encuentra registrada en el sistema');</script>";
+    } else {
+        $insertar = $con->prepare("INSERT INTO vehiculos (id_placa, id_documento, caracteristicas, id_estado, id_tipoVehiculo, id_marca, id_modelo)
+                                  VALUES (:placa, :id_documento, :caracteristicas, :id_estado, :id_tipoVehiculo, :id_marca, :id_modelo)");
+
+        $insertar->bindParam(':placa', $placa);
+        $insertar->bindParam(':id_documento', $id_documento);
+        $insertar->bindParam(':caracteristicas', $caracteristicas);
+        $insertar->bindParam(':id_estado', $id_estado);
+        $insertar->bindParam(':id_tipoVehiculo', $id_tipoVehiculo);
+        $insertar->bindParam(':id_marca', $id_marca);
+        $insertar->bindParam(':id_modelo', $id_modelo);
+
+        if ($insertar->execute()) {
+            $pagina_retorno = ($origen === 'usuarios') ? "vehiculos_usuarios.php?user_id=$user_id" : 'vehiculos.php';
+            echo "<script>alert('Vehiculo registrado correctamente');
+            window.location.href = '$pagina_retorno';</script>";
+            exit;
+        } else {
+            echo "<script>alert('Error al registrar el vehiculo');</script>";
+        }
+    }
+}
+
+
+if (!empty($id_documento_preseleccionado) && !$usuario) {
+    $consulta_usuario = $con->prepare("SELECT id_documento, nombre_completo, correo, foto FROM usuario WHERE id_documento = :id_documento");
+    $consulta_usuario->bindParam(':id_documento', $id_documento_preseleccionado);
+    $consulta_usuario->execute();
+    $usuario = $consulta_usuario->fetch(PDO::FETCH_ASSOC);
+
+    if (!$usuario) {
+        echo "<script>alert('Usuario no encontrado con el documento proporcionado');</script>";
+    }
+}
+
+
+$usuario_foto_path = !empty($usuario['foto']) ? '../../uploads/' . $usuario['foto'] : '../../uploads/usu.png';
+?>
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agregar Vehiculo</title>
+    <link rel="icon" href="../../assets/img/LogoFR.png">
+    <link rel="stylesheet" href="css/vehiculos.css">
+    <link rel="stylesheet" href="css/editar_vehiculo.css">
+    <link rel="stylesheet" href="asideBar/asidebar.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+</head>
+<body>
+    <div class="container_grid">
+        <aside class="aside_barra">
+            <?php include ('asideBar/asideBar.php') ?>
+        </aside>
+
+        <main class="grid_contenido_plantilla">
+            <div class="container">
+                <h1>Agregar Vehiculo</h1>
+
+                <?php if (!$usuario): ?>
+
+                    <!-- form usuario -->
+                <div class="search-user-container" style="width: 100%; max-width: 500px; margin: 30px auto; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); background-color: #5DADE2;">
+                    <h2 style="color: white; text-align: center; margin-bottom: 20px;">Buscar Usuario</h2>
+
+                    <form action="" method="POST">
+                        <div class="form-group">
+                            <label for="id_documento" class="form-label">Documento del Usuario</label>
+                            <input type="text" class="form-input" id="id_documento" name="id_documento" required placeholder="Ingrese el documento del usuario">
+                        </div>
+                        <input type="submit" class="btn-submit" name="buscar_usuario" value="BUSCAR USUARIO">
+                    </form>
+                </div>
+                <?php else: ?>
+
+                <div class="content-container">
+                    <div class="user-info">
+                        <div class="user-avatar">
+                            <img class="personaAzul" id="fotoUsuario" src="<?php echo $usuario_foto_path; ?>" alt="Foto de perfil">
+                        </div>
+                        <div class="user-details">
+                            <p><strong>Datos del propietario</strong></p><br>
+                            <p><strong>Nombre:</strong> <?php echo $usuario['nombre_completo']; ?></p>
+                            <p><strong>Correo:</strong> <?php echo $usuario['correo']; ?></p>
+                            <p><strong>Documento:</strong> <?php echo $usuario['id_documento']; ?></p>
+                        </div>
+                    </div>
+
+                    <div class="form-container">
+                        <div class="image-preview">
+                            <div class="image-column">
+                                <div class="image-upload">
+                                    <img src="../../assets/img/vehicle-default.png" alt="Primero debe registrar el vehiculo">
+                                    <div class="overlay">
+                                        <i class="bi bi-upload"></i>
+                                        <span>Primero registre el vehiculo</span>
+                                    </div>
+                                </div>
+                                <div class="image-title">Foto del vehiculo</div>
+                            </div>
+
+                            <div class="image-column">
+                                <div class="image-upload">
+                                    <img src="../../assets/img/card-default.png" alt="Primero debe registrar el vehiculo">
+                                    <div class="overlay">
+                                        <i class="bi bi-upload"></i>
+                                        <span>Primero registre el vehiculo</span>
+                                    </div>
+                                </div>
+                                <div class="image-title">Tarjeta de propiedad</div>
+                            </div>
+                        </div>
+
+                        <div class="form-inputs">
+                            <form action="" method="POST" class="grid-form">
+                                <input type="hidden" name="id_documento" value="<?php echo $usuario['id_documento']; ?>">
+
+                                <div class="form-group">
+                                    <label for="placa" class="form-label">Placa</label>
+                                    <input type="text" class="form-input" id="placa" name="placa" required placeholder="Ingrese la placa">
+                                    <button type="button" class="edit-icon"><i class="bi bi-pencil-square"></i></button>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="caracteristicas" class="form-label">Caracteristicas</label>
+                                    <input type="text" class="form-input" id="caracteristicas" name="caracteristicas"
+                                           placeholder="Caracteristicas del vehículo">
+                                    <button type="button" class="edit-icon"><i class="bi bi-pencil-square"></i></button>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="id_estado" class="form-label">Estado</label>
+                                    <select class="form-input" id="id_estado" name="id_estado" required>
+                                        <option value="">Seleccione Estado</option>
+                                        <?php
+                                        $consulta_estados = $con->prepare("SELECT * FROM estado ORDER BY estado");
+                                        $consulta_estados->execute();
+                                        $estados = $consulta_estados->fetchAll(PDO::FETCH_ASSOC);
+                                        foreach ($estados as $estado): ?>
+                                            <option value="<?php echo $estado['id_estado']; ?>">
+                                                <?php echo $estado['estado']; ?>
+                                            </option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="id_tipoVehiculo" class="form-label">Tipo de Vehiculo</label>
+                                    <select class="form-input" id="id_tipoVehiculo" name="id_tipoVehiculo" required>
+                                        <option value="">Seleccione Tipo</option>
+                                        <?php
+                                        $consulta_tipos = $con->prepare("SELECT * FROM tipovehiculo ORDER BY tipoVehiculo");
+                                        $consulta_tipos->execute();
+                                        $tipos = $consulta_tipos->fetchAll(PDO::FETCH_ASSOC);
+                                        foreach ($tipos as $tipo): ?>
+                                            <option value="<?php echo $tipo['id_tipoVehiculo']; ?>">
+                                                <?php echo $tipo['tipoVehiculo']; ?>
+                                            </option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="id_marca" class="form-label">Marca</label>
+                                    <select class="form-input" id="id_marca" name="id_marca" required>
+                                        <option value="">Seleccione Marca</option>
+                                        <?php
+                                        $consulta_marcas = $con->prepare("SELECT * FROM marca ORDER BY nombre_marca");
+                                        $consulta_marcas->execute();
+                                        $marcas = $consulta_marcas->fetchAll(PDO::FETCH_ASSOC);
+                                        foreach ($marcas as $marca): ?>
+                                            <option value="<?php echo $marca['id_marca']; ?>">
+                                                <?php echo $marca['nombre_marca']; ?>
+                                            </option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="id_modelo" class="form-label">Modelo</label>
+                                    <select class="form-input" id="id_modelo" name="id_modelo" required>
+                                        <option value="">Seleccione Modelo</option>
+                                        <?php
+                                        $consulta_modelos = $con->prepare("SELECT * FROM modelo ORDER BY fecha_modelo DESC");
+                                        $consulta_modelos->execute();
+                                        $modelos = $consulta_modelos->fetchAll(PDO::FETCH_ASSOC);
+                                        foreach ($modelos as $modelo): ?>
+                                            <option value="<?php echo $modelo['id_modelo']; ?>">
+                                                <?php echo $modelo['fecha_modelo']; ?>
+                                            </option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </div>
+
+                                <div class="form-actions">
+                                    <input type="submit" class="btn-submit" name="registrar" value="REGISTRAR VEHICULO">
+                                    <a href="<?php echo ($origen === 'usuarios') ? "vehiculos_usuarios.php?user_id=$user_id" : 'vehiculos.php'; ?>" class="btn-return">← Volver</a>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <?php endif; ?>
+            </div>
+        </main>
+    </div>
+
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+
+    <script>
+
+    async function buscarUsuario(documento) {
+        try {
+            const response = await fetch('buscar_usu_vehiculo.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: `documento=${documento}`
+            });
+
+            if (!response.ok) {
+                throw new Error('Error en la respuesta del servidor');
+            }
+
+            const data = await response.json();
+            return data;
+         }   catch (error) {
+            console.error('Error:', error);
+            return { success: false, message: error.message };
+        }
+    }
+
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const inputDocumento = document.getElementById('id_documento');
+        if (inputDocumento) {
+            inputDocumento.addEventListener('keypress', async function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    const documento = this.value.trim();
+                    if (documento) {
+                        const resultado = await buscarUsuario(documento);
+                        if (resultado.success) {
+                            document.querySelector('form').submit();
+                        } else {
+                            alert(resultado.message || 'Usuario no encontrado');
+                        }
+                    }
+                }
+            });
+        }
+    });
+    </script>
+</body>
+</html>

@@ -1,0 +1,217 @@
+*{
+        margin: 0;
+        padding: 0;
+        transition: 0.5s;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+
+    /* CAMBIOS DEL MENU  */
+    .bignavs{
+        width: 100%;
+        height: 100%;
+        display: flex;
+    }
+
+
+    .estado{
+        display: none;
+        
+    }
+
+    .menu2{
+        display: block;
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-right: 26px;
+        padding-left: 26px;
+
+    }
+    .menu2 span{
+
+        width: auto;
+        display: flex;
+        text-align: center;
+        padding: 20px;
+
+    }
+    .menu2 a{
+        text-decoration: none;
+        color: black;
+    }
+   
+
+    
+
+
+
+    @media (min-width:320px), (max-width:320px){
+
+       
+
+        .menu{
+            display: flex;
+            flex-direction: column-reverse;
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            background-color: #062E5E;
+            width: 200px;
+            height: 100vh;
+            padding: 20px;
+            align-items: start;
+            justify-content: start;
+            gap: 15px;
+            transition: 1s;
+            
+        }
+        .estado-menu{
+            display: none;
+
+        }
+
+        .menu .imagenes img{
+            width: 30px;
+            height: 30px;
+            border-radius: 15px;
+        }
+
+
+            /* CAMBIOS 1 */
+        .estado{
+            display: block;
+            
+        }
+
+        .menu_iconos_burguer{
+            border: 0;
+            font-size: 2.5rem;
+            background-color: transparent;
+            cursor: pointer;
+            color:  cornflowerblue;
+            
+        }
+        .menu_cerrar_button{
+            border: 0;
+            font-size: 2.5rem;
+            background-color: transparent;
+            cursor: pointer;
+            color:  cornflowerblue;
+           
+        }
+
+        .menu span{
+            color: white;
+            align-self: center;
+        }
+
+        .menu .nombre{
+
+            justify-content: center;
+        }
+        
+        .imagenes a{
+            display: flex;
+            gap: 20px;
+            text-decoration: none;
+            color: white;
+        }
+    }
+
+
+   
+    @media (min-width:425px){
+        
+        .menu .imagenes img{
+            
+            width: 38px;
+            height: 38px; 
+        }
+    }
+
+    @media (min-width: 767px) {
+        
+
+                  
+        .bignavs{
+            justify-content: end;
+        }
+        .menu{
+            height: auto;
+            position: static;
+            display: flex;
+            background-color: white;
+            flex-direction: row;
+            justify-self: end;
+            width: auto;
+            column-gap: 10%;
+            justify-self: end;
+            align-items: center;
+            padding-right: 50px;
+            gap: 25px;
+        }
+
+        
+        /* CAMBIOS  2 */
+
+
+        .estado{
+            display: none;
+        }
+
+        .menu span{
+            color: black;
+        }
+
+        .nombre{
+            display: block;
+        }
+
+        .menu2{
+            display: none;
+        }
+
+        .estado-menu{
+            display: flex;
+
+        }
+        .menu a{
+            text-decoration: none;
+        }
+        .nombre{
+            display: flex;
+    
+            text-align: center;
+        }
+       
+
+
+    }
+
+    @media (min-width:992px){
+
+        .menu{
+            justify-self: end;
+        }
+       
+
+    }
+
+    @media (min-width:1800px){
+        
+        .menu .imagenes img{
+            width: 40px;
+            height: 40px;
+        }
+    }
+
+    @media (min-width:2400px){
+
+        .menu .imagenes img{
+            width: 50px;
+            height: 50px;
+        }
+    }

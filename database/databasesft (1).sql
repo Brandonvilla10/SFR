@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost:3307
--- Tiempo de generación: 20-04-2025 a las 15:49:52
+-- Tiempo de generación: 28-04-2025 a las 21:20:23
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -116,20 +116,21 @@ INSERT INTO `jornada` (`id_jornada`, `jornada`) VALUES
 
 CREATE TABLE `marca` (
   `id_marca` int(11) NOT NULL,
-  `nombre_marca` varchar(100) NOT NULL
+  `nombre_marca` varchar(100) NOT NULL,
+  `id_tipo_marca` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `marca`
 --
 
-INSERT INTO `marca` (`id_marca`, `nombre_marca`) VALUES
-(1, 'Yamaha'),
-(2, 'Fender'),
-(3, 'Gibson'),
-(4, 'Roland'),
-(5, 'Casio'),
-(6, 'Chevrolet');
+INSERT INTO `marca` (`id_marca`, `nombre_marca`, `id_tipo_marca`) VALUES
+(1, 'Yamaha', 1),
+(2, 'Fender', 2),
+(3, 'Gibson', 2),
+(4, 'Roland', 2),
+(5, 'Casio', 2),
+(6, 'Chevrolet', 1);
 
 -- --------------------------------------------------------
 
@@ -299,6 +300,25 @@ INSERT INTO `rol` (`id_rol`, `nombre_rol`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `tipomarca`
+--
+
+CREATE TABLE `tipomarca` (
+  `id_tipo_marca` int(11) NOT NULL,
+  `nombre_tipo_marca` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `tipomarca`
+--
+
+INSERT INTO `tipomarca` (`id_tipo_marca`, `nombre_tipo_marca`) VALUES
+(1, 'vehiculos'),
+(2, 'objetos');
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `tipoobjeto`
 --
 
@@ -420,7 +440,9 @@ CREATE TABLE `vehiculos` (
 --
 
 INSERT INTO `vehiculos` (`id_placa`, `foto`, `caracteristicas`, `foto_tarjeta_propiedad`, `id_estado`, `id_documento`, `id_tipoVehiculo`, `id_marca`, `id_modelo`) VALUES
-('ZSA321', 'vehiculo_68047d2246e409.68143330.png', 'hola a todesasasa', 'tarjeta_680476aae993a5.84479628.jpg', 2, 1106227432, 2, 2, 1);
+('DFH23H', 'vehiculo_680552504afee3.57612271.png', 'hola', 'tarjeta_68062d41a16d78.84106323.jpg', 1, 1106227432, 1, 1, 3),
+('MSW32Y', 'vehiculo_68051b11b21fa7.64320933.jpg', 'MOTICO DE MI NEGRITO', 'tarjeta_68051b171b6aa4.64768976.jpg', 1, 1106227432, 1, 1, 2),
+('ZSA321', 'vehiculo_68051c98074a76.46750118.jpg', 'hola a todesasasa', 'tarjeta_680476aae993a5.84479628.jpg', 2, 1106227432, 2, 2, 1);
 
 --
 -- Índices para tablas volcadas
@@ -460,7 +482,8 @@ ALTER TABLE `jornada`
 -- Indices de la tabla `marca`
 --
 ALTER TABLE `marca`
-  ADD PRIMARY KEY (`id_marca`);
+  ADD PRIMARY KEY (`id_marca`),
+  ADD KEY `id_tipo_marca` (`id_tipo_marca`);
 
 --
 -- Indices de la tabla `modelo`
@@ -516,6 +539,12 @@ ALTER TABLE `registroentradavehiculos`
 --
 ALTER TABLE `rol`
   ADD PRIMARY KEY (`id_rol`);
+
+--
+-- Indices de la tabla `tipomarca`
+--
+ALTER TABLE `tipomarca`
+  ADD PRIMARY KEY (`id_tipo_marca`);
 
 --
 -- Indices de la tabla `tipoobjeto`
@@ -625,6 +654,12 @@ ALTER TABLE `rol`
   MODIFY `id_rol` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
+-- AUTO_INCREMENT de la tabla `tipomarca`
+--
+ALTER TABLE `tipomarca`
+  MODIFY `id_tipo_marca` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
 -- AUTO_INCREMENT de la tabla `tipoobjeto`
 --
 ALTER TABLE `tipoobjeto`
@@ -655,6 +690,12 @@ ALTER TABLE `fichas`
   ADD CONSTRAINT `fichas_ibfk_1` FOREIGN KEY (`id_jornada`) REFERENCES `jornada` (`id_jornada`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `fichas_ibfk_2` FOREIGN KEY (`id_nivelFormacion`) REFERENCES `nivelformacion` (`id_nivelFormacion`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `fichas_ibfk_3` FOREIGN KEY (`id_programaFormacion`) REFERENCES `programa` (`id_programaFormacion`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Filtros para la tabla `marca`
+--
+ALTER TABLE `marca`
+  ADD CONSTRAINT `marca_ibfk_1` FOREIGN KEY (`id_tipo_marca`) REFERENCES `tipomarca` (`id_tipo_marca`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `objetos`

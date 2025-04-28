@@ -11,6 +11,7 @@ $rol = $_SESSION['rol_name'];
 //agg marca
 if (isset($_POST['submitmarca'])) {
     $nom_marca = strtoupper($_POST['marca']);
+    $tipo_marca = 1;
 
     // Verificar si la marca ya existe
     $check_marca = $con->prepare("SELECT nombre_marca FROM marca WHERE nombre_marca = :nombre_marca");
@@ -22,8 +23,9 @@ if (isset($_POST['submitmarca'])) {
         echo "<script>alert('La marca ya existe en el sistema');
         window.location.href = 'vehiculos.php';</script>";
     } else {
-        $marca = $con->prepare("INSERT INTO marca (nombre_marca) VALUES (:nombre_marca)");
+        $marca = $con->prepare("INSERT INTO marca (nombre_marca,id_tipo_marca) VALUES (:nombre_marca, :id_tipo_marca)");
         $marca->bindParam(':nombre_marca', $nom_marca);
+        $marca->bindParam(':id_tipo_marca', $tipo_marca);
 
         if ($marca->execute()){
             echo "<script>alert('Marca agregada correctamente');

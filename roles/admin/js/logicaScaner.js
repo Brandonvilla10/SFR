@@ -1,0 +1,299 @@
+let entradaObjetos = [];
+
+function toggleSelection(id_serial) {
+  // esta funcion solo sirve para los objetos con esto los meto en un array para luego enviarlos y bueno registrar la entrada de ellos
+  const serial = id_serial.dataset.id;
+
+  id_serial.classList.toggle("seleccionado");
+
+  if (!id_serial.classList.contains("seleccionado")) {
+    const indice = entradaObjetos.indexOf(serial);
+    if (indice !== -1) {
+      entradaObjetos.splice(indice, 1);
+    }
+  } else {
+    entradaObjetos.push(serial);
+  }
+}
+
+// esta funcion es para los vehiculos
+
+let entradavehiculos = [];
+
+function toggleSelectionVehiculo(id_placa) {
+  const placa = id_placa.dataset.id;
+
+  id_placa.classList.toggle("seleccionado");
+
+  if (!id_placa.classList.contains("seleccionado")) {
+    const indice = entradavehiculos.indexOf();
+    if (indice != 1) {
+      entradavehiculos.splice(indice, 1);
+    }
+  } else {
+    entradavehiculos.push(placa);
+  }
+}
+
+let documento;
+
+// esta funcion asincrona se encarga de todo el proceso de registroDeEntrada que esoty haciendo? basicamenete 3 fetchs en una misma funcion
+// valido si los arrays de las otras fuciones me traen valores y demas para poder enviar a insertar en los registros
+
+async function registrarEntrada() {
+  console.log(documento);
+
+  try {
+    // este fetch se encarga del registro del ususarop
+    const usuarios = await fetch("./fetch/registrarEntrada.php", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      body: documento,
+    });
+
+    // ------------------------------------------------------------------
+
+    // este fetch se va a encargar del registro de los objetos tambien, estoy enviando un objeto para poder identificar el array y a quien se le va a asignar
+
+    const Objeto = { array: entradaObjetos, documento: documento };
+
+    if (entradaObjetos.length > 0) {
+      const objetos = await fetch("./fetch/registrarObjetos.php", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(Objeto),
+      });
+      console.log("Sending JSON:", JSON.stringify(Objeto));
+      
+      const respuesta = await objetos.json();
+      console.log(respuesta);
+    }
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+// todo esto es para la parte del qr y lo que se necesita para que funcione
+const video = document.getElementById("video");
+const canvas = document.getElementById("canvas");
+const resultDiv = document.getElementById("result");
+const startButton = document.getElementById("startButton");
+const stopButton = document.getElementById("stopButton");
+const videoContainer = document.getElementById("videoContainer");
+const alerta = document.getElementById("alerta");
+const alertaBienvenida = document.getElementById("alertaBienvenida");
+
+let stream = null;
+let scanning = false;
+
+// Contexto para el canvas
+const canvasContext = canvas.getContext("2d");
+
+// Función para iniciar la cámara
+async function startCamera() {
+  try {
+    // Detener cualquier transmisión existente
+    if (stream) {
+      stream.getTracks().forEach((track) => track.stop());
+    }
+
+    // Obtener acceso a la cámara
+    stream = await navigator.mediaDevices.getUserMedia({
+      video: {
+        facingMode: "environment", // Preferir cámara trasera en móviles
+        width: {
+          ideal: 1280,
+        },
+        height: {
+          ideal: 720,
+        },
+      },
+      audio: false,
+    });
+
+    video.srcObject = stream;
+    video.play();
+
+    startButton.disabled = true;
+    stopButton.disabled = false;
+
+    // Iniciar el escaneo
+    scanning = true;
+    scanQR();
+  } catch (err) {
+    console.error("Error al acceder a la cámara:", err);
+    resultDiv.textContent = "Error al acceder a la cámara: " + err.message;
+  }
+}
+
+// Función para detener la cámara
+function stopCamera() {
+  if (stream) {
+    stream.getTracks().forEach((track) => track.stop());
+    stream = null;
+  }
+
+  video.srcObject = null;
+  scanning = false;
+
+  startButton.disabled = false;
+  stopButton.disabled = true;
+
+  resultDiv.textContent = " Haz clic en 'Iniciar Cámara'.";
+}
+
+// Función para escanear el código QR
+function scanQR() {
+  if (!scanning) return;
+
+  if (video.readyState === video.HAVE_ENOUGH_DATA) {
+    // Ajustar el tamaño del canvas al del video
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+
+    // Dibujar el frame actual del video en el canvas
+    canvasContext.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+    // Obtener los datos de la imagen del canvas
+    const imageData = canvasContext.getImageData(
+      0,
+      0,
+      canvas.width,
+      canvas.height
+    );
+
+    // Escanear el código QR
+    const code = jsQR(imageData.data, imageData.width, imageData.height, {
+      inversionAttempts: "dontInvert",
+    });
+
+    // Si se encontró un código QR
+    if (code) {
+      const regex = /^\d{8,}$/;
+
+      resultDiv.innerHTML = `<strong>Contenido del QR:</strong><br>${code.data}`;
+      // Opcional: puedes detener el escaneo automáticamente al encontrar un código
+
+      if (regex.test(code.data)) {
+        stopCamera();
+        videoContainer.style.background = "green";
+        setTimeout(() => {
+          startCamera();
+        }, 7);
+
+        async function datosUsuario() {
+          const datos = await fetch("./fetch/consultaParaModal.php", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/x-www-form-urlencoded",
+            },
+            body: code.data,
+          });
+
+          //   contedores aqui van declarados
+          const informacionUsuario =
+            document.getElementById("informacionUsuario");
+          const contenedorObjetos =
+            document.getElementById("contenedorObjetos");
+          // ----------------------------------------------------------------------------------------
+
+          const respuesta = await datos.json();
+          const info = respuesta.datosPersonales;
+          const objetosRespuesta = respuesta.objetos;
+
+          console.log(respuesta);
+
+          //   vacio los contenedores antes de (por si las moscas)
+          informacionUsuario.innerHTML = "";
+          contenedorObjetos.innerHTML = "";
+
+          informacionUsuario.innerHTML += ` 
+                    <img src="../../uploads/${info.foto}" alt="Foto de perfil del usuario" class="fotoDePerfil">
+
+                    <b style="font-size:1.5rem;margin-bottom:30px;">Datos Del Usuario</b>
+
+                    <p><b> Nombre Usuario:</b> <br> ${info.nombre_completo} </p>
+                    <p><b> Documento:</b> <br> ${info.id_documento} </p>
+                    <p><b> Correo Electronico: </b> <br> ${info.correo} </p>
+                    <p><b> Rol Del Usuario:</b> <br> ${info.nombre_rol} </p>
+                    <input type="submit" onclick="registrarEntrada()" value="Registrar Entrada" class="submit-btn">`;
+
+          objetosRespuesta.forEach(function (objeto) {
+            contenedorObjetos.innerHTML += `
+
+            <div class="tarjetaObjeto" data-id="${objeto.id_serial}" >
+            <div class="divFoto">
+                                            <p>${objeto.id_serial}</p>
+                                            <img src="../../uploads/${objeto.objetoFoto}" width="80px" height="80px" alt="objeto">
+                                        </div>
+                                        
+                                        <div style="display: flex; flex-direction:column; justify-content:center; width:150px; margin-left:20px;">
+                                            <h4>${objeto.nombre}</h4>
+                                            <p>${objeto.caracteristica}</p>
+                                        </div>
+
+                                        <div>
+                                            <b class="tituloCategoria">Marca:</b>
+                                            <p class="tipoObjeto">${objeto.nombre_marca}</p>
+                                            <b class="tituloCategoria">Estado:</b>
+                                            <p class="tipoObjeto">${objeto.estado}</p>
+                                            <p class="tipoObjeto">${objeto.tipoObjeto}</p>
+                                            <b class="tituloCategoria">Tipo:</b>
+                                            </div>
+                                            </div>`;
+          });
+
+          document.querySelectorAll(".tarjetaObjeto").forEach((tarjeta) => {
+            tarjeta.addEventListener("click", () => {
+              toggleSelection(tarjeta);
+            });
+          });
+        }
+
+        datosUsuario();
+
+        // alertaBienvenida.innerHTML = respuesta.mensaje + " " + respuesta.id_documento
+
+        // alerta.classList.add("aparecer");
+        // alerta.style.background = respuesta.color
+        // setTimeout(() => {
+        //     alerta.classList.remove("aparecer");
+        // }, 3000);
+        const selecionarObjetos = document.getElementById("selecionarObjetos");
+        selecionarObjetos.classList.toggle("aparecerModal");
+
+        documento = code.data;
+        return documento;
+      } else {
+        stopCamera();
+        videoContainer.style.background = "red";
+        setTimeout(() => {
+          alert(
+            "Alerta codigo qr no valido! Valor del qr ingresado -> :  " +
+              code.data
+          );
+        }, 500);
+      }
+    }
+  }
+
+  // Continuar escaneando
+  // Esperar 2 segundos antes de volver a escanear
+  if (scanning) {
+    setTimeout(() => {
+      videoContainer.style.opacity = 1;
+      requestAnimationFrame(scanQR);
+    }, 2000); // 2000 ms = 2 segundos
+  }
+}
+
+// Event listeners para los botones
+startButton.addEventListener("click", startCamera);
+stopButton.addEventListener("click", stopCamera);
+
+// Detener la cámara al salir de la página
+window.addEventListener("beforeunload", stopCamera);

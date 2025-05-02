@@ -6,291 +6,316 @@ require_once('../../database/database.php');
 $conexion = new database;
 $con = $conexion->conectar();
 
-    $codigo = $_SESSION['documento'];
-    $nombre = explode(" ", $_SESSION['nombre'])[0];
-    $rol =$_SESSION['rol_name'];
-
-    
+$codigo = $_SESSION['documento'];
+$nombre = explode(" ", $_SESSION['nombre'])[0];
+$rol = $_SESSION['rol_name'];
 
 
-    if(isset($_POST['objetos_submit'])){
-
-        $_SESSION['objetos_usu'] =$_POST['user_id'];
-        $usuario = $_POST['user_id'];
-
-        $validacion = $con->prepare("SELECT * FROM  usuario WHERE id_documento = '$usuario'");
-        $validacion->execute();
 
 
-        $consulta_1 = $validacion->fetch();
+if (isset($_POST['objetos_submit'])) {
 
-            if(!$consulta_1){
+    $_SESSION['objetos_usu'] = $_POST['user_id'];
+    $usuario = $_POST['user_id'];
 
-                echo "<script>alert('Usuario no encontrado')</script>";
-                echo "<script>window.location.href='objetos_index.php'</script>";
-            }
-     }
+    $validacion = $con->prepare("SELECT * FROM  usuario WHERE id_documento = '$usuario'");
+    $validacion->execute();
 
-     
-    $buscar_usu = $_SESSION['objetos_usu'];
 
-    $mostrar = $con->prepare("SELECT * FROM  usuario WHERE id_documento = '$buscar_usu'");
-    $mostrar->execute();
-    
-    $primera_parte = $mostrar->fetch();
-    
-    
-    
-    
-    
-    ?>
+    $consulta_1 = $validacion->fetch();
 
-<?php
-    //LOGICA DE BORRAR EL OBJETO
-    
-    if(isset($_POST['borrar'])){
-    
-       
-        $borrar = $con->prepare("DELETE FROM objetos WHERE id_serial = :id_serial");
-        $borrar->bindParam(':id_serial', $_POST['borrar']);
-        $borrar->execute();
-        header("Location: objetos_usuario.php"); 
-        exit;
+    if (!$consulta_1) {
+
+        echo "<script>alert('Usuario no encontrado')</script>";
+        echo "<script>window.location.href='objetos_index.php'</script>";
     }
+}
 
 
-    ?>
+$buscar_usu = $_SESSION['objetos_usu'];
+
+$mostrar = $con->prepare("SELECT * FROM  usuario WHERE id_documento = '$buscar_usu'");
+$mostrar->execute();
+
+$primera_parte = $mostrar->fetch();
+
+
+//LOGICA DE BORRAR EL OBJETO
+
+if (isset($_POST['borrar'])) {
+
+
+    $borrar = $con->prepare("DELETE FROM objetos WHERE id_serial = :id_serial");
+    $borrar->bindParam(':id_serial', $_POST['borrar']);
+    $borrar->execute();
+    header("Location: objetos_usuario.php");
+    exit;
+}
+
+
+?>
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="../../assets/img/LogoFR.png">
     <title>OBJETOS </title>
     <link rel="stylesheet" href="asideBar/asidebar.css">
-    <link rel="stylesheet" href="css/objetos_usuario.css">
+    <link rel="stylesheet" href="css/vehiculos_usuarios.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
 </head>
-<body>
-<div class="container_grid">
-    
-    <aside class="aside_barra">
-        <?php  include ('asideBar/asideBar.php')?>
-    </aside>
+
+<body class="body">
+    <div class="container_grid">
+
+        <aside class="aside_barra">
+            <?php include('asideBar/asideBar.php') ?>
+        </aside>
 
 
-    <main class="grid_contenido_plantilla">
+        <main class="grid_contenido_plantilla">
+
+            <!---------------------------------------------- SECCION 1   NOMBRE DEL PROPIETARIO----------------------->
+            <section class="container">
+
+                <div class="header">
+                    <div>
+                        <strong>SECCION OBJETOS </strong>
+                        <br>
+                        Todos los objetos de <?php echo  $primera_parte['nombre_completo']  ?> numero de identificacion <?php echo  $primera_parte['id_documento'] ?>
+                    </div>
+                    <button class="add-button" onclick="document.getElementById('agregar').showModal()"> + </button>
+                </div>
 
 
 
-     <!---------------------------------------------- SECCION 1   NOMBRE DEL PROPIETARIO----------------------->
-        <section class="descriptionOwner">
-
-            <div class="Owner">
-
-               <strong>SECCION OBJETOS</strong>
-                <br>
-                Todos los objetos de <?php echo  $primera_parte['nombre_completo']  ?> numero de identificacion <?php echo  $primera_parte['id_documento'] ?>
-            
-            </div>
-            
-            <button class="addObject" onclick="document.getElementById('agregar').showModal()"> <i class="bi bi-plus-circle"></i> Agregar Objeto</button>
-        </section>
 
 
-    <!------------- FIN DE LA SECCION 1 --------------------------->
+                <!------------- FIN DE LA SECCION 1 --------------------------->
 
-        <!-- APARTADO DE LAS CARTAS DE LOS OBJETOS -->
+                <!-- APARTADO DE LAS CARTAS DE LOS OBJETOS -->
 
-        <div class="objetos">
-            
-            <?php  $sql = $con->prepare("SELECT *, usuario.foto AS user_foto , objetos.foto AS object_foto FROM  objetos 
+                <div class="objects-grid">
+
+                    <?php $sql = $con->prepare("SELECT *, usuario.foto AS user_foto , objetos.foto AS object_foto FROM  objetos 
                 INNER JOIN marca ON marca.id_marca  = objetos.id_marca
                 INNER JOIN usuario ON usuario.id_documento = objetos.id_documento
                 INNER JOIN estado ON estado.id_estado = objetos.id_estado 
                 INNER JOIN tipoobjeto ON tipoobjeto.id_tipoObjeto = objetos.id_tipoObjeto
                 WHERE objetos.id_documento ='$buscar_usu'");
-                $sql->execute();
+                    $sql->execute();
 
                     $consulta_2 = $sql->fetchAll();
 
-    
-        //<-------------------------------  CARTA DE LOS OBJETOS--------------------->
 
-            foreach ($consulta_2 as $objeto) {?>
-            
-                <div class="ObjectCard">
+                    //<-------------------------------  CARTA DE LOS OBJETOS--------------------->
 
-                        <div class="image">
+                    foreach ($consulta_2 as $objeto) { ?>
 
-                        <?php echo $objeto['id_serial']?>
-                        <img src="../../uploads/<?php echo isset($objeto['object_foto']) && $objeto['object_foto'] !== '' ? $objeto['object_foto'] : 'default_iconos.png'; ?>" alt="">
+                        <div class="object-card">
 
-                    </div>    
+                            <div class="object-title">
 
-                    <div class="data">
-                        
-                        <div class="name_cart"><strong><?php echo $objeto['nombre']?></strong></div>
+                                <div class="object-id"><?php echo $objeto['id_serial']; ?></div>
+                                <div class="object-name"><strong><?php echo $objeto['nombre'] ?></strong></div>
+                                
+                                <div class="object-icon">
+                                    
+                                    <img src="../../uploads/<?php echo isset($objeto['object_foto']) && $objeto['object_foto'] !== '' ? $objeto['object_foto'] : 'default_iconos.png'; ?>" alt="">
+                                    
+                                </div>
+                                <div class="object-description"> <?php echo $objeto['caracteristica'] ?></div>
+                            </div>
 
-                        <div class="options_card">
-                                <div class="caracteristica"> <?php echo $objeto['caracteristica']?></div>
-                                <div class="consulta"><p> <strong>Marca:</strong> <?php echo $objeto['nombre_marca']?> </p> <p>  <strong>Estado:</strong> <?php  echo $objeto['estado']?> </p> <p><strong>Tipo:</strong> <?php  echo $objeto['tipoObjeto']  ?></p></div>
+                            <div class="object-details">
+
+
+                                <div class="options_card">
+                                    <div class="consulta">
+                                        <p> <strong>Marca:</strong> <?php echo $objeto['nombre_marca'] ?> </p>
+                                        <p> <strong>Estado:</strong> <?php echo $objeto['estado'] ?> </p>
+                                        <p><strong>Tipo:</strong> <?php echo $objeto['tipoObjeto']  ?></p>
+                                    </div>
+                                </div>
+
+                                <div class="object-actions">
+
+                                    <form action="" method="POST">
+                                        <button type="submit" name="borrar" value="<?php echo $objeto['id_serial'] ?>" class="action-button delete-button" onclick=" return confirm('desesas borrar el objeto de serial <?php echo $objeto['id_serial'] ?>')"> <i class="bi bi-trash-fill"></i></button>
+                                    </form>
+                                    <button class="action-button edit-button" onclick="window.location.href='ventana_objetos_usu.php?id=<?php echo $objeto['id_serial'] ?>'"><i class="bi bi-pencil-square"></i> </button>
+
+                                </div>
+
+                            </div>
+
+
                         </div>
+                    <?php } ?>
 
-                        <div class="actions">
-
-                        <form action="" method="POST">
-                            <button type="submit"  name="borrar" value="<?php echo $objeto['id_serial'] ?>" class="delete" onclick=" return confirm('desesas borrar el objeto de serial <?php  echo $objeto['id_serial'] ?>')"> <i class="bi bi-trash-fill"></i></button>
-                        </form>
-                            <button  class="edit" onclick="window.open('ventana_objetos_usu.php?id=<?php echo $objeto['id_serial']?>' ,'','width=700px, height=700px, toolbar=NO')"><i class="bi bi-pencil-square"></i> </button>    
-
-                        </div>
-
-                    </div>
-                        
-                    
                 </div>
-            <?php }?>
-                
-        </div>
 
-        <!------------------------------------ Boton de regresar ----------------------->
+                <!------------------------------------ Boton de regresar ----------------------->
 
-        <button class="cameBack" onclick="window.location.href='objetos_index.php'"> Regresar</button>
-      
-    </main>
-    
-    <!-------------------------------- MODAL DE CREACION DE OBJETOS ----------------------->
+                <button class="footer-button" onclick="window.location.href='objetos_index.php'"> Regresar</button>
+            </section>
+        </main>
 
-    <dialog id="agregar" class="modal">
+        <!-------------------------------- MODAL DE CREACION DE OBJETOS ----------------------->
 
-        <form action="../../uploads/upload_crear_objeto.php" id="formCrearObjeto"   method="POST" enctype="multipart/form-data" class="datos_basicos" >
+        <dialog id="agregar" class="modal">
 
-            <label for="serial" class="label_titulo">Serial</label>
-            <input type="text" id="serial" name ="serial"  class="data_input" placeholder="Serial" >
+            <form action="../../uploads/upload_crear_objeto.php" id="formCrearObjeto" method="POST" enctype="multipart/form-data" class="datos_basicos">
 
-            <label for="" class="label_titulo">Nombre</label>
-            <input type="text"  id ="nombre" name ="nombre" class="data_input">
+                <label for="serial" class="label_titulo">Serial</label>
+                <input type="text" id="serial" name="serial" class="data_input" placeholder="Serial">
 
-            <label for="foto" class="label_titulo">Foto</label>
+                <label for="" class="label_titulo">Nombre</label>
+                <input type="text" id="nombre" name="nombre" class="data_input">
 
-            <input type="file" id="foto" name ="foto" class="data_input">
+                <label for="foto" class="label_titulo">Foto</label>
 
-            <label for="" class="label_titulo">Caracteristicas</label>
-            <textarea class="input_caracteristica" id="caracteristicas" name ="caracteristica" placeholder="Escribe aquí..."></textarea>
+                <input type="file" id="foto" name="foto" class="data_input">
 
-            <label for="" class="label_titulo">Marca</label>
-            <select name="marca" id="marca" class="selectos">
-                     
-                <?php  $sql = $con->prepare("SELECT * FROM marca "); $sql->execute(); $consulta_2 = $sql->fetchAll();
+                <label for="" class="label_titulo">Caracteristicas</label>
+                <textarea class="input_caracteristica" id="caracteristicas" name="caracteristica" placeholder="Escribe aquí..."></textarea>
 
-                foreach($consulta_2 as $marca){ ?>
-                    <option value="<?php echo $marca['id_marca']?>">  <?php echo $marca['nombre_marca']?> </option>
-                <?php  } ?>
+                <label for="" class="label_titulo">Marca</label>
+                <select name="marca" id="marca" class="selectos">
 
-            </select>
-                
-            <label for="estado" class="label_titulo">Estado</label>
-            <select name="estado" id="estado" class="selectos">
-                
-                <?php  $sql_2 = $con->prepare("SELECT * FROM estado"); $sql_2->execute(); $consulta_3 = $sql_2->fetchAll();
-                
-                    foreach($consulta_3 as $estados){?>
+                    <?php $sql = $con->prepare("SELECT * FROM marca ");
+                    $sql->execute();
+                    $consulta_2 = $sql->fetchAll();
 
-                        <option value="<?php  echo $estados['id_estado'] ?>"> <?php  echo $estados['estado'] ?></option>
+                    foreach ($consulta_2 as $marca) { ?>
+                        <option value="<?php echo $marca['id_marca'] ?>"> <?php echo $marca['nombre_marca'] ?> </option>
+                    <?php  } ?>
+
+                </select>
+
+                <label for="estado" class="label_titulo">Estado</label>
+                <select name="estado" id="estado" class="selectos">
+
+                    <?php $sql_2 = $con->prepare("SELECT * FROM estado");
+                    $sql_2->execute();
+                    $consulta_3 = $sql_2->fetchAll();
+
+                    foreach ($consulta_3 as $estados) { ?>
+
+                        <option value="<?php echo $estados['id_estado'] ?>"> <?php echo $estados['estado'] ?></option>
 
                     <?php } ?>
 
-            </select>
+                </select>
 
-            <label for="tipo">Tipo de Objeto</label>
-            <select name="tipoObjeto" id="tipo" class="selectos">
+                <label for="tipo">Tipo de Objeto</label>
+                <select name="tipoObjeto" id="tipo" class="selectos">
 
-                <?php $sql_3 = $con->prepare('SELECT * FROM tipoobjeto'); $sql_3->execute(); $consulta_4 = $sql_3->fetchAll();
-                
-
-                    foreach($consulta_4 as $tipo){?>
-
-                        <option value="<?php echo $tipo['id_tipoObjeto']?>"> <?php echo $tipo['tipoObjeto']?> </option>
-
-                    <?php }?>
-            </select>
-
-            <input type="hidden" name="user_id" value="<?php echo $_SESSION['objetos_usu']?>">
-
-            <button type="submit" id="CrearObjeto" name="CrearObjeto" class="CrearObjeto"> Crear Objeto </button>
-            <button  type="button" class="regresar" onclick="document.getElementById('agregar').close()"> CERRAR</button>
-
-        </form>
-    </dialog>
-
-    <!----------------- fin del modal------------------->
-
-    <script src="pruebas/script.js"></script>
+                    <?php $sql_3 = $con->prepare('SELECT * FROM tipoobjeto');
+                    $sql_3->execute();
+                    $consulta_4 = $sql_3->fetchAll();
 
 
-    <!----------------- Envio del modal con JS -------------------->
-    <script>
-            
-        document.addEventListener('DOMContentLoaded', function () {
-            const form = document.getElementById('formCrearObjeto');
-            const botonEnviar = document.getElementById('CrearObjeto');
+                    foreach ($consulta_4 as $tipo) { ?>
 
-            form.addEventListener('submit', function (e) {
-              
-                e.preventDefault();
-                
-                const serial = document.getElementById('serial').value;
-                const nombre = document.getElementById('nombre').value;
-                const foto = document.getElementById('foto').value;
-                const caracteristicas = document.getElementById('caracteristicas').value;
-                const marca = document.getElementById('marca').value;
-                const estado = document.getElementById('estado').value;
-                const tipo = document.getElementById('tipo').value;
-                
-                // expresiones
-                
-                const serialExp = /^[A-Z0-9\-]{3,20}$/i;
-                const nombreExp = /^[A-Za-z\s]{2,}$/;
-                
-                if (!serialExp.test(serial)) {
-                    alert('El serial no es válido. Solo letras, números o guiones. Mínimo 3 caracteres.');
-                    return;
-                }
-                
-                if (!nombreExp.test(nombre)) {
-                    alert('El nombre no es válido. Solo letras, numeros y espacios, mínimo 2 caracteres.');
-                    return;
-                }
-                
-                if (foto === '') {
-                    alert('Debes seleccionar una imagen para el objeto.');
-                    return;
-                }
-                
-                if (caracteristicas === '') {
-                    alert('Debes escribir las características del objeto.');
-                    return;
-                }
-                
-                if (!marca || !estado || !tipo) {
-                    alert('Debes seleccionar marca, estado y tipo de objeto.');
-                    return;
-                }
-                
-                // Confirmación final
-                if (confirm('¿Deseas crear este objeto?')) {
-                    form.submit(); // Todo OK, se envía
-                }
-            
-                
+                        <option value="<?php echo $tipo['id_tipoObjeto'] ?>"> <?php echo $tipo['tipoObjeto'] ?> </option>
+
+                    <?php } ?>
+                </select>
+
+                <input type="hidden" name="user_id" value="<?php echo $_SESSION['objetos_usu'] ?>">
+
+                <button type="submit" id="CrearObjeto" name="CrearObjeto" class="CrearObjeto"> Crear Objeto </button>
+                <button type="button" class="regresar" onclick="document.getElementById('agregar').close()"> CERRAR</button>
+
+            </form>
+        </dialog>
+
+        <!----------------- fin del modal------------------->
+
+        <script src="pruebas/script.js"></script>
+
+
+        <!----------------- Envio del modal con JS -------------------->
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const form = document.getElementById('formCrearObjeto');
+                const botonEnviar = document.getElementById('CrearObjeto');
+
+                form.addEventListener('submit', function(e) {
+
+                    e.preventDefault();
+
+                    const serial = document.getElementById('serial').value;
+                    const nombre = document.getElementById('nombre').value;
+                    const foto = document.getElementById('foto').value;
+                    const caracteristicas = document.getElementById('caracteristicas').value;
+                    const marca = document.getElementById('marca').value;
+                    const estado = document.getElementById('estado').value;
+                    const tipo = document.getElementById('tipo').value;
+
+                    // expresiones
+
+                    const serialExp = /^[A-Z0-9\-]{3,20}$/i;
+                    const nombreExp = /^[A-Za-z\s]{2,}$/;
+
+                    if (!serialExp.test(serial)) {
+                        alert('El serial no es válido. Solo letras, números o guiones. Mínimo 3 caracteres.');
+                        return;
+                    }
+
+                    if (!nombreExp.test(nombre)) {
+                        alert('El nombre no es válido. Solo letras, numeros y espacios, mínimo 2 caracteres.');
+                        return;
+                    }
+
+                    if (foto === '') {
+                        alert('Debes seleccionar una imagen para el objeto.');
+                        return;
+                    }
+
+                    if (caracteristicas === '') {
+                        alert('Debes escribir las características del objeto.');
+                        return;
+                    }
+
+                    if (!marca || !estado || !tipo) {
+                        alert('Debes seleccionar marca, estado y tipo de objeto.');
+                        return;
+                    }
+
+                    // Confirmación final
+                    if (confirm('¿Deseas crear este objeto?')) {
+                        form.submit(); // Todo OK, se envía
+                    }
+
+
+                });
             });
-        });
-        
+
+
+            document.addEventListener('DOMContentLoaded', function() {
+                const header = document.querySelector('.header');
+                header.classList.add('animate-header');
+
+                const cards = document.querySelectorAll('.object-card');
+                cards.forEach((card, index) => {
+                    setTimeout(() => {
+                        card.classList.add('visible');
+                    }, 100 * index);
+                });
+
+                const footerButton = document.querySelector('.footer-button');
+                setTimeout(() => {
+                    footerButton.classList.add('animate-button');
+                }, 100 * cards.length + 200);
+            });
         </script>
 </body>
 
 
-</html>   
+</html>

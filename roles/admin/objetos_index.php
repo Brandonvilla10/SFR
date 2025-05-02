@@ -88,7 +88,7 @@ $consulta->execute();
                                 <td><?php echo $generales['id_documento']; ?></td>
                                 <td><?php echo $generales['nombre_completo']; ?></td>
                                 <td><?php echo $generales['estado']; ?></td>
-                                <td><button  class="edit" onclick="window.open('ventana_objetos_usu.php?id=<?php echo $generales['id_serial']?>' ,'','width=700px, height=700px, toolbar=NO, menubar=no,status=no')"><i class="bi bi-pencil-square"></i> </button>  </td>
+                                <td><button  class="edit" onclick="window.location.href='ventana_objetos_usu.php?id=<?php echo $generales['id_serial']?>'"><i class="bi bi-pencil-square"></i> </button>  </td>
                             </tr>
                         <?php } ?>
                     </tbody>

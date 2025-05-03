@@ -30,11 +30,28 @@ if (!$documento) {
                         $consultaObjetos->execute();
                         $objetos = $consultaObjetos->fetchAll(PDO::FETCH_ASSOC);
 
-    if(!empty($objetos)){
-        echo json_encode(['datosPersonales' => $datosUsuario, 'objetos' => $objetos]);
+    $consultaVehiculos = $con->prepare("SELECT  marca.nombre_marca, tipovehiculo.tipoVehiculo, estado.estado, id_placa, caracteristicas, vehiculos.foto FROM `vehiculos` 
+                        INNER JOIN estado on estado.id_estado = vehiculos.id_estado
+                        INNER JOIN usuario on usuario.id_documento = vehiculos.id_documento
+                        INNER JOIN tipovehiculo on tipovehiculo.id_tipoVehiculo = vehiculos.id_tipoVehiculo
+                        INNER JOIN marca on marca.id_marca = vehiculos.id_marca
+                        INNER JOIN modelo on modelo.id_modelo = vehiculos.id_modelo
+                        WHERE vehiculos.id_documento = :documento");
+                        $consultaVehiculos->bindParam(':documento', $documento);
+                        $consultaVehiculos->execute();
+                        $vehiculos = $consultaVehiculos->fetchAll(PDO::FETCH_ASSOC);
+
+    if(!empty($objetos) && !empty($vehiculos)){
+        echo json_encode(['datosPersonales' => $datosUsuario, 'objetos' => $objetos, 'vehiculos' => $vehiculos]);
         
-    }else{
-        echo json_encode(['datosPersonales' => $datosUsuario]);
+    }else if(!empty($objetos)){
+        echo json_encode(['datosPersonales' => $datosUsuario, 'objetos' => $objetos, 'vehiculos' => []]);
+        
+    }else if(!empty($vehiculos)){
+        echo json_encode(['datosPersonales' => $datosUsuario, 'objetos' => [], 'vehiculos' => $vehiculos]);
+    }
+    else{
+        echo json_encode(['datosPersonales' => $datosUsuario, 'objetos' => [], 'vehiculos' => $vehiculos]);
 
     }
     

@@ -231,18 +231,41 @@
     height: clamp(600px, 100%, 650px);
     position: absolute;
     z-index: 100;
-    opacity: 0;
-    visibility: hidden;
     display: flex;
     align-items: center;
     justify-content: center;
+    
     /* main conteiner de la parte del modal de selecionar objetos */
+}
+
+.divCerrar{
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    border-radius: 100%;
+    color: white;
+    background-color: #001133;
+    cursor: pointer;
+}
+
+.cerrar{
+    font-weight: bold;
+    
 }
 
 .aparecerModal{
     opacity: 1;
     visibility: visible;
 }
+
+.desaparecerModal{
+    opacity: 0;
+    visibility: hidden;
+}
+
+
 
 .registrarObjeto{
     width: 90%;
@@ -268,6 +291,7 @@
     border-bottom-left-radius: 10px;
     height: 100%;
     color: #0A3D62;
+    position: relative;
     justify-content: center;
     align-items: center;
     text-align: center;
@@ -301,7 +325,7 @@
     
 }
 
-.tarjetaObjeto{
+.tarjetaObjeto, .tarjeticaVehiculo{
     display: flex;
     padding: 15px;
     margin: 10px;
@@ -312,7 +336,7 @@
     background-color: white;
     box-shadow: 0 2px 8px rgba(0,0,0,0.50);
 }
-.tarjetaObjeto:hover{
+.tarjetaObjeto:hover, .tarjeticaVehiculo:hover{
     transform: scale(0.9);
     background-color: #63AEE8;
     color: white;

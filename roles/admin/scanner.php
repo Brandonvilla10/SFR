@@ -63,7 +63,7 @@ session_start();
 
             <!-- Toda esta parte sera destinada para el modal que hablamos el 04/21/2025 acerca de la parte del registro que tiene el celador  -->
          
-            <div class="selecionarObjetos" id="selecionarObjetos">
+            <div class="selecionarObjetos desaparecerModal" id="selecionarObjetos">
                 <div class="registrarObjeto">
 
                     <div class="elementoUsuario">
@@ -91,50 +91,10 @@ session_start();
                             <!-- terminar los objetos -->
                             <!-- apartados para los vehiculos -->
                             <div class="tarjetaVehiculo">
-                                <div class="vehiculos">
+                                <div class="vehiculos" id="contenedorVehiculos">
                                     <h2>Vehiculos</h2>
-                                    <?php
-
-                                    $consultaVehiculo = $con->prepare("SELECT  marca.nombre_marca, tipovehiculo.tipoVehiculo, estado.estado, id_placa, caracteristicas, vehiculos.foto FROM `vehiculos` 
-                                        INNER JOIN estado on estado.id_estado = vehiculos.id_estado
-                                        INNER JOIN usuario on usuario.id_documento = vehiculos.id_documento
-                                        INNER JOIN tipovehiculo on tipovehiculo.id_tipoVehiculo = vehiculos.id_tipoVehiculo
-                                        INNER JOIN marca on marca.id_marca = vehiculos.id_marca
-                                        INNER JOIN modelo on modelo.id_modelo = vehiculos.id_modelo
-                                        WHERE vehiculos.id_documento = 1106227450");
-                                    $consultaVehiculo->execute();
-                                    $vehiculos = $consultaVehiculo->fetchAll(PDO::FETCH_ASSOC);
-
-                                    foreach ($vehiculos as $vehiculo) {
-
-
-                                    ?>
-                                        <div class="tarjetaObjeto" data-id="<?php echo $vehiculo['id_placa'] ?>" onclick="toggleSelectionVehiculo(this)">
-                                            <div class="divFoto">
-                                                <p><?php echo $vehiculo['id_placa'] ?></p>
-                                                <img src="../../uploads/<?php echo $vehiculo['foto'] ?>" width="80px" height="80px" alt="objeto">
-                                            </div>
-
-                                            <div style="display: flex; flex-direction:column; justify-content:center; width:150px; margin-left:20px;">
-                                                <p>Carateristica Del Vehiculo:</p>
-                                                <h4><?php echo $vehiculo['caracteristicas'] ?></h4>
-
-                                            </div>
-
-                                            <div>
-                                                <b class="tituloCategoria">Marca:</b>
-                                                <p class="tipoObjeto"><?php echo $vehiculo['nombre_marca'] ?></p>
-                                                <b class="tituloCategoria">Estado:</b>
-                                                <p class="tipoObjeto"><?php echo $vehiculo['estado'] ?></p>
-                                                <b class="tituloCategoria">Tipo:</b>
-                                                <p class="tipoObjeto"><?php echo $vehiculo['tipoVehiculo'] ?></p>
-                                            </div>
-                                        </div>
-                                    <?php
-
-                                    }
-
-                                    ?>
+                                    
+                                     
                                 </div>
                                 <!-- terminar paras los vehiculos -->
 
@@ -155,6 +115,17 @@ session_start();
     </div>
 
     <script src="./js/logicaScaner.js">
+    </script>
+
+    <script>
+
+        
+        const selecionarObjetos = document.getElementById("selecionarObjetos") 
+        function cerrar(){
+            selecionarObjetos.classList.add("desaparecerModal")
+            selecionarObjetos.classList.remove("aparecerModal")
+        }
+
     </script>
 </body>
 

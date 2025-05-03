@@ -1,3 +1,6 @@
+let alerta = document.getElementById("alerta");
+let alertaBienvenida = document.getElementById("alertaBienvenida");
+
 let entradaObjetos = [];
 
 function toggleSelection(id_serial) {
@@ -14,6 +17,8 @@ function toggleSelection(id_serial) {
   } else {
     entradaObjetos.push(serial);
   }
+
+  console.log(entradaObjetos);
 }
 
 // esta funcion es para los vehiculos
@@ -26,13 +31,15 @@ function toggleSelectionVehiculo(id_placa) {
   id_placa.classList.toggle("seleccionado");
 
   if (!id_placa.classList.contains("seleccionado")) {
-    const indice = entradavehiculos.indexOf();
-    if (indice != 1) {
+    const indice = entradavehiculos.indexOf(placa);
+    if (indice != -1) {
       entradavehiculos.splice(indice, 1);
     }
   } else {
     entradavehiculos.push(placa);
   }
+
+  console.log(entradavehiculos);
 }
 
 let documento;
@@ -53,23 +60,54 @@ async function registrarEntrada() {
       body: documento,
     });
 
+    const respuestaUsuario = await usuarios.json();
+    console.log(respuestaUsuario);
+
+    alertaBienvenida.innerHTML =
+      respuestaUsuario.mensaje + " " + respuestaUsuario.id_documento;
+
+    alerta.classList.add("aparecer");
+    alerta.style.background = respuestaUsuario.color;
+    setTimeout(() => {
+      alerta.classList.remove("aparecer");
+    }, 3000);
     // ------------------------------------------------------------------
 
     // este fetch se va a encargar del registro de los objetos tambien, estoy enviando un objeto para poder identificar el array y a quien se le va a asignar
 
     const Objeto = { array: entradaObjetos, documento: documento };
+    console.log(Objeto)
 
     if (entradaObjetos.length > 0) {
       const objetos = await fetch("./fetch/registrarObjetos.php", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(Objeto),
       });
       console.log("Sending JSON:", JSON.stringify(Objeto));
-      
+
       const respuesta = await objetos.json();
+      console.log(respuesta);
+    }
+
+    const objetoVehiculo = {
+      arrayVehiculos: entradavehiculos,
+      documento: documento,
+    };
+
+    if (entradavehiculos.length > 0) {
+      const vehiculo = await fetch("./fetch/registrarVehiculo.php", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(objetoVehiculo),
+      });
+      console.log("Sending JSON:", JSON.stringify(objetoVehiculo));
+
+      const respuesta = await vehiculo.json();
       console.log(respuesta);
     }
   } catch (error) {
@@ -84,8 +122,6 @@ const resultDiv = document.getElementById("result");
 const startButton = document.getElementById("startButton");
 const stopButton = document.getElementById("stopButton");
 const videoContainer = document.getElementById("videoContainer");
-const alerta = document.getElementById("alerta");
-const alertaBienvenida = document.getElementById("alertaBienvenida");
 
 let stream = null;
 let scanning = false;
@@ -96,15 +132,15 @@ const canvasContext = canvas.getContext("2d");
 // Función para iniciar la cámara
 async function startCamera() {
   try {
-    // Detener cualquier transmisión existente
+    // detener camara caso tal que este abierto algo p'or otro lao
     if (stream) {
       stream.getTracks().forEach((track) => track.stop());
     }
 
-    // Obtener acceso a la cámara
+    // para que tome los accesos
     stream = await navigator.mediaDevices.getUserMedia({
       video: {
-        facingMode: "environment", // Preferir cámara trasera en móviles
+        facingMode: "environment", // esto es para camara trasera de los celu
         width: {
           ideal: 1280,
         },
@@ -176,7 +212,6 @@ function scanQR() {
       const regex = /^\d{8,}$/;
 
       resultDiv.innerHTML = `<strong>Contenido del QR:</strong><br>${code.data}`;
-      // Opcional: puedes detener el escaneo automáticamente al encontrar un código
 
       if (regex.test(code.data)) {
         stopCamera();
@@ -195,23 +230,29 @@ function scanQR() {
           });
 
           //   contedores aqui van declarados
-          const informacionUsuario =
-            document.getElementById("informacionUsuario");
-          const contenedorObjetos =
-            document.getElementById("contenedorObjetos");
+          let informacionUsuario = document.getElementById("informacionUsuario");
+          let contenedorObjetos =document.getElementById("contenedorObjetos");
+          let contenedorVehiculos = document.getElementById("contenedorVehiculos");
+
           // ----------------------------------------------------------------------------------------
 
-          const respuesta = await datos.json();
-          const info = respuesta.datosPersonales;
-          const objetosRespuesta = respuesta.objetos;
+          // declaracion de variables segun la respuesta del documento ./fetch/consultaáraModal
+          let respuesta = await datos.json();
+          let info = respuesta.datosPersonales;
+          let objetosRespuesta = respuesta.objetos;
+          let vehiculosRespuesta = respuesta.vehiculos;
 
-          console.log(respuesta);
+          console.log(vehiculosRespuesta);
 
           //   vacio los contenedores antes de (por si las moscas)
           informacionUsuario.innerHTML = "";
           contenedorObjetos.innerHTML = "";
+          contenedorVehiculos.innerHTML = "";
 
-          informacionUsuario.innerHTML += ` 
+          // -------------------------------------------------------
+
+          informacionUsuario.innerHTML += `
+          <div onclick="cerrar()" class="divCerrar"><span class="cerrar" >X</span></div> 
                     <img src="../../uploads/${info.foto}" alt="Foto de perfil del usuario" class="fotoDePerfil">
 
                     <b style="font-size:1.5rem;margin-bottom:30px;">Datos Del Usuario</b>
@@ -222,8 +263,14 @@ function scanQR() {
                     <p><b> Rol Del Usuario:</b> <br> ${info.nombre_rol} </p>
                     <input type="submit" onclick="registrarEntrada()" value="Registrar Entrada" class="submit-btn">`;
 
-          objetosRespuesta.forEach(function (objeto) {
-            contenedorObjetos.innerHTML += `
+
+          if(objetosRespuesta.length == 0){
+            contenedorObjetos.innerHTML = ""
+          }          
+
+          if (objetosRespuesta.length > 0) {
+            objetosRespuesta.forEach(function (objeto) {
+              contenedorObjetos.innerHTML += `
 
             <div class="tarjetaObjeto" data-id="${objeto.id_serial}" >
             <div class="divFoto">
@@ -245,26 +292,66 @@ function scanQR() {
                                             <b class="tituloCategoria">Tipo:</b>
                                             </div>
                                             </div>`;
-          });
-
-          document.querySelectorAll(".tarjetaObjeto").forEach((tarjeta) => {
-            tarjeta.addEventListener("click", () => {
-              toggleSelection(tarjeta);
             });
-          });
+
+            document.querySelectorAll(".tarjetaObjeto").forEach((tarjeta) => {
+              tarjeta.addEventListener("click", () => {
+                toggleSelection(tarjeta);
+              });
+            });
+          }
+
+
+          // aqui se evalua el contenedor de vehiculos si es 0 lo que devuelve el json pues se vacia sino entonces imprime
+         
+
+          if (vehiculosRespuesta.length > 0) {
+            vehiculosRespuesta.forEach(function (vehiculo) {
+              contenedorVehiculos.innerHTML += `
+            
+               <div class="tarjeticaVehiculo" data-id="${vehiculo.id_placa}" >
+                                            <div class="divFoto">
+                                            <p>${vehiculo.id_placa}</p>
+                                                <img src="../../uploads/${vehiculo.foto}" width="80px" height="80px" alt="objeto">
+                                            </div>
+
+                                            <div style="display: flex; flex-direction:column; justify-content:center; width:150px; margin-left:20px;">
+                                                <p>Carateristica Del Vehiculo:</p>
+                                                <h4>${vehiculo.caracteristicas}</h4>
+
+                                            </div>
+
+                                            <div>
+                                                <b class="tituloCategoria">Marca:</b>
+                                                <p class="tipoObjeto">${vehiculo.nombre_marca} </p>
+                                                <b class="tituloCategoria">Estado:</b>
+                                                <p class="tipoObjeto"> ${vehiculo.estado} </p>
+                                                <b class="tituloCategoria">Tipo:</b>
+                                                <p class="tipoObjeto">${vehiculo.tipoVehiculo} </p>
+                                            </div>
+                                        </div>
+                                  
+            
+            `;
+            })
+
+            if(vehiculosRespuesta.length == 0){
+              contenedorVehiculos.innerHTML = ""
+            }
+
+            document.querySelectorAll(".tarjeticaVehiculo").forEach((tarjeta) => {
+                tarjeta.addEventListener("click", () => {
+                  toggleSelectionVehiculo(tarjeta);
+                });
+              });
+          }
         }
 
         datosUsuario();
 
-        // alertaBienvenida.innerHTML = respuesta.mensaje + " " + respuesta.id_documento
-
-        // alerta.classList.add("aparecer");
-        // alerta.style.background = respuesta.color
-        // setTimeout(() => {
-        //     alerta.classList.remove("aparecer");
-        // }, 3000);
         const selecionarObjetos = document.getElementById("selecionarObjetos");
-        selecionarObjetos.classList.toggle("aparecerModal");
+        selecionarObjetos.classList.add("aparecerModal");
+        selecionarObjetos.classList.remove("desaparecerModal");
 
         documento = code.data;
         return documento;
@@ -281,13 +368,11 @@ function scanQR() {
     }
   }
 
-  // Continuar escaneando
-  // Esperar 2 segundos antes de volver a escanear
   if (scanning) {
     setTimeout(() => {
       videoContainer.style.opacity = 1;
       requestAnimationFrame(scanQR);
-    }, 2000); // 2000 ms = 2 segundos
+    }, 2000);
   }
 }
 

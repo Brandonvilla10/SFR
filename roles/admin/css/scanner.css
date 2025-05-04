@@ -316,8 +316,18 @@
     align-items: center;
 }
 
+.divCaracteristicas{
+    display: flex; 
+    flex-direction: column; 
+    justify-content: center; 
+    width: clamp(100px, 100%, 130px);
+    box-sizing: border-box;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
 .objetos, .tarjetaVehiculo{
-    width: 400px;
+    width: 450px;
     height: 90%;
     border: 2px #63AEE8 solid;
     border-radius: 10px;
@@ -325,7 +335,9 @@
     
 }
 
+
 .tarjetaObjeto, .tarjeticaVehiculo{
+    position: relative;
     display: flex;
     padding: 15px;
     margin: 10px;
@@ -336,6 +348,40 @@
     background-color: white;
     box-shadow: 0 2px 8px rgba(0,0,0,0.50);
 }
+
+.divcategorias{
+    height: 100%;
+    width: clamp(80px, 100%, 100px);
+    word-wrap: break-word;
+}
+
+.divObservacion{
+    width: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+}
+
+.activarObservacion:hover{
+    transform: scale(1.1) rotate(90deg);
+    background-color: white;
+    color: var(--colorAzul);
+}
+
+.activarObservacion{
+    transform: rotate(90deg);
+    background-color: #2196F3;
+    font-weight: 700;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    padding: 5px 10px;
+    transition: 1s;
+
+}
+
 .tarjetaObjeto:hover, .tarjeticaVehiculo:hover{
     transform: scale(0.9);
     background-color: #63AEE8;
@@ -386,3 +432,119 @@
   .submit-btn:active {
     background-color: #001133; 
   }
+
+
+  /* diseño para el modal de observacion */
+
+
+
+.modalObservaciones {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1001;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.1s ease;
+}
+
+.modalObservaciones.aparecerModal {
+    opacity: 1;
+    visibility: visible;
+}
+
+.contenedorModalObservaciones {
+    width: 500px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+}
+
+.headerModal {
+    background-color: #63AEE8;
+    color: white;
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.headerModal h3 {
+    margin: 0;
+    font-size: 1.2rem;
+}
+
+.cerrarModal {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 0;
+    line-height: 1;
+}
+
+.cuerpoModal {
+    padding: 20px;
+}
+
+#textoObservacion {
+    width: 100%;
+    height: 150px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    resize: none;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin-bottom: 15px;
+    box-sizing: border-box;
+}
+
+.botonesModal {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.cancelar-btn {
+    background-color: #f1f1f1;
+    color: #333;
+    border: none;
+    padding: 10px 15px;
+    font-size: 14px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.cancelar-btn:hover {
+    background-color: #e1e1e1;
+}
+
+/* Botón para abrir observaciones en cada tarjeta */
+.botonObservacion {
+    transform: rotate(90deg);
+    position: absolute;
+    top: 50%;
+    right: -6%;
+    transform-origin: center;
+    background-color: #63AEE8;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 5px 10px;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.botonObservacion:hover {
+    background-color: #4a8ec0;
+}

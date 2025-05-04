@@ -1,3 +1,10 @@
+// aqui importo la funcion para meter los botones del modal de observacion
+
+import {
+  agregarBotonesObservacion,
+  obtenerObservacionesFuncion,
+} from "./modalObservacion.js";
+
 let alerta = document.getElementById("alerta");
 let alertaBienvenida = document.getElementById("alertaBienvenida");
 
@@ -18,6 +25,12 @@ function toggleSelection(id_serial) {
     entradaObjetos.push(serial);
   }
 
+  const observacionesActuales = obtenerObservacionesFuncion();
+
+  console.log(
+    "Esto es lo exportado de las observaciones",
+    observacionesActuales
+  );
   console.log(entradaObjetos);
 }
 
@@ -76,7 +89,7 @@ async function registrarEntrada() {
     // este fetch se va a encargar del registro de los objetos tambien, estoy enviando un objeto para poder identificar el array y a quien se le va a asignar
 
     const Objeto = { array: entradaObjetos, documento: documento };
-    console.log(Objeto)
+    console.log(Objeto);
 
     if (entradaObjetos.length > 0) {
       const objetos = await fetch("./fetch/registrarObjetos.php", {
@@ -86,7 +99,7 @@ async function registrarEntrada() {
         },
         body: JSON.stringify(Objeto),
       });
-      console.log("Sending JSON:", JSON.stringify(Objeto));
+      console.log("Enviando JSON:", JSON.stringify(Objeto));
 
       const respuesta = await objetos.json();
       console.log(respuesta);
@@ -230,9 +243,12 @@ function scanQR() {
           });
 
           //   contedores aqui van declarados
-          let informacionUsuario = document.getElementById("informacionUsuario");
-          let contenedorObjetos =document.getElementById("contenedorObjetos");
-          let contenedorVehiculos = document.getElementById("contenedorVehiculos");
+          let informacionUsuario =
+            document.getElementById("informacionUsuario");
+          let contenedorObjetos = document.getElementById("contenedorObjetos");
+          let contenedorVehiculos = document.getElementById(
+            "contenedorVehiculos"
+          );
 
           // ----------------------------------------------------------------------------------------
 
@@ -242,6 +258,7 @@ function scanQR() {
           let objetosRespuesta = respuesta.objetos;
           let vehiculosRespuesta = respuesta.vehiculos;
 
+          console.log(objetosRespuesta);
           console.log(vehiculosRespuesta);
 
           //   vacio los contenedores antes de (por si las moscas)
@@ -261,12 +278,16 @@ function scanQR() {
                     <p><b> Documento:</b> <br> ${info.id_documento} </p>
                     <p><b> Correo Electronico: </b> <br> ${info.correo} </p>
                     <p><b> Rol Del Usuario:</b> <br> ${info.nombre_rol} </p>
-                    <input type="submit" onclick="registrarEntrada()" value="Registrar Entrada" class="submit-btn">`;
+                    <input type="submit" id="botonRegistrarEntrada"  value="Registrar Entrada" class="submit-btn">`;
 
+          const botonRegistrarEntrada = document.getElementById("botonRegistrarEntrada" );
+          if (botonRegistrarEntrada) {
+            botonRegistrarEntrada.addEventListener("click", registrarEntrada);
+          }
 
-          if(objetosRespuesta.length == 0){
-            contenedorObjetos.innerHTML = ""
-          }          
+          if (objetosRespuesta.length == 0) {
+            contenedorObjetos.innerHTML = "";
+          }
 
           if (objetosRespuesta.length > 0) {
             objetosRespuesta.forEach(function (objeto) {
@@ -278,18 +299,18 @@ function scanQR() {
                                             <img src="../../uploads/${objeto.objetoFoto}" width="80px" height="80px" alt="objeto">
                                         </div>
                                         
-                                        <div style="display: flex; flex-direction:column; justify-content:center; width:150px; margin-left:20px;">
+                                        <div class="divCaracteristicas">
                                             <h4>${objeto.nombre}</h4>
-                                            <p>${objeto.caracteristica}</p>
+                                            <p style="font-size: 0.8rem">${objeto.caracteristica}</p>
                                         </div>
 
-                                        <div>
+                                        <div class="divcategorias">
                                             <b class="tituloCategoria">Marca:</b>
                                             <p class="tipoObjeto">${objeto.nombre_marca}</p>
                                             <b class="tituloCategoria">Estado:</b>
                                             <p class="tipoObjeto">${objeto.estado}</p>
-                                            <p class="tipoObjeto">${objeto.tipoObjeto}</p>
                                             <b class="tituloCategoria">Tipo:</b>
+                                            <p class="tipoObjeto">${objeto.tipoObjeto}</p>
                                             </div>
                                             </div>`;
             });
@@ -300,10 +321,9 @@ function scanQR() {
               });
             });
           }
-
+          agregarBotonesObservacion();
 
           // aqui se evalua el contenedor de vehiculos si es 0 lo que devuelve el json pues se vacia sino entonces imprime
-         
 
           if (vehiculosRespuesta.length > 0) {
             vehiculosRespuesta.forEach(function (vehiculo) {
@@ -333,13 +353,15 @@ function scanQR() {
                                   
             
             `;
-            })
+            });
 
-            if(vehiculosRespuesta.length == 0){
-              contenedorVehiculos.innerHTML = ""
+            if (vehiculosRespuesta.length == 0) {
+              contenedorVehiculos.innerHTML = "";
             }
 
-            document.querySelectorAll(".tarjeticaVehiculo").forEach((tarjeta) => {
+            document
+              .querySelectorAll(".tarjeticaVehiculo")
+              .forEach((tarjeta) => {
                 tarjeta.addEventListener("click", () => {
                   toggleSelectionVehiculo(tarjeta);
                 });

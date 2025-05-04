@@ -24,6 +24,24 @@ session_start();
 
 <body>
 
+<!-- Modal de Observaciones -->
+<div class="modalObservaciones desaparecerModal" id="modalObservaciones">
+    <div class="contenedorModalObservaciones">
+        <div class="headerModal">
+            <h3>Observaciones</h3>
+            <button class="cerrarModal" id="cerrarModalObservaciones">×</button>
+        </div>
+        <div class="cuerpoModal">
+            <textarea id="textoObservacion" placeholder="Escribe tus observaciones aquí..."></textarea>
+            <div class="botonesModal">
+                <button class="submit-btn" id="guardarObservacion">Guardar</button>
+                <button class="cancelar-btn" id="cancelarObservacion">Cancelar</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Fin Modal de Observaciones -->
+
     <div class="container_grid">
 
         <div class="alerta" id="alerta">
@@ -71,9 +89,10 @@ session_start();
                         <div class="informacionUsuario" id="informacionUsuario">
                             
                         <!-- aqui va algo de codigo html solo que se pone con javascript, esta en el archivo logicascaner -->
-
-                            
-                        </div>
+                    </div>
+                    
+                    
+                    
                      
 
                         <div class=" contenedorObjetosVehiculos">
@@ -114,8 +133,8 @@ session_start();
         </main>
     </div>
 
-    <script src="./js/logicaScaner.js">
-    </script>
+    <script type="module" src="./js/modalObservacion.js"></script>
+    <script type="module" src="./js/logicaScaner.js"></script>
 
     <script>
 
@@ -126,6 +145,8 @@ session_start();
             selecionarObjetos.classList.remove("aparecerModal")
         }
 
+
+     
     </script>
 </body>
 

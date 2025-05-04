@@ -19,16 +19,27 @@ if (!$documento) {
     $usuario->execute();
     $datosUsuario = $usuario->fetch(PDO::FETCH_ASSOC);
 
+    $estadoUsuario = $datosUsuario['id_estado'];
+    
 
     $consultaObjetos = $con->prepare("SELECT *, objetos.foto as objetoFoto,  usuario.foto AS user_foto , objetos.foto AS object_foto FROM  objetos 
                         INNER JOIN marca ON marca.id_marca  = objetos.id_marca
                         INNER JOIN usuario ON usuario.id_documento = objetos.id_documento
                         INNER JOIN estado ON estado.id_estado = objetos.id_estado 
                         INNER JOIN tipoobjeto ON tipoobjeto.id_tipoObjeto = objetos.id_tipoObjeto
-                        WHERE objetos.id_documento = :documento ");
+                        WHERE objetos.id_documento = :documento AND objetos.id_estado = :estadoObjeto");
                         $consultaObjetos->bindParam(':documento', $documento);
+
+                        if($estadoUsuario == 1){ 
+                            $estado = 1;
+                            $consultaObjetos->bindParam(':estadoObjeto', $estado); 
+                        }else if($estadoUsuario == 3){ 
+                            $estado = 2;
+                            $consultaObjetos->bindParam(':estadoObjeto', $estado); 
+                        }
                         $consultaObjetos->execute();
                         $objetos = $consultaObjetos->fetchAll(PDO::FETCH_ASSOC);
+
 
     $consultaVehiculos = $con->prepare("SELECT  marca.nombre_marca, tipovehiculo.tipoVehiculo, estado.estado, id_placa, caracteristicas, vehiculos.foto FROM `vehiculos` 
                         INNER JOIN estado on estado.id_estado = vehiculos.id_estado
@@ -36,8 +47,16 @@ if (!$documento) {
                         INNER JOIN tipovehiculo on tipovehiculo.id_tipoVehiculo = vehiculos.id_tipoVehiculo
                         INNER JOIN marca on marca.id_marca = vehiculos.id_marca
                         INNER JOIN modelo on modelo.id_modelo = vehiculos.id_modelo
-                        WHERE vehiculos.id_documento = :documento");
+                        WHERE vehiculos.id_documento = :documento AND vehiculos.id_estado = :estadoVehiculo");
                         $consultaVehiculos->bindParam(':documento', $documento);
+
+                        if($estadoUsuario == 1){ 
+                            $estado = 1;
+                            $consultaVehiculos->bindParam(':estadoVehiculo', $estado); 
+                        }else if($estadoUsuario == 3){ 
+                            $estado = 2;
+                            $consultaVehiculos->bindParam(':estadoVehiculo', $estado); 
+                        }
                         $consultaVehiculos->execute();
                         $vehiculos = $consultaVehiculos->fetchAll(PDO::FETCH_ASSOC);
 

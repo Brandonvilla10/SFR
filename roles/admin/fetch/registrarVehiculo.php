@@ -17,6 +17,14 @@ if (json_last_error() !== JSON_ERROR_NONE) {
 $documento = $myObject['documento'];
 $arrayVehiculos = $myObject['arrayVehiculos'];
 
+
+function updateVehiculo($con, $id_estado, $id_placa){
+    $actualizarEstado = $con->prepare("UPDATE vehiculos SET id_estado = :id_estado WHERE id_placa = :id_placa");
+    $actualizarEstado->bindParam(":id_estado", $id_estado);
+    $actualizarEstado->bindParam(":id_placa", $id_placa);
+    $actualizarEstado->execute();
+}
+
 try {
     foreach ($arrayVehiculos as $id_placa) {
         $validarEntrada = $con->prepare('SELECT fechaEntrada, id_registroVehiculo, fechaSalida 
@@ -35,17 +43,22 @@ try {
                 $salida = $con->prepare("UPDATE registroentradavehiculos SET fechaSalida = NOW() WHERE id_registroVehiculo = :id_registroVehiculo");
                 $salida->bindParam(":id_registroVehiculo", $registro);
                 $salida->execute();
+
+                updateVehiculo($con, 1, $id_placa);
+
             } else {
                 $registrar = $con->prepare("INSERT INTO registroentradavehiculos (fechaEntrada, id_placa) VALUES (NOW(), :id_placa)");
                 $registrar->bindParam(':id_placa', $id_placa);
-                
                 $registrar->execute();
+
+                updateVehiculo($con, 2, $id_placa);
             }
         } else {
             $registrar = $con->prepare("INSERT INTO registroentradavehiculos (fechaEntrada, id_placa) VALUES (NOW(), :id_placa)");
             $registrar->bindParam(':id_placa', $id_placa);
-            
             $registrar->execute();
+
+            updateVehiculo($con, 2, $id_placa);
         }
     }
     echo json_encode(['success' => true, 'message' => 'Registro completado']);

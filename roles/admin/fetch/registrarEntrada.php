@@ -7,6 +7,13 @@ session_start();
 $id_documento = json_decode(file_get_contents('php://input', true));
 $regex = '/^\d{8,}$/';
 
+function updateUsuario($con,$estado, $id_documento){
+    $update = $con->prepare("UPDATE usuario SET id_estado = :id_estado WHERE id_documento = :id_documento");
+    $update->bindParam(":id_estado", $estado);
+    $update->bindParam(":id_documento", $id_documento);
+    $update->execute();
+}
+
 try {
     
     $validarUsuario = $con->prepare("SELECT id_documento, nombre_completo FROM usuario WHERE id_documento = :id_documento");
@@ -47,12 +54,17 @@ try {
                 $salida->bindParam(":registro", $registro);
                 $salida->execute();
                 
+                updateUsuario($con, 1, $id_documento);
+
                 echo json_encode(['mensaje' => 'Nos Vemos', 'id_documento' => $filaUsuario['nombre_completo'], "color" => 'green']);
             } else {
                 
                 $registrar = $con->prepare("INSERT INTO registroentradapersona (fechaEntrada, id_documento) VALUES (NOW(), :id_documento)");
                 $registrar->bindParam(':id_documento', $id_documento);
                 $registrar->execute();
+                
+                updateUsuario($con, 3, $id_documento);
+
                 echo json_encode(['mensaje' => 'Bienvenido(a) ', 'id_documento' => $filaUsuario['nombre_completo'] , "color" => 'green']);
             }
         } else {
@@ -60,7 +72,11 @@ try {
             $registrar = $con->prepare("INSERT INTO registroentradapersona (fechaEntrada, id_documento) VALUES (NOW(), :id_documento)");
             $registrar->bindParam(':id_documento', $id_documento);
             $registrar->execute();
+
+            updateUsuario($con, 3, $id_documento);
             echo json_encode(['mensaje' => 'Bienvenido(a) ', 'id_documento' => $filaUsuario['nombre_completo'] , "color" => 'green']);
+
+
         }
     }
 } catch (Exception $e) {

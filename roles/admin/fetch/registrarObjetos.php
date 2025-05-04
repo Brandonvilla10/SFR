@@ -16,6 +16,14 @@ if (json_last_error() !== JSON_ERROR_NONE) {
     exit;
 }
 
+function updateObjetos($con, $id_estado, $id_serial){
+                $actualizarEstado = $con->prepare("UPDATE objetos SET id_estado = :id_estado  WHERE id_serial = :id_serial");
+                $actualizarEstado->bindParam(":id_estado", $id_estado);
+                $actualizarEstado->bindParam(":id_serial", $id_serial);
+                $actualizarEstado->execute();
+}
+
+
 // aqui saco del array dos cosas importantes el documento y el array de objetos para poder trabajar por separado mas facil
 $documento = $myObject['documento'];
 $arrayObjetos = $myObject['array'];
@@ -44,9 +52,8 @@ try {
                 $salida->execute();
 
                 // con esto actualizo el estado del objeto a 1, activo para decir que esta fuera y se puede modificar
-                $actualizarEstado = $con->prepare("UPDATE objetos SET id_estado = 1  WHERE id_serial = :id_serial");
-                $actualizarEstado->bindParam(":id_serial", $id_serial);
-                $actualizarEstado->execute();
+                updateObjetos($con, 1, $id_serial);
+
                 // sino entonces le registro el objeto con una fecha de entrada y sin fecha de salida, es decir que esta en el registro
             } else {
                 $registrar = $con->prepare("INSERT INTO registroentradaobjetos (fechaEntrada, id_serial) VALUES (NOW(), :id_serial)");
@@ -54,9 +61,7 @@ try {
                 $registrar->execute();
 
                 // con esto actualizo el estado del objeto a 2, inactivo para decir que esta dentro y no se puede modificar
-                $actualizarEstado = $con->prepare("UPDATE objetos SET id_estado = 2  WHERE id_serial = :id_serial");
-                $actualizarEstado->bindParam(":id_serial", $id_serial);
-                $actualizarEstado->execute();
+                updateObjetos($con, 2, $id_serial);
             }
         } else {
             $registrar = $con->prepare("INSERT INTO registroentradaobjetos (fechaEntrada, id_serial) VALUES (NOW(), :id_serial)");
@@ -64,9 +69,7 @@ try {
             $registrar->execute();
 
             // con esto actualizo el estado del objeto a 2, inactivo para decir que esta dentro y no se puede modificar
-            $actualizarEstado = $con->prepare("UPDATE objetos SET id_estado = 2  WHERE id_serial = :id_serial");
-            $actualizarEstado->bindParam(":id_serial", $id_serial);
-            $actualizarEstado->execute();
+            updateObjetos($con, 2, $id_serial);
         }
     }
     echo json_encode(['success' => true, 'message' => 'Registro completado']);

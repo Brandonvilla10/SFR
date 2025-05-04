@@ -25,6 +25,7 @@ function toggleSelection(id_serial) {
     entradaObjetos.push(serial);
   }
 
+  // ESTA belleza de aqui es para las obsevaciones que vienen del otro archivo js
   const observacionesActuales = obtenerObservacionesFuncion();
 
   console.log(
@@ -123,8 +124,16 @@ async function registrarEntrada() {
       const respuesta = await vehiculo.json();
       console.log(respuesta);
     }
+
+
+
   } catch (error) {
     console.log(error);
+  }
+  finally{
+    // aqui se vacian los arrays para que no se repitan los datos
+    entradaObjetos = [];
+    entradavehiculos = [];
   }
 }
 
@@ -278,7 +287,7 @@ function scanQR() {
                     <p><b> Documento:</b> <br> ${info.id_documento} </p>
                     <p><b> Correo Electronico: </b> <br> ${info.correo} </p>
                     <p><b> Rol Del Usuario:</b> <br> ${info.nombre_rol} </p>
-                    <input type="submit" id="botonRegistrarEntrada"  value="Registrar Entrada" class="submit-btn">`;
+                    <input type="submit" id="botonRegistrarEntrada"  value="Registrar " class="submit-btn">`;
 
           const botonRegistrarEntrada = document.getElementById("botonRegistrarEntrada" );
           if (botonRegistrarEntrada) {

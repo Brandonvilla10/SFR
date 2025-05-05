@@ -385,10 +385,7 @@
 .tarjetaObjeto:hover, .tarjeticaVehiculo:hover{
     transform: scale(0.9);
     background-color: #63AEE8;
-    color: white;
-    .tituloCategoria{
-        color: white;
-    }
+    
 }
 .divFoto{
     width: auto;
@@ -410,7 +407,7 @@
 .seleccionado{
     transform: scale(0.9);
     background-color: #63AEE8;
-    color: white;
+    
     
 }
 

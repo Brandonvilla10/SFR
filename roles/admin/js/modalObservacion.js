@@ -33,19 +33,11 @@ let observacionExportada = [];
   guardarBtn.addEventListener("click", function () {
     if (objetoSeleccionadoId) {
       const observacion = textoObservacion.value.trim();
-
-      console.log(
-        "Guardando observación para el objeto ID:",
-        objetoSeleccionadoId
-      );
-      console.log("Texto:", observacion);
-
       observacionExportada.push({
         id: objetoSeleccionadoId,
         observacion: observacion,
       })
-
-      console.log(observacionExportada);
+      console.log(observacionExportada)
       cerrarModalObservaciones();
     }
   });
@@ -69,9 +61,6 @@ let observacionExportada = [];
   
   
   
-
-
-
   // agregar los botones de observación 
 export function agregarBotonesObservacion() {
     const tarjetas = document.querySelectorAll(".tarjetaObjeto");
@@ -79,7 +68,7 @@ export function agregarBotonesObservacion() {
     tarjetas.forEach((tarjeta) => {
       const id = tarjeta.getAttribute("data-id");
 
-      // Verificar si ya tiene un botón de observación
+      // Verificar si ya tiene un botón de observación con esto se agrega el boton porque no esta
       if (!tarjeta.querySelector(".botonObservacion")) {
         const boton = document.createElement("button");
         boton.className = "botonObservacion";
@@ -94,3 +83,26 @@ export function agregarBotonesObservacion() {
       }
     });
   }
+
+// agregar botones de observacion a los vehiculso
+
+export function agregarBotonesVehiculos(){
+  const tarjeta = document.querySelectorAll(".tarjeticaVehiculo");;
+
+  tarjeta.forEach((tarjeta) => {
+    const id = tarjeta.getAttribute("data-id");
+
+    if(!tarjeta.querySelector(".botonObservacion")){
+      const boton = document.createElement("button");
+      boton.className = "botonObservacion";
+      boton.textContent = "Observaciones";
+      boton.onclick = function (e) {
+        e.stopPropagation();
+
+        abrirModalObservaciones(id);
+      };
+
+      tarjeta.appendChild(boton);
+    }
+  })
+}

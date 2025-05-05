@@ -3,6 +3,7 @@
 import {
   agregarBotonesObservacion,
   obtenerObservacionesFuncion,
+  agregarBotonesVehiculos,
 } from "./modalObservacion.js";
 
 let alerta = document.getElementById("alerta");
@@ -28,11 +29,7 @@ function toggleSelection(id_serial) {
   // ESTA belleza de aqui es para las obsevaciones que vienen del otro archivo js
   const observacionesActuales = obtenerObservacionesFuncion();
 
-  console.log(
-    "Esto es lo exportado de las observaciones",
-    observacionesActuales
-  );
-  console.log(entradaObjetos);
+  console.log(observacionesActuales);
 }
 
 // esta funcion es para los vehiculos
@@ -53,7 +50,9 @@ function toggleSelectionVehiculo(id_placa) {
     entradavehiculos.push(placa);
   }
 
-  console.log(entradavehiculos);
+  const observacionesActuales = obtenerObservacionesFuncion();
+
+  console.log(observacionesActuales);
 }
 
 let documento;
@@ -89,10 +88,15 @@ async function registrarEntrada() {
 
     // este fetch se va a encargar del registro de los objetos tambien, estoy enviando un objeto para poder identificar el array y a quien se le va a asignar
 
-    const Objeto = { array: entradaObjetos, documento: documento };
+    const Objeto = { 
+      array: entradaObjetos, 
+      documento: documento,
+      observaciones: obtenerObservacionesFuncion(),  
+      };
+
     console.log(Objeto);
 
-    if (entradaObjetos.length > 0) {
+    
       const objetos = await fetch("./fetch/registrarObjetos.php", {
         method: "POST",
         headers: {
@@ -104,14 +108,16 @@ async function registrarEntrada() {
 
       const respuesta = await objetos.json();
       console.log(respuesta);
-    }
+
+    
 
     const objetoVehiculo = {
       arrayVehiculos: entradavehiculos,
       documento: documento,
+      observaciones: obtenerObservacionesFuncion(),  
     };
 
-    if (entradavehiculos.length > 0) {
+    
       const vehiculo = await fetch("./fetch/registrarVehiculo.php", {
         method: "POST",
         headers: {
@@ -121,9 +127,9 @@ async function registrarEntrada() {
       });
       console.log("Sending JSON:", JSON.stringify(objetoVehiculo));
 
-      const respuesta = await vehiculo.json();
-      console.log(respuesta);
-    }
+      const respuestaVehiculo = await vehiculo.json();
+      console.log(respuestaVehiculo);
+    
 
 
 
@@ -330,7 +336,10 @@ function scanQR() {
               });
             });
           }
+
+          // aqui se llama la funcion para hacer que ella cree los botones dependiendo de la cantidad de tajetas que encuentre esto es para los objetos
           agregarBotonesObservacion();
+          
 
           // aqui se evalua el contenedor de vehiculos si es 0 lo que devuelve el json pues se vacia sino entonces imprime
 
@@ -368,13 +377,13 @@ function scanQR() {
               contenedorVehiculos.innerHTML = "";
             }
 
-            document
-              .querySelectorAll(".tarjeticaVehiculo")
-              .forEach((tarjeta) => {
+            document.querySelectorAll(".tarjeticaVehiculo").forEach((tarjeta) => {
                 tarjeta.addEventListener("click", () => {
                   toggleSelectionVehiculo(tarjeta);
                 });
               });
+
+              agregarBotonesVehiculos(); 
           }
         }
 

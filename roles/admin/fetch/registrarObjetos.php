@@ -16,17 +16,19 @@ if (json_last_error() !== JSON_ERROR_NONE) {
     exit;
 }
 
-function updateObjetos($con, $id_estado, $id_serial){
-                $actualizarEstado = $con->prepare("UPDATE objetos SET id_estado = :id_estado  WHERE id_serial = :id_serial");
-                $actualizarEstado->bindParam(":id_estado", $id_estado);
-                $actualizarEstado->bindParam(":id_serial", $id_serial);
-                $actualizarEstado->execute();
+function updateObjetos($con, $id_estado, $id_serial)
+{
+    $actualizarEstado = $con->prepare("UPDATE objetos SET id_estado = :id_estado  WHERE id_serial = :id_serial");
+    $actualizarEstado->bindParam(":id_estado", $id_estado);
+    $actualizarEstado->bindParam(":id_serial", $id_serial);
+    $actualizarEstado->execute();
 }
 
 
 // aqui saco del array dos cosas importantes el documento y el array de objetos para poder trabajar por separado mas facil
 $documento = $myObject['documento'];
 $arrayObjetos = $myObject['array'];
+$arrayObservaciones = $myObject['observaciones'];
 
 try {
     foreach ($arrayObjetos as $id_serial) {
@@ -73,6 +75,32 @@ try {
         }
     }
     echo json_encode(['success' => true, 'message' => 'Registro completado']);
+
+
+    // esta seccion es para registrar las observaciones de los objetos, aqui llega un array con objetos que trae la informacion se valida tambien que el array primero (arrayobjetos) contenga el id que estoy enviando en este nuevo objeto
+
+    try {
+
+        foreach ($arrayObservaciones as $observaciones) {
+
+            $observacion = $observaciones['observacion'];
+            $id_serial = $observaciones['id'];
+
+            if(in_array($id_serial, $arrayObjetos)){
+
+                // aqui actualizamos el ultimo registro mientras que el objeto este siendo seleccionado
+
+                $registrarObservacion = $con->prepare("UPDATE registroentradaobjetos SET observaciones = :observacion WHERE id_serial = :id_serial ORDER BY fechaEntrada DESC LIMIT 1");
+                $registrarObservacion->bindParam(":observacion", $observacion);
+                $registrarObservacion->bindParam(":id_serial", $id_serial);
+                $registrarObservacion->execute();
+            }
+        }
+
+        
+    } catch (Exception $e) {
+        
+    }
 } catch (Exception $e) {
 
     echo json_encode(['success' => false, 'message' => $e->getMessage()]);

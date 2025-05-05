@@ -11,7 +11,7 @@
 
 <body>
 
-     <div class="modal-global">
+    <div class="modal-global">
 
         <h2>Success!</h2>
         <div class="line"></div>
@@ -24,9 +24,9 @@
             <button class="button fill">Confirmar</button>
 
         </div>
-    </div> 
-
-    <!-- <div class="modal-global-error">
+    </div>
+    <!-- 
+     <div class="modal-global-error">
 
         <h2>ERROR!</h2>
         <div class="line"></div>    
@@ -35,8 +35,8 @@
 
         <div class="botonesModal">
 
-            <button class="button no-fill">Cancelar</button>
-            <button class="button fill">Confirmar</button>
+            <button class="button error">Cancelar</button>
+            <button class="button error-fill">Confirmar</button>
 
         </div>
     </div> -->
@@ -49,7 +49,8 @@
             font-family: 'Lato', sans-serif;
         }
 
-        .modal-global, .modal-global-error {
+        .modal-global,
+        .modal-global-error {
             color: #34c768;
             text-align: center;
             position: absolute;
@@ -66,15 +67,23 @@
             padding: 2rem;
             padding-top: 3rem;
             font-size: 23px;
+            animation: entradaModal 0.6s ease-out;
         }
 
-        .modal-global-error{
+        .modal-global-error:hover,
+        .modal-global:hover {
+            transform: scale(1.02);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
+        }
+
+        .modal-global-error {
             color: #FF0000;
         }
 
-        
 
-        .modal-global::before,  .modal-global-error::before {
+
+        .modal-global::before,
+        .modal-global-error::before {
             content: '';
             width: 100%;
             height: 25px;
@@ -86,7 +95,7 @@
             border-top-left-radius: 20px;
         }
 
-        .modal-global-error::before{
+        .modal-global-error::before {
             background-color: red;
         }
 
@@ -111,7 +120,7 @@
 
         }
 
-        .modal-global-error::after{
+        .modal-global-error::after {
             content: 'X';
             font-size: 2rem;
             color: white;
@@ -130,7 +139,7 @@
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
 
-        .line{
+        .line {
             width: 50px;
             height: 2px;
             background: #ccc;
@@ -145,13 +154,19 @@
         }
 
         .button {
-            padding: 0.3rem 1.2rem;
+            padding: 0.3rem 1.5rem;
+            margin-inline-end: 5px;
             border-radius: 20px;
             border: 2px solid #34c759;
             font-weight: bold;
             cursor: pointer;
             transition: all 0.3s ease;
         }
+
+        .button:hover {
+            scale: 1.1;
+        }
+
 
         .no-fill {
             background: white;
@@ -161,6 +176,29 @@
         .fill {
             background: #34c759;
             color: white;
+        }
+
+        .error {
+            color: red;
+            border-color: white;
+        }
+
+        .error-fill {
+            color: white;
+            border-color: white;
+            background-color: red;
+        }
+
+        @keyframes entradaModal {
+            0% {
+                opacity: 0;
+                transform: translateY(-30px) scale(0.95);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
         }
     </style>
 </body>

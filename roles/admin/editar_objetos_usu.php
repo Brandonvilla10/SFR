@@ -9,6 +9,20 @@ $con = $conexion->conectar();
 // !-- AQUI  ESTA LA CONSULTA A LA BASE DE DATOS ACERCA DEL OBJETO -->
 
 try {
+
+    //EXTRAIGO LOS DATOS DE LA PERSONA
+    $id_documento = $_GET['owner'];
+
+    $user = $con->prepare("SELECT nombre_completo, foto, correo, id_documento FROM usuario WHERE id_documento = :doc");
+    $user->bindParam(":doc", $id_documento, PDO::PARAM_INT);
+    $user->execute();
+
+    $usuario = $user->fetch(PDO::FETCH_ASSOC);
+
+    // CONSULTO LA RUTA
+
+    $ruta = $_GET['route'];
+
     $id_serial = $_GET['id'];
     $_SESSION['objeto_buscado'] = $id_serial;
     $objetos_1 = $con->prepare("SELECT * FROM objetos 
@@ -20,13 +34,7 @@ try {
     $consulta_1 = $objetos_1->fetch();
 } catch (PDOException) {
 
-    $objetos_1 = $con->prepare("SELECT * FROM objetos 
-     INNER JOIN marca ON objetos.id_marca = marca.id_marca
-     INNER JOIN estado ON objetos.id_estado = estado.id_estado
-     WHERE id_serial = '$_SESSION[objeto_buscado]'");
-    $objetos_1->execute();
-
-    $consulta_1 = $objetos_1->fetch();
+    //
 }
 
 ?>
@@ -61,14 +69,14 @@ try {
                     <div class="user-info">
 
                         <div class="user-avatar">
-                            <img src="" alt="Imagen del usuario">
+                            <img src="../../uploads/<?php echo (empty($usuario['foto'])) ?  'usu.png' :  $usuario['foto']; ?>" alt="Imagen del usuario">
                         </div>
 
                         <div class="user-details">
                             <p><strong>Datos del propietario</strong></p><br>
-                            <p><strong>Nombre:</strong> <?php echo "hola alejo" ?></p>
-                            <p><strong>Correo:</strong> <?php echo "hola alejo"; ?></p>
-                            <p><strong>Documento:</strong> <?php echo "hola alejo" ?></p>
+                            <p><strong>Nombre:</strong> <?php echo $usuario['nombre_completo'] ?></p>
+                            <p><strong>Correo:</strong> <?php echo $usuario['correo']; ?></p>
+                            <p><strong>Documento:</strong> <?php echo $usuario['id_documento'] ?></p>
                         </div>
 
                     </div>
@@ -76,6 +84,7 @@ try {
                     <div class="form-container">
                         <div class="image-preview">
                             <div class="image-column">
+
                                 <div class="image-upload">
                                     <img src="../../uploads/<?php echo isset($consulta_1['foto']) && $consulta_1['foto'] !== '' ? $consulta_1['foto'] : 'default_iconos.png' ?>" alt="" class="imagen" id="imagen_objeto">
                                     <div class="overlay">
@@ -88,8 +97,8 @@ try {
                                         <input type="file" class="file_input" id="fileUpload" name="foto" hidden>
 
                                     </form>
-
                                 </div>
+                                <div class="image-title">Foto del objeto</div>
                             </div>
                         </div>
 
@@ -115,7 +124,7 @@ try {
 
 
                                         <option value="<?php echo $consulta_1['id_marca'] ?> ">
-                                            ACTUAL: <?php echo $consulta_1['nombre_marca'] ?>
+                                            <?php echo $consulta_1['nombre_marca'] ?>
                                         </option>
 
                                         <?php
@@ -141,7 +150,6 @@ try {
                                     <label for="estado" class="form-label">Estado</label>
                                     <select name="estado_nuevo" id="" class="form-input">
                                         <option value="<?php echo $consulta_1['id_estado'] ?>">
-                                            ACTUAL:
                                             <?php echo $consulta_1['estado'] ?>
                                         </option>
 
@@ -162,7 +170,7 @@ try {
 
                                 <div class="form-actions">
                                     <input type="submit" name="enviar" class="btn-submit">
-                                    <a href="<?php echo $pagina_retorno; ?>" class="btn-return">← Volver</a>
+                                    <a href="<?php echo $ruta; ?>" class="btn-return">← Volver</a>
 
                                 </div>
 
@@ -183,8 +191,8 @@ try {
 
 
 
-    
-    <?php 
+
+    <?php
     //  ENVIO DE LOS DATOS MEDIANTE PHP 
     if (isset($_POST['enviar'])) {
 

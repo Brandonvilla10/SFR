@@ -1,8 +1,8 @@
 <?php
-
 session_start();
 require_once('../../database/database.php');
 // include('../../includes/sesion_validar.php');
+include 'components/alert.php';
 $conexion = new database;
 $con = $conexion->conectar();
 
@@ -48,8 +48,14 @@ if (isset($_POST['borrar'])) {
     $borrar = $con->prepare("DELETE FROM objetos WHERE id_serial = :id_serial");
     $borrar->bindParam(':id_serial', $_POST['borrar']);
     $borrar->execute();
-    header("Location: objetos_usuario.php");
-    exit;
+    echo "
+    <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                mostrarModal('success', 'Objeto eliminado con éxito');
+            });
+
+          
+    </script>";
 }
 
 
@@ -122,11 +128,11 @@ if (isset($_POST['borrar'])) {
 
                                 <div class="object-id"><?php echo $objeto['id_serial']; ?></div>
                                 <div class="object-name"><strong><?php echo $objeto['nombre'] ?></strong></div>
-                                
+
                                 <div class="object-icon">
-                                    
+
                                     <img src="../../uploads/<?php echo isset($objeto['object_foto']) && $objeto['object_foto'] !== '' ? $objeto['object_foto'] : 'default_iconos.png'; ?>" alt="">
-                                    
+
                                 </div>
                                 <div class="object-description"> <?php echo $objeto['caracteristica'] ?></div>
                             </div>
@@ -147,7 +153,7 @@ if (isset($_POST['borrar'])) {
                                     <form action="" method="POST">
                                         <button type="submit" name="borrar" value="<?php echo $objeto['id_serial'] ?>" class="action-button delete-button" onclick=" return confirm('desesas borrar el objeto de serial <?php echo $objeto['id_serial'] ?>')"> <i class="bi bi-trash-fill"></i></button>
                                     </form>
-                                    <button class="action-button edit-button" onclick="window.location.href='ventana_objetos_usu.php?id=<?php echo $objeto['id_serial'] ?>'"><i class="bi bi-pencil-square"></i> </button>
+                                    <button class="action-button edit-button" onclick="window.location.href='editar_objetos_usu.php?id=<?php echo $objeto['id_serial'] ?>&owner=<?php echo $primera_parte['id_documento'] ?>&route=objetos_usuario.php'"><i class="bi bi-pencil-square"></i> </button>
 
                                 </div>
 

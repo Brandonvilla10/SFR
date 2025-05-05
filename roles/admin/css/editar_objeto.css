@@ -8,6 +8,7 @@
     grid-template: "sidebar main" 100px "sidebar main" auto / 130px auto;
     width: 100vw;
     height: 100vh;
+    overflow-x: hidden;
 }
 
 .aside_barra {

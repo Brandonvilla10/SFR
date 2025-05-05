@@ -232,6 +232,7 @@
     }
     .grid_contenido_plantilla {
         grid-area: main;
+        overflow-x: hidden
     }
     /* NUEVA PARTE DE TODO EL CONTENIDO APARTE DE LA PLANTILLA FLOTANTE */
     .titulo {

@@ -63,6 +63,11 @@ $rol =$_SESSION['rol_name'];
             <p class="seccionTexto">Escanear</p>
         </div></a>
 
+        <a href="./datos.php"> <div class="seccion">
+            <img class="icono" src="asidebar/icons/datos.png" alt="">
+            <p class="seccionTexto">Datos</p>
+        </div></a>
+
         <hr>
 
         <a href=""> <div class="seccion">

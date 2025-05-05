@@ -32,10 +32,10 @@ if (isset($_POST['submit']) && isset($_FILES['foto'])) {
                     $query->bindParam(':documento', $documento, PDO::PARAM_STR); // Asegura que el tipo de dato coincide
                     $query->execute();
 
+
                  
                     // Redirige y asegura que la página se recarga
-                    
-                    echo "<script>window.close() </script>";
+                    echo  "<script>window.close()</script>";
                     exit();
                 } else {
         

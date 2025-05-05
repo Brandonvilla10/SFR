@@ -92,9 +92,9 @@ $usuario_foto_path = !empty($resultado['foto']) ? $mostrar : $usu;
                 <h1>Editar Vehiculo</h1>
 
                 <div class="content-container">
-                    <div class="user-info">
+                    <div class="user-info"> 
                         <div class="user-avatar">
-                            <img class="personaAzul" id="fotoUsuario" src="<?php echo $usuario_foto_path; ?>" alt="Foto de perfil">
+                            <img class="personaAzul" id="fotoUsuario" src="<?php echo $usuario_foto_path; ?>" alt="Foto de perfil" onerror="this.src='../../uploads/user.png'">
 
                         </div>
                         <div class="user-details">
@@ -109,7 +109,7 @@ $usuario_foto_path = !empty($resultado['foto']) ? $mostrar : $usu;
                         <div class="image-preview">
                             <div class="image-column">
                                 <div class="image-upload">
-                                    <img src="<?php echo $foto_vehiculo; ?>" alt="Foto vehiculo">
+                                    <img src="<?php echo $foto_vehiculo; ?>" alt="Foto vehiculo" onerror="this.src='../../uploads/default_vehiculos.png'">
                                     <div class="overlay">
                                         <i class="bi bi-upload"></i>
                                         <span>Subir foto</span>

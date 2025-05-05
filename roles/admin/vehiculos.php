@@ -132,7 +132,7 @@ $consulta->execute();
                         <?php } else { ?>
                             <?php foreach ($consulta as $filas) { ?>
                             <tr>
-                                <td><img src="../../uploads/<?php echo $filas['veh_pic'] ?>" alt="img" height="60px" width="60px"></td>
+                                <td><img src="../../uploads/<?php echo $filas['veh_pic'] ?>" alt="img" height="60px" width="60px" onerror="this.src='../../uploads/default_vehiculos.png'"></td>
                                 <td><?php echo $filas['id_placa']; ?></td>
                                 <td><?php echo $filas['id_documento']; ?></td>
                                 <td><?php echo $filas['nombre_completo']; ?></td>

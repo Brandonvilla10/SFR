@@ -35,7 +35,7 @@ $rol =$_SESSION['rol_name'];
             <h3 style="color: white;" >SenaFast</h3>
         </div>
 
-        <hr>
+        <hr class="white">
 
         <a href="./home.php"> <div class="seccion" id="seccion">
          <img class="icono" src="asidebar/icons/home.png" alt="home">
@@ -68,7 +68,7 @@ $rol =$_SESSION['rol_name'];
             <p class="seccionTexto">Datos</p>
         </div></a>
 
-        <hr>
+        <hr class="white">
 
         <a href=""> <div class="seccion">
             <img class="icono" src="asidebar/icons/notificaciones.png" alt="">

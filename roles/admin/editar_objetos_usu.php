@@ -86,15 +86,15 @@ try {
                             <div class="image-column">
 
                                 <div class="image-upload">
-                                    <img src="../../uploads/<?php echo isset($consulta_1['foto']) && $consulta_1['foto'] !== '' ? $consulta_1['foto'] : 'default_iconos.png' ?>" alt="" class="imagen" id="imagen_objeto">
+                                    <img src="../../uploads/<?php echo isset($consulta_1['foto']) && $consulta_1['foto'] !== '' ? $consulta_1['foto'] : 'default_iconos.png' ?>" alt="" class="imagen" id="imagen_objeto" onerror="this.src='../../uploads/default_iconos.png'">
                                     <div class="overlay">
                                         <i class="bi bi-upload"></i>
                                         <span>Subir Foto</span>
                                     </div>
-                                    <form action="../../uploads/upload_objetos.php" method="POST" enctype="multipart/form-data" class="overlay">
+                                    <form action="../../uploads/upload_objetos.php" method="POST" enctype="multipart/form-data" class="overlay" id="form-objetos">
 
                                         <input type="hidden" name="serial" value="<?php echo $consulta_1['id_serial']; ?>">
-                                        <input type="file" class="file_input" id="fileUpload" name="foto">
+                                        <input type="file" class="file_input" id="fileUpload" name="foto" onchange="document.getElementById('form-objetos').submit()">
 
                                     </form>
                                 </div>

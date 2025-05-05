@@ -128,7 +128,7 @@ $totalPaginas = ceil($totalVehiculos / $registrosPorPagina);
             <div class="object-card">
                 <div class="object-header">
                     <div class="object-icon">
-                        <img src="<?php echo !empty($vehiculo['foto']) ? '../../uploads/' . $vehiculo['foto'] : '../../uploads/vehiculo_default.png'; ?>" alt="Vehiculo">
+                        <img src="<?php echo !empty($vehiculo['foto']) ? '../../uploads/' . $vehiculo['foto'] : '../../uploads/vehiculo_default.png'; ?>" alt="Vehiculo" onerror="this.src='../../uploads/default_vehiculos.png'">
                     </div>
                     <div class="object-title">
                         <div class="object-id"><?php echo ($vehiculo['id_placa']); ?></div>

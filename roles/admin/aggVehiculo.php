@@ -7,6 +7,7 @@ $con = $conexion->conectar();
 // Obtener el documento si viene de vehiculos usuario
 $id_documento_preseleccionado = isset($_GET['id_documento']) ? trim($_GET['id_documento']) : '';
 
+$usuario = null;
 
 if (isset($_POST['buscar_usuario'])) {
     $id_documento = trim($_POST['id_documento']);
@@ -106,7 +107,7 @@ $usuario_foto_path = !empty($usuario['foto']) ? '../../uploads/' . $usuario['fot
                 <?php if (!$usuario): ?>
 
                     <!-- form usuario -->
-                <div class="search-user-container" style="width: 100%; max-width: 500px; margin: 30px auto; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); background-color: #5DADE2;">
+                <div class="search-user-container" style="width: 100%; max-width: 500px; margin: 70px auto; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); background-color: #5DADE2;">
                     <h2 style="color: white; text-align: center; margin-bottom: 20px;">Buscar Usuario</h2>
 
                     <form action="" method="POST">
@@ -122,7 +123,7 @@ $usuario_foto_path = !empty($usuario['foto']) ? '../../uploads/' . $usuario['fot
                 <div class="content-container">
                     <div class="user-info">
                         <div class="user-avatar">
-                            <img class="personaAzul" id="fotoUsuario" src="<?php echo $usuario_foto_path; ?>" alt="Foto de perfil">
+                            <img class="personaAzul" id="fotoUsuario" src="<?php echo $usuario_foto_path; ?>" alt="Foto de perfil" onerror="this.src='../../uploads/user.png'">
                         </div>
                         <div class="user-details">
                             <p><strong>Datos del propietario</strong></p><br>
@@ -136,7 +137,7 @@ $usuario_foto_path = !empty($usuario['foto']) ? '../../uploads/' . $usuario['fot
                         <div class="image-preview">
                             <div class="image-column">
                                 <div class="image-upload">
-                                    <img src="../../assets/img/vehicle-default.png" alt="Primero debe registrar el vehiculo">
+                                    <img src="../../uploads/default_vehiculos.png" alt="Primero debe registrar el vehiculo" >
                                     <div class="overlay">
                                         <i class="bi bi-upload"></i>
                                         <span>Primero registre el vehiculo</span>
@@ -147,7 +148,7 @@ $usuario_foto_path = !empty($usuario['foto']) ? '../../uploads/' . $usuario['fot
 
                             <div class="image-column">
                                 <div class="image-upload">
-                                    <img src="../../assets/img/card-default.png" alt="Primero debe registrar el vehiculo">
+                                    <img src="../../uploads/default_tarjeta.png" alt="Primero debe registrar el vehiculo">
                                     <div class="overlay">
                                         <i class="bi bi-upload"></i>
                                         <span>Primero registre el vehiculo</span>

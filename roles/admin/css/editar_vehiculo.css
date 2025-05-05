@@ -14,6 +14,10 @@
     grid-area: main;
 }
 
+.aside_barra{
+    grid-area: sidebar;
+}
+
 .container {
     display: flex;
     flex-direction: column;
@@ -27,7 +31,7 @@
 h1 {
     color: #5DADE2;
     text-align: center;
-    margin-bottom: 30px;
+    margin-top:50px;
     font-size: 2.5rem;
 }
 
@@ -84,7 +88,7 @@ h1 {
 .form-container {
     width: 70%;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     align-items: center;
     padding: 20px;
     border-radius: 10px;
@@ -237,7 +241,6 @@ h1 {
 
 .image-preview {
     display: flex;
-    flex-direction: column;
     justify-content: center;
     width: 100%;
     margin-bottom: 20px;

@@ -203,7 +203,7 @@ try {
         $caracteristica = $_POST['carac_nueva'];
         $marca = $_POST['marca_nueva'];
         $estado = $_POST['estado_nuevo'];
-
+        
 
         $cambiar_datos = $con->prepare("UPDATE objetos SET id_serial = :serial_objeto, nombre = :nombre, caracteristica =  :caract, id_marca = :marca, id_estado = :estado WHERE id_serial = :serial_anterior");
         $cambiar_datos->bindParam(':serial_objeto', $id_serial, PDO::PARAM_STR);

@@ -47,6 +47,10 @@ let observacionExportada = [];
     return observacionExportada;
   }
 
+  export function limpiarObservaciones() {
+    return observacionExportada = [];
+  }
+
   // Eventos para cerrar el modal
   cerrarModalBtn.addEventListener("click", cerrarModalObservaciones);
   cancelarBtn.addEventListener("click", cerrarModalObservaciones);

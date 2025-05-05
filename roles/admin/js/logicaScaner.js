@@ -4,6 +4,7 @@ import {
   agregarBotonesObservacion,
   obtenerObservacionesFuncion,
   agregarBotonesVehiculos,
+  limpiarObservaciones,
 } from "./modalObservacion.js";
 
 let alerta = document.getElementById("alerta");
@@ -140,7 +141,16 @@ async function registrarEntrada() {
     // aqui se vacian los arrays para que no se repitan los datos
     entradaObjetos = [];
     entradavehiculos = [];
+    limpiarObservaciones() // esta funcion esta exportada del archivo "modalObservacion" lo que hace es vaciar el array 
+    
+    cerrar();
   }
+}
+
+const selecionarObjetos = document.getElementById("selecionarObjetos") 
+function cerrar(){
+    selecionarObjetos.classList.add("desaparecerModal")
+    selecionarObjetos.classList.remove("aparecerModal")
 }
 
 // todo esto es para la parte del qr y lo que se necesita para que funcione
@@ -273,7 +283,7 @@ function scanQR() {
           let objetosRespuesta = respuesta.objetos;
           let vehiculosRespuesta = respuesta.vehiculos;
 
-          console.log(objetosRespuesta);
+          console.log(info);
           console.log(vehiculosRespuesta);
 
           //   vacio los contenedores antes de (por si las moscas)
@@ -293,7 +303,7 @@ function scanQR() {
                     <p><b> Documento:</b> <br> ${info.id_documento} </p>
                     <p><b> Correo Electronico: </b> <br> ${info.correo} </p>
                     <p><b> Rol Del Usuario:</b> <br> ${info.nombre_rol} </p>
-                    <input type="submit" id="botonRegistrarEntrada"  value="Registrar " class="submit-btn">`;
+                    <input type="submit" id="botonRegistrarEntrada" value="${info.id_estado === 1 ? 'Registrar Entrada' : 'Registrar Salida'}" class="submit-btn">`;
 
           const botonRegistrarEntrada = document.getElementById("botonRegistrarEntrada" );
           if (botonRegistrarEntrada) {
@@ -311,7 +321,7 @@ function scanQR() {
             <div class="tarjetaObjeto" data-id="${objeto.id_serial}" >
             <div class="divFoto">
                                             <p>${objeto.id_serial}</p>
-                                            <img src="../../uploads/${objeto.objetoFoto}" width="80px" height="80px" alt="objeto">
+                                            <img src="../../uploads/${(objeto.objetoFoto) ?? 'default_iconos.png'}" width="80px" height="80px" alt="objeto">
                                         </div>
                                         
                                         <div class="divCaracteristicas">

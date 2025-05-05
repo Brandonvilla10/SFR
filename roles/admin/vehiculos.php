@@ -58,36 +58,6 @@ if (isset($_POST['modelo'])) {
     }
 }
 
-//si le da a el icono de eliminar
-if (isset($_POST['eliminar'])) {
-    $id_placa = $_POST['id_placa'];
-    $password_admin = $_POST['password_admin'];
-
-    $consulta = $con->prepare("SELECT contraseña FROM usuario WHERE id_documento = :id_documento");
-    $consulta->bindParam(':id_documento', $codigo);
-    $consulta->execute();
-    $usuario = $consulta->fetch(PDO::FETCH_ASSOC);
-
-
-    if (password_verify($password_admin, $usuario['contraseña']) || $password_admin === $usuario['contraseña']) {
-
-        $eliminar = $con->prepare("DELETE FROM vehiculos WHERE id_placa = :id_placa");
-        $eliminar->bindParam(':id_placa', $id_placa);
-
-        if ($eliminar->execute()) {
-            echo "<script>alert('Vehiculo eliminado correctamente');
-            window.location.href = 'vehiculos.php';</script>";
-        } else {
-            echo "<script>alert('Algo salio mal al eliminar el vehiculo');
-            window.location.href = 'vehiculos.php';</script>";
-        }
-    } else {
-        echo "<script>alert('Contraseña de administrador incorrecta');
-        window.location.href = 'vehiculos.php';</script>";
-    }
-
-}
-
 // Aca defino la página actual
 $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 $limite_registros = 10;
@@ -132,7 +102,7 @@ $consulta->execute();
         <div class="titulo">
             <div>
                 <h1>Vehiculos</h1>
-                <p>Administra los vehiculos</p>
+                <p>Administra los vehiculos segun tu necesidad</p>
             </div>
             <button class="buscar_objeto_titulo" onclick="plantilla()">Buscar Vehiculos</button>
             <button class="buscar_objeto_titulo" onclick="plantilla2()">Agregar</button>
@@ -169,7 +139,6 @@ $consulta->execute();
                                 <td><?php echo $filas['estado']; ?></td>
                                 <td>
                                     <ion-icon name="create-outline" size="large" onclick="window.location.href='editar_vehiculo.php?placa=<?php echo $filas['id_placa']; ?>'"></ion-icon>
-                                    <ion-icon name="trash-outline" size="large" onclick="mostrarEliminar('<?php echo $filas['id_placa']; ?>')"></ion-icon>
                                 </td>
                             </tr>
                             <?php } ?>

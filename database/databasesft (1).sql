@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost:3307
--- Tiempo de generación: 28-04-2025 a las 21:20:23
+-- Tiempo de generación: 30-04-2025 a las 14:57:27
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -177,6 +177,51 @@ INSERT INTO `nivelformacion` (`id_nivelFormacion`, `nivelDeformacion`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `notificaciones`
+--
+
+CREATE TABLE `notificaciones` (
+  `id_notificacion` int(11) NOT NULL,
+  `fecha` datetime NOT NULL,
+  `tipo_evento` varchar(20) NOT NULL,
+  `tabla_afectada` varchar(50) NOT NULL,
+  `id_afectado` varchar(100) NOT NULL,
+  `descripcion` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `notificaciones`
+--
+
+INSERT INTO `notificaciones` (`id_notificacion`, `fecha`, `tipo_evento`, `tabla_afectada`, `id_afectado`, `descripcion`) VALUES
+(1, '0000-00-00 00:00:00', 'UPDATE', 'vehiculos', 'DFH23H', 'Vehículo actualizado con placa: DFH23H'),
+(2, '0000-00-00 00:00:00', 'DELETE', 'vehiculos', 'MSW32Y', 'Vehículo eliminado con placa: MSW32Y'),
+(41, '2025-04-30 07:50:46', 'DELETE', 'objetos', 'OBJ1015', 'Objeto eliminado: Tablet iPad Pro 12.9”'),
+(42, '2025-04-30 07:50:51', 'INSERT', 'objetos', '1001', 'Nuevo objeto registrado: Guitarra Acústica'),
+(43, '2025-04-30 07:50:51', 'INSERT', 'objetos', '1002', 'Nuevo objeto registrado: Bajo Eléctricoo'),
+(44, '2025-04-30 07:50:51', 'INSERT', 'objetos', '1003', 'Nuevo objeto registrado: Guitarra Eléctrica'),
+(45, '2025-04-30 07:50:51', 'INSERT', 'objetos', '1004', 'Nuevo objeto registrado: Bajo Eléctrico'),
+(46, '2025-04-30 07:50:51', 'INSERT', 'objetos', '1005', 'Nuevo objeto registrado: Piano Digital'),
+(47, '2025-04-30 07:50:51', 'INSERT', 'objetos', 'OBJ1001', 'Nuevo objeto registrado: Laptop Dell XPS'),
+(48, '2025-04-30 07:50:51', 'INSERT', 'objetos', 'OBJ1002', 'Nuevo objeto registrado: Smartphone Samsung S22'),
+(49, '2025-04-30 07:50:51', 'INSERT', 'objetos', 'OBJ1003', 'Nuevo objeto registrado: Bicicleta Montaña'),
+(50, '2025-04-30 07:50:51', 'INSERT', 'objetos', 'OBJ1004', 'Nuevo objeto registrado: Guitarra Fender Stratocaster'),
+(51, '2025-04-30 07:50:51', 'INSERT', 'objetos', 'OBJ1005', 'Nuevo objeto registrado: TV LG 55” 4K'),
+(52, '2025-04-30 07:50:51', 'INSERT', 'objetos', 'OBJ1006', 'Nuevo objeto registrado: Monitor Samsung 27”'),
+(53, '2025-04-30 07:50:51', 'INSERT', 'objetos', 'OBJ1007', 'Nuevo objeto registrado: Teclado Mecánico Razer'),
+(54, '2025-04-30 07:50:51', 'INSERT', 'objetos', 'OBJ1008', 'Nuevo objeto registrado: Mouse Logitech G502'),
+(55, '2025-04-30 07:50:51', 'INSERT', 'objetos', 'OBJ1009', 'Nuevo objeto registrado: Silla Gamer DXRacer'),
+(56, '2025-04-30 07:50:51', 'INSERT', 'objetos', 'OBJ1010', 'Nuevo objeto registrado: Cámara Sony Alpha A7'),
+(57, '2025-04-30 07:50:51', 'INSERT', 'objetos', 'OBJ1011', 'Nuevo objeto registrado: Consola PlayStation 5'),
+(58, '2025-04-30 07:50:51', 'INSERT', 'objetos', 'OBJ1012', 'Nuevo objeto registrado: Refrigerador Samsung'),
+(59, '2025-04-30 07:50:51', 'INSERT', 'objetos', 'OBJ1013', 'Nuevo objeto registrado: Aire Acondicionado LG'),
+(60, '2025-04-30 07:50:51', 'INSERT', 'objetos', 'OBJ1014', 'Nuevo objeto registrado: Dron DJI Mini 3'),
+(61, '2025-04-30 07:50:51', 'INSERT', 'objetos', 'OBJ1015', 'Nuevo objeto registrado: Tablet iPad Pro 12.9”'),
+(62, '2025-04-30 07:55:37', 'UPDATE', 'vehiculos', 'DFH23H', 'Vehículo actualizado con placa: DFH23H');
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `objetos`
 --
 
@@ -196,7 +241,45 @@ CREATE TABLE `objetos` (
 --
 
 INSERT INTO `objetos` (`id_serial`, `nombre`, `caracteristica`, `foto`, `id_marca`, `id_documento`, `id_estado`, `id_tipoObjeto`) VALUES
+('1001', 'Guitarra Acústica', 'Cuerpo de madera de caoba', NULL, 1, 1107978187, 1, 1),
+('1002', 'Bajo Eléctricoo', '4 cuerdas, pastillas activadas\r\n', '67a8f9b3ad92b6.82255869.png', 2, 1107978187, 1, 1),
+('1003', 'Guitarra Eléctrica', 'Humbuckers, acabado sunburst', '67a8d643309d28.60300968.png', 3, 1107978187, 1, 1),
+('1004', 'Bajo Eléctrico', '4 cuerdas, pastillas activas', '67a8d643309d28.60300968.png', 3, 1107978187, 1, 1),
+('1005', 'Piano Digital', 'Teclas contrapesadas, sonido realista', '67a8d643309d28.60300968.png', 5, 1107978187, 2, 1),
+('OBJ1001', 'Laptop Dell XPS', '16GB RAM, 512GB SSD', '67a8d643309d28.60300968.png', 1, 1106227450, 1, 1),
+('OBJ1002', 'Smartphone Samsung S22', '128GB, 8GB RAM', NULL, 2, 1106227450, 1, 1),
+('OBJ1003', 'Bicicleta Montaña', 'Marco de aluminio, 21 velocidades', '67a8d643309d28.60300968.png', 3, 1106227450, 1, 1),
+('OBJ1004', 'Guitarra Fender Stratocaster', 'Color negro, 6 cuerdas', '67a8d643309d28.60300968.png', 4, 1106227450, 1, 1),
+('OBJ1005', 'TV LG 55” 4K', 'HDR10, Smart TV', '6808364837f355.62823818.jpeg', 5, 1106227450, 1, 1),
+('OBJ1006', 'Monitor Samsung 27”', 'IPS, 144Hz', '67a8d643309d28.60300968.png', 1, 1106227450, 1, 1),
+('OBJ1007', 'Teclado Mecánico Razer', 'Switches Green', '67a8d643309d28.60300968.png', 1, 1106227450, 1, 1),
+('OBJ1008', 'Mouse Logitech G502', 'RGB, Sensor Hero 25K', '67a8d643309d28.60300968.png', 1, 1106227450, 1, 1),
+('OBJ1009', 'Silla Gamer DXRacer', 'Negro y rojo, reclinable', '67a8d643309d28.60300968.png', 1, 1106227450, 1, 1),
+('OBJ1010', 'Cámara Sony Alpha A7', 'Full Frame, 24MP', '67a8d643309d28.60300968.png', 1, 1106227450, 1, 1),
+('OBJ1011', 'Consola PlayStation 5', 'Edición estándar', '67a8d643309d28.60300968.png', 1, 1106227450, 1, 1),
+('OBJ1012', 'Refrigerador Samsung', 'Inverter, 500L', '67a8d643309d28.60300968.png', 1, 1106227450, 1, 1),
+('OBJ1013', 'Aire Acondicionado LG', '12,000 BTU, WiFi', '67a8d643309d28.60300968.png', 1, 1106227450, 1, 1),
+('OBJ1014', 'Dron DJI Mini 3', '4K Video, GPS', '67a8d643309d28.60300968.png', 1, 1106227450, 1, 1),
 ('OBJ1015', 'Tablet iPad Pro 12.9”', 'M2, 256GB', '67a8d643309d28.60300968.png', 1, 1106227450, 1, 1);
+
+--
+-- Disparadores `objetos`
+--
+DELIMITER $$
+CREATE TRIGGER `create_objeto` AFTER INSERT ON `objetos` FOR EACH ROW INSERT INTO notificaciones (fecha, tipo_evento, tabla_afectada, id_afectado, descripcion)
+VALUES (NOW(),'INSERT', 'objetos', NEW.id_serial, CONCAT('Nuevo objeto registrado: ', NEW.Nombre))
+$$
+DELIMITER ;
+DELIMITER $$
+CREATE TRIGGER `delete_objetos` AFTER DELETE ON `objetos` FOR EACH ROW INSERT INTO notificaciones (fecha,tipo_evento, tabla_afectada, id_afectado, descripcion)
+VALUES (NOW(),'DELETE', 'objetos', OLD.id_serial, CONCAT('Objeto eliminado: ', OLD.Nombre))
+$$
+DELIMITER ;
+DELIMITER $$
+CREATE TRIGGER `update_objetos` AFTER UPDATE ON `objetos` FOR EACH ROW INSERT INTO notificaciones (fecha,tipo_evento, tabla_afectada, id_afectado, descripcion)
+VALUES (NOW(),'UPDATE', 'objetos', NEW.id_serial, CONCAT('Objeto actualizado: ', NEW.Nombre))
+$$
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -244,10 +327,19 @@ INSERT INTO `programa` (`id_programaFormacion`, `nombrePrograma`) VALUES
 CREATE TABLE `registroentradaobjetos` (
   `id_registroObjeto` int(11) NOT NULL,
   `fechaEntrada` datetime NOT NULL,
-  `fechaSalida` datetime NOT NULL,
+  `fechaSalida` datetime DEFAULT NULL,
   `observaciones` varchar(255) NOT NULL,
   `id_serial` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Disparadores `registroentradaobjetos`
+--
+DELIMITER $$
+CREATE TRIGGER `insert_objeto` AFTER INSERT ON `registroentradaobjetos` FOR EACH ROW INSERT INTO notificaciones (fecha,tipo_evento, tabla_afectada, id_afectado, descripcion)
+VALUES (NOW(),'INSERT', 'registro_entrada_objetos', NEW.id_registroObjeto, CONCAT('Ingreso de objeto con serial: ', NEW.id_serial))
+$$
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -258,9 +350,18 @@ CREATE TABLE `registroentradaobjetos` (
 CREATE TABLE `registroentradapersona` (
   `id_registro` int(11) NOT NULL,
   `fechaEntrada` datetime NOT NULL,
-  `fechaSalida` datetime NOT NULL,
+  `fechaSalida` datetime DEFAULT NULL,
   `id_documento` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Disparadores `registroentradapersona`
+--
+DELIMITER $$
+CREATE TRIGGER `insertar_persona` AFTER INSERT ON `registroentradapersona` FOR EACH ROW INSERT INTO notificaciones (fecha,tipo_evento, tabla_afectada, id_afectado, descripcion)
+VALUES (NOW(),'INSERT', 'registroentreadapersona', NEW.id_registro, CONCAT('Ingreso de persona con documento: ', NEW.id_documento))
+$$
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -271,10 +372,19 @@ CREATE TABLE `registroentradapersona` (
 CREATE TABLE `registroentradavehiculos` (
   `id_registroVehiculo` int(11) NOT NULL,
   `fechaEntrada` datetime NOT NULL,
-  `fechaSalida` datetime NOT NULL,
-  `observaciones` int(11) NOT NULL,
+  `fechaSalida` datetime DEFAULT NULL,
+  `observaciones` varchar(255) NOT NULL,
   `id_placa` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Disparadores `registroentradavehiculos`
+--
+DELIMITER $$
+CREATE TRIGGER `insert_vehiculo` AFTER INSERT ON `registroentradavehiculos` FOR EACH ROW INSERT INTO notificaciones (fecha,tipo_evento, tabla_afectada, id_afectado, descripcion)
+VALUES (NOW(),'INSERT', 'registro_entrada_vehiculos', NEW.id_registroVehiculo, CONCAT('Ingreso de vehículo con placa: ', NEW.id_placa))
+$$
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -351,7 +461,20 @@ CREATE TABLE `tipovehiculo` (
 
 INSERT INTO `tipovehiculo` (`id_tipoVehiculo`, `tipoVehiculo`) VALUES
 (1, 'MOTO'),
-(2, 'CARRO');
+(2, 'CARRO'),
+(3, 'Camioneta'),
+(4, 'Camión'),
+(5, 'Bus'),
+(6, 'Microbús'),
+(7, 'Bicicleta'),
+(8, 'Cuatrimoto'),
+(9, 'Volqueta'),
+(10, 'Tractocamión'),
+(11, 'Pick-up'),
+(12, 'Van'),
+(13, 'SUV'),
+(14, 'Motocicleta'),
+(15, 'Automóvil');
 
 -- --------------------------------------------------------
 
@@ -417,6 +540,20 @@ INSERT INTO `usuario` (`id_documento`, `nombre_completo`, `correo`, `contraseña
 (1290123457, 'Sebastián Estrada', 'sebastian.estrada@mail.com', 'def56789', '', 2, 2),
 (1301234568, 'Valeria Álvarez', 'valeria.alvarez@mail.com', 'ghi89012', '', 2, 2);
 
+--
+-- Disparadores `usuario`
+--
+DELIMITER $$
+CREATE TRIGGER `insert_usuario` AFTER INSERT ON `usuario` FOR EACH ROW INSERT INTO notificaciones (fecha,tipo_evento, tabla_afectada, id_afectado, descripcion)
+VALUES (NOW(),'INSERT', 'usuario', NEW.id_documento, CONCAT('Nuevo usuario registrado: ', NEW.nombre_completo))
+$$
+DELIMITER ;
+DELIMITER $$
+CREATE TRIGGER `update_usuario` AFTER UPDATE ON `usuario` FOR EACH ROW INSERT INTO notificaciones (fecha,tipo_evento, tabla_afectada, id_afectado, descripcion)
+VALUES (NOW(),'UPDATE', 'usuario', NEW.id_documento, CONCAT('Usuario actualizado: ', NEW.Nombre_Completo))
+$$
+DELIMITER ;
+
 -- --------------------------------------------------------
 
 --
@@ -440,9 +577,27 @@ CREATE TABLE `vehiculos` (
 --
 
 INSERT INTO `vehiculos` (`id_placa`, `foto`, `caracteristicas`, `foto_tarjeta_propiedad`, `id_estado`, `id_documento`, `id_tipoVehiculo`, `id_marca`, `id_modelo`) VALUES
-('DFH23H', 'vehiculo_680552504afee3.57612271.png', 'hola', 'tarjeta_68062d41a16d78.84106323.jpg', 1, 1106227432, 1, 1, 3),
-('MSW32Y', 'vehiculo_68051b11b21fa7.64320933.jpg', 'MOTICO DE MI NEGRITO', 'tarjeta_68051b171b6aa4.64768976.jpg', 1, 1106227432, 1, 1, 2),
+('DFH23H', 'vehiculo_68121999d287f3.15696567.png', 'hola', 'tarjeta_68121dc9916601.34785742.jpeg', 1, 1106227432, 1, 1, 3),
 ('ZSA321', 'vehiculo_68051c98074a76.46750118.jpg', 'hola a todesasasa', 'tarjeta_680476aae993a5.84479628.jpg', 2, 1106227432, 2, 2, 1);
+
+--
+-- Disparadores `vehiculos`
+--
+DELIMITER $$
+CREATE TRIGGER `create_vehiculo` AFTER INSERT ON `vehiculos` FOR EACH ROW INSERT INTO notificaciones (fecha,tipo_evento, tabla_afectada, id_afectado, descripcion)
+VALUES (NOW(),'INSERT', 'vehiculos', NEW.id_placa, CONCAT('Nuevo vehículo registrado con placa: ', NEW.id_placa))
+$$
+DELIMITER ;
+DELIMITER $$
+CREATE TRIGGER `delete_vehiculos` AFTER DELETE ON `vehiculos` FOR EACH ROW INSERT INTO notificaciones (fecha,tipo_evento, tabla_afectada, id_afectado, descripcion)
+VALUES (NOW(),'DELETE', 'vehiculos', OLD.id_placa, CONCAT('Vehículo eliminado con placa: ', OLD.id_placa))
+$$
+DELIMITER ;
+DELIMITER $$
+CREATE TRIGGER `update_vehiculos` AFTER UPDATE ON `vehiculos` FOR EACH ROW INSERT INTO notificaciones (fecha,tipo_evento, tabla_afectada, id_afectado, descripcion)
+VALUES (NOW(),'UPDATE', 'vehiculos', NEW.id_placa, CONCAT('Vehículo actualizado con placa: ', NEW.id_placa))
+$$
+DELIMITER ;
 
 --
 -- Índices para tablas volcadas
@@ -496,6 +651,12 @@ ALTER TABLE `modelo`
 --
 ALTER TABLE `nivelformacion`
   ADD PRIMARY KEY (`id_nivelFormacion`);
+
+--
+-- Indices de la tabla `notificaciones`
+--
+ALTER TABLE `notificaciones`
+  ADD PRIMARY KEY (`id_notificacion`);
 
 --
 -- Indices de la tabla `objetos`
@@ -624,6 +785,12 @@ ALTER TABLE `nivelformacion`
   MODIFY `id_nivelFormacion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
+-- AUTO_INCREMENT de la tabla `notificaciones`
+--
+ALTER TABLE `notificaciones`
+  MODIFY `id_notificacion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=63;
+
+--
 -- AUTO_INCREMENT de la tabla `programa`
 --
 ALTER TABLE `programa`
@@ -669,7 +836,7 @@ ALTER TABLE `tipoobjeto`
 -- AUTO_INCREMENT de la tabla `tipovehiculo`
 --
 ALTER TABLE `tipovehiculo`
-  MODIFY `id_tipoVehiculo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_tipoVehiculo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- Restricciones para tablas volcadas

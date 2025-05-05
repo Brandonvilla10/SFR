@@ -1,0 +1,84 @@
+
+* {
+padding: 0;
+margin: 0;
+}
+body {
+height: 100vh;
+background-color: #ffffff;
+}
+
+:root {
+--color-barraLateral:#63AEE8 
+}
+
+main{
+    display: flex;
+    flex-direction: row;
+}
+
+.barraLateral {
+width: 123px;
+margin: 20px;
+height: 94%;
+padding: 0px 15px;
+background-color: var(--color-barraLateral);
+transition: width 0.5s ease;
+}
+
+.miniBarra {
+width: 68px;
+}
+
+
+/* CONTAINERS DE LAS IMAGENES DE LA BARRA LATERAL*/
+.wrapper{
+    width: auto;
+    display: flex;
+    justify-content: center;
+    padding: 25px 0px;
+}
+/* PARTE DONDE ESTA EL CONTENIDO DE LA PAGINA */
+.contenidoAdmin{
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+}
+
+/* ESTE ES EL HEADER DE LA SECCION DE ADMINISTRADOR */
+.herramientas{
+    margin-top: 3%;
+    display: flex;
+    width: auto;
+    height: 5%;
+    margin-left: auto;
+    margin-bottom: 2%;
+}
+.menu{
+    height: 35px;
+    display: flex
+    
+}
+
+.menu div{
+    padding-right: 30px;
+}
+.contenido_2{
+    display: flex;
+    flex-direction: column;
+    padding-left: 5%;
+}
+
+
+
+.bigimage{
+    padding-top: 6%;
+    width: auto;
+    display: flex;
+    justify-content: center;
+}
+    
+
+
+
+

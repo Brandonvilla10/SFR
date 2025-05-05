@@ -235,9 +235,6 @@ try {
 
                 reader.readAsDataURL(file);
             }
-
-
-
         })
     </script>
 

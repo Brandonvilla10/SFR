@@ -37,7 +37,7 @@ let observacionExportada = [];
         id: objetoSeleccionadoId,
         observacion: observacion,
       })
-      console.log(observacionExportada)
+      
       cerrarModalObservaciones();
     }
   });

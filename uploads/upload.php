@@ -15,6 +15,9 @@ if (isset($_POST['submit']) && isset($_FILES['foto'])) {
     $fileError = $_FILES['foto']['error'];
     $fileType = $_FILES['foto']['type'];
 
+    // Obtener la página anterior
+    $paginaAnterior = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '../roles/admin/configuracion.php';
+
     $allowedExtensions = ['jpg', 'jpeg', 'png', 'gif'];
     $fileExt = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
 
@@ -50,26 +53,26 @@ if (isset($_POST['submit']) && isset($_FILES['foto'])) {
                     $query->bindParam(':documento', $documento, PDO::PARAM_INT);
                     $query->execute();
 
-                    header("Location: ../roles/admin/configuracion.php");
+                    header("Location: $paginaAnterior");
                     exit();
                 } else {
-                    header("Location: ../roles/admin/configuracion.php?mensaje=error_formato&mensaje2=Error al mover el archivo");
+                    header("Location: $paginaAnterior?mensaje=error_formato&mensaje2=Error al mover el archivo");
                     exit();
                 }
             } else {
-                header("Location: ../roles/admin/configuracion.php?mensaje=error_formato&mensaje2=Archivo demasiado grande");
+                header("Location: $paginaAnterior?mensaje=error_formato&mensaje2=Archivo demasiado grande");
                 exit();
             }
         } else {
-            header("Location: ../roles/admin/configuracion.php?mensaje=error_formato&mensaje2=Hubo un error al subir el archivo");
+            header("Location: $paginaAnterior?mensaje=error_formato&mensaje2=Hubo un error al subir el archivo");
             exit();
         }
     } else {
-        header("Location: ../roles/admin/configuracion.php?mensaje=error_formato&mensaje2=Formato de archivo no permitido");
+        header("Location: $paginaAnterior?mensaje=error_formato&mensaje2=Formato de archivo no permitido");
         exit();
     }
 } else {
-    header("Location: ../roles/admin/configuracion.php?mensaje=error_formato&mensaje2=Solicitud inválida");
+    header("Location: $paginaAnterior?mensaje=error_formato&mensaje2=Solicitud inválida");
     exit();
 }
 

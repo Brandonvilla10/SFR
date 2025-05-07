@@ -30,7 +30,7 @@ function toggleSelection(id_serial) {
   // ESTA belleza de aqui es para las obsevaciones que vienen del otro archivo js
   const observacionesActuales = obtenerObservacionesFuncion();
 
-  console.log(observacionesActuales);
+ 
 }
 
 // esta funcion es para los vehiculos
@@ -53,7 +53,7 @@ function toggleSelectionVehiculo(id_placa) {
 
   const observacionesActuales = obtenerObservacionesFuncion();
 
-  console.log(observacionesActuales);
+  
 }
 
 let documento;
@@ -62,7 +62,7 @@ let documento;
 // valido si los arrays de las otras fuciones me traen valores y demas para poder enviar a insertar en los registros
 
 async function registrarEntrada() {
-  console.log(documento);
+
 
   try {
     // este fetch se encarga del registro del ususarop
@@ -75,7 +75,7 @@ async function registrarEntrada() {
     });
 
     const respuestaUsuario = await usuarios.json();
-    console.log(respuestaUsuario);
+    
 
     alertaBienvenida.innerHTML =
       respuestaUsuario.mensaje + " " + respuestaUsuario.id_documento;
@@ -95,7 +95,7 @@ async function registrarEntrada() {
       observaciones: obtenerObservacionesFuncion(),  
       };
 
-    console.log(Objeto);
+    
 
     
       const objetos = await fetch("./fetch/registrarObjetos.php", {
@@ -105,10 +105,10 @@ async function registrarEntrada() {
         },
         body: JSON.stringify(Objeto),
       });
-      console.log("Enviando JSON:", JSON.stringify(Objeto));
+      
 
       const respuesta = await objetos.json();
-      console.log(respuesta);
+      
 
     
 
@@ -126,16 +126,16 @@ async function registrarEntrada() {
         },
         body: JSON.stringify(objetoVehiculo),
       });
-      console.log("Sending JSON:", JSON.stringify(objetoVehiculo));
+      
 
       const respuestaVehiculo = await vehiculo.json();
-      console.log(respuestaVehiculo);
+      
     
 
 
 
   } catch (error) {
-    console.log(error);
+    
   }
   finally{
     // aqui se vacian los arrays para que no se repitan los datos
@@ -249,7 +249,7 @@ function scanQR() {
     if (code) {
       const regex = /^\d{8,}$/;
 
-      resultDiv.innerHTML = `<strong>Contenido del QR:</strong><br>${code.data}`;
+    
 
       if (regex.test(code.data)) {
         stopCamera();
@@ -283,8 +283,7 @@ function scanQR() {
           let objetosRespuesta = respuesta.objetos;
           let vehiculosRespuesta = respuesta.vehiculos;
 
-          console.log(info);
-          console.log(vehiculosRespuesta);
+          
 
           //   vacio los contenedores antes de (por si las moscas)
           informacionUsuario.innerHTML = "";

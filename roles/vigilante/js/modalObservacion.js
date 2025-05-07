@@ -37,12 +37,12 @@ let observacionExportada = [];
         id: objetoSeleccionadoId,
         observacion: observacion,
       })
-      console.log(observacionExportada)
+      
       cerrarModalObservaciones();
     }
   });
 
-// funcion se exporta para la logicascaner
+
   export function obtenerObservacionesFuncion() {
     return observacionExportada;
   }

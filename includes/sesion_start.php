@@ -21,7 +21,7 @@ session_start();
 
     
 
-        if($fila && password_verify($password,$fila['contraseña']) && $fila['id_estado'] == 1){
+        if($fila && password_verify($password,$fila['contraseña']) && $fila['id_estado'] == 1 OR $fila['id_estado'] == 3    ){
 
             $_SESSION['documento']= $fila['id_documento'];
             $_SESSION['rol']= $fila['id_rol'];

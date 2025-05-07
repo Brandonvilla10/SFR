@@ -21,6 +21,8 @@ $arrayObservaciones = $myObject['observaciones'];
 
 function updateVehiculo($con, $id_estado, $id_placa)
 {
+function updateVehiculo($con, $id_estado, $id_placa)
+{
     $actualizarEstado = $con->prepare("UPDATE vehiculos SET id_estado = :id_estado WHERE id_placa = :id_placa");
     $actualizarEstado->bindParam(":id_estado", $id_estado);
     $actualizarEstado->bindParam(":id_placa", $id_placa);
@@ -34,6 +36,7 @@ try {
             WHERE id_placa = :id_placa
             ORDER BY fechaEntrada DESC 
             LIMIT 1');
+
 
         $validarEntrada->bindParam(':id_placa', $id_placa);
         $validarEntrada->execute();
@@ -170,6 +173,8 @@ try {
 
    
 } catch (Exception $e) {
+
+    echo json_encode(['success' => false, 'message' => $e->getMessage()]);
 
     echo json_encode(['success' => false, 'message' => $e->getMessage()]);
 }

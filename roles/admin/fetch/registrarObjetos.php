@@ -7,11 +7,7 @@ header('Content-Type: application/json');
 // esta es la forma de recibir un array de objetos en php
 $datos = file_get_contents('php://input');
 $myObject = json_decode($datos, true);
-// aqui valido que si me este llegando un json me toco asi porque no me dejaba antes
-if (json_last_error() !== JSON_ERROR_NONE) {
-    echo json_encode(['success' => false, 'message' => 'Invalid JSON']);
-    exit;
-}
+
 function updateObjetos($con, $id_estado, $id_serial)
 {
     $actualizarEstado = $con->prepare("UPDATE objetos SET id_estado = :id_estado  WHERE id_serial = :id_serial");
@@ -109,7 +105,7 @@ try {
             updateObjetos($con, 2, $id_serial);
         }
     }
-    echo json_encode(['success' => true, 'message' => 'Registro completado con observaciones']);
+    
 
 } catch (Exception $e) {
     echo json_encode(['success' => false, 'message' => $e->getMessage()]);

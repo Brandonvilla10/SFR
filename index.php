@@ -26,6 +26,11 @@ if (isset($_POST['submit'])){
                 echo "<script>alert('Usuario válido. Bienvenido " . $fila['nombre_completo'] . "');</script>";
                 echo "<script>window.location.href = 'roles/aprendiz/home.php';</script>";
                 break;
+            case 5:
+                
+                echo "<script>window.location.href = 'roles/vigilante/index.php';</script>";
+                break;
+            
         }
        
     } else {

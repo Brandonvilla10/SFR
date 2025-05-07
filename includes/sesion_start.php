@@ -50,6 +50,12 @@ session_start();
                 $_SESSION['rol_name'] ="Funcionario";
                 header("location: ../roles/funcionario/index.php");
                 exit();
+            } elseif($_SESSION['rol'] == 5){
+
+                            // Vigilante
+                $_SESSION['rol_name'] ="Vigilante";
+                header("location: ../roles/Vigilante/index.php");
+                exit();
             }
         }
         else{

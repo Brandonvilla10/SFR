@@ -331,7 +331,7 @@ if (isset($_POST['Eliminar'])) {
                                 <th class="datos"><?php echo !empty($resu['estado']) ? $resu['estado'] : "vacio" ?></th>
                                 <th class="datos">
                                     <input type="button" id="botonTresPuntos" class="botonTresPuntos">
-                                    <img class="imagenDeLostrespuntos" src="./imgAdmin/tres puntos.png" width="30px" onclick="abrirVentana('actualizar.php?documento=<?php echo $resu['id_documento']; ?>')" height="30px" alt="">
+                                    <img class="imagenDeLostrespuntos" src="./imgAdmin/tres puntos.png" height="30px" alt="" onclick="window.location.href='actualizar.php?documento=<?php echo $resu['id_documento']?>&route=buscarUsuario.php'">
 
 
 

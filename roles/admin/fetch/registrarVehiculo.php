@@ -21,8 +21,6 @@ $arrayObservaciones = $myObject['observaciones'];
 
 function updateVehiculo($con, $id_estado, $id_placa)
 {
-function updateVehiculo($con, $id_estado, $id_placa)
-{
     $actualizarEstado = $con->prepare("UPDATE vehiculos SET id_estado = :id_estado WHERE id_placa = :id_placa");
     $actualizarEstado->bindParam(":id_estado", $id_estado);
     $actualizarEstado->bindParam(":id_placa", $id_placa);
@@ -36,7 +34,6 @@ try {
             WHERE id_placa = :id_placa
             ORDER BY fechaEntrada DESC 
             LIMIT 1');
-
 
         $validarEntrada->bindParam(':id_placa', $id_placa);
         $validarEntrada->execute();
@@ -70,17 +67,6 @@ try {
                         }
                     }
                 }
-                foreach ($arrayObservaciones as $observaciones) {
-                    if ($observaciones['id'] == $id_serial) {
-                        $observacion = $observaciones['observacion'];
-                        $actualizarObservacion = $con->prepare("UPDATE registroentradavehiculos SET observacionesSalida = :observacionesSalida WHERE id_registroVehiculo = :id_registro");
-                        $actualizarObservacion->bindParam(":observacionesSalida", $observacion);
-                        $actualizarObservacion->bindParam(":id_registroVehiculo", $registro);
-                        $actualizarObservacion->execute();
-                        break;
-                    }
-                }
-
             } else {
                 $registrar = $con->prepare("INSERT INTO registroentradavehiculos (fechaEntrada, id_placa) VALUES (NOW(), :id_placa)");
                 $registrar->bindParam(':id_placa', $id_placa);
@@ -105,17 +91,6 @@ try {
                             $registrarObservacion->execute();
                             break;
                         }
-                    }
-                }
-
-                foreach ($arrayObservaciones as $observaciones) {
-                    if ($observaciones['id'] == $id_serial) {
-                        $observacion = $observaciones['observacion'];
-                        $actualizarObservacion = $con->prepare("UPDATE registroentradavehiculos SET observaciones = :observaciones WHERE id_registroVehiculo = :id_registro");
-                        $actualizarObservacion->bindParam(":observaciones", $observacion);
-                        $actualizarObservacion->bindParam(":id_registroVehiculo", $registro);
-                        $actualizarObservacion->execute();
-                        break;
                     }
                 }
             }
@@ -154,29 +129,7 @@ try {
 
 
 
-
-            foreach ($arrayObservaciones as $observaciones) {
-                if ($observaciones['id'] == $id_serial) {
-                    $observacion = $observaciones['observacion'];
-                    $actualizarObservacion = $con->prepare("UPDATE registroentradavehiculos SET observaciones = :observaciones WHERE id_registroVehiculo = :id_registro");
-                    $actualizarObservacion->bindParam(":observaciones", $observacion);
-                    $actualizarObservacion->bindParam(":id_registroVehiculo", $registro);
-                    $actualizarObservacion->execute();
-                    break;
-                }
-            }
-        }
-    }
-    echo json_encode(['success' => true, 'message' => 'Registro completado']);
-
-    // esta seccion es para registrar las observaciones de los vehiculos, aqui llega un array con objetos que trae la informacion se valida tambien que el array primero (arrayVehiculos) contenga el id_placa que estoy enviando en este nuevo objeto
-
-   
 } catch (Exception $e) {
 
     echo json_encode(['success' => false, 'message' => $e->getMessage()]);
-
-    echo json_encode(['success' => false, 'message' => $e->getMessage()]);
 }
-
-?>

@@ -58,7 +58,7 @@ $rol =$_SESSION['rol_name'];
         </div></a>
 
 
-        <a href=""> <div class="seccion">
+        <a href="./scanner.php"> <div class="seccion">
             <img class="icono" src="asidebar/icons/escanearBlanco.png" alt="">
             <p class="seccionTexto">Escanear</p>
         </div></a>
@@ -70,7 +70,7 @@ $rol =$_SESSION['rol_name'];
 
         <hr class="white">
 
-        <a href=""> <div class="seccion">
+        <a href="./notificaciones.php"> <div class="seccion">
             <img class="icono" src="asidebar/icons/notificaciones.png" alt="">
             <p class="seccionTexto">Notificaciones</p>
         </div></a>

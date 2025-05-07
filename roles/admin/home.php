@@ -172,15 +172,17 @@ $rol = $_SESSION['rol_name']; // Rol del usuario
 
 
     window.addEventListener('load', function () {
-        document.querySelectorAll('.grafica_barras').forEach(function (el) {
-            el.classList.add('animar');
-        });
-        document.querySelectorAll('.grafica_dona').forEach(function (el) {
-            el.classList.add('animar');
-        });
-        document.querySelectorAll('.ingresos_usuarios').forEach(function (el) {
-            el.classList.add('animar');
-        });
+
+      const barras = document.querySelector('.grafica_barras');
+      const dona = document.querySelector('.grafica_dona');
+      const usuario= document.querySelector('.ingresos_usuarios ');
+      const global  =[barras,dona,usuario]
+       
+
+       global.forEach(element => {
+          element.classList.add('animar');
+       });
+       
     });
 
 </script>

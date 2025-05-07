@@ -26,37 +26,52 @@ $notificaciones = $sql->fetchAll(PDO::FETCH_ASSOC);
     <link rel="stylesheet" href="css/home.css">
     <link rel="stylesheet" href="asideBar/asidebar.css">
     <style>
-        .contenedor-notificaciones {
-            padding: 20px;
+
+        main.grid_contenido_plantilla {
+            margin: 0;
+            padding: 0;
+            margin-top: -150px;
         }
+
+        .contenedor-notificaciones {
+            margin: 0px ;
+            padding: 50px;
+        }
+
         .notificacion {
             background-color: #f2f2f2;
             border-left: 5px solid #63AEE8;
-            padding: 15px;
-            margin-bottom: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
             border-radius: 8px;
         }
+
         .notificacion h4 {
-            margin: 0 0 5px 0;
+            margin: 0 10px 0;
             color: #333;
         }
+
         .notificacion p {
             margin: 0;
         }
+
         .notificacion time {
             display: block;
             font-size: 0.8em;
             color: #777;
             margin-top: 5px;
         }
+
         .form-busqueda {
-            margin-bottom: 20px;
+            margin-bottom: 20px; 
         }
+
         .form-busqueda input {
             padding: 8px;
             width: 200px;
             margin-right: 10px;
         }
+
         .form-busqueda button {
             padding: 8px 12px;
             background-color: #63AEE8;
@@ -64,12 +79,13 @@ $notificaciones = $sql->fetchAll(PDO::FETCH_ASSOC);
             color: white;
             cursor: pointer;
         }
+
         .grid-notificaciones {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
             gap: 20px;
+            padding: 70px;
         }
-
     </style>
 </head>
 <body>
@@ -80,30 +96,29 @@ $notificaciones = $sql->fetchAll(PDO::FETCH_ASSOC);
     </aside>
 
     <main class="grid_contenido_plantilla">
-    <div class="contenedor-notificaciones">
-        <h1 style="color: #63AEE8;">Notificaciones</h1>
+        <div class="contenedor-notificaciones">
+            <h1 style="color: #63AEE8;">Notificaciones</h1>
 
-        <form class="form-busqueda" method="GET">
-            <input type="text" name="documento" placeholder="Buscar por documento..." value="<?php echo htmlspecialchars($documentoBuscado); ?>">
-            <button type="submit">Buscar</button>
-        </form>
+            <form class="form-busqueda" method="GET">
+                <input type="text" name="documento" placeholder="Buscar por documento..." value="<?php echo htmlspecialchars($documentoBuscado); ?>">
+                <button type="submit">Buscar</button>
+            </form>
 
-        <?php if (count($notificaciones) > 0): ?>
-            <div class="grid-notificaciones">
-                <?php foreach ($notificaciones as $notif): ?>
-                    <div class="notificacion">
-                        <h4><?php echo htmlspecialchars($notif['tipo_evento'] . ' en ' . $notif['tabla_afectada']); ?></h4>
-                        <p><?php echo htmlspecialchars($notif['descripcion']); ?></p>
-                        <time><?php echo date("d/m/Y H:i", strtotime($notif['fecha'])); ?></time>
-                    </div>
-                <?php endforeach; ?>
-            </div>
-        <?php else: ?>
-            <p>No hay notificaciones encontradas.</p>
-        <?php endif; ?>
-    </div>
-</main>
-
+            <?php if (count($notificaciones) > 0): ?>
+                <div class="grid-notificaciones">
+                    <?php foreach ($notificaciones as $notif): ?>
+                        <div class="notificacion">
+                            <h4><?php echo htmlspecialchars($notif['tipo_evento'] . ' en ' . $notif['tabla_afectada']); ?></h4>
+                            <p><?php echo htmlspecialchars($notif['descripcion']); ?></p>
+                            <time><?php echo date("d/m/Y H:i", strtotime($notif['fecha'])); ?></time>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+            <?php else: ?>
+                <p>No hay notificaciones encontradas.</p>
+            <?php endif; ?>
+        </div>
+    </main>
 </div>
 
 <script src="../../js/js.js"></script>

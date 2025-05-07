@@ -3,10 +3,16 @@ include('../../../database/database.php');
 $conexion = new database;
 $con = $conexion->conectar();
 session_start();
+
 header('Content-Type: application/json');
-// esta es la forma de recibir un array de objetos en php
+
 $datos = file_get_contents('php://input');
 $myObject = json_decode($datos, true);
+
+if (json_last_error() !== JSON_ERROR_NONE) {
+    echo json_encode(['success' => false, 'message' => 'Invalid JSON']);
+    exit;
+}
 
 function updateObjetos($con, $id_estado, $id_serial)
 {
@@ -15,10 +21,12 @@ function updateObjetos($con, $id_estado, $id_serial)
     $actualizarEstado->bindParam(":id_serial", $id_serial);
     $actualizarEstado->execute();
 }
+
 // aqui saco del array dos cosas importantes el documento y el array de objetos para poder trabajar por separado mas facil
 $documento = $myObject['documento'];
 $arrayObjetos = $myObject['array'];
-$arrayObservaciones = $myObject['observaciones'];
+$arrayObservaciones = isset($myObject['observaciones']) ? $myObject['observaciones'] : [];
+
 try {
     foreach ($arrayObjetos as $id_serial) {
         // con esta consulta hago el condicional para saber si el objeto ya esta registrado o no
@@ -45,68 +53,66 @@ try {
                 // con esto actualizo el estado del objeto a 1, activo para decir que esta fuera y se puede modificar
                 updateObjetos($con, 1, $id_serial);
                 
-                // Aquí registramos las observaciones de salida si existen
+                // Registrar observaciones de salida
                 foreach ($arrayObservaciones as $observaciones) {
                     if ($observaciones['id'] == $id_serial) {
                         $observacion = $observaciones['observacion'];
-                        $actualizarObservacion = $con->prepare("UPDATE registroentradaobjetos SET observacionesSalida = :observacionesSalida WHERE id_registroObjeto = :id_registro");
-                        $actualizarObservacion->bindParam(":observacionesSalida", $observacion);
-                        $actualizarObservacion->bindParam(":id_registro", $registro);
-                        $actualizarObservacion->execute();
+                        $registrarObservacion = $con->prepare("UPDATE registroentradaobjetos SET observacionesSalida = :observacion WHERE id_registroObjeto = :id_registro");
+                        $registrarObservacion->bindParam(":observacion", $observacion);
+                        $registrarObservacion->bindParam(":id_registro", $registro);
+                        $registrarObservacion->execute();
                         break;
                     }
                 }
-
-                // sino entonces le registro el objeto con una fecha de entrada y sin fecha de salida, es decir que esta en el registro
             } else {
+                // sino entonces le registro el objeto con una fecha de entrada y sin fecha de salida, es decir que esta en el registro
                 $registrar = $con->prepare("INSERT INTO registroentradaobjetos (fechaEntrada, id_serial) VALUES (NOW(), :id_serial)");
                 $registrar->bindParam(':id_serial', $id_serial);
                 $registrar->execute();
                 
-                // Obtener el ID del registro recién insertado
                 $id_registro = $con->lastInsertId();
-                
+
+                // con esto actualizo el estado del objeto a 2, inactivo para decir que esta dentro y no se puede modificar
+                updateObjetos($con, 2, $id_serial);
+
                 // Registrar observaciones de entrada
                 foreach ($arrayObservaciones as $observaciones) {
                     if ($observaciones['id'] == $id_serial) {
                         $observacion = $observaciones['observacion'];
-                        $actualizarObservacion = $con->prepare("UPDATE registroentradaobjetos SET observaciones = :observacion WHERE id_registroObjeto = :id_registro");
-                        $actualizarObservacion->bindParam(":observacion", $observacion);
-                        $actualizarObservacion->bindParam(":id_registro", $id_registro);
-                        $actualizarObservacion->execute();
+                        $registrarObservacion = $con->prepare("UPDATE registroentradaobjetos SET observaciones = :observacion WHERE id_registroObjeto = :id_registro");
+                        $registrarObservacion->bindParam(":observacion", $observacion);
+                        $registrarObservacion->bindParam(":id_registro", $id_registro);
+                        $registrarObservacion->execute();
                         break;
                     }
                 }
-
-                // con esto actualizo el estado del objeto a 2, inactivo para decir que esta dentro y no se puede modificar
-                updateObjetos($con, 2, $id_serial);
             }
         } else {
             $registrar = $con->prepare("INSERT INTO registroentradaobjetos (fechaEntrada, id_serial) VALUES (NOW(), :id_serial)");
             $registrar->bindParam(':id_serial', $id_serial);
             $registrar->execute();
             
-            // Obtener el ID del registro recién insertado
             $id_registro = $con->lastInsertId();
-            
+
+            // con esto actualizo el estado del objeto a 2, inactivo para decir que esta dentro y no se puede modificar
+            updateObjetos($con, 2, $id_serial);
+
             // Registrar observaciones de entrada para un nuevo registro
             foreach ($arrayObservaciones as $observaciones) {
                 if ($observaciones['id'] == $id_serial) {
                     $observacion = $observaciones['observacion'];
-                    $actualizarObservacion = $con->prepare("UPDATE registroentradaobjetos SET observaciones = :observacion WHERE id_registroObjeto = :id_registro");
-                    $actualizarObservacion->bindParam(":observacion", $observacion);
-                    $actualizarObservacion->bindParam(":id_registro", $id_registro);
-                    $actualizarObservacion->execute();
+                    $registrarObservacion = $con->prepare("UPDATE registroentradaobjetos SET observaciones = :observacion WHERE id_registroObjeto = :id_registro");
+                    $registrarObservacion->bindParam(":observacion", $observacion);
+                    $registrarObservacion->bindParam(":id_registro", $id_registro);
+                    $registrarObservacion->execute();
                     break;
                 }
             }
-
-            // con esto actualizo el estado del objeto a 2, inactivo para decir que esta dentro y no se puede modificar
-            updateObjetos($con, 2, $id_serial);
         }
     }
-    
+    echo json_encode(['success' => true, 'message' => 'Registro completado con observaciones']);
 
 } catch (Exception $e) {
     echo json_encode(['success' => false, 'message' => $e->getMessage()]);
 }
+?>

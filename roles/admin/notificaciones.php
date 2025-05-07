@@ -5,7 +5,7 @@ $conexion = new database;
 $con = $conexion->conectar();
 
 // Obtener el documento desde el formulario o la sesión
-$documentoBuscado = $_GET['documento'] ?? $_SESSION['documento'] ?? null;
+$documentoBuscado = $_GET['documento'] ?? null;
 
 // Consulta dinámica
 if ($documentoBuscado) {

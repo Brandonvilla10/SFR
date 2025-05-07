@@ -124,7 +124,7 @@ $usuario_foto_path = !empty($resultado['foto']) ? $mostrar : $usu;
 
                             <div class="image-column">
                                 <div class="image-upload">
-                                    <img src="<?php echo $foto_tarjeta; ?>" alt="Tarjeta de propiedad">
+                                    <img src="<?php echo $foto_tarjeta; ?>" alt="Tarjeta de propiedad" onerror="this.src='../../uploads/default_tarjeta.png'">
                                     <div class="overlay">
                                         <i class="bi bi-upload"></i>
                                         <span>Subir foto</span>

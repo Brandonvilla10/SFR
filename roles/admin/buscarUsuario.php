@@ -76,7 +76,7 @@ $resultado = $foto->fetchAll(PDO::FETCH_ASSOC);
 // Esta apretura de php se va a usar para la paginacion de regirstros 
 
 
-$registrosPorPagina = 30;
+$registrosPorPagina = 5;
 
 $paginaActual = isset($_GET['pagina']) ? (int)$_GET['pagina'] : 1;
 

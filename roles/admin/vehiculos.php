@@ -60,7 +60,7 @@ if (isset($_POST['modelo'])) {
 
 // Aca defino la página actual
 $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
-$limite_registros = 10;
+$limite_registros = 5;
 
 // Aca esta el limite de los objetos
 $start_record = ($page - 1) * $limite_registros;
@@ -91,6 +91,7 @@ $consulta->execute();
     <link rel="stylesheet" href="css/vehiculos.css">
     <link rel="stylesheet" href="asideBar/asidebar.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    
 </head>
 <body>
 <div class="container_grid">
@@ -112,40 +113,31 @@ $consulta->execute();
         <hr class="separador">
         <div class="contenido_tabla">
             <input class="BOTON_FILTRAR" placeholder="Filtrar vehiculo por placa" oninput="filtrarPorPlaca(this.value)">
-            <div class="regulador_tamaño">
-                <table class="tabla_de_objetos">
-                    <thead>
-                        <tr>
-                            <th>Vehiculo</th>
-                            <th>Placa</th>
-                            <th>DNI Dueño</th>
-                            <th>Nombre Propietario</th>
-                            <th>Estado</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php if ($consulta->rowCount() == 0) { ?>
-                            <tr>
-                                <td colspan="6"><h3>No hay vehiculos</h3></td>
-                            </tr>
-                        <?php } else { ?>
-                            <?php foreach ($consulta as $filas) { ?>
-                            <tr>
-                                <td><img src="../../uploads/<?php echo $filas['veh_pic'] ?>" alt="img" height="60px" width="60px" onerror="this.src='../../uploads/default_vehiculos.png'"></td>
-                                <td><?php echo $filas['id_placa']; ?></td>
-                                <td><?php echo $filas['id_documento']; ?></td>
-                                <td><?php echo $filas['nombre_completo']; ?></td>
-                                <td><?php echo $filas['estado']; ?></td>
-                                <td>
-                                    <ion-icon name="create-outline" size="large" onclick="window.location.href='editar_vehiculo.php?placa=<?php echo $filas['id_placa']; ?>'"></ion-icon>
-                                </td>
-                            </tr>
-                            <?php } ?>
-                        <?php } ?>
-                    </tbody>
-                </table>
-            </div>
+            
+            <?php if ($consulta->rowCount() == 0) { ?>
+                <div class="notificacion">
+                    <h4>No hay vehiculos registrados</h4>
+                </div>
+            <?php } else { ?>
+                <div class="encabezado">
+                    <h4>Vehiculo</h4>
+                    <h4>Placa</h4>
+                    <h4>DNI Dueño</h4>
+                    <h4>Nombre Propietario</h4>
+                    <h4>Estado</h4>
+                    <h4>Accion</h4>
+                </div>      
+                <?php foreach ($consulta as $filas) { ?>
+                <div class="vehiculos">
+                    <h4><img src="../../uploads/<?php echo $filas['veh_pic'] ?>" alt="img" height="60px" width="60px" onerror="this.src='../../uploads/default_vehiculos.png'"></h4>
+                    <h4><?php echo $filas['id_placa']; ?></h4>
+                    <h4><?php echo $filas['id_documento']; ?></h4>
+                    <h4><?php echo $filas['nombre_completo']; ?></h4>
+                    <h4><?php echo $filas['estado']; ?></h4>
+                    <h4><ion-icon name="create-outline" size="large" onclick="window.location.href='editar_vehiculo.php?placa=<?php echo $filas['id_placa']; ?>'"></ion-icon></h4>
+                </div>  
+                <?php } ?>
+            <?php } ?>
 
             <div class="paginacion" >
                 <?php if ($page > 1): ?>
@@ -327,26 +319,23 @@ $consulta->execute();
 <script>
 
 function filtrarPorPlaca(placa) {
-    const tabla = document.querySelector('.tabla_de_objetos');
-    const filas = tabla.getElementsByTagName('tbody')[0].getElementsByTagName('tr');
-
+    const vehiculos = document.querySelectorAll('.vehiculos');
     // Converti todo en minusculas porque si no no funciona buscando en minusculas
     const placa_buscada = placa.toLowerCase();
 
-    for (let i = 0; i < filas.length; i++) {
-        //  EN ESTA PARTE LO QUE HAGO ES HACER UN CICLO PARA RECORRER LAS FILAS
-        const celdaPlaca = filas[i].getElementsByTagName('td')[1]; // La placa esta en la segunda columna
+    vehiculos.forEach(vehiculo => {
+        const celdaPlaca = vehiculo.querySelectorAll('h4')[1];
 
         if (celdaPlaca) {
             const textoPlaca = celdaPlaca.textContent || celdaPlaca.innerText;
             // Converti tmbn en minusculas el de la placa de las columnas
             if (textoPlaca.toLowerCase().includes(placa_buscada)) {
-                filas[i].style.display = '';
+                vehiculo.style.display = '';
             } else {
-                filas[i].style.display = 'none';
+                vehiculo.style.display = 'none';
             }
         }
-    }
+    });
 }
 </script>
 </body>

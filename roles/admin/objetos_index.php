@@ -10,7 +10,7 @@ $rol = $_SESSION['rol_name'];
 
 // Aca defino la página actual
 $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
-$limite_registros = 10;
+$limite_registros = 5;
 
 // Aca esta el limite de los objetos
 $start_record = ($page - 1) * $limite_registros;
@@ -59,41 +59,36 @@ $consulta->execute();
             <button class="buscar_objeto_titulo" onclick="plantilla()">Buscar Objetos</button>
         </div>
         <hr class="separador">
-
-
         <!-------------------------------- TABLA DE OBJETOS ------------------------------------->
         
         <div class="contenido_tabla">
             <input class="BOTON_FILTRAR" placeholder="Filtrar objeto por serial" oninput="filtrarPorSerial(this.value)">
-            <div class="regulador_tamaño">
-                <table class="tabla_de_objetos">
-                    <thead>
-                        <tr>
-                            <th>Objeto</th>
-                            <th>Serial</th>
-                            <th>Nombre</th>
-                            <th>DNI Dueño</th>
-                            <th>Nombre Propietario</th>
-                            <th>Estado</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php foreach ($consulta as $generales) { ?>
-                            <tr>  
-                         
-                                <td><img src="../../uploads/<?php echo isset($generales['ob_pic']) && $generales['ob_pic'] !== '' ? $generales['ob_pic'] : 'default_iconos.png'; ?>" alt="img" height="60px" width="60px" onerror="this.src='../../uploads/default_iconos.png'"></td>
-                                <td><?php echo $generales['id_serial']; ?></td>
-                                <td><?php echo $generales['nombre']; ?></td>
-                                <td><?php echo $generales['id_documento']; ?></td>
-                                <td><?php echo $generales['nombre_completo']; ?></td>
-                                <td><?php echo $generales['estado']; ?></td>
-                                <td><button  class="edit" onclick="window.location.href='editar_objetos_usu.php?id=<?php echo $generales['id_serial']?>&owner=<?php echo $generales['id_documento']?>&route=objetos_index.php'"><i class="bi bi-pencil-square"></i> </button>  </td>
-                            </tr>
-                        <?php } ?>
-                    </tbody>
-                </table>
-            </div>
+            <?php if ($consulta->rowCount() == 0) { ?>
+                <div class="notificacion">
+                    <h4>No hay objetos registrados</h4>
+                </div>
+            <?php } else { ?>
+                <div class="encabezado">
+                    <h4>Objeto</h4>
+                    <h4>Serial</h4>
+                    <h4>Nombre</h4>
+                    <h4>DNI Dueño</h4>
+                    <h4>Nombre Propietario</h4>
+                    <h4>Estado</h4>
+                    <h4>Accion</h4>
+                </div>      
+                <?php foreach ($consulta as $generales) { ?>
+                <div class="objetos">
+                    <h4><img src="../../uploads/<?php echo isset($generales['ob_pic']) && $generales['ob_pic'] !== '' ? $generales['ob_pic'] : 'default_iconos.png'; ?>" alt="img" height="60px" width="60px" onerror="this.src='../../uploads/default_iconos.png'"></h4>
+                    <h4><?php echo $generales['id_serial']; ?></h4>
+                    <h4><?php echo $generales['nombre']; ?></h4>
+                    <h4><?php echo $generales['id_documento']; ?></h4>
+                    <h4><?php echo $generales['nombre_completo']; ?></h4>
+                    <h4><?php echo $generales['estado']; ?></h4>
+                    <h4><ion-icon name="create-outline" size="large" onclick="window.location.href='editar_vehiculo.php?placa=<?php echo $filas['id_placa']; ?>'"></ion-icon></h4>
+                </div>  
+                <?php } ?>
+            <?php } ?>
 
             <div class="paginacion" >
                 <?php if ($page > 1): ?>
@@ -151,24 +146,23 @@ $consulta->execute();
 //<----------------------------- FILTRO PARA BUSCAR POR EL SERIAL ---------------------------> 
 
     function filtrarPorSerial(serial) {
-    const tabla = document.querySelector('.tabla_de_objetos');
-    const filas = tabla.getElementsByTagName('tbody')[0].getElementsByTagName('tr');
+        const objetos = document.querySelectorAll('.objetos');
+        const serial_buscado = serial.toUpperCase();
 
-    for (let i = 0; i < filas.length; i++) {
-
-        //  EN ESTA PARTE LO QUE HAGO ES HACER UN CICLO PARA RECORRER LAS FILAS
-        const celdaSerial = filas[i].getElementsByTagName('td')[1]; // El serial está en la segunda columna
-        if (celdaSerial) {
-            const textoSerial = celdaSerial.textContent || celdaSerial.innerText;
-            if (textoSerial.toUpperCase().indexOf(serial.toUpperCase()) > -1) {
-                filas[i].style.display = '';
-            } else {
-                filas[i].style.display = 'none';
+        objetos.forEach(objeto => {
+            const serialElement = objeto.querySelectorAll('h4')[1];
+            
+            if (serialElement) {
+                const textoSerial = serialElement.textContent || serialElement.innerText;
+                
+                if (textoSerial.toUpperCase().includes(serial_buscado)) {
+                    objeto.style.display = '';
+                } else {
+                    objeto.style.display = 'none';
+                }
             }
-        }
+        });
     }
-}
-
 </script>
 <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
 <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>

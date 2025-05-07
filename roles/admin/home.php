@@ -167,6 +167,22 @@ $rol = $_SESSION['rol_name']; // Rol del usuario
             }
         }
     });
+
+    // Manejo de animaciones de entrada
+
+
+    window.addEventListener('load', function () {
+        document.querySelectorAll('.grafica_barras').forEach(function (el) {
+            el.classList.add('animar');
+        });
+        document.querySelectorAll('.grafica_dona').forEach(function (el) {
+            el.classList.add('animar');
+        });
+        document.querySelectorAll('.ingresos_usuarios').forEach(function (el) {
+            el.classList.add('animar');
+        });
+    });
+
 </script>
 </body>
 </html>

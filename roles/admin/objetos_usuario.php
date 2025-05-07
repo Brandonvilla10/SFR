@@ -26,8 +26,15 @@ if (isset($_POST['objetos_submit'])) {
 
     if (!$consulta_1) {
 
-        echo "<script>alert('Usuario no encontrado')</script>";
-        echo "<script>window.location.href='objetos_index.php'</script>";
+        echo "
+            <script>
+                document.addEventListener('DOMContentLoaded', function () {
+                    mostrarModal('error', 'Usuario No encontrado');
+                });
+
+                
+            </script>";
+      
     }
 }
 
@@ -302,6 +309,8 @@ if (isset($_POST['borrar'])) {
 
                 });
             });
+
+        
 
 
             document.addEventListener('DOMContentLoaded', function() {

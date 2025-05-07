@@ -14,8 +14,8 @@
     <div class="line"></div>
     <p class="contenidoModal" id="contenidoModalError">Error en el sistema, inténtalo de nuevo</p>
     <div class="botonesModal">
-        <button class="button no-fill" onclick="cerrarModal()">Cancelar</button>
-        <button class="button fill" onclick="cerrarModal()">Confirmar</button>
+        <button class="button error" onclick="cerrarModal()">Cancelar</button>
+        <button class="button error-fill" onclick="cerrarModal()">Confirmar</button>
     </div>
 </div>
 

@@ -82,7 +82,7 @@ $consulta->execute();
                         <?php foreach ($consulta as $generales) { ?>
                             <tr>  
                          
-                                <td><img src="../../uploads/<?php echo isset($generales['ob_pic']) && $generales['ob_pic'] !== '' ? $generales['ob_pic'] : 'default_iconos.png'; ?>" alt="img" height="60px" width="60px"></td>
+                                <td><img src="../../uploads/<?php echo isset($generales['ob_pic']) && $generales['ob_pic'] !== '' ? $generales['ob_pic'] : 'default_iconos.png'; ?>" alt="img" height="60px" width="60px" onerror="this.src='../../uploads/default_iconos.png'"></td>
                                 <td><?php echo $generales['id_serial']; ?></td>
                                 <td><?php echo $generales['nombre']; ?></td>
                                 <td><?php echo $generales['id_documento']; ?></td>

@@ -91,7 +91,7 @@ try {
                                         <i class="bi bi-upload"></i>
                                         <span>Subir Foto</span>
                                     </div>
-                                    <form action="../../uploads/upload_objetos.php" method="POST" enctype="multipart/form-data" class="overlay">
+                                    <form action="../../uploads/upload_objetos.php" method="POST" enctype="multipart/form-data" class="overlay" >
 
                                         <input type="hidden" name="serial" value="<?php echo $consulta_1['id_serial']; ?>">
                                         <input type="file" class="file_input" id="fileUpload" name="foto" hidden>

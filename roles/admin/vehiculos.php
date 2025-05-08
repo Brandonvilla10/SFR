@@ -104,7 +104,7 @@ $consulta->execute();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="../../assets/img/LogoFR.png">
-    <title>VEHICULOS</title>
+    <title>Vehiculos</title>
     <link rel="stylesheet" href="css/vehiculos.css">
     <link rel="stylesheet" href="asideBar/asidebar.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
@@ -270,67 +270,7 @@ $consulta->execute();
     </main>
 </div>
 
-<script>
-    const plant = document.getElementById('estado-vehiculos');
-    const plant2 = document.getElementById('estado-vehiculos2');
-    const formMarca = document.getElementById('formulario-marca');
-    const formModelo = document.getElementById('formulario-modelo');
-
-    function plantilla(){
-        plant.classList.remove('estadoDevehiculos');
-    }
-    function retirarPlantilla(){
-        plant.classList.add('estadoDevehiculos');
-    }
-
-    function plantilla2(){
-        plant2.classList.remove('estadoDevehiculos');
-    }
-    function retirarPlantilla2(){
-        plant2.classList.add('estadoDevehiculos');
-    }
-
-    function mostrarFormularioVehiculo() {
-        plant2.classList.add('estadoDevehiculos');
-        formMarca.classList.remove('estadoDevehiculos');
-    }
-
-    function cerrarFormularioVehiculo() {
-        formMarca.classList.add('estadoDevehiculos');
-    }
-
-    function mostrarFormularioModelo() {
-        plant2.classList.add('estadoDevehiculos');
-        formModelo.classList.remove('estadoDevehiculos');
-    }
-
-    function cerrarFormularioModelo() {
-        formModelo.classList.add('estadoDevehiculos');
-    }
-
-    //Funcion para devolver a el formulario de agregar
-    function volverAOpciones() {
-        formMarca.classList.add('estadoDevehiculos');
-        formModelo.classList.add('estadoDevehiculos');
-        plant2.classList.remove('estadoDevehiculos');
-    }
-
-
-    const modalEliminar = document.getElementById('modal-eliminar');
-
-    function mostrarEliminar(placa) {
-        document.getElementById('placa-eliminar').textContent = placa;
-        document.getElementById('id-placa-eliminar').value = placa;
-        modalEliminar.classList.remove('estadoDevehiculos');
-    }
-
-
-
-
-    function cerrarEliminar() {
-        modalEliminar.classList.add('estadoDevehiculos');
-    }
-</script>
+<script src="js/vehiculos.js"></script>
 <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
 <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 <script>

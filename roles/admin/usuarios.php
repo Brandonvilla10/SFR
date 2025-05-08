@@ -40,8 +40,9 @@ $consulta->execute();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="../../assets/img/LogoFR.png">
-    <title>OBJETOS</title>
+    <title>Usuarios</title>
     <link rel="stylesheet" href="css/objetos_index.css">
+    <link rel="stylesheet" href="css/usuario.css">
     <link rel="stylesheet" href="asideBar/asidebar.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 </head>
@@ -74,8 +75,24 @@ $consulta->execute();
                         <p id="textoAbrir">+</p>Agregar Usuario
                     </button>
                 </div>
+            <!-- el modal empieza a partid de aca -->
+        </div>
+        
+        
+        <div class="EliminarUsuario mostrar" id="EliminarUsuario" style="display: flex; opacity: 1;">
+        <form class="formEliminar" method="POST">
+            <p class="EliminarTitulo">Eliminar Usuario</p>
+            <p class="messageelimnar">Tenga En Cuenta Que Los Cambios No Son Reversibles.</p>
+
+            <span>Documento Del Usuario</span>
+            <input name="documentoUsuario" required="" type="number" class="documentoUsuario" placeholder="Documento Del Usuario">
+            <span>Contraseña Administrador</span>
+
+            <input name="contraseñaAdmin" required="" type="text" class="contraseñaAdmin" placeholder="Contraseña Administrador">
 
 
+            <input type="submit" value="Eliminar" name="Eliminar" class="EliminarUsuarioboton">
+        </form>
             </div>
             <hr class="separador">
             <!-------------------------------- TABLA DE USUARIOS ------------------------------------->
@@ -128,42 +145,41 @@ $consulta->execute();
 
 
             <!------------------------------------------------ MODAL DE ELIMINAR USUARIOS ----------------------------------->
-
+         
+            
 
         </main>
     </div>
 
     <script>
-        // <----------------------------- CERRAR Y ABRIR MODAL DE BUSQUEDA DE OBJETOS --------------------------->
-
-
-
-        //<----------------------------- FILTRO PARA BUSCAR POR EL SERIAL ---------------------------> 
+        
+        //<----------------------------- FILTRO PARA BUSCAR POR EL DOCUMENTO DE LA PERSONA ---------------------------> 
 
         function filtrarPorSerial(serial) {
-            const objetos = document.querySelectorAll('.objetos');
-            const serial_buscado = serial.toUpperCase();
+                const objetos = document.querySelectorAll('.objetos');
+                const serial_buscado = serial.toUpperCase();
 
-            objetos.forEach(objeto => {
-                const serialElement = objeto.querySelectorAll('h4')[1];
+                objetos.forEach(objeto => {
+                    const serialElement = objeto.querySelectorAll('h4')[1];
 
-                if (serialElement) {
-                    const textoSerial = serialElement.textContent || serialElement.innerText;
+                    if (serialElement) {
+                        const textoSerial = serialElement.textContent || serialElement.innerText;
 
-                    if (textoSerial.toUpperCase().includes(serial_buscado)) {
-                        objeto.style.display = '';
-                    } else {
-                        objeto.style.display = 'none';
+                        if (textoSerial.toUpperCase().includes(serial_buscado)) {
+                            objeto.style.display = '';
+                        } else {
+                            objeto.style.display = '';
+                        }
                     }
-                }
-            });
-        }
+                });
+            }
     </script>
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
     <script src="./js/crearUsuario.js"></script>
-    <script src="js/buscarUsuario.js"></script>
+    <script src="./js/buscarUsuario.js"></script>
     <script src="./js/seleccionarVariosUsuario.js"></script>
+
 </body>
 
 </html>

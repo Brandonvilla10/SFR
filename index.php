@@ -170,7 +170,7 @@ documento.addEventListener("input",() => {
             dato.style.borderColor = "red"
             return false
         }else{
-            dato.style.borderColor = "blue"
+            dato.style.borderColor = "#7373c9"
             
             return validacion = true;
         }

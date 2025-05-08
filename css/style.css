@@ -75,6 +75,7 @@ body, html {
         background: url("../assets/img/Base_White.png"); /* Fondo blanco */
         background-repeat: no-repeat; /* Evita que la imagen se repita */
         background-position: center;
+        border-radius: 20px; /* Bordes redondeados */;
     }
 
     .olvidaste-registrate{
@@ -93,11 +94,12 @@ body, html {
         width: 86%;
         margin-top: 5px; /* Espaciado superior */
         border-radius: 59px; /* Bordes redondeados */
-        border: 3px solid #ffffff; /* Borde blanco */
+        border: 2px solid #FFFF; /* Borde blanco */
         color: rgba(58, 170, 53, 255); /* Texto en verde */
         font-size: larger;
         font-weight: 500;
         background: #d6d5d4; /* Fondo gris clarito */
+        padding-left: 10px;
     }
 
     /* Placeholder en los inputs */

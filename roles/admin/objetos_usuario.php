@@ -11,29 +11,29 @@ $nombre = explode(" ", $_SESSION['nombre'])[0];
 $rol = $_SESSION['rol_name'];
 
 if (!isset($_SESSION['documento'])) {
-    header("Location: ../../index.php");   
+    header("Location: ../../index.php");
     exit();
 }
 
 // Establecer la variable @documento_generador en MySQL desde la sesión
-    try {
-        $sql = $con->prepare("SELECT nombre_completo FROM usuario WHERE id_documento = $_SESSION[documento]");
-        $sql->execute();
-        $nombre = $sql->fetch(PDO::FETCH_ASSOC);
-        $con->exec("SET @documento_generador = '$nombre[nombre_completo]'");
-        
-        // Verificar que la variable se haya establecido correctamente
-        $check = $con->query("SELECT @documento_generador as nombre");
-        $result = $check->fetch(PDO::FETCH_ASSOC);
-        if (empty($result['nombre'])) {
-            // Si sigue vacía, establecer un valor predeterminado
-            $con->exec("SET @documento_generador = 'Usuario Sistema'");
-        }
-    } catch (Exception $e) {
-        echo '<p>Error al definir el documento generador: ' . htmlspecialchars($e->getMessage()) . '</p>';
-        exit;
+try {
+    $sql = $con->prepare("SELECT nombre_completo FROM usuario WHERE id_documento = $_SESSION[documento]");
+    $sql->execute();
+    $nombre = $sql->fetch(PDO::FETCH_ASSOC);
+    $con->exec("SET @documento_generador = '$nombre[nombre_completo]'");
+
+    // Verificar que la variable se haya establecido correctamente
+    $check = $con->query("SELECT @documento_generador as nombre");
+    $result = $check->fetch(PDO::FETCH_ASSOC);
+    if (empty($result['nombre'])) {
+        // Si sigue vacía, establecer un valor predeterminado
+        $con->exec("SET @documento_generador = 'Usuario Sistema'");
     }
-    
+} catch (Exception $e) {
+    echo '<p>Error al definir el documento generador: ' . htmlspecialchars($e->getMessage()) . '</p>';
+    exit;
+}
+
 
 
 if (isset($_POST['objetos_submit'])) {
@@ -75,11 +75,12 @@ if (isset($_POST['borrar'])) {
     $borrar = $con->prepare("DELETE FROM objetos WHERE id_serial = :id_serial");
     $borrar->bindParam(':id_serial', $_POST['borrar']);
     $borrar->execute();
-    
+
     echo "
+   
     <script>
             document.addEventListener('DOMContentLoaded', function () {
-                mostrarModal('success', 'Objeto eliminado con éxito');
+               mostrarModal('success', 'Objeto eliminado con éxito'); 
             });
 
           
@@ -98,7 +99,7 @@ if (isset($_POST['borrar'])) {
     <link rel="icon" href="../../assets/img/LogoFR.png">
     <title>OBJETOS </title>
     <link rel="stylesheet" href="asideBar/asidebar.css">
-    <link rel="stylesheet" href="css/vehiculos_usuarios.css">
+    <link rel="stylesheet" href="css/objetos_usuario.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
 </head>
@@ -122,7 +123,7 @@ if (isset($_POST['borrar'])) {
                         <br>
                         Todos los objetos de <?php echo  $primera_parte['nombre_completo']  ?> numero de identificacion <?php echo  $primera_parte['id_documento'] ?>
                     </div>
-                    <button class="add-button" onclick="document.getElementById('agregar').showModal()"> + </button>
+                    <button class="add-button" onclick="abrirModalObjetos()"> + </button>
                 </div>
 
 
@@ -201,7 +202,7 @@ if (isset($_POST['borrar'])) {
 
         <!-------------------------------- MODAL DE CREACION DE OBJETOS ----------------------->
 
-        <dialog id="agregar" class="modal">
+        <div id="agregar" class="modal">
 
             <form action="../../uploads/upload_crear_objeto.php" id="formCrearObjeto" method="POST" enctype="multipart/form-data" class="datos_basicos">
 
@@ -264,10 +265,10 @@ if (isset($_POST['borrar'])) {
                 <input type="hidden" name="user_id" value="<?php echo $_SESSION['objetos_usu'] ?>">
 
                 <button type="submit" id="CrearObjeto" name="CrearObjeto" class="CrearObjeto"> Crear Objeto </button>
-                <button type="button" class="regresar" onclick="document.getElementById('agregar').close()"> CERRAR</button>
+                <button type="button" class="regresar" onclick="cerrarModalObjetos()"> CERRAR</button>
 
             </form>
-        </dialog>
+        </div>
 
         <!----------------- fin del modal------------------->
 
@@ -298,31 +299,31 @@ if (isset($_POST['borrar'])) {
                     const nombreExp = /^[A-Za-z\s]{2,}$/;
 
                     if (!serialExp.test(serial)) {
-                        
-                            mostrarModal('mistake', 'El serial no es valido. Solo letras, numeros y guiones. Mínimo 3 caracteres.');
-                            
-                            
-                            return;
-                        }
-                        
-                        if (!nombreExp.test(nombre)) {
-                            mostrarModal('mistake', 'El nombre no es valido. Solo letras, numeros y espacios, mínimo 2 caracteres.');
-                            return;
-                        }
-                        
-                        if (foto === '') {
-                            mostrarModal('mistake', 'Debes seleccionar una imagen para el objeto.');
-                            
-                            return;
-                        }
-                        
-                        if (caracteristicas === '') {
-                            mostrarModal('mistake', 'Debes escribir las características del objeto..');
-                            return;
-                        }
-                        
-                        if (!marca || !estado || !tipo) {
-                            mostrarModal('mistake', 'Debes seleccionar marca, estado y tipo de objeto..');
+
+                        mostrarModal('mistake', 'El serial no es valido. Solo letras, numeros y guiones. Mínimo 3 caracteres.');
+
+
+                        return;
+                    }
+
+                    if (!nombreExp.test(nombre)) {
+                        mostrarModal('mistake', 'El nombre no es valido. Solo letras, numeros y espacios, mínimo 2 caracteres.');
+                        return;
+                    }
+
+                    if (foto === '') {
+                        mostrarModal('mistake', 'Debes seleccionar una imagen para el objeto.');
+
+                        return;
+                    }
+
+                    if (caracteristicas === '') {
+                        mostrarModal('mistake', 'Debes escribir las características del objeto..');
+                        return;
+                    }
+
+                    if (!marca || !estado || !tipo) {
+                        mostrarModal('mistake', 'Debes seleccionar marca, estado y tipo de objeto..');
                         return;
                     }
 
@@ -352,6 +353,16 @@ if (isset($_POST['borrar'])) {
                     footerButton.classList.add('animate-button');
                 }, 100 * cards.length + 200);
             });
+
+            function abrirModalObjetos() {
+                document.getElementById("agregar").classList.add("modal-activo");
+                document.getElementById("modal-backdrop").classList.add("backdrop-activo");
+            }
+
+            function cerrarModalObjetos() {
+                document.getElementById("agregar").classList.remove("modal-activo");
+                document.getElementById("modal-backdrop").classList.remove("backdrop-activo");
+            }
         </script>
 </body>
 

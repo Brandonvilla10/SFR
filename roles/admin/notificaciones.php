@@ -1,7 +1,9 @@
 <?php
-include('../../database/database.php');
 session_start();
-include('component/alert.php');
+require_once('../../database/database.php');
+include('components/alert.php');
+$conexion = new database;
+$con = $conexion->conectar();
 $documentoBuscado = $_SESSION['documento'] ?? '';
 
 ?>

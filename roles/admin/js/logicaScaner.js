@@ -29,8 +29,6 @@ function toggleSelection(id_serial) {
 
   // ESTA belleza de aqui es para las obsevaciones que vienen del otro archivo js
   const observacionesActuales = obtenerObservacionesFuncion();
-
- 
 }
 
 // esta funcion es para los vehiculos
@@ -52,8 +50,6 @@ function toggleSelectionVehiculo(id_placa) {
   }
 
   const observacionesActuales = obtenerObservacionesFuncion();
-
-  
 }
 
 let documento;
@@ -62,8 +58,6 @@ let documento;
 // valido si los arrays de las otras fuciones me traen valores y demas para poder enviar a insertar en los registros
 
 async function registrarEntrada() {
-
-
   try {
     // este fetch se encarga del registro del ususarop
     const usuarios = await fetch("./fetch/registrarEntrada.php", {
@@ -75,7 +69,6 @@ async function registrarEntrada() {
     });
 
     const respuestaUsuario = await usuarios.json();
-    
 
     alertaBienvenida.innerHTML =
       respuestaUsuario.mensaje + " " + respuestaUsuario.id_documento;
@@ -89,68 +82,52 @@ async function registrarEntrada() {
 
     // este fetch se va a encargar del registro de los objetos tambien, estoy enviando un objeto para poder identificar el array y a quien se le va a asignar
 
-    const Objeto = { 
-      array: entradaObjetos, 
+    const Objeto = {
+      array: entradaObjetos,
       documento: documento,
-      observaciones: obtenerObservacionesFuncion(),  
-      };
+      observaciones: obtenerObservacionesFuncion(),
+    };
 
-    
+    const objetos = await fetch("./fetch/registrarObjetos.php", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(Objeto),
+    });
 
-    
-      const objetos = await fetch("./fetch/registrarObjetos.php", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(Objeto),
-      });
-      
-
-      const respuesta = await objetos.json();
-      
-
-    
+    const respuesta = await objetos.json();
 
     const objetoVehiculo = {
       arrayVehiculos: entradavehiculos,
       documento: documento,
-      observaciones: obtenerObservacionesFuncion(),  
+      observaciones: obtenerObservacionesFuncion(),
     };
 
-    
-      const vehiculo = await fetch("./fetch/registrarVehiculo.php", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(objetoVehiculo),
-      });
-      
+    const vehiculo = await fetch("./fetch/registrarVehiculo.php", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(objetoVehiculo),
+    });
 
-      const respuestaVehiculo = await vehiculo.json();
-      
-    
-
-
-
+    const respuestaVehiculo = await vehiculo.json();
   } catch (error) {
-    
-  }
-  finally{
+  } finally {
     // aqui se vacian los arrays para que no se repitan los datos
     entradaObjetos = [];
     entradavehiculos = [];
-    limpiarObservaciones() // esta funcion esta exportada del archivo "modalObservacion" lo que hace es vaciar el array 
-    
+    limpiarObservaciones(); // esta funcion esta exportada del archivo "modalObservacion" lo que hace es vaciar el array
+
     cerrar();
   }
 }
 
-const selecionarObjetos = document.getElementById("selecionarObjetos") 
-function cerrar(){
-    selecionarObjetos.classList.add("desaparecerModal")
-    selecionarObjetos.classList.remove("aparecerModal")
+const selecionarObjetos = document.getElementById("selecionarObjetos");
+function cerrar() {
+  selecionarObjetos.classList.add("desaparecerModal");
+  selecionarObjetos.classList.remove("aparecerModal");
 }
 
 // todo esto es para la parte del qr y lo que se necesita para que funcione
@@ -249,8 +226,6 @@ function scanQR() {
     if (code) {
       const regex = /^\d{8,}$/;
 
-    
-
       if (regex.test(code.data)) {
         stopCamera();
         videoContainer.style.background = "green";
@@ -279,11 +254,26 @@ function scanQR() {
 
           // declaracion de variables segun la respuesta del documento ./fetch/consultaáraModal
           let respuesta = await datos.json();
+
+          if (respuesta.innactivo == true) {
+   
+            alertaBienvenida.innerHTML = "Usuario Inactivo";
+
+            alerta.classList.add("aparecer");
+            alerta.style.background = "red";
+            setTimeout(() => {
+              alerta.classList.remove("aparecer");
+            }, 3000);
+
+            cerrar();
+
+            
+          }
+
           let info = respuesta.datosPersonales;
           let objetosRespuesta = respuesta.objetos;
           let vehiculosRespuesta = respuesta.vehiculos;
 
-          
 
           //   vacio los contenedores antes de (por si las moscas)
           informacionUsuario.innerHTML = "";
@@ -294,7 +284,9 @@ function scanQR() {
 
           informacionUsuario.innerHTML += `
           <div onclick="cerrar()" class="divCerrar"><span class="cerrar" >X</span></div> 
-                    <img src="../../uploads/${info.foto}" alt="Foto de perfil del usuario" class="fotoDePerfil">
+                    <img src="../../uploads/${
+                      info.foto
+                    }" alt="Foto de perfil del usuario" class="fotoDePerfil">
 
                     <b style="font-size:1.5rem;margin-bottom:30px;">Datos Del Usuario</b>
 
@@ -302,9 +294,15 @@ function scanQR() {
                     <p><b> Documento:</b> <br> ${info.id_documento} </p>
                     <p><b> Correo Electronico: </b> <br> ${info.correo} </p>
                     <p><b> Rol Del Usuario:</b> <br> ${info.nombre_rol} </p>
-                    <input type="submit" id="botonRegistrarEntrada" value="${info.id_estado === 1 ? 'Registrar Entrada' : 'Registrar Salida'}" class="submit-btn">`;
+                    <input type="submit" id="botonRegistrarEntrada" value="${
+                      info.id_estado === 1
+                        ? "Registrar Entrada"
+                        : "Registrar Salida"
+                    }" class="submit-btn">`;
 
-          const botonRegistrarEntrada = document.getElementById("botonRegistrarEntrada" );
+          const botonRegistrarEntrada = document.getElementById(
+            "botonRegistrarEntrada"
+          );
           if (botonRegistrarEntrada) {
             botonRegistrarEntrada.addEventListener("click", registrarEntrada);
           }
@@ -320,21 +318,32 @@ function scanQR() {
             <div class="tarjetaObjeto" data-id="${objeto.id_serial}" >
             <div class="divFoto">
                                             <p>${objeto.id_serial}</p>
-                                            <img src="../../uploads/${(objeto.objetoFoto) ?? 'default_iconos.png'}" width="80px" height="80px" alt="objeto">
+                                            <img src="../../uploads/${
+                                              objeto.objetoFoto ??
+                                              "default_iconos.png"
+                                            }" width="80px" height="80px" alt="objeto">
                                         </div>
                                         
                                         <div class="divCaracteristicas">
                                             <h4>${objeto.nombre}</h4>
-                                            <p style="font-size: 0.8rem">${objeto.caracteristica}</p>
+                                            <p style="font-size: 0.8rem">${
+                                              objeto.caracteristica
+                                            }</p>
                                         </div>
 
                                         <div class="divcategorias">
                                             <b class="tituloCategoria">Marca:</b>
-                                            <p class="tipoObjeto">${objeto.nombre_marca}</p>
+                                            <p class="tipoObjeto">${
+                                              objeto.nombre_marca
+                                            }</p>
                                             <b class="tituloCategoria">Estado:</b>
-                                            <p class="tipoObjeto">${objeto.estado}</p>
+                                            <p class="tipoObjeto">${
+                                              objeto.estado
+                                            }</p>
                                             <b class="tituloCategoria">Tipo:</b>
-                                            <p class="tipoObjeto">${objeto.tipoObjeto}</p>
+                                            <p class="tipoObjeto">${
+                                              objeto.tipoObjeto
+                                            }</p>
                                             </div>
                                             </div>`;
             });
@@ -348,7 +357,6 @@ function scanQR() {
 
           // aqui se llama la funcion para hacer que ella cree los botones dependiendo de la cantidad de tajetas que encuentre esto es para los objetos
           agregarBotonesObservacion();
-          
 
           // aqui se evalua el contenedor de vehiculos si es 0 lo que devuelve el json pues se vacia sino entonces imprime
 
@@ -386,13 +394,15 @@ function scanQR() {
               contenedorVehiculos.innerHTML = "";
             }
 
-            document.querySelectorAll(".tarjeticaVehiculo").forEach((tarjeta) => {
+            document
+              .querySelectorAll(".tarjeticaVehiculo")
+              .forEach((tarjeta) => {
                 tarjeta.addEventListener("click", () => {
                   toggleSelectionVehiculo(tarjeta);
                 });
               });
 
-              agregarBotonesVehiculos(); 
+            agregarBotonesVehiculos();
           }
         }
 

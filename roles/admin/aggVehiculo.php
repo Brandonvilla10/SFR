@@ -4,6 +4,30 @@ require_once('../../database/database.php');
 $conexion = new database;
 $con = $conexion->conectar();
 
+if (!isset($_SESSION['documento'])) {
+    header("Location: ../../index.php");   
+    exit();
+}
+
+// Establecer la variable @documento_generador en MySQL desde la sesión
+try {
+    $sql = $con->prepare("SELECT nombre_completo FROM usuario WHERE id_documento = $_SESSION[documento]");
+    $sql->execute();
+    $nombre = $sql->fetch(PDO::FETCH_ASSOC);
+    $con->exec("SET @documento_generador = '$nombre[nombre_completo]'");
+    
+    // Verificar que la variable se haya establecido correctamente
+    $check = $con->query("SELECT @documento_generador as nombre");
+    $result = $check->fetch(PDO::FETCH_ASSOC);
+    if (empty($result['nombre'])) {
+        // Si sigue vacía, establecer un valor predeterminado
+        $con->exec("SET @documento_generador = 'Usuario Sistema'");
+    }
+} catch (Exception $e) {
+    echo '<p>Error al definir el documento generador: ' . htmlspecialchars($e->getMessage()) . '</p>';
+    exit;
+}
+
 // Obtener el documento si viene de vehiculos usuario
 $id_documento_preseleccionado = isset($_GET['id_documento']) ? trim($_GET['id_documento']) : '';
 

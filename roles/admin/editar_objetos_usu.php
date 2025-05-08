@@ -1,8 +1,8 @@
 <?php
 session_start();
-
 require_once('../../database/database.php');
 // include('../../includes/sesion_validar.php');
+include 'components/alert.php';
 $conexion = new database;
 $con = $conexion->conectar();
 
@@ -35,19 +35,21 @@ try {
         }
     //EXTRAIGO LOS DATOS DE LA PERSONA
     $id_documento = $_GET['owner'];
-
+    $id_serial = $_GET['id'];
+    $ruta = $_GET['route'];
+    
     $user = $con->prepare("SELECT nombre_completo, foto, correo, id_documento FROM usuario WHERE id_documento = :doc");
     $user->bindParam(":doc", $id_documento, PDO::PARAM_INT);
     $user->execute();
-
+    
     $usuario = $user->fetch(PDO::FETCH_ASSOC);
-
+    
     // CONSULTO LA RUTA
-
-    $ruta = $_GET['route'];
-
-    $id_serial = $_GET['id'];
+    
     $_SESSION['objeto_buscado'] = $id_serial;
+    $_SESSION['objetos_usu'] = $id_documento;
+  
+
     $objetos_1 = $con->prepare("SELECT * FROM objetos 
      INNER JOIN marca ON objetos.id_marca = marca.id_marca
      INNER JOIN estado ON objetos.id_estado = estado.id_estado
@@ -55,6 +57,8 @@ try {
     $objetos_1->execute();
 
     $consulta_1 = $objetos_1->fetch();
+
+
 } catch (PDOException) {
 
     //
@@ -237,7 +241,12 @@ try {
         $cambiar_datos->bindParam(':estado', $estado, PDO::PARAM_STR);
         $cambiar_datos->execute();
 
-        echo '<script>window.location.href = "'.$ruta.'"</script>';
+         echo "
+            <script>
+                document.addEventListener('DOMContentLoaded', function () {
+                    mostrarModal('success', 'Objeto Actualizado con exito', '$ruta');
+                });
+            </script>";
         exit();
     }
     ?>

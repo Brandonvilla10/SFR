@@ -1,6 +1,7 @@
 <?php
 session_start();
 require_once('../../database/database.php');
+include 'components/alert.php';
 $conexion = new database;
 $con = $conexion->conectar();
 
@@ -48,9 +49,14 @@ $vehiculo = $consulta->fetch(PDO::FETCH_ASSOC);
 
 
 if (!$vehiculo) {
-    echo "<script>alert('Vehiculo no encontrado');
-    window.location.href = 'vehiculos.php';</script>";
-    exit;
+
+    echo "
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            mostrarModal('mistake', 'Vehiculo no encontrado', 'vehiculos.php');
+        });
+    </script>";
+    exit();
 }
 
 
@@ -69,11 +75,22 @@ if (isset($_POST['actualizar'])) {
     $actualizar->bindParam(':placa_actual', $placa);
 
     if ($actualizar->execute()) {
-        echo "<script>alert('Vehiculo actualizado correctamente');
-        window.location.href = '$pagina_retorno';</script>";
+
+        echo "
+            <script>
+                document.addEventListener('DOMContentLoaded', function () {
+                    mostrarModal('success', 'Vehiculo Actualizado con exito', '$pagina_retorno');
+                });
+            </script>";
+        exit();
     } else {
-        echo "<script>alert('Error al actualizar el vehiculo');
-        window.location.href = 'editar_vehiculo.php?placa=$placa&origen=$origen';</script>";
+        echo "
+            <script>
+                document.addEventListener('DOMContentLoaded', function () {
+                    mostrarModal('mistake', 'Error al actualizar el vehiculo', '$pagina_retorno');
+                });
+            </script>";
+        exit();
     }
 }
 
@@ -93,6 +110,7 @@ $usuario_foto_path = !empty($resultado['foto']) ? $mostrar : $usu;
 
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -104,10 +122,11 @@ $usuario_foto_path = !empty($resultado['foto']) ? $mostrar : $usu;
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
 </head>
+
 <body>
     <div class="container_grid">
         <aside class="aside_barra">
-            <?php include ('asideBar/asideBar.php') ?>
+            <?php include('asideBar/asideBar.php') ?>
         </aside>
 
         <main class="grid_contenido_plantilla">
@@ -115,7 +134,7 @@ $usuario_foto_path = !empty($resultado['foto']) ? $mostrar : $usu;
                 <h1>Editar Vehiculo</h1>
 
                 <div class="content-container">
-                    <div class="user-info"> 
+                    <div class="user-info">
                         <div class="user-avatar">
                             <img class="personaAzul" id="fotoUsuario" src="<?php echo $usuario_foto_path; ?>" alt="Foto de perfil" onerror="this.src='../../uploads/user.png'">
 
@@ -212,5 +231,6 @@ $usuario_foto_path = !empty($resultado['foto']) ? $mostrar : $usu;
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 
-    </body>
+</body>
+
 </html>

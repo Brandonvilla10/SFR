@@ -34,8 +34,8 @@ if (isset($_POST['submit']) || isset($_FILES['foto'])) {
 
 
 
-                    // Redirige y asegura que la página se recarga
-                    // header("Location: ../roles/admin/objetos_usuario.php");
+                    
+                    header("Location: ../roles/admin/objetos_usuario.php");
                     exit();
                 } else {
 
@@ -44,24 +44,24 @@ if (isset($_POST['submit']) || isset($_FILES['foto'])) {
                 }
             } else {
                 
-                echo "error 1";
+         
                 // header("Location: ../roles/admin/objetos_usuario.php");
                 exit();
             }
         } else {
-            echo "error 1";
+       
             // header("Location: ../roles/admin/objetos_usuario.php");
             exit();
         }
     } else {
         
-        echo "error 1";
+    
         // header("Location: ../roles/admin/objetos_usuario.php");
         exit();
     }
 } else {
     
     // header("Location: ../roles/admin/objetos_usuario.php");
-    echo "error 1";
+    
     exit();
 }

@@ -1,5 +1,6 @@
 <?php
 include('../../database/database.php');
+
 $conexion = new database;
 $con = $conexion->conectar();
 

@@ -109,7 +109,7 @@ $consulta->execute();
                     <h4><?php echo $generales['id_documento']; ?></h4>
                     <h4><?php echo $generales['nombre_completo']; ?></h4>
                     <h4><?php echo $generales['estado']; ?></h4>
-                    <h4><ion-icon name="create-outline" size="large" onclick="window.location.href='editar_vehiculo.php?placa=<?php echo $filas['id_placa']; ?>'"></ion-icon></h4>
+                    <h4><ion-icon name="create-outline" size="large" onclick="window.location.href='editar_objetos_usu.php?id=<?php echo $generales['id_serial']; ?>&owner=<?php echo $generales['id_documento'];?>&route=objetos_index.php'"></ion-icon></h4>
                 </div>  
                 <?php } ?>
             <?php } ?>

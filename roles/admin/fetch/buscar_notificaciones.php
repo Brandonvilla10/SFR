@@ -5,16 +5,39 @@ session_start();
 $conexion = new database;
 $con = $conexion->conectar();
 
+$documento = $_GET['documento'] ?? null;
 $tabla = $_GET['tabla'] ?? null;
+$fecha = $_GET['fecha'] ?? null;
+
+$where = [];
+$params = [];
+
+if (!empty($documento)) {
+    $where[] = "id_afectado LIKE :documento";
+    $params[':documento'] = "%$documento%";
+}
+
+if (!empty($tabla)) {
+    $where[] = "tabla_afectada = :tabla";
+    $params[':tabla'] = $tabla;
+}
+
+if (!empty($fecha)) {
+    $where[] = "DATE(fecha) = :fecha";
+    $params[':fecha'] = $fecha;
+}
+
+$query = "SELECT * FROM notificaciones";
+if (count($where) > 0) {
+    $query .= " WHERE " . implode(" AND ", $where);
+}
+$query .= " ORDER BY fecha DESC";
 
 try {
-    if (!empty($tabla)) {
-        $sql = $con->prepare("SELECT * FROM notificaciones WHERE tabla_afectada = :tabla ORDER BY fecha DESC");
-        $sql->bindParam(':tabla', $tabla, PDO::PARAM_STR);
-    } else {
-        $sql = $con->prepare("SELECT * FROM notificaciones ORDER BY fecha DESC");
+    $sql = $con->prepare($query);
+    foreach ($params as $key => $val) {
+        $sql->bindValue($key, $val);
     }
-
     $sql->execute();
     $notificaciones = $sql->fetchAll(PDO::FETCH_ASSOC);
 
@@ -35,4 +58,3 @@ try {
 } catch (Exception $e) {
     echo '<p>Error al cargar las notificaciones: ' . htmlspecialchars($e->getMessage()) . '</p>';
 }
-

@@ -102,7 +102,7 @@ if (isset($_POST['registrar'])) {
                     mostrarModal('success', 'Vehiculo creado con exito', '$pagina_retorno');
                 });
             </script>";
-        exit();
+            exit();
         } else {
             echo "
             <script>

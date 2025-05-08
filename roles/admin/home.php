@@ -42,8 +42,7 @@ $rol = $_SESSION['rol_name']; // Rol del usuario
         <p>Rol: administrador</p> <!-- Muestra el rol del usuario -->
       </div>
       <div class ="home_iconos">
-        <i class="bi bi-bell"></i> <!-- Icono de notificación -->
-        <i class="bi bi-headset"></i> <!-- Icono de asistencia -->
+          <i class="bi bi-headset"></i> <!-- Icono de asistencia -->
       </div>
     </header>
 
@@ -168,6 +167,24 @@ $rol = $_SESSION['rol_name']; // Rol del usuario
             }
         }
     });
+
+    // Manejo de animaciones de entrada
+
+
+    window.addEventListener('load', function () {
+
+      const barras = document.querySelector('.grafica_barras');
+      const dona = document.querySelector('.grafica_dona');
+      const usuario= document.querySelector('.ingresos_usuarios ');
+      const global  =[barras,dona,usuario]
+       
+
+       global.forEach(element => {
+          element.classList.add('animar');
+       });
+       
+    });
+
 </script>
 </body>
 </html>

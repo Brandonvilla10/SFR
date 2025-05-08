@@ -1,11 +1,11 @@
 <?php
 
-include ("../database/database.php");
+include("../database/database.php");
 $conexion = new database;
 $con = $conexion->conectar();
 session_start();
 
-if (isset($_POST['submit']) && isset($_FILES['foto'])) {
+if (isset($_POST['submit']) || isset($_FILES['foto'])) {
 
     $uploadDir = '../uploads/';
     $fileName = basename($_FILES['foto']['name']);
@@ -19,8 +19,8 @@ if (isset($_POST['submit']) && isset($_FILES['foto'])) {
 
     if (in_array($fileExt, $allowedExtensions)) {
         if ($fileError === 0) {
-            if ($fileSize < 2 * 1024 * 1024) { 
-                $newFileName = uniqid('', true) . "." . $fileExt; 
+            if ($fileSize < 2 * 1024 * 1024) {
+                $newFileName = uniqid('', true) . "." . $fileExt;
                 $fileDestination = $uploadDir . $newFileName;
 
                 if (move_uploaded_file($fileTmpName, $fileDestination)) {
@@ -32,33 +32,36 @@ if (isset($_POST['submit']) && isset($_FILES['foto'])) {
                     $query->bindParam(':documento', $documento, PDO::PARAM_STR); // Asegura que el tipo de dato coincide
                     $query->execute();
 
-                 
-                    // Redirige y asegura que la página se recarga
+
+
                     
-                    echo "<script>window.close() </script>";
+                    header("Location: ../roles/admin/objetos_usuario.php");
                     exit();
                 } else {
-        
-                    echo "<script>window.close() </script>";
+
+                    // header("Location: ../roles/admin/objetos_usuario.php");
                     exit();
                 }
             } else {
-           
-                echo "<script>window.close() </script>";
+                
+         
+                // header("Location: ../roles/admin/objetos_usuario.php");
                 exit();
             }
         } else {
        
-            echo "<script>window.close() </script>";
+            // header("Location: ../roles/admin/objetos_usuario.php");
             exit();
         }
     } else {
-
-        echo "<script>window.close() </script>";
+        
+    
+        // header("Location: ../roles/admin/objetos_usuario.php");
         exit();
     }
 } else {
-  
-    echo "<script>window.close()</script>";
+    
+    // header("Location: ../roles/admin/objetos_usuario.php");
+    
     exit();
 }

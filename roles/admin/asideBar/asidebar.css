@@ -38,7 +38,11 @@ aside{
 hr{
     margin-top: 20px;
     width: 88%;
-    border: 1px solid midnightblue;
+    border: 1px solid black;
+}
+
+.white{
+    border: 1px solid white;
 }
 .logoSenaFast{
     width: 40px;

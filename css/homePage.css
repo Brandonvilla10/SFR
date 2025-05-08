@@ -1,58 +1,52 @@
-* {
-    padding: 0;
-    margin: 0;
-}
 
+* {
+padding: 0;
+margin: 0;
+}
 body {
-    height: 100vh;
-    background-color: #ffffff;
+height: 100vh;
+background-color: #ffffff;
 }
 
 :root {
-    --color-barraLateral: #63AEE8
+--color-barraLateral:#63AEE8 
 }
 
-main {
+main{
     display: flex;
     flex-direction: row;
 }
 
 .barraLateral {
-    width: 123px;
-    margin: 20px;
-    height: 94%;
-    padding: 0px 15px;
-    background-color: var(--color-barraLateral);
-    transition: width 0.5s ease;
+width: 123px;
+margin: 20px;
+height: 94%;
+padding: 0px 15px;
+background-color: var(--color-barraLateral);
+transition: width 0.5s ease;
 }
 
 .miniBarra {
-    width: 68px;
+width: 68px;
 }
 
 
 /* CONTAINERS DE LAS IMAGENES DE LA BARRA LATERAL*/
-
-.wrapper {
+.wrapper{
     width: auto;
     display: flex;
     justify-content: center;
     padding: 25px 0px;
 }
-
-
 /* PARTE DONDE ESTA EL CONTENIDO DE LA PAGINA */
-
-.contenidoAdmin {
+.contenidoAdmin{
     display: flex;
     width: 100%;
     flex-direction: column;
 }
 
-
 /* ESTE ES EL HEADER DE LA SECCION DE ADMINISTRADOR */
-
-.herramientas {
+.herramientas{
     margin-top: 3%;
     display: flex;
     width: auto;
@@ -60,25 +54,31 @@ main {
     margin-left: auto;
     margin-bottom: 2%;
 }
-
-.menu {
+.menu{
     height: 35px;
     display: flex
+    
 }
 
-.menu div {
+.menu div{
     padding-right: 30px;
 }
-
-.contenido_2 {
+.contenido_2{
     display: flex;
     flex-direction: column;
     padding-left: 5%;
 }
 
-.bigimage {
+
+
+.bigimage{
     padding-top: 6%;
     width: auto;
     display: flex;
     justify-content: center;
 }
+    
+
+
+
+

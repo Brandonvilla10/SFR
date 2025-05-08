@@ -28,9 +28,9 @@ if(isset($_POST["botoncito"])){
     $estado = 2;
     $rol = 2;
 
-    
+
     $encriptacion = password_hash($contrasena,PASSWORD_DEFAULT,array("pass"=>12));
-    
+
     $validacion = $con->prepare("SELECT * FROM usuario where id_documento = '$documento' or correo = '$correo'");
     $validacion -> execute();
 
@@ -42,8 +42,8 @@ if(isset($_POST["botoncito"])){
     else if($nombre == "" ||$documento == "" ||$correo == "" || $contrasena == "" || $codigo == "" || $estado == "" || $rol == ""){
         echo "<script>alert('Elementos vacios, Error de sistema')</script>";
     }else{
-            $query = "INSERT INTO usuario(id_documento,nombre_completo,correo,contraseña,ficha,codigo_barras,id_estado,id_rol) 
-            VALUES ('$documento','$nombre','$correo','$encriptacion','$ficha','$codigo','$estado','$rol')";
+            $query = "INSERT INTO usuario(id_documento,nombre_completo,correo,contraseña,id_estado,id_rol)
+            VALUES ('$documento','$nombre','$correo','$encriptacion','$estado','$rol')";
 
             $insert = $con->prepare($query);
             $insert->execute();
@@ -68,23 +68,23 @@ if(isset($_POST["botoncito"])){
 
 
 
-    
-    
+
+
     <section class="container">
         <!-- cree un section llamado container que contuviera ambos section los cuales son los de columna derecha y columna izquierda que tambien lo agregue ya que teniamos era un div llamado cuadrado azul y no se podia acomodar de la mejor manera  -->
         <section class="ColumnaIzquierda">
-<!-- 
+<!--
         elimine el div en el que estaba la imagen ya que no era necesario, asi mismo elimine el cuadrado que iba en el centro porque al minimizar el ancho no habia forma en la que se viera bien -->
-         
-        
+
+
 
         <div class="sectionRegistro">
 
          <div class="divForm">
              <h2 class="RegistroTitulo">¡Regístrate!</h2>
 
-             <form action="" method="post" name="formulario" id ="formulario"> 
-        
+             <form action="" method="post" name="formulario" id ="formulario">
+
                     <div class="inputs">
                         <input type="text" class="datos" name="nombreCompleto" placeholder="Nombre Completo">
                         <span class="invisible">No se permite numeros, ni caracteres especiales</span>
@@ -97,35 +97,35 @@ if(isset($_POST["botoncito"])){
                         <input type="password" class="datos" name="verify" id="passVerify" placeholder="Confirmar Contraseña"/>
                         <span class="invisible">Las contraseñas no coinciden</span>
                     </div>
-                
+
                     <div class="BotRegistro">
                         <input type="submit" value="Registrarse" class="BotonRegistro" id="Button_registro" name ="botoncito">
                     </div>
-                    
+
                     <div class="-contraseña">
                         <p>¿Ya Tienes Cuenta?</p>
                     </div>
-                
+
                     <div class="registrarse">
                         <a href="index.php" class="">¡Inicia Sesion!</a>
                     </div>
 
-             </form>    
+             </form>
          </div>
-        
-         
-        
+
+
+
 
 
         </div>
         </section>
-        
-       
+
+
 
     <section class="columnaDerecha">
         <img src="assets/img/imgRegistro/Image_RG.png" height="550px" width="515px" class="imgPersonitas" alt="">
     </section>
-    
+
     </section>
 
     <div class="social-bar">
@@ -139,10 +139,10 @@ if(isset($_POST["botoncito"])){
             <img src="assets/img/iconosRedesSociales/logotipo-de-instagram.png"  width="28px" height="28px">
         </a>
     </div>
-    
-    
+
+
     <?php require_once("template/footer.html") ?>
-    
+
 <script src="js/registro.js"></script>
 </body>
 

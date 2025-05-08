@@ -24,14 +24,14 @@ class database{
             $pdo = new PDO($cone,$this->user ,$this->password,$opcion);
 
             return $pdo;
-            
+
         }catch(PDOException $e){
 
             echo "Error de conexcion" . $e->getMessage();
             exit();
 
         }
-        
+
     }
 
 }

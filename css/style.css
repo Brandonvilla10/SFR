@@ -1,51 +1,41 @@
 /* --- RESET GENERAL --- */
-
-
 /* Quitamos márgenes y padding por defecto para empezar de cero */
-
 * {
     margin: 0;
     padding: 0;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    /* Fuente bonita para todo */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Fuente bonita para todo */
+    
 }
 
-
 /* Los links no tendrán subrayado */
-
 a {
     text-decoration: none;
 }
 
-
 /* Quitamos márgenes del body y html también */
-
-body,
-html {
+body, html {
     margin: 0;
     padding: 0;
 }
 
-.error {
+.error{
     color: red;
     font-size: x-small;
 }
 
-.botonIniciarSesion:hover {
+.botonIniciarSesion:hover{
     transform: scale(1.1);
     background-color: #2e931a;
     border-color: rgb(0, 60, 255);
 }
 
-.botonSinHover:hover {
+.botonSinHover:hover{
     transform: scale(1);
     background-color: #15480b;
     border-color: rgb(255, 17, 0);
 }
 
-
 /* --- ESTILOS RESPONSIVE A PARTIR DE 320px --- */
-
 @media (min-width:320px) {
     /* Contenedor principal con flexbox en columna, ocupa el 100% del ancho */
     .container {
@@ -53,182 +43,177 @@ html {
         flex-direction: column;
         width: 100%;
     }
+
     /* Parte izquierda con fondo azulito y centrado */
     .columnaIzquierda {
         display: flex;
         width: 100%;
         height: 600px;
         min-height: 300px;
-        background-color: #63AEE8;
-        /* Fondo azulito */
+        background-color: rgb(179 213 255); /* Fondo azulito */
         justify-content: center;
         align-items: center;
     }
+
     /* Fondo blanco que contiene cosas */
     .fondoBlanco {
-        width: 47vh;
-        /* Altura y ancho adaptables */
+        width: 47vh; /* Altura y ancho adaptables */
         z-index: 1;
         height: 54vh;
     }
+
     /* Tarjeta con cuadrícula para organizar el contenido */
     .card {
         display: grid;
-        grid-template-rows: 96px 180px 110px;
-        /* Dividimos la tarjeta en 4 filas */
+        grid-template-rows: 96px 180px 110px ; /* Dividimos la tarjeta en 4 filas */
         text-align: center;
         height: clamp(300px, 100%, 400px);
         width: 300px;
-        justify-items: center;
-        /* Centramos todo en la tarjeta */
+        justify-items: center; /* Centramos todo en la tarjeta */
         align-items: center;
         background-color: white;
-        background: url("../assets/img/Base_White.png");
-        /* Fondo blanco */
-        background-repeat: no-repeat;
-        /* Evita que la imagen se repita */
+        background: url("../assets/img/Base_White.png"); /* Fondo blanco */
+        background-repeat: no-repeat; /* Evita que la imagen se repita */
         background-position: center;
     }
-    .olvidaste-registrate {
+
+    .olvidaste-registrate{
         display: flex;
         flex-direction: column;
     }
+
     /* Título en verde */
     .tituloLogin {
-        color: rgba(58, 170, 53, 255);
-        /* Verde chillón */
+        color: rgba(58, 170, 53, 255); /* Verde chillón */
     }
+
     /* Estilo de los campos de entrada del login */
     .datosLogin {
         height: 50px;
         width: 86%;
-        margin-top: 5px;
-        /* Espaciado superior */
-        border-radius: 59px;
-        /* Bordes redondeados */
-        border: 3px solid #ffffff;
-        /* Borde blanco */
-        color: rgba(58, 170, 53, 255);
-        /* Texto en verde */
+        margin-top: 5px; /* Espaciado superior */
+        border-radius: 59px; /* Bordes redondeados */
+        border: 3px solid #ffffff; /* Borde blanco */
+        color: rgba(58, 170, 53, 255); /* Texto en verde */
         font-size: larger;
         font-weight: 500;
-        background: #d6d5d4;
-        /* Fondo gris clarito */
+        background: #d6d5d4; /* Fondo gris clarito */
     }
+
     /* Placeholder en los inputs */
     .datosLogin::placeholder {
         padding-left: 10px;
-        color: rgb(78, 93, 109);
-        opacity: 60%;
-        /* Un poco transparente */
+        color: rgb(78, 93, 109); 
+        opacity: 60%; /* Un poco transparente */
     }
+
     /* Botón de inicio de sesión */
     .botonIniciarSesion {
         height: 52px;
         width: 86%;
         margin-top: 22px;
-        border-radius: 59px;
-        /* Bordes redondeados */
-        color: white;
-        /* Texto blanco */
-        border: 3px solid #ffffff;
-        /* Borde blanco */
+        border-radius: 59px; /* Bordes redondeados */
+        color: white; /* Texto blanco */
+        border: 3px solid #ffffff; /* Borde blanco */
         font-size: larger;
-        font-weight: bolder;
-        /* Texto más grueso */
-        background: #1c8f05;
-        /* Verde oscuro */
+        font-weight: bolder; /* Texto más grueso */
+        background: #1c8f05; /* Verde oscuro */
         cursor: pointer;
     }
+
     /* Placeholder en el botón */
     .botonIniciarSesion::placeholder {
-        color: white;
-        /* Placeholder blanco */
+        color: white; /* Placeholder blanco */
     }
+
+    
+
+    
+
     /* Imagen de las "personitas" */
     .imgPersonitas {
         width: 100%;
         min-height: 230px;
         max-height: 500px;
         height: 350px;
+        
     }
+
     /* --- Barra de redes sociales (no mover esto jajaja) --- */
     .social-bar {
         z-index: 1000;
         position: fixed;
-        bottom: -14px;
-        /* Justo abajo */
+        bottom: -14px; /* Justo abajo */
         right: -1px;
         display: flex;
-        flex-direction: column;
-        /* Redes sociales en columna */
-        gap: 10px;
-        /* Espaciado entre botones */
+        flex-direction: column; /* Redes sociales en columna */
+        gap: 10px; /* Espaciado entre botones */
         padding: 11px;
     }
+
     /* Botones de redes sociales con efecto de hover */
     .social-icon {
         text-decoration: none;
         text-align: center;
         padding: 0px;
-        border-radius: 5px;
-        /* Bordes redondeados */
-        transition: background-color 0.3s, transform 0.3s;
-        /* Animación */
+        border-radius: 5px; /* Bordes redondeados */
+        transition: background-color 0.3s, transform 0.3s; /* Animación */
     }
+
     .social-icon:hover {
-        transform: scale(1.5) rotate(10deg);
-        /* Crecen y giran al pasar el mouse */
+        transform: scale(1.5) rotate(10deg); /* Crecen y giran al pasar el mouse */
     }
 }
 
 
-/* A partir de 768px */
 
+/* A partir de 768px */
 @media (min-width:768px) {
     .container {
-        flex-direction: row;
-        /* Cambiamos de columna a fila */
+        flex-direction: row; /* Cambiamos de columna a fila */
         align-items: center;
     }
+
     /* La columna izquierda ocupa la mitad */
     .columnaIzquierda {
         width: 50%;
         margin-right: 33px;
     }
+
     .datosLogin {
         width: 91%;
     }
+
+
     /* Fondo blanco ajustado */
     .fondoBlanco {
         width: 53vh;
         height: 61vh;
     }
-    /* --- Barra de redes sociales (no mover esto jajaja) --- */
-    .social-bar {
-        bottom: 47px;
-        right: 18px;
-        padding: 11px;
-    }
-    /* Botones de redes sociales con efecto de hover */
-    .social-icon {
-        text-decoration: none;
-        text-align: center;
-        padding: 0px;
-        border-radius: 5px;
-        /* Bordes redondeados */
-        transition: background-color 0.3s, transform 0.3s;
-        /* Animación */
-    }
-    .social-icon:hover {
-        transform: scale(1.5) rotate(10deg);
-        /* Crecen y giran al pasar el mouse */
-    }
+
+        /* --- Barra de redes sociales (no mover esto jajaja) --- */
+        .social-bar {
+            bottom: 47px;
+            right: 18px;
+            padding: 11px;
+        }
+    
+        /* Botones de redes sociales con efecto de hover */
+        .social-icon {
+            text-decoration: none;
+            text-align: center;
+            padding: 0px;
+            border-radius: 5px; /* Bordes redondeados */
+            transition: background-color 0.3s, transform 0.3s; /* Animación */
+        }
+    
+        .social-icon:hover {
+            transform: scale(1.5) rotate(10deg); /* Crecen y giran al pasar el mouse */
+        }
+
 }
 
-
 /* A partir de 1024px */
-
 @media (min-width:1024px) {
     /* Fondo blanco más grande */
     .fondoBlanco {
@@ -236,32 +221,34 @@ html {
         z-index: 1;
         height: 70vh;
     }
+
     /* Tarjeta redimensionada */
     .card {
         grid-template-rows: 91px 207px 96px;
     }
+
     /* Campos de login más altos */
     .datosLogin {
         height: 54px;
     }
+
     /* Imagen más grande */
     .imgPersonitas {
         height: 70vh;
     }
-    .botonIniciarSesion {
+    .botonIniciarSesion{
         height: 54px;
     }
 }
 
-
 /* A partir de 1440px */
-
 @media (min-width:1519px) {
     /* Contenedor como fila */
     .container {
         flex-direction: row;
         width: 100%;
     }
+
     /* Columna izquierda ajustada */
     .columnaIzquierda {
         width: 50%;
@@ -270,19 +257,24 @@ html {
         align-items: center;
         margin-right: 114px;
     }
+
     /* Fondo blanco adaptado */
     .fondoBlanco {
         width: 57vh;
         height: 62vh;
     }
+
     /* Tarjeta más alta */
     .card {
         grid-template-rows: 135px 166px 129px;
+
     }
+
     /* Campos de login con diseño flex */
     .datosLogin {
         background: #d6d5d4;
     }
+
     /* Botón más estilizado */
     .botonIniciarSesion {
         background: rgba(58, 170, 53, 255);
@@ -290,27 +282,29 @@ html {
 }
 
 @media (min-width:2560px) {
-    .card {
-        grid-template-rows: 298px 198px 202px;
+    .card{
+        grid-template-rows: 298px 198px 202px ;
         width: 500px;
     }
-    .tituloLogin {
+    .tituloLogin{
         font-size: 50px;
     }
-    .datosLogin {
+
+    .datosLogin{
         height: 8vh;
         font-size: large;
         width: 400px;
     }
-    .botonIniciarSesion {
+
+    .botonIniciarSesion{
         height: 81px;
         width: 400px;
     }
-    .olvidaste-registrate {
-        display: flex;
-        flex-direction: column;
+    .olvidaste-registrate{
+    display: flex;
+    flex-direction: column;
     }
-    .colorVerde {
+    .colorVerde{
         font-size: x-large;
     }
 }

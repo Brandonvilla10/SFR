@@ -1,6 +1,9 @@
 <?php
-include('../../database/database.php');
 session_start();
+require_once('../../database/database.php');
+
+$conexion = new database;
+$con = $conexion->conectar();
 $documentoBuscado = $_SESSION['documento'] ?? '';
 ?>
 
@@ -12,6 +15,20 @@ $documentoBuscado = $_SESSION['documento'] ?? '';
     <link rel="stylesheet" href="asideBar/asidebar.css">
     <link rel="stylesheet" href="../../css/home.css">
     <link rel="stylesheet" href="css/notificaciones.css">
+    <style>
+        .contenedor-notificaciones form {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .contenedor-notificaciones select,
+        .contenedor-notificaciones button {
+            padding: 8px;
+            font-size: 16px;
+        }
+    </style>
 </head>
 <body>
 
@@ -21,19 +38,26 @@ $documentoBuscado = $_SESSION['documento'] ?? '';
     </aside>
 
     <main class="grid_contenido_plantilla">
-        <div class="contenedor-notificaciones">
         <div class="titulo">
             <div>
                 <h1>Notificaciones</h1>
-                <p style="color:#858585">Visualiza las notificacions segun el usuario</p>
+                <p style="color:#858585">Visualiza las notificaciones según el tipo</p>
             </div>
-            
-            <hr class="separador">
-            <!-- Input con búsqueda en tiempo real -->
-            <div class="buscar_documento_con_icono">
-                <input type="text" id="buscarDocumento" placeholder="Buscar por documento..." value="<?php htmlspecialchars($documentoBuscado); ?>">
-                <ion-icon name="search-outline"></ion-icon>
-            </div>
+        </div>
+        <hr class="separador">
+        
+        <div class="contenedor-notificaciones">
+
+            <!-- Filtro por tabla afectada -->
+            <form id="filtrosNotificaciones">
+                <select name="tabla" id="tabla">
+                    <option value="">-- Filtrar por tipo --</option>
+                    <option value="vehiculos">Vehículos</option>
+                    <option value="objetos">Objetos</option>
+                    <option value="usuario">Usuarios</option>
+                </select>
+                <button type="submit">Filtrar</button>
+            </form>
 
             <!-- Resultados dinámicos -->
             <div id="resultadoNotificaciones">
@@ -47,21 +71,23 @@ $documentoBuscado = $_SESSION['documento'] ?? '';
 <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 
 <script>
-document.addEventListener("DOMContentLoaded", () => {
-    const input = document.getElementById("buscarDocumento");
-    const contenedor = document.getElementById("resultadoNotificaciones");
+document.getElementById("filtrosNotificaciones").addEventListener("submit", function (e) {
+    e.preventDefault();
 
-    function buscar(documento) {
-        fetch("buscar_notificaciones.php?documento=" + encodeURIComponent(documento))
-            .then(res => res.text())
-            .then(data => contenedor.innerHTML = data)
-            .catch(err => contenedor.innerHTML = "<p>Error al cargar notificaciones.</p>");
-    }
+    const tabla = document.getElementById("tabla").value;
+    const params = new URLSearchParams({ tabla });
 
-    input.addEventListener("input", () => buscar(input.value));
-    
-    // Carga inicial con documento de sesión
-    buscar(input.value);
+    fetch("buscar_notificaciones.php?" + params.toString())
+        .then(res => res.text())
+        .then(data => document.getElementById("resultadoNotificaciones").innerHTML = data)
+        .catch(() => {
+            document.getElementById("resultadoNotificaciones").innerHTML = "<p>Error al cargar notificaciones.</p>";
+        });
+});
+
+// Carga inicial sin filtro
+window.addEventListener("DOMContentLoaded", () => {
+    document.getElementById("filtrosNotificaciones").dispatchEvent(new Event('submit'));
 });
 </script>
 

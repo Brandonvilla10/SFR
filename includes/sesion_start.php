@@ -33,6 +33,7 @@ session_start();
             if($_SESSION['rol'] == 1){
 
                             // ADMINISTRADOR
+                $_SESSION['documento'];
                 $_SESSION['rol_name'] ="Administrador";
                 header("location: ../roles/admin/home.php");
                 exit(); 

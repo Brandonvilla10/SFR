@@ -1,21 +1,7 @@
 <?php
 include('../../database/database.php');
 session_start();
-$conexion = new database;
-$con = $conexion->conectar();
-
-// Obtener el documento desde el formulario o la sesión
-$documentoBuscado = $_GET['documento'] ?? $_SESSION['documento'] ?? null;
-
-// Consulta dinámica
-if ($documentoBuscado) {
-    $sql = $con->prepare("SELECT * FROM notificaciones WHERE id_afectado = :documento ORDER BY fecha DESC");
-    $sql->bindParam(':documento', $documentoBuscado);
-} else {
-    $sql = $con->prepare("SELECT * FROM notificaciones ORDER BY fecha DESC");
-}
-$sql->execute();
-$notificaciones = $sql->fetchAll(PDO::FETCH_ASSOC);
+$documentoBuscado = $_SESSION['documento'] ?? '';
 ?>
 
 <!DOCTYPE html>
@@ -23,70 +9,9 @@ $notificaciones = $sql->fetchAll(PDO::FETCH_ASSOC);
 <head>
     <meta charset="UTF-8">
     <title>Notificaciones</title>
-    <link rel="stylesheet" href="css/home.css">
     <link rel="stylesheet" href="asideBar/asidebar.css">
-    <style>
-
-        main.grid_contenido_plantilla {
-            margin: 0;
-            padding: 0;
-            margin-top: -150px;
-        }
-
-        .contenedor-notificaciones {
-            margin: 0px ;
-            padding: 50px;
-        }
-
-        .notificacion {
-            background-color: #f2f2f2;
-            border-left: 5px solid #63AEE8;
-            padding: 20px;
-            margin-bottom: 30px;
-            border-radius: 8px;
-        }
-
-        .notificacion h4 {
-            margin: 0 10px 0;
-            color: #333;
-        }
-
-        .notificacion p {
-            margin: 0;
-        }
-
-        .notificacion time {
-            display: block;
-            font-size: 0.8em;
-            color: #777;
-            margin-top: 5px;
-        }
-
-        .form-busqueda {
-            margin-bottom: 20px; 
-        }
-
-        .form-busqueda input {
-            padding: 8px;
-            width: 200px;
-            margin-right: 10px;
-        }
-
-        .form-busqueda button {
-            padding: 8px 12px;
-            background-color: #63AEE8;
-            border: none;
-            color: white;
-            cursor: pointer;
-        }
-
-        .grid-notificaciones {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-            gap: 20px;
-            padding: 70px;
-        }
-    </style>
+    <link rel="stylesheet" href="../../css/home.css">
+    <link rel="stylesheet" href="css/notificaciones.css">
 </head>
 <body>
 
@@ -97,30 +22,48 @@ $notificaciones = $sql->fetchAll(PDO::FETCH_ASSOC);
 
     <main class="grid_contenido_plantilla">
         <div class="contenedor-notificaciones">
-            <h1 style="color: #63AEE8;">Notificaciones</h1>
+        <div class="titulo">
+            <div>
+                <h1>Notificaciones</h1>
+                <p style="color:#858585">Visualiza las notificacions segun el usuario</p>
+            </div>
+            
+            <hr class="separador">
+            <!-- Input con búsqueda en tiempo real -->
+            <div class="buscar_documento_con_icono">
+                <input type="text" id="buscarDocumento" placeholder="Buscar por documento..." value="<?php htmlspecialchars($documentoBuscado); ?>">
+                <ion-icon name="search-outline"></ion-icon>
+            </div>
 
-            <form class="form-busqueda" method="GET">
-                <input type="text" name="documento" placeholder="Buscar por documento..." value="<?php echo htmlspecialchars($documentoBuscado); ?>">
-                <button type="submit">Buscar</button>
-            </form>
-
-            <?php if (count($notificaciones) > 0): ?>
-                <div class="grid-notificaciones">
-                    <?php foreach ($notificaciones as $notif): ?>
-                        <div class="notificacion">
-                            <h4><?php echo htmlspecialchars($notif['tipo_evento'] . ' en ' . $notif['tabla_afectada']); ?></h4>
-                            <p><?php echo htmlspecialchars($notif['descripcion']); ?></p>
-                            <time><?php echo date("d/m/Y H:i", strtotime($notif['fecha'])); ?></time>
-                        </div>
-                    <?php endforeach; ?>
-                </div>
-            <?php else: ?>
-                <p>No hay notificaciones encontradas.</p>
-            <?php endif; ?>
+            <!-- Resultados dinámicos -->
+            <div id="resultadoNotificaciones">
+                <!-- Aquí se cargan las notificaciones por JavaScript -->
+            </div>
         </div>
     </main>
 </div>
 
-<script src="../../js/js.js"></script>
+<script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+<script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    const input = document.getElementById("buscarDocumento");
+    const contenedor = document.getElementById("resultadoNotificaciones");
+
+    function buscar(documento) {
+        fetch("buscar_notificaciones.php?documento=" + encodeURIComponent(documento))
+            .then(res => res.text())
+            .then(data => contenedor.innerHTML = data)
+            .catch(err => contenedor.innerHTML = "<p>Error al cargar notificaciones.</p>");
+    }
+
+    input.addEventListener("input", () => buscar(input.value));
+    
+    // Carga inicial con documento de sesión
+    buscar(input.value);
+});
+</script>
+
 </body>
 </html>

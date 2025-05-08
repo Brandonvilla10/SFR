@@ -37,7 +37,7 @@ $rol = $_SESSION['rol_name'];
         <hr class="separador">
         <div class="contenido_tabla">
         <div class="objects-grid">
-            <div class="object-card" onclick="window.location.href='fichas.php'">
+            <div class="object-card" onclick="window.location.href='apartado_datos/fichas.php'">
                 <div class="object-header">
                     <div class="object-icon">
                         <img src="../../assets/img/datos/datos.png">
@@ -53,7 +53,7 @@ $rol = $_SESSION['rol_name'];
                     </div>
                 </div>
             </div>
-            <div class="object-card" onclick="window.location.href='programas.php'">
+            <div class="object-card" onclick="window.location.href='apartado_datos/programas.php'">
                 <div class="object-header">
                     <div class="object-icon">
                         <img src="../../assets/img/datos/datos.png">
@@ -69,7 +69,7 @@ $rol = $_SESSION['rol_name'];
                     </div>
                 </div>
             </div>
-            <div class="object-card" onclick="window.location.href='nivel.php'">
+            <div class="object-card" onclick="window.location.href='apartado_datos/nivel.php'">
                 <div class="object-header">
                     <div class="object-icon">
                         <img src="../../assets/img/datos/datos.png">
@@ -85,7 +85,7 @@ $rol = $_SESSION['rol_name'];
                     </div>
                 </div>
             </div>
-            <div class="object-card" onclick="window.location.href='marcas.php'">
+            <div class="object-card" onclick="window.location.href='apartado_datos/marcas.php'">
                 <div class="object-header">
                     <div class="object-icon">
                         <img src="../../assets/img/datos/datos.png">
@@ -101,7 +101,7 @@ $rol = $_SESSION['rol_name'];
                     </div>
                 </div>
             </div>
-            <div class="object-card" onclick="window.location.href='modelo.php'">
+            <div class="object-card" onclick="window.location.href='apartado_datos/modelo.php'">
                 <div class="object-header">
                     <div class="object-icon">
                         <img src="../../assets/img/datos/datos.png">
@@ -117,7 +117,7 @@ $rol = $_SESSION['rol_name'];
                     </div>
                 </div>
             </div>
-            <div class="object-card" onclick="window.location.href='tipoVeh.php'">
+            <div class="object-card" onclick="window.location.href='apartado_datos/tipoVeh.php'">
                 <div class="object-header">
                     <div class="object-icon">
                         <img src="../../assets/img/datos/datos.png">
@@ -133,7 +133,7 @@ $rol = $_SESSION['rol_name'];
                     </div>
                 </div>
             </div>
-            <div class="object-card" onclick="window.location.href='tipoObj.php'">
+            <div class="object-card" onclick="window.location.href='apartado_datos/tipoObj.php'">
                 <div class="object-header">
                     <div class="object-icon">
                         <img src="../../assets/img/datos/datos.png">
@@ -149,7 +149,7 @@ $rol = $_SESSION['rol_name'];
                     </div>
                 </div>
             </div>
-            <div class="object-card" onclick="window.location.href='estado.php'">
+            <div class="object-card" onclick="window.location.href='apartado_datos/estado.php'">
                 <div class="object-header">
                     <div class="object-icon">
                         <img src="../../assets/img/datos/datos.png">

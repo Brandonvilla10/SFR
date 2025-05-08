@@ -156,19 +156,32 @@ $consulta->execute();
                 <?php } ?>
             <?php } ?>
 
-            <div class="paginacion" >
+            <div class="paginacion">
                 <?php if ($page > 1): ?>
-                    <a href="?page=<?php echo $page - 1; ?>">&laquo; Anterior</a>
+                    <a href="?page=<?php echo $page - 1; ?>" class="pag-btn">&laquo; Anterior</a>
                 <?php endif; ?>
 
-                <?php for ($i = 1; $i <= $paginas; $i++): ?>
-                    <a href="?page=<?php echo $i; ?>" class="<?php echo ($i === $page) ? 'active' : ''; ?>">
+                <?php
+                $start_page = max(1, $page - 1);
+                $end_page = min($paginas, $page + 1);
+                
+                if ($start_page == 1 && $paginas >= 3) {
+                    $end_page = 3;
+                }
+            
+                if ($end_page == $paginas && $paginas >= 3) {
+                    $start_page = max(1, $paginas - 2);
+                }
+                
+                for ($i = $start_page; $i <= $end_page; $i++): 
+                ?>
+                    <a href="?page=<?php echo $i; ?>" class="pag-btn <?php echo ($i == $page) ? 'active' : ''; ?>">
                         <?php echo $i; ?>
                     </a>
                 <?php endfor; ?>
 
                 <?php if ($page < $paginas): ?>
-                    <a href="?page=<?php echo $page + 1; ?>">Siguiente &raquo;</a>
+                    <a href="?page=<?php echo $page + 1; ?>" class="pag-btn">Siguiente &raquo;</a>
                 <?php endif; ?>
             </div>
         </div>
@@ -200,9 +213,9 @@ $consulta->execute();
 
                         <input type="button" value="Vehiculo" class="vehiculos_submit" onclick="window.location.href='aggVehiculo.php'">
 
-                        <input type="button" value="Marca" class="vehiculos_submit" onclick="mostrarFormularioVehiculo()">
+                        <input type="button" value="Marca" class="vehiculos_submit" onclick="window.location.href='apartado_datos/marcas.php'">
 
-                        <input type="button" value="Modelo" class="vehiculos_submit" onclick="mostrarFormularioModelo()">
+                        <input type="button" value="Modelo" class="vehiculos_submit" onclick="window.location.href='apartado_datos/modelo.php'">
                     </form>
                 </div>
         </div>

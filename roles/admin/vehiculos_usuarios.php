@@ -38,8 +38,13 @@ if (isset($_POST['eliminar'])) {
             exit();
         }
     } else {
-        echo "<script>alert('Contraseña de administrador incorrecta');
-        window.location.href = 'vehiculos.php';</script>";
+        echo "
+            <script>
+                document.addEventListener('DOMContentLoaded', function () {
+                    mostrarModal('mistake',Contraseña de administradoe incorrecta, '$pagina_retorno');
+                });
+            </script>";
+            exit();
     }
 }
 

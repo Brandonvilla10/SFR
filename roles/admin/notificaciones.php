@@ -1,7 +1,11 @@
 <?php
-include('../../database/database.php');
 session_start();
+require_once('../../database/database.php');
+include('components/alert.php');
+$conexion = new database;
+$con = $conexion->conectar();
 $documentoBuscado = $_SESSION['documento'] ?? '';
+
 ?>
 
 <!DOCTYPE html>
@@ -51,7 +55,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const contenedor = document.getElementById("resultadoNotificaciones");
 
     function buscar(documento) {
-        fetch("buscar_notificaciones.php?documento=" + encodeURIComponent(documento))
+        fetch("fetch/buscar_notificaciones.php?documento=" + encodeURIComponent(documento))
             .then(res => res.text())
             .then(data => contenedor.innerHTML = data)
             .catch(err => contenedor.innerHTML = "<p>Error al cargar notificaciones.</p>");

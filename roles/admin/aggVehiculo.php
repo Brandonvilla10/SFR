@@ -29,8 +29,12 @@ try {
     exit;
 }
 
+$origen = isset($_GET['origen']) ? $_GET['origen'] : '';
+$user_id = isset($_GET['user_id']) ? $_GET['user_id'] : '';
+
 // Obtener el documento si viene de vehiculos usuario
 $id_documento_preseleccionado = isset($_GET['id_documento']) ? trim($_GET['id_documento']) : '';
+$pagina_retorno = ($origen === 'usuarios') ? "vehiculos_usuarios.php?user_id=$user_id" : 'vehiculos.php';
 
 $usuario = null;
 
@@ -43,13 +47,18 @@ if (isset($_POST['buscar_usuario'])) {
     $usuario = $consulta_usuario->fetch(PDO::FETCH_ASSOC);
 
     if (!$usuario) {
-        echo "<script>alert('Usuario no encontrado');</script>";
+        echo "
+            <script>
+                document.addEventListener('DOMContentLoaded', function () {
+                    mostrarModal('mistake', 'Usuario no encontrado con el documento proporcionado', '$pagina_retorno');
+                });
+            </script>";
+            exit();
     }
-}
+ }
 
 
-$origen = isset($_GET['origen']) ? $_GET['origen'] : '';
-$user_id = isset($_GET['user_id']) ? $_GET['user_id'] : '';
+
 
 
 if (isset($_POST['registrar'])) {
@@ -67,7 +76,12 @@ if (isset($_POST['registrar'])) {
     $verificar->execute();
 
     if ($verificar->rowCount() > 0) {
-        echo "<script>alert('La placa ya se encuentra registrada en el sistema');</script>";
+        echo "<script>
+                document.addEventListener('DOMContentLoaded', function () {
+                    mostrarModal('mistake', 'La placa ya se encuentra registrada en el sistema', '$pagina_retorno');
+                });
+            </script>";
+            exit();
     } else {
         $insertar = $con->prepare("INSERT INTO vehiculos (id_placa, id_documento, caracteristicas, id_estado, id_tipoVehiculo, id_marca, id_modelo)
                                   VALUES (:placa, :id_documento, :caracteristicas, :id_estado, :id_tipoVehiculo, :id_marca, :id_modelo)");
@@ -81,7 +95,6 @@ if (isset($_POST['registrar'])) {
         $insertar->bindParam(':id_modelo', $id_modelo);
 
         if ($insertar->execute()) {
-            $pagina_retorno = ($origen === 'usuarios') ? "vehiculos_usuarios.php?user_id=$user_id" : 'vehiculos.php';
 
             echo "
             <script>
@@ -89,7 +102,7 @@ if (isset($_POST['registrar'])) {
                     mostrarModal('success', 'Vehiculo creado con exito', '$pagina_retorno');
                 });
             </script>";
-        exit();
+            exit();
         } else {
             echo "
             <script>
@@ -101,19 +114,6 @@ if (isset($_POST['registrar'])) {
         }
     }
 }
-
-
-if (!empty($id_documento_preseleccionado) && !$usuario) {
-    $consulta_usuario = $con->prepare("SELECT id_documento, nombre_completo, correo, foto FROM usuario WHERE id_documento = :id_documento");
-    $consulta_usuario->bindParam(':id_documento', $id_documento_preseleccionado);
-    $consulta_usuario->execute();
-    $usuario = $consulta_usuario->fetch(PDO::FETCH_ASSOC);
-
-    if (!$usuario) {
-        echo "<script>alert('Usuario no encontrado con el documento proporcionado');</script>";
-    }
-}
-
 
 $usuario_foto_path = !empty($usuario['foto']) ? '../../uploads/' . $usuario['foto'] : '../../uploads/usu.png';
 ?>

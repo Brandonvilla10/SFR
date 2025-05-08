@@ -4,39 +4,6 @@ require_once("database/database.php");
 $conexion = new database;
 $con = $conexion->conectar();
 session_start();
-
-
-if(isset($_POST['sumbit'])){
-    
-    $correo = $_POST['correo'];
-
-    $sql = $con->prepare("SELECT * FROM usuario where correo = '$correo'");
-    $sql->execute();
-    $fila = $sql->fetch(PDO::FETCH_ASSOC);
-
-    if(!$fila){
-        $correoNoExiste = true;
-    }else{
-
-        $ramdon = random_int(10000, 99999);
-        $_SESSION['ramdon'] = $ramdon;
-        $_SESSION['correo'] = $correo;
-
-
-        require __DIR__ . '/vendor/autoload.php';
-        $resend = Resend::client('re_c9Up38Jk_DoVPUAVkxmha4pRAsQGyWupG');
-        $resend->emails->send([
-        'from' => 'Acme <onboarding@resend.dev>',
-        'to' => [$correo],
-        'subject' => 'NO COMPARTAS este codigo con NADIE ' .$ramdon,
-        'html' => '<strong>Codigo De Verificacion '. $ramdon . ' </strong>',
-        ]);
-
-        echo "<script>window.location.href = 'cam_contraseña.php';</script>";
-    }   
-}
-
-// primero
 ?>
 
 <!DOCTYPE html>
@@ -58,7 +25,7 @@ if(isset($_POST['sumbit'])){
 
             <section class="env_correo">
 
-                <form action="" class="datos_form" method="post">
+                <form action="config/env_mailer.php" class="datos_form" method="post">
                     <h1 style="padding-bottom: 50px; color: rgba(58, 170, 53, 255);">Recuperar contraseña</h1>  
                     <label for="correo" class="texto">Ingresar correo electrónico</label>
                     <input type="text" id="correo" class="datos" name="correo" placeholder="ej.@soy.sena.edu.co">
@@ -85,7 +52,7 @@ if(isset($_POST['sumbit'])){
             let correo = document.getElementById('correo').value;
             if(correo === ""){
                 e.preventDefault();
-                errorDiv.innerHTML = "El campo no puede estar vacío";
+                errorDiv.innerHTML = "El campo no puede estar vacio";
                 errorDiv.style.display = "block";
                 setTimeout(() => {
                     errorDiv.style.display = "none";
@@ -94,7 +61,7 @@ if(isset($_POST['sumbit'])){
 
             } else if(!regexCorreo.test(correo)){
                 e.preventDefault();
-                errorDiv.innerHTML = "El correo no es válido";
+                errorDiv.innerHTML = "El correo no es valido";
                 errorDiv.style.display = "block";
                 setTimeout(() => {
                     errorDiv.style.display = "none";

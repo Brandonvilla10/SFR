@@ -53,15 +53,6 @@
 
     ?>
 
-
-
-<?php 
-
-    if(isset($_GET['mensaje'])){
-        echo "<script>alert('$_GET[mensaje2]')</script>";
-    }
-
-?>
     <!DOCTYPE html>
     <html lang="en">
     <head>

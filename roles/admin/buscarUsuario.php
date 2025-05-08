@@ -361,27 +361,14 @@ if (isset($_POST['Eliminar'])) {
     </section>
     </main>
     </div>
-    <script src="pruebas/script.js"></script>
+    
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
-    <script src="../../js/js.js"></script>
     <script src="./js/crearUsuario.js"></script>
     <script src="js/buscarUsuario.js"></script>
     <script src="./js/seleccionarVariosUsuario.js"></script>
 
-    <script>
-        function abrirVentana(url) {
-            const ancho = window.screen.width / 1.5
-            const alto = window.screen.height / 1.5
-
-            const x = (window.screen.width / 2) - (ancho / 2);
-            const y = (window.screen.height / 2) - (alto / 2);
-
-            const opciones = `width=${ancho},height=${alto},top=${y},left=${x},toolbar=no,menubar=no,scrollbars=no,resizable=no,location=no,status=no`;
-            window.open(url, '', opciones);
-
-        }
-    </script>
+   
 </body>
 
 </html>

@@ -1,11 +1,10 @@
 <!-- modal.php -->
-<div id="modalAlerta" class="modal-global" style="display: none;">
+<div id="modalAlerta" class="modal-global" style="display: none">
     <h2 id="tituloModal">Success!</h2>
     <div class="line"></div>
     <p class="contenidoModal" id="contenidoModal">Haz sido agendado con éxito</p>
     <div class="botonesModal">
-        <button class="button no-fill" onclick="cerrarModal()">Cancelar</button>
-        <button class="button fill" onclick="cerrarModal()">Confirmar</button>
+        <button class="button fill" onclick="cerrarModal()" id="success">Continuar</button>
     </div>
 </div>
 
@@ -14,19 +13,31 @@
     <div class="line"></div>
     <p class="contenidoModal" id="contenidoModalError">Error en el sistema, inténtalo de nuevo</p>
     <div class="botonesModal">
-        <button class="button no-fill" onclick="cerrarModal()">Cancelar</button>
-        <button class="button fill" onclick="cerrarModal()">Confirmar</button>
+        <button class="button fill-error" onclick="cerrarModal()" id="mistake">Confirmar</button>
     </div>
 </div>
 
 <script>
-    function mostrarModal(tipo = 'success', mensaje = '') {
+    function mostrarModal(tipo = 'success', mensaje = '', ruta = '') {
         if (tipo === 'success') {
             document.getElementById('modalAlerta').style.display = 'block';
             document.getElementById('contenidoModal').innerText = mensaje;
+
+            if (ruta != '') {
+                document.getElementById('success').onclick = function() {
+                    window.location.href = ruta;
+                };
+            }
+
+
         } else {
             document.getElementById('modalError').style.display = 'block';
             document.getElementById('contenidoModalError').innerText = mensaje;
+            if (ruta != '') {
+                document.getElementById('mistake').onclick = function() {
+                    window.location.href = ruta;
+                };
+            }
         }
     }
 
@@ -38,7 +49,6 @@
 
 <style>
     body {
-        background-color: #CACDC6;
         font-family: 'Lato', sans-serif;
     }
 
@@ -87,7 +97,7 @@
         right: 0;
         border-top-right-radius: 20px;
         border-top-left-radius: 20px;
-       
+
     }
 
     .modal-global-error::before {
@@ -112,7 +122,7 @@
         background-color: #34c768;
         font-weight: bold;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-       
+
 
     }
 
@@ -153,7 +163,7 @@
         padding: 0.3rem 1.5rem;
         margin-inline-end: 5px;
         border-radius: 20px;
-        border: 2px solid #34c759;
+        border: 2px solid;
         font-weight: bold;
         cursor: pointer;
         transition: all 0.3s ease;

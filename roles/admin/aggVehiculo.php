@@ -1,6 +1,7 @@
 <?php
 session_start();
 require_once('../../database/database.php');
+include 'components/alert.php';
 $conexion = new database;
 $con = $conexion->conectar();
 
@@ -57,11 +58,22 @@ if (isset($_POST['registrar'])) {
 
         if ($insertar->execute()) {
             $pagina_retorno = ($origen === 'usuarios') ? "vehiculos_usuarios.php?user_id=$user_id" : 'vehiculos.php';
-            echo "<script>alert('Vehiculo registrado correctamente');
-            window.location.href = '$pagina_retorno';</script>";
-            exit;
+
+            echo "
+            <script>
+                document.addEventListener('DOMContentLoaded', function () {
+                    mostrarModal('success', 'Vehiculo creado con exito', '$pagina_retorno');
+                });
+            </script>";
+        exit();
         } else {
-            echo "<script>alert('Error al registrar el vehiculo');</script>";
+            echo "
+            <script>
+                document.addEventListener('DOMContentLoaded', function () {
+                    mostrarModal('mistake', 'Error al crear el vehiculo', '$pagina_retorno');
+                });
+            </script>";
+            exit();
         }
     }
 }

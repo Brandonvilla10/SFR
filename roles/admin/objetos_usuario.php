@@ -25,9 +25,13 @@ if (isset($_POST['objetos_submit'])) {
     $consulta_1 = $validacion->fetch();
 
     if (!$consulta_1) {
-
-        echo "<script>alert('Usuario no encontrado')</script>";
-        echo "<script>window.location.href='objetos_index.php'</script>";
+        echo "
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                mostrarModal('mistake', 'Usuario no encontrado', 'objetos_index.php');
+            });
+        </script>";
+        exit();
     }
 }
 
@@ -48,6 +52,7 @@ if (isset($_POST['borrar'])) {
     $borrar = $con->prepare("DELETE FROM objetos WHERE id_serial = :id_serial");
     $borrar->bindParam(':id_serial', $_POST['borrar']);
     $borrar->execute();
+    
     echo "
     <script>
             document.addEventListener('DOMContentLoaded', function () {
@@ -270,27 +275,31 @@ if (isset($_POST['borrar'])) {
                     const nombreExp = /^[A-Za-z\s]{2,}$/;
 
                     if (!serialExp.test(serial)) {
-                        alert('El serial no es válido. Solo letras, números o guiones. Mínimo 3 caracteres.');
-                        return;
-                    }
-
-                    if (!nombreExp.test(nombre)) {
-                        alert('El nombre no es válido. Solo letras, numeros y espacios, mínimo 2 caracteres.');
-                        return;
-                    }
-
-                    if (foto === '') {
-                        alert('Debes seleccionar una imagen para el objeto.');
-                        return;
-                    }
-
-                    if (caracteristicas === '') {
-                        alert('Debes escribir las características del objeto.');
-                        return;
-                    }
-
-                    if (!marca || !estado || !tipo) {
-                        alert('Debes seleccionar marca, estado y tipo de objeto.');
+                        
+                            mostrarModal('mistake', 'El serial no es valido. Solo letras, numeros y guiones. Mínimo 3 caracteres.');
+                            
+                            
+                            return;
+                        }
+                        
+                        if (!nombreExp.test(nombre)) {
+                            mostrarModal('mistake', 'El nombre no es valido. Solo letras, numeros y espacios, mínimo 2 caracteres.');
+                            return;
+                        }
+                        
+                        if (foto === '') {
+                            mostrarModal('mistake', 'Debes seleccionar una imagen para el objeto.');
+                            
+                            return;
+                        }
+                        
+                        if (caracteristicas === '') {
+                            mostrarModal('mistake', 'Debes escribir las características del objeto..');
+                            return;
+                        }
+                        
+                        if (!marca || !estado || !tipo) {
+                            mostrarModal('mistake', 'Debes seleccionar marca, estado y tipo de objeto..');
                         return;
                     }
 

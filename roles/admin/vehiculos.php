@@ -1,6 +1,7 @@
 <?php
 session_start();
 require_once('../../database/database.php');
+include 'components/alert.php';
 $conexion = new database;
 $con = $conexion->conectar();
 
@@ -20,8 +21,14 @@ if (isset($_POST['submitmarca'])) {
     $existe_marca = $check_marca->fetch(PDO::FETCH_ASSOC);
 
     if ($existe_marca) {
-        echo "<script>alert('La marca ya existe en el sistema');
-        window.location.href = 'vehiculos.php';</script>";
+        echo "
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                mostrarModal('mistake', 'la marca ya existe en el sistema','vehiculos.php');
+            });
+        </script>";
+        exit();
+        
     } else {
         $marca = $con->prepare("INSERT INTO marca (nombre_marca,id_tipo_marca) VALUES (:nombre_marca, :id_tipo_marca)");
         $marca->bindParam(':nombre_marca', $nom_marca);
@@ -45,15 +52,25 @@ if (isset($_POST['modelo'])) {
     $existe_modelo = $check_modelo->fetch(PDO::FETCH_ASSOC);
 
     if ($existe_modelo) {
-        echo "<script>alert('El modelo ya existe en el sistema');
-        window.location.href = 'vehiculos.php';</script>";
+        echo "
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                mostrarModal('mistake', 'Modelo ya existente', 'vehiculos.php');
+            });
+        </script>";
+        exit();
     } else {
         $modelo = $con->prepare("INSERT INTO modelo (fecha_modelo) VALUES (:fecha_modelo)");
         $modelo->bindParam(':fecha_modelo', $nom_modelo);
 
         if ($modelo->execute()){
-            echo "<script>alert('Modelo agregado correctamente');
-            window.location.href = 'vehiculos.php';</script>";
+            echo "
+            <script>
+                document.addEventListener('DOMContentLoaded', function () {
+                    mostrarModal('success', 'Modelo agregado correctamente', 'vehiculos.php');
+                });
+            </script>";
+        exit();
         }
     }
 }

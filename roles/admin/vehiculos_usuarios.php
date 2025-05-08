@@ -1,6 +1,7 @@
 <?php
-include('../../database/database.php');
 session_start();
+include('../../database/database.php');
+include('./components/alert.php');
 $conexion = new database;
 $con = $conexion->conectar();
 $codigo = $_SESSION['documento'];
@@ -20,11 +21,21 @@ if (isset($_POST['eliminar'])) {
         $eliminar->bindParam(':id_placa', $id_placa);
 
         if ($eliminar->execute()) {
-            echo "<script>alert('Vehiculo eliminado correctamente');
-            window.location.href = 'vehiculos.php';</script>";
+             echo "
+            <script>
+                document.addEventListener('DOMContentLoaded', function () {
+                    mostrarModal('success', 'Vehiculo eliminado correctamente', 'vehiculos.php');
+                });
+            </script>";
+            exit();
         } else {
-            echo "<script>alert('Error al eliminar el vehiculo');
-            window.location.href = 'vehiculos.php';</script>";
+            echo "
+            <script>
+                document.addEventListener('DOMContentLoaded', function () {
+                    mostrarModal('mistake', 'Errror al elminar el vehiculo', 'vehiculos.php');
+                });
+            </script>";
+            exit();
         }
     } else {
         echo "<script>alert('Contraseña de administrador incorrecta');
@@ -36,8 +47,13 @@ if (isset($_POST['eliminar'])) {
 $id_documento = isset($_POST['user_id']) ? $_POST['user_id'] : (isset($_GET['user_id']) ? $_GET['user_id'] : '');
 
 if (empty($id_documento)) {
-    echo "<script>alert('No se ha especificado un usuario'); window.location.href = 'vehiculos.php';</script>";
-    exit;
+    echo "
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            mostrarModal('mistake', 'No se ha especificado un usuario', 'vehiculos.php');
+        });
+    </script>";
+    exit();
 }
 
 
@@ -47,8 +63,13 @@ $consulta_usuario->execute();
 $usuario = $consulta_usuario->fetch(PDO::FETCH_ASSOC);
 
 if (!$usuario) {
-    echo "<script>alert('Usuario no encontrado'); window.location.href = 'vehiculos.php';</script>";
-    exit;
+    echo "
+            <script>
+                document.addEventListener('DOMContentLoaded', function () {
+                    mostrarModal('mistake', 'Usuario no encontrado', 'vehiculos.php');
+                });
+            </script>";
+            exit();
 }
 
 $registrosPorPagina = 10;

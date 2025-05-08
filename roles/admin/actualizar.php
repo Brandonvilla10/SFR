@@ -1,8 +1,9 @@
 <?php
+session_start();
 include('../../database/database.php');
+include 'components/alert.php';
 $conexion = new database;
 $con = $conexion->conectar();
-session_start();
 
 $documentoVentana = $_GET['documento'];
 
@@ -70,17 +71,19 @@ if (isset($_POST['submit'])) {
             $actualizacion->execute($params);
 
 
-            echo "<script> window.location.href = 'actualizar.php?documento=" . $documentoVentana . "&route=" . $ruta . "';</script>";
+          
+            echo "
+            <script>
+                document.addEventListener('DOMContentLoaded', function () {
+                    mostrarModal('success', 'Usuario actualizado con exito', '$ruta');
+                });
+            </script>";
+            exit();
         } else {
             echo "No hay datos para actualizar.";
         }
-
-        
     } catch (PDOException $e) {
-     
     }
-
-
 }
 
 // Consultar foto de perfil
@@ -163,8 +166,8 @@ $usu = "../../uploads/usu.png";
                                     <label for="" class="form-label">correo</label>
                                     <input type="text" class="form-input caracteristica" name="correo" placeholder="Escribe aquí..." value="<?php echo $fila['correo']; ?>">
 
-                                   
-                                    
+
+
                                     <div class="form-group">
 
                                         <label for="" class="form-label">Estado</label>
@@ -172,7 +175,7 @@ $usu = "../../uploads/usu.png";
                                             <option value="<?php echo $fila['id_estado']; ?>">
                                                 <?php echo $fila['estado']; ?>
                                             </option>
-                                            
+
 
                                             <?php
                                             $sqlrol = $con->prepare("SELECT * FROM estado WHERE id_estado != $fila[id_estado];");
@@ -424,5 +427,5 @@ $usu = "../../uploads/usu.png";
             })
         </script>
     </body>
-    
+
 </html>

@@ -1,7 +1,9 @@
 <?php
 include('../../database/database.php');
 session_start();
+include('component/alert.php');
 $documentoBuscado = $_SESSION['documento'] ?? '';
+
 ?>
 
 <!DOCTYPE html>
@@ -51,7 +53,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const contenedor = document.getElementById("resultadoNotificaciones");
 
     function buscar(documento) {
-        fetch("buscar_notificaciones.php?documento=" + encodeURIComponent(documento))
+        fetch("fetch/buscar_notificaciones.php?documento=" + encodeURIComponent(documento))
             .then(res => res.text())
             .then(data => contenedor.innerHTML = data)
             .catch(err => contenedor.innerHTML = "<p>Error al cargar notificaciones.</p>");

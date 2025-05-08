@@ -45,7 +45,7 @@ try {
             echo '<div class="notificacion">';
             echo '<h4>' . htmlspecialchars($notif['tipo_evento'] . ' en ' . $notif['tabla_afectada']) . '</h4>';
             echo '<p>' . htmlspecialchars($notif['descripcion']) . '</p>';
-            echo '<small>Realizado por: ' . htmlspecialchars($notif['documento_generador']) . '</small>';
+            
             echo '<time>' . date("d/m/Y H:i", strtotime($notif['fecha'])) . '</time>';
             echo '</div>';
         }

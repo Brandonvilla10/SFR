@@ -86,8 +86,7 @@ $consulta->execute();
                 <h1>Marcas</h1>
                 <p>Administra las marcas segun tu necesidad</p>
             </div>
-            <button class="buscar_objeto_titulo" onclick="plantilla()">Buscar Vehiculos</button>
-            <button class="buscar_objeto_titulo" onclick="plantilla2()">Agregar</button>
+
 
         </div>
 
@@ -102,7 +101,7 @@ $consulta->execute();
             <?php } else { ?>
                 <div class="encabezado">
                     <h4>ID</h4>
-                    <h4>Nombre Marca</h4>,
+                    <h4>Nombre Marca</h4>
                     <h4>Accion</h4>
                 </div>      
                 <?php foreach ($consulta as $filas) { ?>

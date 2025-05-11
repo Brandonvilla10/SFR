@@ -165,6 +165,22 @@ $rol = $_SESSION['rol_name'];
                     </div>
                 </div>
             </div>
+            <div class="object-card" onclick="window.location.href='apartado_datos/codigoQR.php'">
+                <div class="object-header">
+                    <div class="object-icon">
+                        <img src="../../assets/img/datos/datos.png">
+                    </div>
+                    <div class="object-title">
+                        <div class="object-name">Generar  QR</div>
+                    </div>
+                </div>
+                <div class="object-details">
+                    <div class="detail-item">
+                        <span class="detail-label">Podras crear documentos PDF con el QR de la persona</span>
+                        <i class="bi bi-arrow-right"></i>
+                    </div>
+                </div>
+            </div>
         </div>
         </div>
 

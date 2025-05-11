@@ -3,6 +3,7 @@ session_start();
 require_once('../../database/database.php');
 $conexion = new database;
 $con = $conexion->conectar();
+include("components/alert.php");
 
 $codigo = $_SESSION['documento'];
 $nombre = explode(" ", $_SESSION['nombre'])[0];
@@ -30,6 +31,69 @@ $consulta->bindParam(':start', $start_record, PDO::PARAM_INT);
 $consulta->bindParam(':limit', $limite_registros, PDO::PARAM_INT);
 $consulta->execute();
 
+
+if (isset($_POST['eliminarSubmir'])) {
+    $documentoUsuario = $_POST['documentoUsuario'];
+    $passwordAdmin = $_POST['passwordAdmin'];
+
+    $consultaAdmin = $con->prepare("SELECT contraseña FROM usuario WHERE id_documento = :documento AND id_rol = 1");
+    $consultaAdmin->bindParam(':documento', $codigo);
+    $consultaAdmin->execute();
+    $result = $consultaAdmin->fetch(PDO::FETCH_ASSOC);
+
+
+
+    if ($result && $passwordAdmin && password_verify($passwordAdmin, $result['contraseña'])) {
+
+        $usuarioDesactivar = $con->prepare("UPDATE usuario SET id_estado = 2 WHERE id_documento = :documento");
+        $usuarioDesactivar->bindParam(':documento', $documentoUsuario);
+        $usuarioDesactivar->execute();
+
+
+        if ($usuarioDesactivar->rowCount() == 0) {
+            echo "
+            <script>
+               document.addEventListener('DOMContentLoaded', function () {
+                   mostrarModal('mistake', 'Usuario No Encontrado', 'usuarios.php');
+               });
+           </script>";
+        } else {
+            echo "
+            <script>
+               document.addEventListener('DOMContentLoaded', function () {
+                   mostrarModal('success', 'Usuario Eliminado', 'usuarios.php');
+               });
+           </script>";
+        }
+    } else {
+
+        echo "
+        <script>
+           document.addEventListener('DOMContentLoaded', function () {
+               mostrarModal('mistake', 'Contraseña Mal Digitada', 'usuarios.php');
+           });
+       </script>";
+    }
+}
+
+if(isset( $_POST["agregarSubmit"])) {
+
+    $id_documento = $_POST['id_documento'];
+    $nombre_completo = $_POST['nombre_completo'];
+    $correo = $_POST['correo'];
+    $contraseña = $_POST['contraseña'];
+    $id_rol = $_POST['id_rol'];
+
+    $hasPassword = password_hash($contraseña, PASSWORD_DEFAULT);
+
+    $nuevoUser = $con->prepare("INSERT INTO usuario (id_documento, nombre_completo, correo, contraseña, id_estado,id_rol) VALUES (:id_documento, :nombre_completo, :correo, :contrasena,1, :id_rol)");
+    $nuevoUser->bindParam(':id_documento', $id_documento);
+    $nuevoUser->bindParam(':nombre_completo', $nombre_completo);
+    $nuevoUser->bindParam(':correo', $correo);
+    $nuevoUser->bindParam(':contrasena', $hasPassword);
+    $nuevoUser->bindParam(':id_rol', $id_rol);
+    $nuevoUser->execute(); 
+}
 
 ?>
 
@@ -66,7 +130,7 @@ $consulta->execute();
 
                 <div class="EliminarUsuarioDiv">
                     <button class="buscar_objeto_titulo" id="botonEliminar" type="button">
-                        <p id="textoEliminar">+</p>Eliminar Usuario
+                        <p id="textoEliminar"></p>Eliminar Usuario
                     </button>
                 </div>
 
@@ -75,25 +139,110 @@ $consulta->execute();
                         <p id="textoAbrir">+</p>Agregar Usuario
                     </button>
                 </div>
-            <!-- el modal empieza a partid de aca -->
-        </div>
-        
-        
-        <div class="EliminarUsuario mostrar" id="EliminarUsuario" style="display: flex; opacity: 1;">
-        <form class="formEliminar" method="POST">
-            <p class="EliminarTitulo">Eliminar Usuario</p>
-            <p class="messageelimnar">Tenga En Cuenta Que Los Cambios No Son Reversibles.</p>
-
-            <span>Documento Del Usuario</span>
-            <input name="documentoUsuario" required="" type="number" class="documentoUsuario" placeholder="Documento Del Usuario">
-            <span>Contraseña Administrador</span>
-
-            <input name="contraseñaAdmin" required="" type="text" class="contraseñaAdmin" placeholder="Contraseña Administrador">
-
-
-            <input type="submit" value="Eliminar" name="Eliminar" class="EliminarUsuarioboton">
-        </form>
+                <!-- el modal empieza a partid de aca -->
             </div>
+
+
+            <!-- Modal para Eliminar Usuario -->
+            <div class="modalEliminar" id="modalEliminar">
+                <div class="contenedorModalEliminar">
+
+                    <div class="headerModalEliminar">
+                        <h3>Verificación de Administrador</h3>
+                        <button class="cerrarModalEliminar" id="cerrarModalEliminar">&times; </button>
+                    </div> <!-- fin del heeader para eliminar usuario -->
+
+                    <div class="cuerpoModalEliminar">
+
+                        <form id="formEliminarUsuario" method="post"> <!-- aqui inicia el formulario pues para hacer todo el proceso -->
+
+                            <div class="campo-formulario">
+                                <label for="documentoUsuario">Documento del Usuario a Eliminar</label>
+                                <input type="text" id="documentoUsuario" name="documentoUsuario" placeholder="Ingrese el documento" required>
+                            </div>
+
+                            <div class="campo-formulario">
+                                <label for="passwordAdmin">Contraseña de Administrador.</label>
+                                <div class="password-container">
+                                    <input type="password" id="passwordAdmin" name="passwordAdmin" placeholder="Ingrese su contraseña" required>
+                                    <button type="button" class="toggle-password" id="togglePassword">
+                                        <i class="bi bi-eye"></i>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="botonesModalEliminar">
+                                <button type="button" class="cancelar-btn" id="cancelarEliminar">Cancelar</button>
+                                <button type="submit" name="eliminarSubmir" class="eliminar-btn">Eliminar Usuario</button>
+                            </div>
+                        </form>
+
+                    </div>
+                </div>
+            </div> <!-- fin del container main del modal eliminar usuario -->
+
+            <!------------------------------ fin del modal para eliminar usuario ------------------------------------ -->
+
+
+
+            <!-- inicio del modal para agregar usuario -->
+
+            
+            <div class="modalAgregar" id="modalAgregar">
+                <div class="contenedorModalAgregar">
+                    <div class="headerModalAgregar">
+                        <h3>Agregar Nuevo Usuario</h3>
+                        <button class="cerrarModalAgregar" id="cerrarModalAgregar">&times;</button>
+                    </div>
+                    <div class="cuerpoModalAgregar">
+                        <form id="formAgregarUsuario" method="post">
+                            <div class="campo-formulario">
+                                <label for="id_documento">Documento</label>
+                                <input type="number" id="id_documento" name="id_documento" placeholder="Ingrese el documento" required>
+                            </div>
+                            <div class="campo-formulario">
+                                <label for="nombre_completo">Nombre Completo</label>
+                                <input type="text" id="nombre_completo" name="nombre_completo" placeholder="Ingrese el nombre completo" required>
+                            </div>
+                            <div class="campo-formulario">
+                                <label for="correo">Correo Electrónico</label>
+                                <input type="email" id="correo" name="correo" placeholder="Ingrese el correo electrónico" required>
+                            </div>
+                            <div class="campo-formulario">
+                                <label for="contraseña">Contraseña</label>
+                                <div class="password-container">
+                                    <input type="password" id="contraseñaCrearUsuario" name="contraseña" placeholder="Ingrese la contraseña" required>
+                                    <button type="button" class="toggle-password" id="togglePasswordAgregar">
+                                        <i class="bi bi-eye"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="campo-formulario">
+                                <label for="id_rol">Asignar Rol</label>
+                                <select id="id_rol" name="id_rol" required>
+                                    <option value="" disabled selected>Seleccione un rol</option>
+                                    <?php
+                                    // Consulta para obtener los roles disponibles
+                                    $consultaRoles = $con->prepare("SELECT id_rol, nombre_rol FROM rol");
+                                    $consultaRoles->execute();
+                                    $roles = $consultaRoles->fetchAll(PDO::FETCH_ASSOC);
+
+                                    foreach ($roles as $rol) {
+                                        echo "<option value='" . $rol['id_rol'] . "'>" . $rol['nombre_rol'] . "</option>";
+                                    }
+                                    ?>
+                                </select>
+                            </div>
+                            <div class="botonesModalAgregar">
+                                <button type="button" class="cancelar-btn" id="cancelarAgregar">Cancelar</button>
+                                <button type="submit" name="agregarSubmit" class="agregar-btn">Agregar Usuario</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+
             <hr class="separador">
             <!-------------------------------- TABLA DE USUARIOS ------------------------------------->
 
@@ -134,16 +283,16 @@ $consulta->execute();
                     <?php
                     $start_page = max(1, $page - 1);
                     $end_page = min($paginas, $page + 1);
-                    
+
                     if ($start_page == 1 && $paginas >= 3) {
                         $end_page = 3;
                     }
-                
+
                     if ($end_page == $paginas && $paginas >= 3) {
                         $start_page = max(1, $paginas - 2);
                     }
 
-                    for ($i = $start_page; $i <= $end_page; $i++): 
+                    for ($i = $start_page; $i <= $end_page; $i++):
                     ?>
                         <a href="?page=<?php echo $i; ?>" class="pag-btn <?php echo ($i == $page) ? 'active' : ''; ?>">
                             <?php echo $i; ?>
@@ -158,38 +307,38 @@ $consulta->execute();
 
 
             <!------------------------------------------------ MODAL DE ELIMINAR USUARIOS ----------------------------------->
-         
-            
+
+
 
         </main>
     </div>
 
     <script>
-        
         //<----------------------------- FILTRO PARA BUSCAR POR EL DOCUMENTO DE LA PERSONA ---------------------------> 
 
         function filtrarPorSerial(serial) {
-                const objetos = document.querySelectorAll('.objetos');
-                const serial_buscado = serial.toUpperCase();
+            const objetos = document.querySelectorAll('.objetos');
+            const serial_buscado = serial.toUpperCase();
 
-                objetos.forEach(objeto => {
-                    const serialElement = objeto.querySelectorAll('h4')[1];
+            objetos.forEach(objeto => {
+                const serialElement = objeto.querySelectorAll('h4')[1];
 
-                    if (serialElement) {
-                        const textoSerial = serialElement.textContent || serialElement.innerText;
+                if (serialElement) {
+                    const textoSerial = serialElement.textContent || serialElement.innerText;
 
-                        if (textoSerial.toUpperCase().includes(serial_buscado)) {
-                            objeto.style.display = '';
-                        } else {
-                            objeto.style.display = '';
-                        }
+                    if (textoSerial.toUpperCase().includes(serial_buscado)) {
+                        objeto.style.display = '';
+                    } else {
+                        objeto.style.display = '';
                     }
-                });
-            }
+                }
+            });
+        }
     </script>
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
-    <script src="./js/crearUsuario.js"></script>
+
+    <script src="./js/modalUsuario.js"></script>
     <script src="./js/buscarUsuario.js"></script>
     <script src="./js/seleccionarVariosUsuario.js"></script>
 

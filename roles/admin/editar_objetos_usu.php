@@ -181,7 +181,7 @@ try {
                                         </option>
 
                                         <?php
-                                        $sql_2 = $con->prepare("SELECT * FROM estado WHERE id_estado != '$consulta_1[id_estado]'");
+                                        $sql_2 = $con->prepare("SELECT * FROM estado WHERE id_estado != '$consulta_1[id_estado]' and id_estado != 3 and id_estado != 4");
                                         $sql_2->execute();
 
                                         $consulta_3 = $sql_2->fetchAll();

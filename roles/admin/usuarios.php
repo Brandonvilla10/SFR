@@ -247,7 +247,7 @@ if(isset( $_POST["agregarSubmit"])) {
             <!-------------------------------- TABLA DE USUARIOS ------------------------------------->
 
             <div class="contenido_tabla">
-                <input class="BOTON_FILTRAR" placeholder="Filtrar usuario por documento" oninput="filtrarPorSerial(this.value)">
+                <input class="BOTON_FILTRAR" placeholder="Filtrar usuario por documento" oninput="filtrarPordocumento(this.value)">
                 <?php if ($consulta->rowCount() == 0) { ?>
                     <div class="notificacion">
                         <h4>No hay usuarios registrados</h4>
@@ -316,7 +316,7 @@ if(isset( $_POST["agregarSubmit"])) {
     <script>
         //<----------------------------- FILTRO PARA BUSCAR POR EL DOCUMENTO DE LA PERSONA ---------------------------> 
 
-        function filtrarPorSerial(serial) {
+        function filtrarPordocumento(serial) {
             const objetos = document.querySelectorAll('.objetos');
             const serial_buscado = serial.toUpperCase();
 

@@ -1,9 +1,9 @@
 <?php
-
+session_start();
 include ("../database/database.php");
+include('../roles/admin/components/alert.php');
 $conexion = new database;
 $con = $conexion->conectar();
-session_start();
 
 if (isset($_FILES['foto'])) {
 
@@ -21,8 +21,11 @@ if (isset($_FILES['foto'])) {
     $fileExt = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
 
     if (in_array($fileExt, $allowedExtensions)) {
+
         if ($fileError === 0) {
+
             if ($fileSize < 3 * 1024 * 1024) {
+
                 $newFileName = $tipo_foto . '_' . uniqid('', true) . "." . $fileExt;
                 $fileDestination = $uploadDir . $newFileName;
 
@@ -38,40 +41,76 @@ if (isset($_FILES['foto'])) {
                         $query->bindParam(':placa', $placa, PDO::PARAM_STR);
 
                         if ($query->execute()) {
-                            header("Location: ../roles/admin/editar_vehiculo.php?placa=$placa");
-                            exit();
-                        } else {
-                            echo "<script>alert('Error al actualizar la foto en la base de datos');
-                            window.location.href = '../roles/admin/editar_vehiculo.php?placa=$placa';</script>";
-                            exit();
+                                echo "
+                                    <script>
+                                        document.addEventListener('DOMContentLoaded', function () {
+                                        mostrarModal('success', 'Imagen actualizada con exito', '../roles/admin/editar_vehiculo.php?placa=$placa');
+                                        });
+                                    </script>";
+                                    exit();
+                           
+                        }else {
+
+                            echo "
+                                <script>
+                                    document.addEventListener('DOMContentLoaded', function () {
+                                    mostrarModal('mistake', 'Error al actualizar la foto en la base de datos', '../roles/admin/editar_vehiculo.php?placa=$placa');
+                                    });
+                                </script>";
+                                exit();
                         }
-                    } else {
-                        echo "<script>alert('No se encontro la placa del vehiculo');
-                        window.location.href = '../roles/admin/vehiculos.php';</script>";
-                        exit();
+
+                    }else {
+                        echo "
+                            <script>
+                                document.addEventListener('DOMContentLoaded', function () {
+                                mostrarModal('mistake', 'No se encontró la placa del vehículo', '../roles/admin/editar_vehiculo.php?placa=$placa');
+                                });
+                            </script>";
+                            exit();
                     }
-                } else {
-                    echo "<script>alert('Error al cargar el archivo, intentalo de nuevo');
-                    window.location.href = '../roles/admin/vehiculos.php';</script>";
-                    exit();
+                }else{
+                    echo "
+                        <script>
+                            document.addEventListener('DOMContentLoaded', function () {
+                            mostrarModal('mistake', 'Error al cargar el archivo, inténtalo de nuevo', '../roles/admin/editar_vehiculo.php?placa=$placa');
+                            });
+                        </script>";
+                        exit();
                 }
             } else {
-                echo "<script>alert('El archivo es demasiado grande. El tamaño maximo permitido es 3MB');
-                window.location.href = '../roles/admin/editar_vehiculo.php?placa=$placa';</script>";
+                echo "
+                    <script>
+                        document.addEventListener('DOMContentLoaded', function () {
+                        mostrarModal('mistake', 'El archivo es demasiado grande. Máximo permitido: 3MB','../roles/admin/editar_vehiculo.php?placa=$placa');
+                        });
+                    </script>";
                 exit();
             }
         } else {
-            echo "<script>alert('Error al cargar el archivo, intentalo de nuevo');
-            window.location.href = '../roles/admin/editar_vehiculo.php?placa=$placa';</script>";
+            echo "
+                <script>
+                    document.addEventListener('DOMContentLoaded', function () {
+                    mostrarModal('mistake', 'Error al cargar el archivo, inténtalo de nuevo', '../roles/admin/editar_vehiculo.php?placa=$placa');
+                    });
+                </script>";
             exit();
         }
     } else {
-        echo "<script>alert('Formato de archivo no permitido. Solo se permiten archivos JPG, JPEG Y PNG');
-        window.location.href = '../roles/admin/editar_vehiculo.php?placa=$placa';</script>";
+        echo "
+            <script>
+                document.addEventListener('DOMContentLoaded', function () {
+                mostrarModal('mistake', 'Formato de archivo no permitido. Solo JPG, JPEG y PNG', '../roles/admin/editar_vehiculo.php?placa=$placa');
+                });
+            </script>";
         exit();
     }
 } else {
-    echo "<script>alert('No se ha seleccionado ningun archivo');
-    window.location.href = '../roles/admin/vehiculos.php';</script>";
+    echo "
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+            mostrarModal('mistake', 'No se ha seleccionado ningún archivo', '../roles/admin/editar_vehiculo.php?placa=$placa');
+            });
+        </script>";
     exit();
 }

@@ -33,13 +33,13 @@ $origen = isset($_GET['origen']) ? $_GET['origen'] : '';
 $user_id = isset($_GET['user_id']) ? $_GET['user_id'] : '';
 
 // Obtener el documento si viene de vehiculos usuario
-$id_documento_preseleccionado = isset($_GET['id_documento']) ? trim($_GET['id_documento']) : '';
 $pagina_retorno = ($origen === 'usuarios') ? "vehiculos_usuarios.php?user_id=$user_id" : 'vehiculos.php';
 
-$usuario = null;
+$usuario = $_GET['user_id'] ?? null;
 
-if (isset($_POST['buscar_usuario'])) {
-    $id_documento = trim($_POST['id_documento']);
+
+if (isset($_POST['buscar_usuario']) || isset($_GET['user_id'])) {
+   $id_documento = isset($_POST['id_documento']) ? trim($_POST['id_documento']) : trim($_GET['user_id']);
 
     $consulta_usuario = $con->prepare("SELECT id_documento, nombre_completo, correo, foto FROM usuario WHERE id_documento = :id_documento");
     $consulta_usuario->bindParam(':id_documento', $id_documento);
@@ -65,7 +65,7 @@ if (isset($_POST['registrar'])) {
     $placa = strtoupper(trim($_POST['placa']));
     $id_documento = trim($_POST['id_documento']);
     $caracteristicas = trim($_POST['caracteristicas']);
-    $id_estado = (int)$_POST['id_estado'];
+    $id_estado = 1; // Estado por defecto
     $id_tipoVehiculo = (int)$_POST['id_tipoVehiculo'];
     $id_marca = (int)$_POST['id_marca'];
     $id_modelo = (int)$_POST['id_modelo'];
@@ -209,22 +209,6 @@ $usuario_foto_path = !empty($usuario['foto']) ? '../../uploads/' . $usuario['fot
                                     <input type="text" class="form-input" id="caracteristicas" name="caracteristicas"
                                            placeholder="Caracteristicas del vehículo">
                                     <button type="button" class="edit-icon"><i class="bi bi-pencil-square"></i></button>
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="id_estado" class="form-label">Estado</label>
-                                    <select class="form-input" id="id_estado" name="id_estado" required>
-                                        <option value="">Seleccione Estado</option>
-                                        <?php
-                                        $consulta_estados = $con->prepare("SELECT * FROM estado ORDER BY estado");
-                                        $consulta_estados->execute();
-                                        $estados = $consulta_estados->fetchAll(PDO::FETCH_ASSOC);
-                                        foreach ($estados as $estado): ?>
-                                            <option value="<?php echo $estado['id_estado']; ?>">
-                                                <?php echo $estado['estado']; ?>
-                                            </option>
-                                        <?php endforeach; ?>
-                                    </select>
                                 </div>
 
                                 <div class="form-group">

@@ -7,6 +7,11 @@ $conexion = new database;
 $con = $conexion->conectar();
 
 $documentoBuscado = $_SESSION['documento'] ?? '';
+
+$documento = $_SESSION['documento']; // o el dato del usuario logueado
+$stmt = $con->prepare("SET @documento_generador = :doc");
+$stmt->bindValue(':doc', $documento);
+$stmt->execute();
 ?>
 
 <!DOCTYPE html>
@@ -63,7 +68,6 @@ $documentoBuscado = $_SESSION['documento'] ?? '';
                 <input type="date" id="fechaFiltro">
 
                 <!-- Botones para aplicar o limpiar filtros -->
-                <button id="filtrarBtn">Filtrar</button>
                 <button id="limpiarFiltrosBtn">Limpiar filtros</button>
             </div>
 
@@ -93,12 +97,32 @@ document.getElementById('toggleFiltros').addEventListener('click', () => {
     }
 });
 
+// Llama a cargarNotificaciones cuando se escribe en el input de documento
+document.getElementById('buscarDocumento').addEventListener('input', () => cargarNotificaciones());
+
+// Llama a cargarNotificaciones cuando se selecciona un módulo
+document.getElementById('tablaAfectada').addEventListener('change', () => cargarNotificaciones());
+
+// Llama a cargarNotificaciones cuando se selecciona una fecha
+document.getElementById('fechaFiltro').addEventListener('change', () => cargarNotificaciones());
+
+// Si tienes botón de limpiar filtros, puedes dejarlo así:
+document.getElementById('limpiarFiltrosBtn').addEventListener('click', () => {
+    document.getElementById('buscarDocumento').value = '';
+    document.getElementById('tablaAfectada').value = '';
+    document.getElementById('fechaFiltro').value = '';
+    cargarNotificaciones();
+});
+
+// Llama a cargarNotificaciones al cargar la página para mostrar resultados iniciales
+window.addEventListener('DOMContentLoaded', () => cargarNotificaciones());
+
 // Función para cargar notificaciones con filtros y paginación
 function cargarNotificaciones(pagina = 1) {
     // Obtiene los valores de los campos de filtro
-    const documento = document.getElementById('buscarDocumento').value; // Documento buscado
-    const tabla = document.getElementById('tablaAfectada').value; // Módulo seleccionado
-    const fecha = document.getElementById('fechaFiltro').value; // Fecha seleccionada
+    const documento = document.getElementById('buscarDocumento').value;
+    const tabla = document.getElementById('tablaAfectada').value;
+    const fecha = document.getElementById('fechaFiltro').value;
 
     // Construye los parámetros de la solicitud
     const params = new URLSearchParams({
@@ -111,21 +135,23 @@ function cargarNotificaciones(pagina = 1) {
     // Muestra un mensaje de carga mientras se obtienen los datos
     document.getElementById('resultadoNotificaciones').innerHTML = '<p>Cargando notificaciones...</p>';
 
-    // Realiza una solicitud Fetch al servidor para obtener las notificaciones
+    // Aquí va el bloque que mencionas:
     fetch(`fetch/buscar_notificaciones.php?${params.toString()}`)
-        .then(res => res.text()) // Convierte la respuesta a texto
+        .then(res => res.text())
         .then(data => {
-            // Inserta los datos recibidos en el contenedor de resultados
             document.getElementById('resultadoNotificaciones').innerHTML = data;
+            // Eventos para los botones de paginación
+            document.querySelectorAll('.pagina-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    cargarNotificaciones(this.getAttribute('data-pagina'));
+                });
+            });
         })
         .catch(error => {
-            // Muestra un mensaje de error si falla la solicitud
             document.getElementById('resultadoNotificaciones').innerHTML = '<p>Error al cargar notificaciones: ' + error + '</p>';
         });
 }
 
-// Evento para el botón "Filtrar"
-document.getElementById('filtrarBtn').addEventListener('click', () => cargarNotificaciones(1));
 
 // Evento para el botón "Limpiar filtros"
 document.getElementById('limpiarFiltrosBtn').addEventListener('click', () => {

@@ -1,16 +1,26 @@
+/* Reset de márgenes y rellenos para todos los elementos */
+
 * {
     padding: 0;
     margin: 0;
 }
 
+
+/* Contenedor principal con grid para sidebar y contenido */
+
 .container_grid {
     display: grid;
-    grid-template: "sidebar main" 100px "sidebar main" auto / 130px auto;
+    /* Define dos áreas: sidebar y main, con dos filas (100px y auto) y dos columnas (130px y el resto) */
+    grid-template: "sidebar main" 100px "sidebar main" auto px auto;
     width: 100vw;
     height: 100dvh;
+    /* Usa la altura dinámica de la ventana */
     max-height: 1000px;
     overflow-x: hidden;
 }
+
+
+/* Contenedor de las notificaciones, centrado y con ancho del 90% */
 
 .contenedor-notificaciones {
     justify-self: center;
@@ -18,6 +28,9 @@
     border-collapse: collapse;
     overflow-y: auto;
 }
+
+
+/* Tarjeta individual de notificación */
 
 .notificacion {
     background-color: #f2f2f2;
@@ -29,20 +42,32 @@
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
 
+
+/* Título de la notificación */
+
 .notificacion h4 {
     margin: 0 10px 0;
     color: #333;
 }
 
+
+/* Párrafo de la notificación */
+
 .notificacion p {
     margin: 0;
 }
+
+
+/* Fecha de la notificación */
 
 .notificacion time {
     font-size: 0.8em;
     color: #777;
     margin-top: 5px;
 }
+
+
+/* Estilo del input de búsqueda */
 
 .buscar_documento_con_icono {
     text-align: start;
@@ -56,15 +81,8 @@
     margin: 30px 0 15px 80px;
 }
 
-.buscar_documento_con_icono ion-icon {
-    position: absolute;
-    right: 12px;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 20px;
-    color: #666;
-    pointer-events: none;
-}
+
+/* Grid para mostrar varias notificaciones */
 
 .grid-notificaciones {
     display: grid;
@@ -72,11 +90,15 @@
     row-gap: 50px;
 }
 
+
+/* Media queries para adaptar el diseño a pantallas pequeñas */
+
 @media (min-width:320px),
 (max-width:320px) {
     .container_grid {
         display: grid;
-        grid-template: "main" 90px "main" auto "sidebar" 80px /auto;
+        /* En móviles, sidebar abajo y main arriba */
+        grid-template: "main" 90px "main" auto "sidebar" 80px;
         width: 100vw;
         height: 100vh;
     }
@@ -91,7 +113,7 @@
 @media (min-width:400px) {
     .container_grid {
         display: grid;
-        grid-template: "main" 90px "main" auto "sidebar" 80px /auto;
+        grid-template: "main" 90px "main" auto "sidebar" 80px;
         width: 100vw;
         height: 100vh;
     }
@@ -107,6 +129,7 @@
 @media (min-width: 767px) {
     .container_grid {
         display: grid;
+        /* Sidebar a la izquierda y main a la derecha */
         grid-template: "sidebar main" 100px "sidebar main" auto / auto 1fr;
         width: 100vw;
         height: 100vh;
@@ -118,7 +141,7 @@
     .grid_contenido_plantilla {
         grid-area: main;
     }
-    /* NUEVA PARTE DE TODO EL CONTENIDO APARTE DE LA PLANTILLA FLOTANTE */
+    /* Estilo para el título y separador en pantallas grandes */
     .titulo {
         justify-self: center;
         width: 90%;
@@ -133,7 +156,7 @@
 }
 
 
-/* lo que tenia juan ///////////////////////////////////////////////////////////////// */
+/* Ajustes de grid para tablets */
 
 @media (max-width: 1024px) {
     .grid-notificaciones {
@@ -142,12 +165,18 @@
     }
 }
 
+
+/* Ajustes de grid para móviles */
+
 @media (max-width: 600px) {
     .grid-notificaciones {
         grid-template-columns: 1fr;
         row-gap: 50px;
     }
 }
+
+
+/* Contenedor de notificaciones con fondo y bordes redondeados */
 
 .contenedor-notificaciones {
     margin: 15px 0;
@@ -156,6 +185,9 @@
     border-radius: 8px;
 }
 
+
+/* Grid de notificaciones con columnas automáticas y separación */
+
 .grid-notificaciones {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -163,18 +195,31 @@
     margin-top: 20px;
 }
 
+
+/* Tarjeta de notificación con fondo blanco y sombra */
+
 .notificacion {
     background-color: white;
     border-left: 4px solid #3498db;
-    padding: 12px;
-    border-radius: 4px;
+    padding: 18px 20px;
+    border-radius: 6px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    min-width: 320px;
+    max-width: 100%;
+    word-break: break-word;
+    font-size: 1.05em;
 }
+
+
+/* Título de la notificación en tarjetas */
 
 .notificacion h4 {
     margin-top: 0;
     color: #2c3e50;
 }
+
+
+/* Fecha de la notificación en tarjetas */
 
 .notificacion time {
     display: block;
@@ -183,12 +228,18 @@
     font-size: 0.85em;
 }
 
+
+/* Filtros opcionales con fondo y bordes redondeados */
+
 #filtrosOpcionales {
     background-color: #f3f4f6;
     padding: 15px;
     border-radius: 5px;
     margin-top: 10px;
 }
+
+
+/* Estilos generales para select, input y botones */
 
 select,
 input[type="date"],
@@ -201,6 +252,9 @@ button {
     margin-bottom: 10px;
 }
 
+
+/* Botón principal */
+
 button {
     background-color: #3498db;
     color: white;
@@ -208,6 +262,52 @@ button {
     cursor: pointer;
 }
 
+
+/* Efecto hover para el botón */
+
 button:hover {
     background-color: #2980b9;
+}
+
+.pagina-btn {
+    background: #fff;
+    color: #3498db;
+    border: 1px solid #3498db;
+    margin: 0 2px;
+    padding: 6px 14px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+}
+
+.pagina-btn.active,
+.pagina-btn:hover {
+    background: #3498db;
+    color: #fff;
+}
+
+.siguiente-btn {
+    font-weight: bold;
+}
+
+.paginacion-tabla {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2px;
+    margin: 20px 0 10px 0;
+}
+
+.filtros-flex {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    margin-bottom: 18px;
+    flex-wrap: wrap;
+}
+
+.filtros-flex input,
+.filtros-flex select,
+.filtros-flex button {
+    margin: 0;
 }

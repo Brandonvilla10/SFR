@@ -22,10 +22,58 @@ $consulta_total->execute();
 $total_filas = $consulta_total->fetchColumn();
 $paginas = ceil($total_filas / $limite_registros);
 
-$consulta = $con->prepare("SELECT * FROM tipovehiculo LIMIT :start, :limit");
+$consulta = $con->prepare("SELECT * FROM tipovehiculo WHERE id_estado != 4 LIMIT :start, :limit");
 $consulta->bindParam(':start', $start_record, PDO::PARAM_INT);
 $consulta->bindParam(':limit', $limite_registros, PDO::PARAM_INT);
 $consulta->execute();
+
+include('../components/modaEliminar.php');
+
+if (isset($_POST["eliminarSubmir"])) {
+
+    $identificadortipovehiculo = $_POST['identificador'];
+    $passwordAdmin = $_POST['passwordAdmin'];
+
+    $consultaAdmin = $con->prepare("SELECT contraseña FROM usuario WHERE id_documento = :documento AND id_rol = 1");
+    $consultaAdmin->bindParam(':documento', $codigo);
+    $consultaAdmin->execute();
+    $result = $consultaAdmin->fetch(PDO::FETCH_ASSOC);
+
+
+
+    if ($result && $passwordAdmin && password_verify($passwordAdmin, $result['contraseña'])) {
+
+        $marcaDesactivar = $con->prepare("UPDATE tipovehiculo SET id_estado = 4 WHERE id_tipovehiculo = :identificador");
+        $marcaDesactivar->bindParam(':identificador', $identificadortipovehiculo);
+        $marcaDesactivar->execute();
+
+
+        if ($marcaDesactivar->rowCount() == 0) {
+            echo "
+            <script>
+               document.addEventListener('DOMContentLoaded', function () {
+                   mostrarModal('mistake', 'tipo Vehiculo No Encontrado', 'tipoVeh.php');
+               });
+           </script>";
+        } else {
+            echo "
+            <script>
+               document.addEventListener('DOMContentLoaded', function () {
+                   mostrarModal('success', 'tipo Vehiculo Eliminado', 'tipoVeh.php');
+               });
+           </script>";
+        }
+    } else {
+
+        echo "
+        <script>
+           document.addEventListener('DOMContentLoaded', function () {
+               mostrarModal('mistake', 'Contraseña Mal Digitada',  'tipoVeh.php' );
+           });
+       </script>";
+    }
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -39,6 +87,7 @@ $consulta->execute();
     <link rel="stylesheet" href="css/marcas.css">
     <link rel="stylesheet" href="asideBar/asidebar.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="../components/modaEliminar.css">
 
 </head>
 
@@ -54,6 +103,7 @@ $consulta->execute();
                     <h1>Tipos de vehiculos</h1>
                     <p>Administra todas los tipos segun necesites</p>
                 </div>
+                <button class="buscar_objeto_titulo" id="abrirEliminar">Eliminar Tipo Vehiculo</button>
                 <button class="buscar_objeto_titulo">Crear nuevo tipo</button>
             </div>
 
@@ -110,5 +160,13 @@ $consulta->execute();
                 </div>
             </div>
 
+            <script>
+                const abrirEliminar = document.getElementById('abrirEliminar');
 
+                document.addEventListener('DOMContentLoaded', function() {
+                    abrirEliminar.addEventListener('click', function() {
+                        abrir("Identificador Del Tipo De Vehiculo", 2, "Digite El Identificador Del Tipo De Vehiculo", "Eliminar Tipo De Vehiculo");
+                    });
+                });
+            </script>
             <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>

@@ -28,13 +28,12 @@ if (isset($_POST['submitmarca'])) {
             });
         </script>";
         exit();
-        
     } else {
         $marca = $con->prepare("INSERT INTO marca (nombre_marca,id_tipo_marca) VALUES (:nombre_marca, :id_tipo_marca)");
         $marca->bindParam(':nombre_marca', $nom_marca);
         $marca->bindParam(':id_tipo_marca', $tipo_marca);
 
-        if ($marca->execute()){
+        if ($marca->execute()) {
             echo "<script>alert('Marca agregada correctamente');
             window.location.href = 'vehiculos.php';</script>";
         }
@@ -63,14 +62,14 @@ if (isset($_POST['modelo'])) {
         $modelo = $con->prepare("INSERT INTO modelo (fecha_modelo) VALUES (:fecha_modelo)");
         $modelo->bindParam(':fecha_modelo', $nom_modelo);
 
-        if ($modelo->execute()){
+        if ($modelo->execute()) {
             echo "
             <script>
                 document.addEventListener('DOMContentLoaded', function () {
                     mostrarModal('success', 'Modelo agregado correctamente', 'vehiculos.php');
                 });
             </script>";
-        exit();
+            exit();
         }
     }
 }
@@ -100,6 +99,7 @@ $consulta->execute();
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -108,89 +108,90 @@ $consulta->execute();
     <link rel="stylesheet" href="css/vehiculos.css">
     <link rel="stylesheet" href="asideBar/asidebar.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    
+
 </head>
+
 <body>
-<div class="container_grid">
-    <aside class="aside_barra">
-        <?php include ('asideBar/asideBar.php') ?>
-    </aside>
+    <div class="container_grid">
+        <aside class="aside_barra">
+            <?php include('asideBar/asideBar.php') ?>
+        </aside>
 
-    <main class="grid_contenido_plantilla">
-        <div class="titulo">
-            <div>
-                <h1>Vehiculos</h1>
-                <p>Administra los vehiculos segun tu necesidad</p>
-            </div>
-            <button class="buscar_objeto_titulo" onclick="plantilla()">Buscar Vehiculos</button>
-            <button class="buscar_objeto_titulo" onclick="plantilla2()">Agregar</button>
-
-        </div>
-
-        <hr class="separador">
-        <div class="contenido_tabla">
-            <input class="BOTON_FILTRAR" placeholder="Filtrar vehiculo por placa" oninput="filtrarPorPlaca(this.value)">
-            
-            <?php if ($consulta->rowCount() == 0) { ?>
-                <div class="notificacion">
-                    <h4>No hay vehiculos registrados</h4>
+        <main class="grid_contenido_plantilla">
+            <div class="titulo">
+                <div>
+                    <h1>Vehiculos</h1>
+                    <p>Administra los vehiculos segun tu necesidad</p>
                 </div>
-            <?php } else { ?>
-                <div class="encabezado">
-                    <h4>Vehiculo</h4>
-                    <h4>Placa</h4>
-                    <h4>DNI Dueño</h4>
-                    <h4>Nombre Propietario</h4>
-                    <h4>Estado</h4>
-                    <h4>Accion</h4>
-                </div>      
-                <?php foreach ($consulta as $filas) { ?>
-                <div class="vehiculos">
-                    <h4><img src="../../uploads/<?php echo $filas['veh_pic'] ?>" alt="img" height="60px" width="60px" onerror="this.src='../../uploads/default_vehiculos.png'"></h4>
-                    <h4><?php echo $filas['id_placa']; ?></h4>
-                    <h4><?php echo $filas['id_documento']; ?></h4>
-                    <h4><?php echo $filas['nombre_completo']; ?></h4>
-                    <h4><?php echo $filas['estado']; ?></h4>
-                    <h4><ion-icon name="create-outline" size="large" onclick="window.location.href='editar_vehiculo.php?placa=<?php echo $filas['id_placa']; ?>'"></ion-icon></h4>
-                </div>  
-                <?php } ?>
-            <?php } ?>
+                <button class="buscar_objeto_titulo" onclick="plantilla()">Buscar Vehiculos</button>
+                <button class="buscar_objeto_titulo" onclick="plantilla2()">Agregar</button>
 
-            <div class="paginacion">
-                <?php if ($page > 1): ?>
-                    <a href="?page=<?php echo $page - 1; ?>" class="pag-btn">&laquo; Anterior</a>
-                <?php endif; ?>
-
-                <?php
-                $start_page = max(1, $page - 1);
-                $end_page = min($paginas, $page + 1);
-                
-                if ($start_page == 1 && $paginas >= 3) {
-                    $end_page = 3;
-                }
-            
-                if ($end_page == $paginas && $paginas >= 3) {
-                    $start_page = max(1, $paginas - 2);
-                }
-                
-                for ($i = $start_page; $i <= $end_page; $i++): 
-                ?>
-                    <a href="?page=<?php echo $i; ?>" class="pag-btn <?php echo ($i == $page) ? 'active' : ''; ?>">
-                        <?php echo $i; ?>
-                    </a>
-                <?php endfor; ?>
-
-                <?php if ($page < $paginas): ?>
-                    <a href="?page=<?php echo $page + 1; ?>" class="pag-btn">Siguiente &raquo;</a>
-                <?php endif; ?>
             </div>
-        </div>
+
+            <hr class="separador">
+            <div class="contenido_tabla">
+                <input class="BOTON_FILTRAR" placeholder="Filtrar vehiculo por placa" oninput="filtrarPorPlaca(this.value)">
+
+                <?php if ($consulta->rowCount() == 0) { ?>
+                    <div class="notificacion">
+                        <h4>No hay vehiculos registrados</h4>
+                    </div>
+                <?php } else { ?>
+                    <div class="encabezado">
+                        <h4>Vehiculo</h4>
+                        <h4>Placa</h4>
+                        <h4>DNI Dueño</h4>
+                        <h4>Nombre Propietario</h4>
+                        <h4>Estado</h4>
+                        <h4>Accion</h4>
+                    </div>
+                    <?php foreach ($consulta as $filas) { ?>
+                        <div class="vehiculos">
+                            <h4><img src="../../uploads/<?php echo $filas['veh_pic'] ?>" alt="img" height="60px" width="60px" onerror="this.src='../../uploads/default_vehiculos.png'"></h4>
+                            <h4><?php echo $filas['id_placa']; ?></h4>
+                            <h4><?php echo $filas['id_documento']; ?></h4>
+                            <h4><?php echo $filas['nombre_completo']; ?></h4>
+                            <h4><?php echo $filas['estado']; ?></h4>
+                            <h4><ion-icon name="create-outline" size="large" onclick="window.location.href='editar_vehiculo.php?placa=<?php echo $filas['id_placa']; ?>'"></ion-icon></h4>
+                        </div>
+                    <?php } ?>
+                <?php } ?>
+
+                <div class="paginacion">
+                    <?php if ($page > 1): ?>
+                        <a href="?page=<?php echo $page - 1; ?>" class="pag-btn">&laquo; Anterior</a>
+                    <?php endif; ?>
+
+                    <?php
+                    $start_page = max(1, $page - 1);
+                    $end_page = min($paginas, $page + 1);
+
+                    if ($start_page == 1 && $paginas >= 3) {
+                        $end_page = 3;
+                    }
+
+                    if ($end_page == $paginas && $paginas >= 3) {
+                        $start_page = max(1, $paginas - 2);
+                    }
+
+                    for ($i = $start_page; $i <= $end_page; $i++):
+                    ?>
+                        <a href="?page=<?php echo $i; ?>" class="pag-btn <?php echo ($i == $page) ? 'active' : ''; ?>">
+                            <?php echo $i; ?>
+                        </a>
+                    <?php endfor; ?>
+
+                    <?php if ($page < $paginas): ?>
+                        <a href="?page=<?php echo $page + 1; ?>" class="pag-btn">Siguiente &raquo;</a>
+                    <?php endif; ?>
+                </div>
+            </div>
 
 
 
 
-        <div class="buscar_user estadoDevehiculos" id="estado-vehiculos">
-            <button class="vehiculos_cerrar_button" id="close-vehiculos" onclick="retirarPlantilla()"><i class="bi bi-x-lg"></i></button>      <!-- ESTE ES EL TEXTO -->
+            <div class="buscar_user estadoDevehiculos" id="estado-vehiculos">
+                <button class="vehiculos_cerrar_button" id="close-vehiculos" onclick="retirarPlantilla()"><i class="bi bi-x-lg"></i></button> <!-- ESTE ES EL TEXTO -->
                 <div class="img_fondo">
 
                     <form action="vehiculos_usuarios.php" class="inside_img_fondo" method="post">
@@ -203,11 +204,11 @@ $consulta->execute();
                         <input type="submit" value="Continuar" class="vehiculos_submit" name="vehiculos_submit">
                     </form>
                 </div>
-        </div>
+            </div>
 
-        <div class="buscar_user estadoDevehiculos" id="estado-vehiculos2">
-            <button class="vehiculos_cerrar_button" id="close-vehiculos2" onclick="retirarPlantilla2()"><i class="bi bi-x-lg"></i></button>
-                   <div class="img_fondo">
+            <div class="buscar_user estadoDevehiculos" id="estado-vehiculos2">
+                <button class="vehiculos_cerrar_button" id="close-vehiculos2" onclick="retirarPlantilla2()"><i class="bi bi-x-lg"></i></button>
+                <div class="img_fondo">
                     <form class="inside_img_fondo" method="post">
                         <h1>¿Que deseas agregar?</h1>
 
@@ -218,95 +219,158 @@ $consulta->execute();
                         <input type="button" value="Modelo" class="vehiculos_submit" onclick="window.location.href='apartado_datos/modelo.php'">
                     </form>
                 </div>
-        </div>
-
-        <!-- Formulario para agregar marca -->
-        <div class="buscar_user estadoDevehiculos" id="formulario-marca">
-            <button class="vehiculos_cerrar_button" onclick="cerrarFormularioVehiculo()"><i class="bi bi-x-lg"></i></button>
-            <div class="img_fondo">
-                <form action="" class="inside_img_fondo" method="post" enctype="multipart/form-data">
-                    <h1>Registrar Marca</h1>
-
-                    <input type="text" name="marca" required class="vehiculos_input" placeholder="Nombre de la marca">
-
-                    <div style="display: flex; justify-content: space-between; width: 100%; margin-top: 15px;">
-                        <input type="button" value="Volver" class="vehiculos_submit" style="background-color: #63AEE8" onclick="volverAOpciones()">
-                        <input type="submit" value="Registrar" class="vehiculos_submit" name="submitmarca">
-                    </div>
-                </form>
             </div>
-        </div>
 
-        <!-- Formulario para agregar modelo -->
-        <div class="buscar_user estadoDevehiculos" id="formulario-modelo">
-            <button class="vehiculos_cerrar_button" onclick="cerrarFormularioModelo()"><i class="bi bi-x-lg"></i></button>
-            <div class="img_fondo">
-                <form action="" class="inside_img_fondo" method="post">
-                    <h1>Registrar Modelo</h1>
+            <!-- Formulario para agregar marca -->
+            <div class="buscar_user estadoDevehiculos" id="formulario-marca">
+                <button class="vehiculos_cerrar_button" onclick="cerrarFormularioVehiculo()"><i class="bi bi-x-lg"></i></button>
+                <div class="img_fondo">
+                    <form action="" class="inside_img_fondo" method="post" enctype="multipart/form-data">
+                        <h1>Registrar Marca</h1>
 
-                    <select name="nombre_modelo" required class="vehiculos_input">
-                        <option value="">Seleccione el año del modelo</option>
-                        <?php
-                        $current_year = date('Y');
-                        for($year = $current_year; $year >= 1800; $year--) {
-                            echo "<option value='$year'>$year</option>";
-                        }
-                        ?>
-                    </select>
+                        <input type="text" name="marca" required class="vehiculos_input" placeholder="Nombre de la marca">
 
-                    <div style="display: flex; justify-content: space-between; width: 100%; margin-top: 15px;">
-                        <input type="button" value="Volver" class="vehiculos_submit" style="background-color: #63AEE8" onclick="volverAOpciones()">
-                        <input type="submit" value="Registrar" class="vehiculos_submit" name="modelo">
-                    </div>
-                </form>
-            </div>
-        </div>
-
-        <!-- formulario para eliminar -->
-                <div class="buscar_user estadoDevehiculos" id="modal-eliminar">
-                    <button class="vehiculos_cerrar_button" onclick="cerrarEliminar()"><i class="bi bi-x-lg"></i></button>
-                    <div class="img_fondo">
-                        <form action="" class="inside_img_fondo" method="post">
-                            <h2>¿Esta seguro de eliminar este vehiculo?</h2>
-
-                            <p style="margin-top: 11px; color:black; font-size: bold;">Para eliminar el vehiculo con placa <span id="placa-eliminar"></span> ingrese su contraseña de administrador</p>
-
-                            <input type="hidden" name="id_placa" id="id-placa-eliminar">
-                            <input type="password" name="password_admin" required class="vehiculos_input" placeholder="Contraseña de administrador">
-
-                            <div style="justify-content: center; width: 100%; margin-top: 15px;">
-                                <input type="submit" value="Eliminar" class="vehiculos_submit" style="background-color: #e74c3c" name="eliminar">
-                            </div>
-                        </form>
-                    </div>
+                        <div style="display: flex; justify-content: space-between; width: 100%; margin-top: 15px;">
+                            <input type="button" value="Volver" class="vehiculos_submit" style="background-color: #63AEE8" onclick="volverAOpciones()">
+                            <input type="submit" value="Registrar" class="vehiculos_submit" name="submitmarca">
+                        </div>
+                    </form>
                 </div>
-    </main>
-</div>
+            </div>
 
-<script src="js/vehiculos.js"></script>
-<script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
-<script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
-<script>
+            <!-- Formulario para agregar modelo -->
+            <div class="buscar_user estadoDevehiculos" id="formulario-modelo">
+                <button class="vehiculos_cerrar_button" onclick="cerrarFormularioModelo()"><i class="bi bi-x-lg"></i></button>
+                <div class="img_fondo">
+                    <form action="" class="inside_img_fondo" method="post">
+                        <h1>Registrar Modelo</h1>
 
-function filtrarPorPlaca(placa) {
-    const vehiculos = document.querySelectorAll('.vehiculos');
-    // Converti todo en minusculas porque si no no funciona buscando en minusculas
-    const placa_buscada = placa.toLowerCase();
+                        <select name="nombre_modelo" required class="vehiculos_input">
+                            <option value="">Seleccione el año del modelo</option>
+                            <?php
+                            $current_year = date('Y');
+                            for ($year = $current_year; $year >= 1800; $year--) {
+                                echo "<option value='$year'>$year</option>";
+                            }
+                            ?>
+                        </select>
 
-    vehiculos.forEach(vehiculo => {
-        const celdaPlaca = vehiculo.querySelectorAll('h4')[1];
+                        <div style="display: flex; justify-content: space-between; width: 100%; margin-top: 15px;">
+                            <input type="button" value="Volver" class="vehiculos_submit" style="background-color: #63AEE8" onclick="volverAOpciones()">
+                            <input type="submit" value="Registrar" class="vehiculos_submit" name="modelo">
+                        </div>
+                    </form>
+                </div>
+            </div>
 
-        if (celdaPlaca) {
-            const textoPlaca = celdaPlaca.textContent || celdaPlaca.innerText;
-            // Converti tmbn en minusculas el de la placa de las columnas
-            if (textoPlaca.toLowerCase().includes(placa_buscada)) {
-                vehiculo.style.display = '';
-            } else {
-                vehiculo.style.display = 'none';
-            }
+            <!-- formulario para eliminar -->
+            <div class="buscar_user estadoDevehiculos" id="modal-eliminar">
+                <button class="vehiculos_cerrar_button" onclick="cerrarEliminar()"><i class="bi bi-x-lg"></i></button>
+                <div class="img_fondo">
+                    <form action="" class="inside_img_fondo" method="post">
+                        <h2>¿Esta seguro de eliminar este vehiculo?</h2>
+
+                        <p style="margin-top: 11px; color:black; font-size: bold;">Para eliminar el vehiculo con placa <span id="placa-eliminar"></span> ingrese su contraseña de administrador</p>
+
+                        <input type="hidden" name="id_placa" id="id-placa-eliminar">
+                        <input type="password" name="password_admin" required class="vehiculos_input" placeholder="Contraseña de administrador">
+
+                        <div style="justify-content: center; width: 100%; margin-top: 15px;">
+                            <input type="submit" value="Eliminar" class="vehiculos_submit" style="background-color: #e74c3c" name="eliminar">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+
+
+    <script>
+        const plant = document.getElementById('estado-vehiculos');
+        const plant2 = document.getElementById('estado-vehiculos2');
+        const formMarca = document.getElementById('formulario-marca');
+        const formModelo = document.getElementById('formulario-modelo');
+
+        function plantilla() {
+            plant.classList.remove('estadoDevehiculos');
         }
-    });
-}
-</script>
+
+        function retirarPlantilla() {
+            plant.classList.add('estadoDevehiculos');
+        }
+
+        function plantilla2() {
+            plant2.classList.remove('estadoDevehiculos');
+        }
+
+        function retirarPlantilla2() {
+            plant2.classList.add('estadoDevehiculos');
+        }
+
+        function mostrarFormularioVehiculo() {
+            plant2.classList.add('estadoDevehiculos');
+            formMarca.classList.remove('estadoDevehiculos');
+        }
+
+        function cerrarFormularioVehiculo() {
+            formMarca.classList.add('estadoDevehiculos');
+        }
+
+        function mostrarFormularioModelo() {
+            plant2.classList.add('estadoDevehiculos');
+            formModelo.classList.remove('estadoDevehiculos');
+        }
+
+        function cerrarFormularioModelo() {
+            formModelo.classList.add('estadoDevehiculos');
+        }
+
+        //Funcion para devolver a el formulario de agregar
+        function volverAOpciones() {
+            formMarca.classList.add('estadoDevehiculos');
+            formModelo.classList.add('estadoDevehiculos');
+            plant2.classList.remove('estadoDevehiculos');
+        }
+
+
+        const modalEliminar = document.getElementById('modal-eliminar');
+
+        function mostrarEliminar(placa) {
+            document.getElementById('placa-eliminar').textContent = placa;
+            document.getElementById('id-placa-eliminar').value = placa;
+            modalEliminar.classList.remove('estadoDevehiculos');
+        }
+
+
+
+
+        function cerrarEliminar() {
+            modalEliminar.classList.add('estadoDevehiculos');
+        }
+
+        //  Hasta aqui va el codigo de abrir los modales
+        function filtrarPorPlaca(placa) {
+            const vehiculos = document.querySelectorAll('.vehiculos');
+            // Converti todo en minusculas porque si no no funciona buscando en minusculas
+            const placa_buscada = placa.toLowerCase();
+
+            vehiculos.forEach(vehiculo => {
+                const celdaPlaca = vehiculo.querySelectorAll('h4')[1];
+
+                if (celdaPlaca) {
+                    const textoPlaca = celdaPlaca.textContent || celdaPlaca.innerText;
+                    // Converti tmbn en minusculas el de la placa de las columnas
+                    if (textoPlaca.toLowerCase().includes(placa_buscada)) {
+                        vehiculo.style.display = '';
+                    } else {
+                        vehiculo.style.display = 'none';
+                    }
+                }
+            });
+        }
+    </script>
 </body>
+
 </html>

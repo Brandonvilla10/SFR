@@ -42,7 +42,8 @@ $rol = $_SESSION['rol_name']; // Rol del usuario
         <p>Rol: administrador</p> <!-- Muestra el rol del usuario -->
       </div>
       <div class ="home_iconos">
-          <i class="bi bi-headset"></i> <!-- Icono de asistencia -->
+        <button class="reportes">Reportes</button>
+        <i class="bi bi-headset"></i> <!-- Icono de asistencia -->
       </div>
     </header>
 

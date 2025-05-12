@@ -203,6 +203,15 @@ html,body{
         padding: 10px;
         text-align: center;
     }
+
+    .reportes{
+        border-radius: 10px;
+        background-color:rgba(71, 70, 70, 0.185) ;
+        border: transparent;
+        padding:1rem;
+        font-weight: 500;
+        cursor: pointer;
+    }
 }
 
 

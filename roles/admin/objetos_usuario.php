@@ -272,8 +272,6 @@ if (isset($_POST['borrar'])) {
 
         <!----------------- fin del modal------------------->
 
-        <script src="pruebas/script.js"></script>
-
 
         <!----------------- Envio del modal con JS -------------------->
         <script>

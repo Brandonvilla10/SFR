@@ -1,11 +1,13 @@
 <?php
-
+session_start();
 include ("../database/database.php");
+include('../roles/admin/components/alert.php');
 $conexion = new database;
 $con = $conexion->conectar();
-session_start();
 
-if (isset($_POST['submit']) && isset($_FILES['foto'])) {
+if (isset($_FILES['foto'])) {
+    
+    $documentoVentana = $_POST['documento'] ;
 
     $uploadDir = '../uploads/';
 
@@ -22,9 +24,8 @@ if (isset($_POST['submit']) && isset($_FILES['foto'])) {
         if ($fileError === 0) {
             if ($fileSize < 2 * 1024 * 1024) { 
                 
-                $documentoVentana = $_GET['documento'] ;
+             
                                      
-
                 
                 $query = $con->prepare("SELECT foto FROM usuario WHERE id_documento = :documento");
                 $query->bindParam(':documento', $documentoVentana, PDO::PARAM_INT);
@@ -51,26 +52,71 @@ if (isset($_POST['submit']) && isset($_FILES['foto'])) {
                     $query->bindParam(':documento', $documentoVentana, PDO::PARAM_INT);
                     $query->execute();
 
-                    echo "exito";
+                  echo "
+
+                    <script>
+                        document.addEventListener('DOMContentLoaded', function () {
+                        mostrarModal('success', 'imagen registrado con exito', '../roles/admin/actualizar.php?documento=$documentoVentana'); 
+                        });
                     
+                    </script>";
                     exit();
                 } else {
+                    echo "
+
+                    <script>
+                        document.addEventListener('DOMContentLoaded', function () {
+                        mostrarModal('mistake', 'Error al mover la imagen, intentalo de nuevo', '../roles/admin/actualizar.php?documento=$documentoVentana'); 
+                        });
+                    </script>";
                     exit();
                     
                 }
             } else {
                 
-                echo "error";
+              echo "
+
+                <script>
+                    document.addEventListener('DOMContentLoaded', function () {
+                    mostrarModal('mistake', 'tamaño de imagen muy grande, el tamaño maximo es 2MB', '../roles/admin/actualizar.php?documento=$documentoVentana'); 
+                    });
+                
+                </script>";
+                exit();
             }
         } else {
-            echo "error";
+            echo "
+
+            <script>
+                document.addEventListener('DOMContentLoaded', function () {
+                mostrarModal('mistake', 'Error al subir la imagen, intentalo de nuevo', '../roles/admin/actualizar.php?documento=$documentoVentana'); 
+                });
+            
+            </script>";
+            exit();
         }
     } else {
-        echo "error";
+       echo "
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+            mostrarModal('mistake', 'extensión no permitida, solamente jpg, jpeg, png y gif', '../roles/admin/actualizar.php?documento=$documentoVentana'); 
+            });
+        
+        </script>";
+        exit();
         
     }
 } else {
-    echo "error";
+     echo "
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+        mostrarModal('mistake', 'imagen no registrada', '../roles/admin/usuarios.php'); 
+        });
+    
+    </script>";
+    exit();
    
     
 }

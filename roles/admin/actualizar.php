@@ -9,7 +9,7 @@ $documentoVentana = $_GET['documento'];
 
 
 //<-----------------------------AQUI ESTA LA RUTA ------------------------------------>
-$ruta = $_GET['route'];
+$ruta = $_GET['route'] ?? 'usuarios.php';
 
 $_SESSION['documentoUpload'] = $documentoVentana;
 // Consulta principal para obtener los datos del usuario
@@ -96,6 +96,7 @@ $fotoActual = $resultado['foto'];
 
 $mostar = "../../uploads/" . $fotoActual;
 $usu = "../../uploads/usu.png";
+
 ?>
 
 <!DOCTYPE html>
@@ -135,14 +136,15 @@ $usu = "../../uploads/usu.png";
                                 <div class="image-column">
 
                                     <div class="image-upload">
-                                        <img src="../../uploads/<?php echo !empty($resultado['foto']) ? $mostar : 'usu.png' ?>" alt="" class="imagen" id="imagen_objeto" onerror="this.src='../../uploads/default_iconos.png'">
+                                        <img src="<?php echo (!empty($fotoActual)) ? $mostar : $usu ?>" alt="imagen Del usuario" class="imagen" id="imagen_objeto" onerror="this.src='../../uploads/usu.png'">
                                         <div class="overlay">
                                             <i class="bi bi-upload"></i>
                                             <span>Subir Foto</span>
                                         </div>
-                                        <form action="../../uploads/upload_Usuario.php?documento=<?php echo $documentoVentana ?>" method="POST" enctype="multipart/form-data" class="overlay" id="form-objetos">
+                                        <form action="../../uploads/upload_Usuario.php" method="POST" enctype="multipart/form-data" class="overlay" id="form-objetos">
 
                                             <input type="hidden" name="documento" value="<?php echo $documentoVentana ?>">
+                                            <input type="text" name="ruta" value="<?php echo $ruta ?>" hidden>
                                             <input type="file" class="file_input" id="fileUpload" name="foto" onchange="document.getElementById('form-objetos').submit()">
 
                                         </form>

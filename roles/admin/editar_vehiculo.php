@@ -200,7 +200,7 @@ $usuario_foto_path = !empty($resultado['foto']) ? $mostrar : $usu;
                                     <select class="form-input" id="id_estado" name="id_estado" required>
                                         <option value="">Seleccione Estado</option>
                                         <?php
-                                        $consulta_estados = $con->prepare("SELECT * FROM estado ORDER BY estado");
+                                        $consulta_estados = $con->prepare("SELECT * FROM estado  WHERE id_estado != 3 and id_estado != 4 ORDER BY estado");
                                         $consulta_estados->execute();
                                         $estados = $consulta_estados->fetchAll(PDO::FETCH_ASSOC);
                                         foreach ($estados as $estado): ?>

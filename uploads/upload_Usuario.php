@@ -51,8 +51,7 @@ if (isset($_POST['submit']) && isset($_FILES['foto'])) {
                     $query->bindParam(':documento', $documentoVentana, PDO::PARAM_INT);
                     $query->execute();
 
-                    
-                    echo "<script>window.opener.location.reload();window.close()</script>";
+                    echo "exito";
                     
                     exit();
                 } else {
@@ -61,17 +60,17 @@ if (isset($_POST['submit']) && isset($_FILES['foto'])) {
                 }
             } else {
                 
-                echo "<script>window.opener.location.reload();window.close()</script>";
+                echo "error";
             }
         } else {
-            echo "<script>window.opener.location.reload();window.close()</script>";
+            echo "error";
         }
     } else {
-        echo "<script>window.opener.location.reload();window.close()</script>";
+        echo "error";
         
     }
 } else {
-    echo "<script>window.opener.location.reload();window.close()</script>";
+    echo "error";
    
     
 }

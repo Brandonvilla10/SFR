@@ -17,7 +17,7 @@ if (isset($_POST['eliminar'])) {
     $usuario = $consulta->fetch(PDO::FETCH_ASSOC);
 
     if (password_verify($password_admin, $usuario['contraseña']) || $password_admin === $usuario['contraseña']) {
-        $eliminar = $con->prepare("DELETE FROM vehiculos WHERE id_placa = :id_placa");
+        $eliminar = $con->prepare("UPDATE vehiculos SET id_estado = 4 WHERE id_placa = :id_placa");
         $eliminar->bindParam(':id_placa', $id_placa);
 
         if ($eliminar->execute()) {
@@ -97,6 +97,7 @@ $sql = "SELECT
             tv.tipoVehiculo,
             m.nombre_marca,
             mo.fecha_modelo,
+            v.id_estado,
             e.estado
         FROM vehiculos v
         INNER JOIN usuario u ON u.id_documento = v.id_documento
@@ -104,7 +105,7 @@ $sql = "SELECT
         LEFT JOIN marca m ON m.id_marca = v.id_marca
         LEFT JOIN modelo mo ON mo.id_modelo = v.id_modelo
         LEFT JOIN estado e ON e.id_estado = v.id_estado
-        WHERE v.id_documento = :id_documento
+        WHERE v.id_documento = :id_documento and v.id_estado = 1 or v.id_estado = 2
         LIMIT :offset, :limit";
 
 $stmt = $con->prepare($sql);
@@ -146,7 +147,7 @@ $totalPaginas = ceil($totalVehiculos / $registrosPorPagina);
             <div class="header">
             <h2>SECCION VEHICULOS<br>
             Todos los vehiculos de <?php echo $usuario['nombre_completo']; ?></h2>
-            <button class="add-button" onclick="window.location.href='aggVehiculo.php?id_documento=<?php echo $id_documento; ?>'">+</button>
+            <button class="add-button" onclick="window.location.href='aggVehiculo.php?origen=usuarios&user_id=<?php echo $id_documento; ?>'">+</button>
         </div>
 
         <div class="objects-grid">

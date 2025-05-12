@@ -140,9 +140,9 @@ $usu = "../../uploads/usu.png";
                                             <i class="bi bi-upload"></i>
                                             <span>Subir Foto</span>
                                         </div>
-                                        <form action="../../uploadsAdmin/upload.php?documento=<?php echo $documentoVentana ?>" method="POST" enctype="multipart/form-data" class="overlay" id="form-objetos">
+                                        <form action="../../uploads/upload_Usuario.php?documento=<?php echo $documentoVentana ?>" method="POST" enctype="multipart/form-data" class="overlay" id="form-objetos">
 
-                                            <input type="hidden" name="serial" value="<?php echo $documentoVentana ?>">
+                                            <input type="hidden" name="documento" value="<?php echo $documentoVentana ?>">
                                             <input type="file" class="file_input" id="fileUpload" name="foto" onchange="document.getElementById('form-objetos').submit()">
 
                                         </form>
@@ -178,7 +178,7 @@ $usu = "../../uploads/usu.png";
 
 
                                             <?php
-                                            $sqlrol = $con->prepare("SELECT * FROM estado WHERE id_estado != $fila[id_estado];");
+                                            $sqlrol = $con->prepare("SELECT * FROM estado WHERE id_estado != $fila[id_estado] and id_estado != 3 and id_estado != 4;");
                                             $sqlrol->execute();
                                             $sqlrol = $sqlrol->fetchAll(PDO::FETCH_ASSOC);
 
@@ -200,7 +200,7 @@ $usu = "../../uploads/usu.png";
                                             </option>
 
                                             <?php
-                                            $sqlrol = $con->prepare("SELECT * FROM rol");
+                                            $sqlrol = $con->prepare("SELECT * FROM rol WHERE id_rol != $fila[id_rol]");
                                             $sqlrol->execute();
                                             $sqlrol = $sqlrol->fetchAll(PDO::FETCH_ASSOC);
 

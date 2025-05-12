@@ -72,7 +72,7 @@ $primera_parte = $mostrar->fetch();
 if (isset($_POST['borrar'])) {
 
 
-    $borrar = $con->prepare("DELETE FROM objetos WHERE id_serial = :id_serial");
+    $borrar = $con->prepare("UPDATE objetos SET id_estado = 4 WHERE id_serial = :id_serial");
     $borrar->bindParam(':id_serial', $_POST['borrar']);
     $borrar->execute();
 
@@ -141,7 +141,7 @@ if (isset($_POST['borrar'])) {
                 INNER JOIN usuario ON usuario.id_documento = objetos.id_documento
                 INNER JOIN estado ON estado.id_estado = objetos.id_estado 
                 INNER JOIN tipoobjeto ON tipoobjeto.id_tipoObjeto = objetos.id_tipoObjeto
-                WHERE objetos.id_documento ='$buscar_usu'");
+                WHERE objetos.id_documento ='$buscar_usu' and objetos.id_estado = 1 or objetos.id_estado = 2");
                     $sql->execute();
 
                     $consulta_2 = $sql->fetchAll();
@@ -160,7 +160,7 @@ if (isset($_POST['borrar'])) {
 
                                 <div class="object-icon">
 
-                                    <img src="../../uploads/<?php echo isset($objeto['object_foto']) && $objeto['object_foto'] !== '' ? $objeto['object_foto'] : 'default_iconos.png'; ?>" alt="">
+                                    <img src="../../uploads/<?php echo isset($objeto['object_foto']) && $objeto['object_foto'] !== '' ? $objeto['object_foto'] : 'default_iconos.png'; ?>" alt="" onerror="this.src='../../uploads/default_iconos.png'" >
 
                                 </div>
                                 <div class="object-description"> <?php echo $objeto['caracteristica'] ?></div>
@@ -229,21 +229,6 @@ if (isset($_POST['borrar'])) {
                     foreach ($consulta_2 as $marca) { ?>
                         <option value="<?php echo $marca['id_marca'] ?>"> <?php echo $marca['nombre_marca'] ?> </option>
                     <?php  } ?>
-
-                </select>
-
-                <label for="estado" class="label_titulo">Estado</label>
-                <select name="estado" id="estado" class="selectos">
-
-                    <?php $sql_2 = $con->prepare("SELECT * FROM estado");
-                    $sql_2->execute();
-                    $consulta_3 = $sql_2->fetchAll();
-
-                    foreach ($consulta_3 as $estados) { ?>
-
-                        <option value="<?php echo $estados['id_estado'] ?>"> <?php echo $estados['estado'] ?></option>
-
-                    <?php } ?>
 
                 </select>
 

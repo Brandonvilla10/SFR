@@ -1,11 +1,13 @@
 <?php
 
 include ("../database/database.php");
+include('../roles/admin/components/alert.php');
 $conexion = new database;
 $con = $conexion->conectar();
 session_start();
 
-if (isset($_POST['submit']) && isset($_FILES['foto'])) {
+echo "hola mundo";
+if (isset($_FILES['foto'])) {
 
     $uploadDir = '../uploads/';
 
@@ -50,27 +52,29 @@ if (isset($_POST['submit']) && isset($_FILES['foto'])) {
                     $query->bindParam(':documento', $documento, PDO::PARAM_INT);
                     $query->execute();
 
-                    header("Location: ../roles/admin/configuracion.php");
+                    echo "
+   
+                    <script>
+                        document.addEventListener('DOMContentLoaded', function () {
+                        mostrarModal('success', 'imagen actualizada correctamente', '../roles/admin/configuracion.php'); 
+                        });
+                    
+                    </script>";
                     exit();
                 } else {
-                    header("Location: ../roles/admin/configuracion.php?mensaje=error_formato&mensaje2=Error al mover el archivo");
-                    exit();
+                    echo "error";
                 }
             } else {
-                header("Location: ../roles/admin/configuracion.php?mensaje=error_formato&mensaje2=Archivo demasiado grande");
-                exit();
+                echo "lolo";
             }
         } else {
-            header("Location: ../roles/admin/configuracion.php?mensaje=error_formato&mensaje2=Hubo un error al subir el archivo");
-            exit();
+            echo "no encontrado";
         }
     } else {
-        header("Location: ../roles/admin/configuracion.php?mensaje=error_formato&mensaje2=Formato de archivo no permitido");
-        exit();
+        echo "liviano";
     }
 } else {
-    header("Location: ../roles/admin/configuracion.php?mensaje=error_formato&mensaje2=Solicitud inválida");
-    exit();
+    echo "pesado";  
 }
 
 ?>

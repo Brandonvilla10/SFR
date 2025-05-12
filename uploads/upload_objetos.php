@@ -1,9 +1,10 @@
 <?php
 
+session_start();
 include("../database/database.php");
+include('../roles/admin/components/alert.php');
 $conexion = new database;
 $con = $conexion->conectar();
-session_start();
 
 if (isset($_POST['submit']) || isset($_FILES['foto'])) {
 
@@ -32,36 +33,74 @@ if (isset($_POST['submit']) || isset($_FILES['foto'])) {
                     $query->bindParam(':documento', $documento, PDO::PARAM_STR); // Asegura que el tipo de dato coincide
                     $query->execute();
 
-
-
+                   echo "
+   
+                    <script>
+                        document.addEventListener('DOMContentLoaded', function () {
+                        mostrarModal('success', 'imagen actualizada correctamente', '../roles/admin/objetos_usuario.php'); 
+                        });
                     
-                    header("Location: ../roles/admin/objetos_usuario.php");
+                    </script>";
                     exit();
                 } else {
 
-                    // header("Location: ../roles/admin/objetos_usuario.php");
+                    echo "
+   
+                    <script>
+                        document.addEventListener('DOMContentLoaded', function () {
+                        mostrarModal('mistake', 'Error de direccion de imagen', '../roles/admin/objetos_usuario.php'); 
+                        });
+                    
+                    </script>";
                     exit();
                 }
             } else {
-                
-         
-                // header("Location: ../roles/admin/objetos_usuario.php");
-                exit();
+
+            echo "
+   
+            <script>
+                document.addEventListener('DOMContentLoaded', function () {
+                mostrarModal('mistake', 'Imagen muy pesada, maximo 2MB','../roles/admin/objetos_usuario.php'); 
+                });
+            </script>";
+
+            exit();
             }
         } else {
-       
-            // header("Location: ../roles/admin/objetos_usuario.php");
+
+           echo "
+   
+            <script>
+                document.addEventListener('DOMContentLoaded', function () {
+                mostrarModal('mistake', 'imagen Corrupta no valida','../roles/admin/objetos_usuario.php'); 
+                });  
+            </script>";
+
+        
             exit();
         }
     } else {
-        
-    
-        // header("Location: ../roles/admin/objetos_usuario.php");
+
+        echo "
+   
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+               mostrarModal('mistake', 'extensiones no permitidas, solo jpg, jpeg, png y gif','../roles/admin/objetos_usuario.php'); 
+            });
+          
+        </script>";
+
         exit();
     }
 } else {
-    
-    // header("Location: ../roles/admin/objetos_usuario.php");
-    
+
+    echo "
+   
+    <script>
+            document.addEventListener('DOMContentLoaded', function () {
+               mostrarModal('mistake', 'Imagen no valida','../roles/admin/objetos_usuario.php'); 
+            });
+          
+    </script>";
     exit();
 }

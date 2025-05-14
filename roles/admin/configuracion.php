@@ -59,9 +59,8 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Configuracion</title>
-        <link rel="stylesheet" href="css/home.css">
-        <link rel="stylesheet" href="asidebar/asidebar.css">
         <link rel="stylesheet" href="css/configuracion.css">
+        <link rel="stylesheet" href="asidebar/asidebar.css">
     </head>
     <body>
         
@@ -133,7 +132,7 @@ $usu = "../../uploads/usu.png";
                             <div class="containerr">
                                 <form action="../../uploads/upload.php" style="margin-top: 6px;" method="POST" enctype="multipart/form-data">
                                     <label class="custom-file-upload">
-                                        <input type="file" name="foto" id="fileInput" onchange="previewFoto(event)" />
+                                        <input type="file" name="foto" id="fileInput" onchange="previewFoto(event);" />
                                         Subir Foto
                                     </label>
                                     <button type="submit" class="guardar" id="botonGuardar"  name="submit">Guardar</button>

@@ -1,5 +1,4 @@
 <?php
-
 session_start();
 include("../database/database.php");
 include('../roles/admin/components/alert.php');
@@ -17,7 +16,12 @@ if (isset($_POST['submit']) || isset($_FILES['foto'])) {
 
     $allowedExtensions = ['jpg', 'jpeg', 'png', 'gif'];
     $fileExt = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
-
+    
+    $documento = $_SESSION['objetos_usu'];
+    $serial = $_POST['serial'];
+    $ruta = $_POST['ruta'];
+    
+    
     if (in_array($fileExt, $allowedExtensions)) {
         if ($fileError === 0) {
             if ($fileSize < 2 * 1024 * 1024) {
@@ -25,8 +29,6 @@ if (isset($_POST['submit']) || isset($_FILES['foto'])) {
                 $fileDestination = $uploadDir . $newFileName;
 
                 if (move_uploaded_file($fileTmpName, $fileDestination)) {
-                    $documento = $_SESSION['objetos_usu'];
-                    $serial = $_POST['serial'];
                     $query = $con->prepare("UPDATE objetos SET foto = :foto WHERE id_documento = :documento and id_serial = :serial_usu ");
                     $query->bindParam(':foto', $newFileName, PDO::PARAM_STR);
                     $query->bindParam(':serial_usu', $serial, PDO::PARAM_STR);
@@ -37,7 +39,7 @@ if (isset($_POST['submit']) || isset($_FILES['foto'])) {
    
                     <script>
                         document.addEventListener('DOMContentLoaded', function () {
-                        mostrarModal('success', 'imagen actualizada correctamente', '../roles/admin/objetos_usuario.php'); 
+                        mostrarModal('success', 'imagen actualizada correctamente', '../roles/admin/editar_objetos_usu.php?id=$serial&owner=$documento&route=$ruta'); 
                         });
                     
                     </script>";
@@ -48,7 +50,7 @@ if (isset($_POST['submit']) || isset($_FILES['foto'])) {
    
                     <script>
                         document.addEventListener('DOMContentLoaded', function () {
-                        mostrarModal('mistake', 'Error de direccion de imagen', '../roles/admin/objetos_usuario.php'); 
+                        mostrarModal('mistake', 'Error de direccion de imagen', '../roles/admin/editar_objetos_usu.php?id=$serial&owner=$documento&route=$ruta'); 
                         });
                     
                     </script>";
@@ -60,7 +62,7 @@ if (isset($_POST['submit']) || isset($_FILES['foto'])) {
    
             <script>
                 document.addEventListener('DOMContentLoaded', function () {
-                mostrarModal('mistake', 'Imagen muy pesada, maximo 2MB','../roles/admin/objetos_usuario.php'); 
+                mostrarModal('mistake', 'Imagen muy pesada, maximo 2MB','../roles/admin/editar_objetos_usu.php?id=$serial&owner=$documento&route=$ruta'); 
                 });
             </script>";
 
@@ -72,7 +74,7 @@ if (isset($_POST['submit']) || isset($_FILES['foto'])) {
    
             <script>
                 document.addEventListener('DOMContentLoaded', function () {
-                mostrarModal('mistake', 'imagen Corrupta no valida','../roles/admin/objetos_usuario.php'); 
+                mostrarModal('mistake', 'imagen Corrupta no valida','../roles/admin/editar_objetos_usu.php?id=$serial&owner=$documento&route=$ruta'); 
                 });  
             </script>";
 
@@ -85,7 +87,7 @@ if (isset($_POST['submit']) || isset($_FILES['foto'])) {
    
         <script>
             document.addEventListener('DOMContentLoaded', function () {
-               mostrarModal('mistake', 'extensiones no permitidas, solo jpg, jpeg, png y gif','../roles/admin/objetos_usuario.php'); 
+               mostrarModal('mistake', 'extensiones no permitidas, solo jpg, jpeg, png y gif','../roles/admin/editar_objetos_usu.php?id=$serial&owner=$documento&route=$ruta'); 
             });
           
         </script>";
@@ -98,7 +100,7 @@ if (isset($_POST['submit']) || isset($_FILES['foto'])) {
    
     <script>
             document.addEventListener('DOMContentLoaded', function () {
-               mostrarModal('mistake', 'Imagen no valida','../roles/admin/objetos_usuario.php'); 
+               mostrarModal('mistake', 'Imagen no valida','../roles/admin/objetos_index.php'); 
             });
           
     </script>";

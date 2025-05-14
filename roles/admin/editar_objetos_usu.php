@@ -121,6 +121,7 @@ try {
                                     <form action="../../uploads/upload_objetos.php" method="POST" enctype="multipart/form-data" class="overlay" id="form-objetos">
 
                                         <input type="hidden" name="serial" value="<?php echo $consulta_1['id_serial']; ?>">
+                                        <input type="hidden" name="ruta" value="<?php echo $ruta; ?>">
                                         <input type="file" class="file_input" id="fileUpload" name="foto" onchange="document.getElementById('form-objetos').submit()">
 
                                     </form>

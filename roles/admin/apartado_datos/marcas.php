@@ -62,7 +62,7 @@ $consulta->bindParam(':start', $start_record, PDO::PARAM_INT);
 $consulta->bindParam(':limit', $limite_registros, PDO::PARAM_INT);
 $consulta->execute();
 
-include("../components/modaEliminar.php");
+
 include("../components/alert.php");
 
 if (isset($_POST["eliminarSubmir"])) {
@@ -284,6 +284,8 @@ if (isset($_POST["eliminarSubmir"])) {
             </div>
         </main>
     </div>
+
+    <?php include("../components/modaEliminar.php"); ?>
 
     <script>
         const plant = document.getElementById('estado-vehiculos');

@@ -27,7 +27,7 @@ $consulta->bindParam(':start', $start_record, PDO::PARAM_INT);
 $consulta->bindParam(':limit', $limite_registros, PDO::PARAM_INT);
 $consulta->execute();
 
-include('../components/modaEliminar.php');
+
 
 if (isset($_POST["eliminarSubmir"])) {
 
@@ -161,6 +161,8 @@ if (isset($_POST["eliminarSubmir"])) {
 
   
             </div>
+
+            <?php include("../components/modaEliminar.php"); ?>
 
             <script>
                 const abrirEliminar = document.getElementById('abrirEliminar');

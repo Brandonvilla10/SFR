@@ -34,7 +34,7 @@ $consulta->execute();
 
 
 // ----------------------------------este aparatod es para el modal para eliminar fichas-----------------------------------
-include("../components/modaEliminar.php");
+
 
 if (isset($_POST["eliminarSubmir"])) {
 
@@ -171,6 +171,8 @@ if (isset($_POST["eliminarSubmir"])) {
                     <?php endif; ?>
                 </div>
             </div>
+
+<?php include("../components/modaEliminar.php"); ?>
 
             <script>
                 

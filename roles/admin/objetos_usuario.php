@@ -87,6 +87,51 @@ if (isset($_POST['borrar'])) {
     </script>";
 }
 
+if (isset($_POST["eliminarSubmir"])) {
+
+    $identificadortipoobjeto = $_POST['identificador'];
+    $passwordAdmin = $_POST['passwordAdmin'];
+
+    $consultaAdmin = $con->prepare("SELECT contraseña FROM usuario WHERE id_documento = :documento AND id_rol = 1");
+    $consultaAdmin->bindParam(':documento', $codigo);
+    $consultaAdmin->execute();
+    $result = $consultaAdmin->fetch(PDO::FETCH_ASSOC);
+
+
+
+    if ($result && $passwordAdmin && password_verify($passwordAdmin, $result['contraseña'])) {
+
+        $marcaDesactivar = $con->prepare("UPDATE tipoObjeto SET id_estado = 4 WHERE id_tipoObjeto = :identificador");
+        $marcaDesactivar->bindParam(':identificador', $identificadortipoobjeto);
+        $marcaDesactivar->execute();
+
+
+        if ($marcaDesactivar->rowCount() == 0) {
+            echo "
+            <script>
+               document.addEventListener('DOMContentLoaded', function () {
+                   mostrarModal('mistake', 'Tipo Objeto No Encontrado', 'tipoObj.php');
+               });
+           </script>";
+        } else {
+            echo "
+            <script>
+               document.addEventListener('DOMContentLoaded', function () {
+                   mostrarModal('success', 'Tipo Objeto Eliminado', 'tipoObj.php');
+               });
+           </script>";
+        }
+    } else {
+
+        echo "
+        <script>
+           document.addEventListener('DOMContentLoaded', function () {
+               mostrarModal('mistake', 'Contraseña Mal Digitada',  'tipoObj.php' );
+           });
+       </script>";
+    }
+}
+
 
 ?>
 
@@ -99,8 +144,9 @@ if (isset($_POST['borrar'])) {
     <link rel="icon" href="../../assets/img/LogoFR.png">
     <title>OBJETOS </title>
     <link rel="stylesheet" href="asideBar/asidebar.css">
-    <link rel="stylesheet" href="css/objetos_usuario.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="css/objetos_usuario.css">
+    <link rel="stylesheet" href="./components/modalConfirmacion.css">
 
 </head>
 
@@ -128,6 +174,29 @@ if (isset($_POST['borrar'])) {
 
 
 
+                <!-- modal de confirmacion de eliminacion -->
+
+                <div class="modalConfirmacion" id="modalConfirmacion">
+                    <div class="contenedorModalConfirmacion">
+                        <div class="headerModalConfirmacion">
+                            <h3>Confirmar Acción</h3>
+                            <button class="cerrarModalConfirmacion" id="cerrarModalConfirmacion">&times;</button>
+                        </div>
+                        <div class="cuerpoModalConfirmacion">
+                            <div class="mensaje-confirmacion">
+                                <i class="bi bi-exclamation-triangle-fill icono-alerta"></i>
+                                <p id="mensajeConfirmacion">¿Estás seguro que deseas eliminar este elemento?</p>
+                            </div>
+                            <div class="botonesModalConfirmacion">
+                                <button type="button" class="cancelar-btn" id="cancelarConfirmacion">Cancelar</button>
+                                <form method="post">
+
+                                    <button type="submit" class="confirmar-btn" name="borrar" id="confirmarAccion">Confirmar</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
 
                 <!------------- FIN DE LA SECCION 1 --------------------------->
@@ -160,7 +229,7 @@ if (isset($_POST['borrar'])) {
 
                                 <div class="object-icon">
 
-                                    <img src="../../uploads/<?php echo isset($objeto['object_foto']) && $objeto['object_foto'] !== '' ? $objeto['object_foto'] : 'default_iconos.png'; ?>" alt="" onerror="this.src='../../uploads/default_iconos.png'" >
+                                    <img src="../../uploads/<?php echo isset($objeto['object_foto']) && $objeto['object_foto'] !== '' ? $objeto['object_foto'] : 'default_iconos.png'; ?>" alt="" onerror="this.src='../../uploads/default_iconos.png'">
 
                                 </div>
                                 <div class="object-description"> <?php echo $objeto['caracteristica'] ?></div>
@@ -179,9 +248,11 @@ if (isset($_POST['borrar'])) {
 
                                 <div class="object-actions">
 
-                                    <form action="" method="POST">
-                                        <button type="submit" name="borrar" value="<?php echo $objeto['id_serial'] ?>" class="action-button delete-button" onclick=" return confirm('desesas borrar el objeto de serial <?php echo $objeto['id_serial'] ?>')"> <i class="bi bi-trash-fill"></i></button>
-                                    </form>
+
+                                    <button type="submit" name="borrar" value="<?php echo $objeto['id_serial'] ?>" class="action-button delete-button modalConfirmacionButton" onclick="mostrarConfirmacion(this.value,'Estas seguro de eliminar este objeto')"> <i class="bi bi-trash-fill"></i></button>
+
+
+
                                     <button class="action-button edit-button" onclick="window.location.href='editar_objetos_usu.php?id=<?php echo $objeto['id_serial'] ?>&owner=<?php echo $primera_parte['id_documento'] ?>&route=objetos_usuario.php'"><i class="bi bi-pencil-square"></i> </button>
 
                                 </div>
@@ -257,6 +328,50 @@ if (isset($_POST['borrar'])) {
 
         <!----------------- fin del modal------------------->
 
+
+
+
+        <script>
+            const modalConfirmacion = document.getElementById('modalConfirmacion');
+            const cerrarModalConfirmacion = document.getElementById('cerrarModalConfirmacion');
+            const cancelarConfirmacion = document.getElementById('cancelarConfirmacion');
+            const confirmarAccion = document.getElementById('confirmarAccion');
+            const mensajeConfirmacion = document.getElementById('mensajeConfirmacion');
+
+            let callbackConfirmacion = null;
+
+            const modalConfirmacionButton = document.querySelectorAll(".modalConfirmacionButton")
+
+            // modalConfirmacionButton.forEach((element) => {
+            //     element.addEventListener("click", () => {
+            //         mostrarConfirmacion("Estas Seguro De Eliminar Este Objeto")
+            //     })
+            // })
+
+            function mostrarConfirmacion(valorBoton,mensaje, callback) {
+                mensajeConfirmacion.textContent = mensaje;
+                callbackConfirmacion = callback;
+                modalConfirmacion.style.visibility = 'visible';
+                modalConfirmacion.style.opacity = '1';
+                confirmarAccion.value = valorBoton;
+
+            }
+
+            function cerrarConfirmacion() {
+                modalConfirmacion.style.visibility = 'hidden';
+                modalConfirmacion.style.opacity = '0';
+            }
+
+            cerrarModalConfirmacion.addEventListener('click', cerrarConfirmacion);
+            cancelarConfirmacion.addEventListener('click', cerrarConfirmacion);
+
+            confirmarAccion.addEventListener('click', function() {
+                if (typeof callbackConfirmacion === 'function') {
+                    callbackConfirmacion();
+                }
+                cerrarConfirmacion();
+            });
+        </script>
 
         <!----------------- Envio del modal con JS -------------------->
         <script>

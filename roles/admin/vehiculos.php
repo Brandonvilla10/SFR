@@ -108,6 +108,7 @@ $consulta->execute();
     <link rel="stylesheet" href="css/vehiculos.css">
     <link rel="stylesheet" href="asideBar/asidebar.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="./components/modalBuscar.css">
 
 </head>
 
@@ -123,10 +124,37 @@ $consulta->execute();
                     <h1>Vehiculos</h1>
                     <p>Administra los vehiculos segun tu necesidad</p>
                 </div>
-                <button class="buscar_objeto_titulo" onclick="plantilla()">Buscar Vehiculos</button>
                 <button class="buscar_objeto_titulo" onclick="plantilla2()">Agregar</button>
 
+                <button class="buscar_objeto_titulo" id="abrirBuscar">Buscar Vehiculos</button>
+
+
+
             </div>
+
+
+               <!-- formulario para eliminar -->
+               <div class="modalBuscar" id="modalBuscar">
+                <div class="contenedorModalBuscar">
+                    <div class="headerModalBuscar">
+                        <h3>Buscar Vehiculo</h3>
+                        <button class="cerrarModalBuscar" id="cerrarModalBuscar">&times;</button>
+                    </div>
+                    <div class="cuerpoModalBuscar">
+                        <form action="vehiculos_usuarios.php" method="post">
+                            <div class="campo-formulario">
+                                <label for="user_id">Documento del Usuario</label>
+                                <input type="number" id="user_id" name="user_id" placeholder="Digite el documento" required>
+                            </div>
+                            <div class="botonesModalBuscar">
+                                <button type="button" class="cancelar-btn" id="cancelarBuscar">Cancelar</button>
+                                <button type="submit" name="objetos_submit" class="buscar-btn">Continuar</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+          
 
             <hr class="separador">
             <div class="contenido_tabla">
@@ -263,114 +291,121 @@ $consulta->execute();
                 </div>
             </div>
 
-            <!-- formulario para eliminar -->
-            <div class="buscar_user estadoDevehiculos" id="modal-eliminar">
-                <button class="vehiculos_cerrar_button" onclick="cerrarEliminar()"><i class="bi bi-x-lg"></i></button>
-                <div class="img_fondo">
-                    <form action="" class="inside_img_fondo" method="post">
-                        <h2>¿Esta seguro de eliminar este vehiculo?</h2>
+         
 
-                        <p style="margin-top: 11px; color:black; font-size: bold;">Para eliminar el vehiculo con placa <span id="placa-eliminar"></span> ingrese su contraseña de administrador</p>
+            <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
 
-                        <input type="hidden" name="id_placa" id="id-placa-eliminar">
-                        <input type="password" name="password_admin" required class="vehiculos_input" placeholder="Contraseña de administrador">
+            <script>
+                // Modal de Búsqueda
+                const modalBuscar = document.getElementById('modalBuscar');
+                const abrirBuscar = document.getElementById('abrirBuscar');
+                const cerrarModalBuscar = document.getElementById('cerrarModalBuscar');
+                const cancelarBuscar = document.getElementById('cancelarBuscar');
 
-                        <div style="justify-content: center; width: 100%; margin-top: 15px;">
-                            <input type="submit" value="Eliminar" class="vehiculos_submit" style="background-color: #e74c3c" name="eliminar">
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </main>
-    </div>
-
-    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
-
-
-    <script>
-        const plant = document.getElementById('estado-vehiculos');
-        const plant2 = document.getElementById('estado-vehiculos2');
-        const formMarca = document.getElementById('formulario-marca');
-        const formModelo = document.getElementById('formulario-modelo');
-
-        function plantilla() {
-            plant.classList.remove('estadoDevehiculos');
-        }
-
-        function retirarPlantilla() {
-            plant.classList.add('estadoDevehiculos');
-        }
-
-        function plantilla2() {
-            plant2.classList.remove('estadoDevehiculos');
-        }
-
-        function retirarPlantilla2() {
-            plant2.classList.add('estadoDevehiculos');
-        }
-
-        function mostrarFormularioVehiculo() {
-            plant2.classList.add('estadoDevehiculos');
-            formMarca.classList.remove('estadoDevehiculos');
-        }
-
-        function cerrarFormularioVehiculo() {
-            formMarca.classList.add('estadoDevehiculos');
-        }
-
-        function mostrarFormularioModelo() {
-            plant2.classList.add('estadoDevehiculos');
-            formModelo.classList.remove('estadoDevehiculos');
-        }
-
-        function cerrarFormularioModelo() {
-            formModelo.classList.add('estadoDevehiculos');
-        }
-
-        //Funcion para devolver a el formulario de agregar
-        function volverAOpciones() {
-            formMarca.classList.add('estadoDevehiculos');
-            formModelo.classList.add('estadoDevehiculos');
-            plant2.classList.remove('estadoDevehiculos');
-        }
-
-
-        const modalEliminar = document.getElementById('modal-eliminar');
-
-        function mostrarEliminar(placa) {
-            document.getElementById('placa-eliminar').textContent = placa;
-            document.getElementById('id-placa-eliminar').value = placa;
-            modalEliminar.classList.remove('estadoDevehiculos');
-        }
-
-
-
-
-        function cerrarEliminar() {
-            modalEliminar.classList.add('estadoDevehiculos');
-        }
-
-        //  Hasta aqui va el codigo de abrir los modales
-        function filtrarPorPlaca(placa) {
-            const vehiculos = document.querySelectorAll('.vehiculos');
-            // Converti todo en minusculas porque si no no funciona buscando en minusculas
-            const placa_buscada = placa.toLowerCase();
-
-            vehiculos.forEach(vehiculo => {
-                const celdaPlaca = vehiculo.querySelectorAll('h4')[1];
-
-                if (celdaPlaca) {
-                    const textoPlaca = celdaPlaca.textContent || celdaPlaca.innerText;
-                    // Converti tmbn en minusculas el de la placa de las columnas
-                    if (textoPlaca.toLowerCase().includes(placa_buscada)) {
-                        vehiculo.style.display = '';
-                    } else {
-                        vehiculo.style.display = 'none';
-                    }
+                function cerrarBuscar() {
+                    modalBuscar.style.visibility = 'hidden';
+                    modalBuscar.style.opacity = '0';
                 }
-            });
-        }
-    </script>
+
+                function abrirBuscarFunction() {
+                    modalBuscar.style.visibility = 'visible';
+                    modalBuscar.style.opacity = '1';
+                }
+
+                function cerrarBuscar() {
+                    modalBuscar.style.visibility = 'hidden';
+                    modalBuscar.style.opacity = '0';
+                }
+
+                abrirBuscar.addEventListener('click', abrirBuscarFunction);
+                cerrarModalBuscar.addEventListener('click', cerrarBuscar);
+                cancelarBuscar.addEventListener('click', cerrarBuscar);
+            </script>
+
+            <script>
+                const plant = document.getElementById('estado-vehiculos');
+                const plant2 = document.getElementById('estado-vehiculos2');
+                const formMarca = document.getElementById('formulario-marca');
+                const formModelo = document.getElementById('formulario-modelo');
+
+                function plantilla() {
+                    plant.classList.remove('estadoDevehiculos');
+                }
+
+                function retirarPlantilla() {
+                    plant.classList.add('estadoDevehiculos');
+                }
+
+                function plantilla2() {
+                    plant2.classList.remove('estadoDevehiculos');
+                }
+
+                function retirarPlantilla2() {
+                    plant2.classList.add('estadoDevehiculos');
+                }
+
+                function mostrarFormularioVehiculo() {
+                    plant2.classList.add('estadoDevehiculos');
+                    formMarca.classList.remove('estadoDevehiculos');
+                }
+
+                function cerrarFormularioVehiculo() {
+                    formMarca.classList.add('estadoDevehiculos');
+                }
+
+                function mostrarFormularioModelo() {
+                    plant2.classList.add('estadoDevehiculos');
+                    formModelo.classList.remove('estadoDevehiculos');
+                }
+
+                function cerrarFormularioModelo() {
+                    formModelo.classList.add('estadoDevehiculos');
+                }
+
+                //Funcion para devolver a el formulario de agregar
+                function volverAOpciones() {
+                    formMarca.classList.add('estadoDevehiculos');
+                    formModelo.classList.add('estadoDevehiculos');
+                    plant2.classList.remove('estadoDevehiculos');
+                }
+
+
+                const modalEliminar = document.getElementById('modal-eliminar');
+
+                function mostrarEliminar(placa) {
+                    document.getElementById('placa-eliminar').textContent = placa;
+                    document.getElementById('id-placa-eliminar').value = placa;
+                    modalEliminar.classList.remove('estadoDevehiculos');
+                }
+
+
+
+
+                function cerrarEliminar() {
+                    modalEliminar.classList.add('estadoDevehiculos');
+                }
+
+                //  Hasta aqui va el codigo de abrir los modales
+                function filtrarPorPlaca(placa) {
+                    const vehiculos = document.querySelectorAll('.vehiculos');
+                    // Converti todo en minusculas porque si no no funciona buscando en minusculas
+                    const placa_buscada = placa.toLowerCase();
+
+                    vehiculos.forEach(vehiculo => {
+                        const celdaPlaca = vehiculo.querySelectorAll('h4')[1];
+
+                        if (celdaPlaca) {
+                            const textoPlaca = celdaPlaca.textContent || celdaPlaca.innerText;
+                            // Converti tmbn en minusculas el de la placa de las columnas
+                            if (textoPlaca.toLowerCase().includes(placa_buscada)) {
+                                vehiculo.style.display = '';
+                            } else {
+                                vehiculo.style.display = 'none';
+                            }
+                        }
+                    });
+                }
+            </script>
 </body>
 
 </html>

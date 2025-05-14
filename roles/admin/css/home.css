@@ -7,13 +7,14 @@ html,body{
     height: 100vh;  /* Altura completa de la ventana del navegador */
     width: 100vw;   /* Ancho completo de la ventana del navegador */
     background-color: #f7f7f7;  /* Fondo gris claro */
+    overflow-x: hidden;
 }
 
 /* Contenedor principal con diseño en grid */
 .container_grid{
     display: grid;
     grid-template: 
-    "sidebar header" 100px
+    "sidebar header " 100px
     "sidebar main" auto 
     / auto auto;  /* Define el grid con dos columnas */
     width: 100%;

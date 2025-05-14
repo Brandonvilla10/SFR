@@ -1,12 +1,11 @@
 <?php
-
+session_start();
 include ("../database/database.php");
 include('../roles/admin/components/alert.php');
 $conexion = new database;
 $con = $conexion->conectar();
-session_start();
 
-echo "hola mundo";
+
 if (isset($_FILES['foto'])) {
 
     $uploadDir = '../uploads/';
@@ -62,19 +61,59 @@ if (isset($_FILES['foto'])) {
                     </script>";
                     exit();
                 } else {
-                    echo "error";
+                    echo "
+   
+                    <script>
+                        document.addEventListener('DOMContentLoaded', function () {
+                        mostrarModal('mistake', 'Ruta no encontrada intentalo de nuevo', '../roles/admin/configuracion.php'); 
+                        });
+                    
+                    </script>";
+                    exit();
                 }
             } else {
-                echo "lolo";
+                echo "
+   
+                    <script>
+                        document.addEventListener('DOMContentLoaded', function () {
+                        mostrarModal('mistake', 'Imagen muy pesada, maximo 2MB', '../roles/admin/configuracion.php'); 
+                        });
+                    
+                    </script>";
+                    exit();
             }
         } else {
-            echo "no encontrado";
+            echo "
+   
+                <script>
+                    document.addEventListener('DOMContentLoaded', function () {
+                    mostrarModal('mistake', 'Imagen Corrupta, prueba con otra', '../roles/admin/configuracion.php'); 
+                    });
+                
+                </script>";
+                exit();
         }
     } else {
-        echo "liviano";
+       echo "
+
+            <script>
+                document.addEventListener('DOMContentLoaded', function () {
+                mostrarModal('mistake', 'Extension no permitida, solo jpeg,png,jpg y gif', '../roles/admin/configuracion.php'); 
+                });
+            
+            </script>";
+            exit();
     }
 } else {
-    echo "pesado";  
+    echo "
+   
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+            mostrarModal('mistake', 'Imagen no encontrada', '../roles/admin/configuracion.php'); 
+            });
+        
+        </script>";
+        exit();  
 }
 
 ?>

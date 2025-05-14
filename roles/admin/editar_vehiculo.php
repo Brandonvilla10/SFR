@@ -31,6 +31,7 @@ if (!isset($_SESSION['documento'])) {
     
 $placa = isset($_GET['placa']) ? trim($_GET['placa']) : '';
 $origen = isset($_GET['origen']) ? $_GET['origen'] : 'vehiculos';
+
 $user_id = isset($_GET['user_id']) ? $_GET['user_id'] : '';
 $pagina_retorno = ($origen === 'usuarios') ? "vehiculos_usuarios.php?user_id=$user_id" : 'vehiculos.php';
 
@@ -158,6 +159,9 @@ $usuario_foto_path = !empty($resultado['foto']) ? $mostrar : $usu;
                                     </div>
                                     <form action="../../uploads/uploadVehiculos.php?placa=<?php echo $vehiculo['id_placa']; ?>" method="POST" enctype="multipart/form-data" id="form-vehicle-photo">
                                         <input type="hidden" name="tipo_foto" value="vehiculo">
+                                        <input type="hidden" name="ruta" value="<?php echo $origen ?>">
+                                        <input type="hidden" name="user_id" value="<?php echo $user_id ?>">
+
                                         <input type="file" name="foto" onchange="document.getElementById('form-vehicle-photo').submit()">
                                     </form>
                                 </div>
@@ -173,6 +177,7 @@ $usuario_foto_path = !empty($resultado['foto']) ? $mostrar : $usu;
                                     </div>
                                     <form action="../../uploads/uploadVehiculos.php?placa=<?php echo $vehiculo['id_placa']; ?>" method="POST" enctype="multipart/form-data" id="form-card-photo">
                                         <input type="hidden" name="tipo_foto" value="tarjeta">
+                                        <input type="hidden" name="ruta" value="<?php echo $origen?>">
                                         <input type="file" name="foto" onchange="document.getElementById('form-card-photo').submit()">
                                         <input type="submit" name="upload_foto" value="Subir" style="display:none">
                                     </form>

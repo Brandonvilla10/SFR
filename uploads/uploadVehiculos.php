@@ -16,6 +16,9 @@ if (isset($_FILES['foto'])) {
     $fileError = $_FILES['foto']['error'];
     $fileType = $_FILES['foto']['type'];
     $tipo_foto = $_POST['tipo_foto'];
+    $ruta = $_POST['ruta'];
+    $user_id = $_POST['user_id'];
+
 
     $allowedExtensions = ['jpg', 'jpeg', 'png'];
     $fileExt = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
@@ -44,7 +47,7 @@ if (isset($_FILES['foto'])) {
                                 echo "
                                     <script>
                                         document.addEventListener('DOMContentLoaded', function () {
-                                        mostrarModal('success', 'Imagen actualizada con exito', '../roles/admin/editar_vehiculo.php?placa=$placa');
+                                        mostrarModal('success', 'Imagen actualizada con exito','../roles/admin/editar_vehiculo.php?placa=$placa&origen=$ruta&user_id=$user_id');
                                         });
                                     </script>";
                                     exit();
@@ -54,7 +57,7 @@ if (isset($_FILES['foto'])) {
                             echo "
                                 <script>
                                     document.addEventListener('DOMContentLoaded', function () {
-                                    mostrarModal('mistake', 'Error al actualizar la foto en la base de datos', '../roles/admin/editar_vehiculo.php?placa=$placa');
+                                    mostrarModal('mistake', 'Error al actualizar la foto en la base de datos','../roles/admin/editar_vehiculo.php?placa=$placa&origen=$ruta&user_id=$user_id');
                                     });
                                 </script>";
                                 exit();
@@ -64,7 +67,7 @@ if (isset($_FILES['foto'])) {
                         echo "
                             <script>
                                 document.addEventListener('DOMContentLoaded', function () {
-                                mostrarModal('mistake', 'No se encontró la placa del vehículo', '../roles/admin/editar_vehiculo.php?placa=$placa');
+                                mostrarModal('mistake', 'No se encontró la placa del vehículo','../roles/admin/editar_vehiculo.php?placa=$placa&origen=$ruta&user_id=$user_id');
                                 });
                             </script>";
                             exit();
@@ -73,7 +76,7 @@ if (isset($_FILES['foto'])) {
                     echo "
                         <script>
                             document.addEventListener('DOMContentLoaded', function () {
-                            mostrarModal('mistake', 'Error al cargar el archivo, inténtalo de nuevo', '../roles/admin/editar_vehiculo.php?placa=$placa');
+                            mostrarModal('mistake', 'Error al cargar el archivo, inténtalo de nuevo', '../roles/admin/editar_vehiculo.php?placa=$placa&origen=$ruta&user_id=$user_id');
                             });
                         </script>";
                         exit();
@@ -82,7 +85,7 @@ if (isset($_FILES['foto'])) {
                 echo "
                     <script>
                         document.addEventListener('DOMContentLoaded', function () {
-                        mostrarModal('mistake', 'El archivo es demasiado grande. Máximo permitido: 3MB','../roles/admin/editar_vehiculo.php?placa=$placa');
+                        mostrarModal('mistake', 'El archivo es demasiado grande. Máximo permitido: 3MB','../roles/admin/editar_vehiculo.php?placa=$placa&origen=$ruta&user_id=$user_id');
                         });
                     </script>";
                 exit();
@@ -91,7 +94,7 @@ if (isset($_FILES['foto'])) {
             echo "
                 <script>
                     document.addEventListener('DOMContentLoaded', function () {
-                    mostrarModal('mistake', 'Error al cargar el archivo, inténtalo de nuevo', '../roles/admin/editar_vehiculo.php?placa=$placa');
+                    mostrarModal('mistake', 'Error al cargar el archivo, inténtalo de nuevo', '../roles/admin/editar_vehiculo.php?placa=$placa&origen=$ruta&user_id=$user_id');
                     });
                 </script>";
             exit();
@@ -100,7 +103,7 @@ if (isset($_FILES['foto'])) {
         echo "
             <script>
                 document.addEventListener('DOMContentLoaded', function () {
-                mostrarModal('mistake', 'Formato de archivo no permitido. Solo JPG, JPEG y PNG', '../roles/admin/editar_vehiculo.php?placa=$placa');
+                mostrarModal('mistake', 'Formato de archivo no permitido. Solo JPG, JPEG y PNG', '../roles/admin/editar_vehiculo.php?placa=$placa&origen=$ruta&user_id=$user_id');
                 });
             </script>";
         exit();
@@ -109,7 +112,7 @@ if (isset($_FILES['foto'])) {
     echo "
         <script>
             document.addEventListener('DOMContentLoaded', function () {
-            mostrarModal('mistake', 'No se ha seleccionado ningún archivo', '../roles/admin/editar_vehiculo.php?placa=$placa');
+            mostrarModal('mistake', 'No se ha seleccionado ningún archivo', '../roles/admin/editar_vehiculo.php?placa=$placa&origen=$ruta&user_id=$user_id');
             });
         </script>";
     exit();

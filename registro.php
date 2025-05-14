@@ -1,4 +1,7 @@
-<?php include('database/database.php'); ?>
+<?php 
+include('database/database.php'); 
+include('roles/admin/components/alert.php');
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -37,10 +40,13 @@ if(isset($_POST["botoncito"])){
     $fila = $validacion->fetchAll(PDO::FETCH_ASSOC);
 
     if($fila){
-        echo "<script>alert('El usuario ya existente o correos repetidos')</script>";
-    }
-    else if($nombre == "" ||$documento == "" ||$correo == "" || $contrasena == "" || $codigo == "" || $estado == "" || $rol == ""){
-        echo "<script>alert('Elementos vacios, Error de sistema')</script>";
+        echo "  
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                mostrarModal('mistake', 'Usuario ya existente', 'registro.php');
+            });
+        </script>";
+        exit();
     }else{
             $query = "INSERT INTO usuario(id_documento,nombre_completo,correo,contraseña,id_estado,id_rol)
             VALUES ('$documento','$nombre','$correo','$encriptacion','$estado','$rol')";
@@ -48,8 +54,13 @@ if(isset($_POST["botoncito"])){
             $insert = $con->prepare($query);
             $insert->execute();
 
-            echo "<script>alert('Registro exitoso')</script>";
-            echo "<script>window.location = 'index.php' </script>";
+            echo "  
+            <script>
+                document.addEventListener('DOMContentLoaded', function () {
+                    mostrarModal('success', 'Usuario ingresado exitoxamente', 'index.php');
+                });
+            </script>";
+            exit();
 
     }
 

@@ -3,40 +3,7 @@
 require_once("database/database.php");
 $conexion = new database;
 $con = $conexion->conectar();
-session_start();
-
-
-if (isset($_POST['submit'])){
-    $documento = $_POST['documento'];
-    $password = $_POST['password'];
-
-    $validacion = $con->prepare("SELECT * FROM usuario where id_documento = :documento");
-    $validacion->bindParam(":documento", $documento);
-    $validacion-> execute();
-    $fila = $validacion->fetch(PDO::FETCH_ASSOC);
-
-    if ($fila && password_verify($password, $fila['contraseña'])) {
- 
-        switch($fila['id_rol']){
-            case 1:
-                echo "<script>alert('Usuario válido. Bienvenido " . $fila['nombre_completo'] . "');</script>";
-                echo "<script>window.location.href = 'roles/admin/home.php';</script>";
-                break;
-            case 2:
-                echo "<script>alert('Usuario válido. Bienvenido " . $fila['nombre_completo'] . "');</script>";
-                echo "<script>window.location.href = 'roles/aprendiz/home.php';</script>";
-                break;
-        }
-       
-    } else {
-        echo "<script>alert('Documento o contraseña incorrectos.');</script>";
-    }
-
-}
-
 ?>
-
-
 
 <!DOCTYPE html>
 <html lang="en">

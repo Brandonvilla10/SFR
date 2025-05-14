@@ -21,8 +21,12 @@ if(isset($_POST['submit'])){
         $sql->bindParam(':contrasena', $contraseñaHash, PDO::PARAM_STR);
         $sql->execute();
 
-        echo "<script>alert('Cambio hecho con exito')</script>";  
-        header("Location: template/destruirSesion.php");
+        echo "  
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                mostrarModal('success', 'Cambio hecho con exito', 'index.php');
+            });
+        </script>";
         exit();
     }
 }

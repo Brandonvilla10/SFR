@@ -12,6 +12,11 @@ $documento = $_SESSION['documento']; // o el dato del usuario logueado
 $stmt = $con->prepare("SET @documento_generador = :doc");
 $stmt->bindValue(':doc', $documento);
 $stmt->execute();
+
+// Marcar notificaciones como leídas al entrar a la página
+$stmtLeidas = $con->prepare("UPDATE notificaciones SET leida = 1 WHERE id_afectado = :doc AND leida = 0");
+$stmtLeidas->bindValue(':doc', $documento);
+$stmtLeidas->execute();
 ?>
 
 <!DOCTYPE html>

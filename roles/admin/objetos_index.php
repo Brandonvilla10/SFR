@@ -104,12 +104,7 @@ $consulta->bindParam(':start', $start_record, PDO::PARAM_INT);
 $consulta->bindParam(':limit', $limite_registros, PDO::PARAM_INT);
 $consulta->execute();
 
-
-
-
-
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -145,7 +140,7 @@ $consulta->execute();
             <!-------------------------------- TABLA DE OBJETOS ------------------------------------->
 
             <div class="contenido_tabla">
-                <input class="BOTON_FILTRAR" placeholder="Filtrar objeto por serial" oninput="filtrarPorSerial(this.value)">
+                <input class="BOTON_FILTRAR" placeholder="Filtrar objeto por serial" oninput="filtrarPorSerial(this.value)" id="Filtro">
                 <?php if ($consulta->rowCount() == 0) { ?>
                     <div class="notificacion">
                         <h4>No hay objetos registrados</h4>
@@ -278,23 +273,33 @@ cancelarBuscar.addEventListener('click', cerrarBuscar);
 
         //<----------------------------- FILTRO PARA BUSCAR POR EL SERIAL ---------------------------> 
 
+        const objetos = document.querySelectorAll('.objetos');
+
+        console.log(objetos)
         function filtrarPorSerial(serial) {
-            const objetos = document.querySelectorAll('.objetos');
             const serial_buscado = serial.toUpperCase();
 
-            objetos.forEach(objeto => {
-                const serialElement = objeto.querySelectorAll('h4')[1];
+            let consulta = `SELECT *, objetos.foto AS ob_pic FROM objetos
+            INNER JOIN usuario ON usuario.id_documento = objetos.id_documento
+            INNER JOIN estado ON estado.id_estado = objetos.id_estado
+            WHERE id_serial LIKE '%${serial_buscado}%' LIMIT 1,5`;
 
-                if (serialElement) {
-                    const textoSerial = serialElement.textContent || serialElement.innerText;
+            fetch('components/BusquedaBarra.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ consulta: consulta}) 
 
-                    if (textoSerial.toUpperCase().includes(serial_buscado)) {
-                        objeto.style.display = '';
-                    } else {
-                        objeto.style.display = 'none';
-                    }
-                }
+            })
+            .then((response) => response.json())
+            .then(data => {
+                
+                console.log(data) 
+
             });
+
+         
         }
     </script>
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>

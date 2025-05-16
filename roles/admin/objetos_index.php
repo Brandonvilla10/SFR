@@ -128,7 +128,7 @@ $consulta->execute();
                     <h1>Objetos</h1>
                     <p style="color:#858585">Administra los objetos según tu necesidad</p>
                 </div>
-                <button class="buscar_objeto_titulo" id="abrirEliminar">Eliminar Objetos</button>
+                
 
 
                 <button class="buscar_objeto_titulo" id="abrirBuscar">Buscar Objetos</button>
@@ -225,9 +225,7 @@ $consulta->execute();
         </main>
     </div>
 
-    <?php
-    include('./components/modaEliminar.php');
-    ?>
+    
 
     <script>
         // Modal de Búsqueda
@@ -256,16 +254,7 @@ $consulta->execute();
         cancelarBuscar.addEventListener('click', cerrarBuscar);
     </script>
 
-    <script>
-        const abrirEliminar = document.getElementById('abrirEliminar');
-
-        document.addEventListener('DOMContentLoaded', function() {
-            abrirEliminar.addEventListener('click', function() {
-                abrir("Serial Del Objeto", 1, "Digite El Serial Del Objeto", "Eliminar Objeto");
-            });
-        });
-    </script>
-
+ 
     <script>
         // <----------------------------- CERRAR Y ABRIR MODAL DE BUSQUEDA DE OBJETOS --------------------------->
         const plant = document.getElementById('estado-objetos');

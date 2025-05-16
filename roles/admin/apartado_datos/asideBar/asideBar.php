@@ -93,7 +93,7 @@ $rol =$_SESSION['rol_name'];
                   ?>
 
         <a class="contenedorUsuario" href=""> <div class="seccionUsuario">
-            <img id="iconoPersona" class="iconoPersona" src=<?php echo !empty($foto) ?$fotoActual : $usu  ?>  alt="imagen del usuario" >
+            <img id="iconoPersona" class="iconoPersona" src=<?php echo !empty($foto) ?$fotoActual : $usu  ?>  onerror="this.src='../../../uploads/usu.png'" alt="imagen del usuario" >
             <p class="seccionTexto"><span id ="name"><?php echo isset($nombre) ? $nombre : 'Usuario' ?><br><?php echo isset($rol) ? $rol : "uknown"?></span></p>
         </div></a>
 

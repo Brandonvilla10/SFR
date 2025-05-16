@@ -88,12 +88,12 @@ $rol =$_SESSION['rol_name'];
                  $resultado = $sql->fetch(PDO::FETCH_ASSOC);
                  $foto = $resultado['foto'];
                  $fotoActual = "../../uploads/" . $foto;
-                 $usu = "../../uploads/usu.png"
+                
 
                   ?>
 
         <a class="contenedorUsuario" href=""> <div class="seccionUsuario">
-            <img id="iconoPersona" class="iconoPersona" src=<?php echo !empty($foto) ?$fotoActual : $usu  ?>  alt="imagen del usuario" >
+            <img id="iconoPersona" class="iconoPersona" src=<?php echo !empty($foto) ?$fotoActual : "../../uploads/usu.png"  ?>  alt="imagen del usuario" onerror="this.src='../../uploads/usu.png'"> 
             <p class="seccionTexto"><span id ="name"><?php echo isset($nombre) ? $nombre : 'Usuario' ?><br><?php echo isset($rol) ? $rol : "uknown"?></span></p>
         </div></a>
 

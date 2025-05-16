@@ -61,6 +61,7 @@
         <title>Configuracion</title>
         <link rel="stylesheet" href="css/configuracion.css">
         <link rel="stylesheet" href="asidebar/asidebar.css">
+        
     </head>
     <body>
         
@@ -127,7 +128,7 @@ $usu = "../../uploads/usu.png";
 
                     <div class="fotoPerfil">
                         <div class="ContainerImagen">
-                            <img class="personaAzul" id="fotoUsuario"  src="<?php echo !empty($resultado['foto']) ? $mostar : $usu  ?>" alt="Foto de perfil">
+                            <img class="personaAzul" id="fotoUsuario"  src="<?php echo !empty($resultado['foto']) ? $mostar : $usu  ?>" alt="Foto de perfil" onerror="this.src='../../uploads/usu.png'">
                             
                             <div class="containerr">
                                 <form action="../../uploads/upload.php" style="margin-top: 6px;" method="POST" enctype="multipart/form-data">

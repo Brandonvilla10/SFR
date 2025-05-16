@@ -5,28 +5,28 @@ $con = $conexion->conectar();
 session_start();
 
 if (!isset($_SESSION['documento'])) {
-    header("Location: ../../index.php");   
+    header("Location: ../../index.php");
     exit();
 }
 
 // Establecer la variable @documento_generador en MySQL desde la sesión
-    try {
-        $sql = $con->prepare("SELECT nombre_completo FROM usuario WHERE id_documento = $_SESSION[documento]");
-        $sql->execute();
-        $nombre = $sql->fetch(PDO::FETCH_ASSOC);
-        $con->exec("SET @documento_generador = '$nombre[nombre_completo]'");
-        
-        // Verificar que la variable se haya establecido correctamente
-        $check = $con->query("SELECT @documento_generador as nombre");
-        $result = $check->fetch(PDO::FETCH_ASSOC);
-        if (empty($result['nombre'])) {
-            // Si sigue vacía, establecer un valor predeterminado
-            $con->exec("SET @documento_generador = 'Usuario Sistema'");
-        }
-    } catch (Exception $e) {
-        echo '<p>Error al definir el documento generador: ' . htmlspecialchars($e->getMessage()) . '</p>';
-        exit;
+try {
+    $sql = $con->prepare("SELECT nombre_completo FROM usuario WHERE id_documento = $_SESSION[documento]");
+    $sql->execute();
+    $nombre = $sql->fetch(PDO::FETCH_ASSOC);
+    $con->exec("SET @documento_generador = '$nombre[nombre_completo]'");
+
+    // Verificar que la variable se haya establecido correctamente
+    $check = $con->query("SELECT @documento_generador as nombre");
+    $result = $check->fetch(PDO::FETCH_ASSOC);
+    if (empty($result['nombre'])) {
+        // Si sigue vacía, establecer un valor predeterminado
+        $con->exec("SET @documento_generador = 'Usuario Sistema'");
     }
+} catch (Exception $e) {
+    echo '<p>Error al definir el documento generador: ' . htmlspecialchars($e->getMessage()) . '</p>';
+    exit;
+}
 
 ?>
 
@@ -47,23 +47,24 @@ if (!isset($_SESSION['documento'])) {
 
 <body>
 
-<!-- Modal de Observaciones -->
-<div class="modalObservaciones desaparecerModal" id="modalObservaciones">
-    <div class="contenedorModalObservaciones">
-        <div class="headerModal">
-            <h3>Observaciones</h3>
-            <button class="cerrarModal" id="cerrarModalObservaciones">×</button>
-        </div>
-        <div class="cuerpoModal">
-            <textarea id="textoObservacion" placeholder="Escribe tus observaciones aquí..."></textarea>
-            <div class="botonesModal">
-                <button class="submit-btn" id="guardarObservacion">Guardar</button>
-                <button class="cancelar-btn" id="cancelarObservacion">Cancelar</button>
+    <!-- Modal de Observaciones -->
+
+    <div class="modalObservaciones desaparecerModal" id="modalObservaciones">
+        <div class="contenedorModalObservaciones">
+            <div class="headerModal">
+                <h3>Observaciones</h3>
+                <button class="cerrarModal" id="cerrarModalObservaciones">×</button>
+            </div>
+            <div class="cuerpoModal">
+                <textarea id="textoObservacion" placeholder="Escribe tus observaciones aquí..."></textarea>
+                <div class="botonesModal">
+                    <button class="submit-btn" id="guardarObservacion">Guardar</button>
+                    <button class="cancelar-btn" id="cancelarObservacion">Cancelar</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
-<!-- Fin Modal de Observaciones -->
+    <!-- Fin Modal de Observaciones -->
 
     <div class="container_grid">
 
@@ -103,31 +104,30 @@ if (!isset($_SESSION['documento'])) {
             </div>
 
             <!-- Toda esta parte sera destinada para el modal que hablamos el 04/21/2025 acerca de la parte del registro que tiene el celador  -->
-         
-            <div class="selecionarObjetos desaparecerModal" id="selecionarObjetos">
+
+        <section class="maincontainercentermodal desaparecerModal" id="selecionarObjetos">
+
+            <div class="selecionarObjetos" id="selecionarObjetosModal">
                 <div class="registrarObjeto">
 
                     <div class="elementoUsuario">
 
                         <div class="informacionUsuario" id="informacionUsuario">
-                            
-                        <!-- aqui va algo de codigo html solo que se pone con javascript, esta en el archivo logicascaner -->
-                    </div>
-                    
-                    
-                    
-                     
+
+                            <!-- aqui va algo de codigo html solo que se pone con javascript, esta en el archivo logicascaner -->
+                        </div>
+
 
                         <div class=" contenedorObjetosVehiculos">
                             <!-- inicia la partida los objetos -->
 
                             <div class="objetos" id="contenedorObjetos">
                                 <h2>Objetos</h2>
-                               
-                                   
+
+
                                 <!-- exactamente pasa lo mismo aqui, va codigo html con consultaphp pero la logica esta en el archivo js, es el que se encarga -->
                                 <!-- de renderizar toda la parte del modal -->
-                                
+
 
                             </div>
                             <!-- terminar los objetos -->
@@ -135,20 +135,18 @@ if (!isset($_SESSION['documento'])) {
                             <div class="tarjetaVehiculo">
                                 <div class="vehiculos" id="contenedorVehiculos">
                                     <h2>Vehiculos</h2>
-                                    
-                                     
+
+
                                 </div>
                                 <!-- terminar paras los vehiculos -->
-
+                                
                             </div>
-
+                            
                         </div>
-
-
-
-                        </form>
-                    </div>
+                    </form>
                 </div>
+            </div>
+        </section>
 
 
 
@@ -160,16 +158,12 @@ if (!isset($_SESSION['documento'])) {
     <script type="module" src="./js/logicaScaner.js"></script>
 
     <script>
+        const selecionarObjetos = document.getElementById("selecionarObjetos")
 
-        
-        const selecionarObjetos = document.getElementById("selecionarObjetos") 
-        function cerrar(){
+        function cerrar() {
             selecionarObjetos.classList.add("desaparecerModal")
             selecionarObjetos.classList.remove("aparecerModal")
         }
-
-
-     
     </script>
 </body>
 

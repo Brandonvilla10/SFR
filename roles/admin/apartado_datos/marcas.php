@@ -139,7 +139,7 @@ if (isset($_POST["eliminarSubmir"])) {
                     <h1>Marcas</h1>
                     <p>Administra las marcas segun tu necesidad</p>
                 </div>
-                <button class="buscar_objeto_titulo" onclick="plantilla()">Buscar Vehiculos</button>
+                
 
                 <button type="submit" name="abrirModal" class="buscar_objeto_titulo" id="abrirEliminar">Eliminar</button>
 

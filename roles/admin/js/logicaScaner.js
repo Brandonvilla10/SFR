@@ -138,19 +138,27 @@ async function registrarEntrada() {
         console.log(error);
     } finally {
         // aqui se vacian los arrays para que no se repitan los datos
-        entradaObjetos = [];
-        entradavehiculos = [];
-        limpiarObservaciones() // esta funcion esta exportada del archivo "modalObservacion" lo que hace es vaciar el array 
+        // esta funcion esta exportada del archivo "modalObservacion" lo que hace es vaciar el array 
 
         cerrar();
     }
 }
 
-const selecionarObjetos = document.getElementById("selecionarObjetos")
+
+
+const selecionarObjetos = document.querySelector(".maincontainercentermodal");
+const selecionarObjetosModal = document.getElementById("selecionarObjetosModal")
 
 function cerrar() {
     selecionarObjetos.classList.add("desaparecerModal")
     selecionarObjetos.classList.remove("aparecerModal")
+
+    selecionarObjetosModal.classList.remove("aparecerModal")
+    selecionarObjetosModal.classList.add("desaparecerModal")
+    
+    entradaObjetos = [];
+    entradavehiculos = [];
+    limpiarObservaciones()
 }
 
 // todo esto es para la parte del qr y lo que se necesita para que funcione
@@ -271,9 +279,7 @@ function scanQR() {
                     let informacionUsuario =
                         document.getElementById("informacionUsuario");
                     let contenedorObjetos = document.getElementById("contenedorObjetos");
-                    let contenedorVehiculos = document.getElementById(
-                        "contenedorVehiculos"
-                    );
+                    let contenedorVehiculos = document.getElementById("contenedorVehiculos");
 
                     // ----------------------------------------------------------------------------------------
 
@@ -295,7 +301,7 @@ function scanQR() {
 
                     informacionUsuario.innerHTML += `
           <div onclick="cerrar()" class="divCerrar"><span class="cerrar" >X</span></div> 
-                    <img src="../../uploads/${info.foto}" alt="Foto de perfil del usuario" class="fotoDePerfil">
+                    <img src="../../uploads/${info.foto}" alt="Foto de perfil del usuario" onerror="this.src='../../uploads/usu.png'" class="fotoDePerfil">
 
                     <b style="font-size:1.5rem;margin-bottom:30px;">Datos Del Usuario</b>
 
@@ -399,7 +405,7 @@ function scanQR() {
 
                 datosUsuario();
 
-                const selecionarObjetos = document.getElementById("selecionarObjetos");
+                const selecionarObjetos = document.querySelector(".maincontainercentermodal");
                 selecionarObjetos.classList.add("aparecerModal");
                 selecionarObjetos.classList.remove("desaparecerModal");
 

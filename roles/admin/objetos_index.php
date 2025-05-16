@@ -1,6 +1,3 @@
-
-
-
 <?php
 session_start();
 require_once('../../database/database.php');
@@ -139,7 +136,7 @@ $consulta->execute();
             <hr class="separador">
             <!-------------------------------- TABLA DE OBJETOS ------------------------------------->
 
-            <div class="contenido_tabla">
+            <div class="contenido_tabla" id="contenido_tabla">
                 <input class="BOTON_FILTRAR" placeholder="Filtrar objeto por serial" oninput="filtrarPorSerial(this.value)" id="Filtro">
                 <?php if ($consulta->rowCount() == 0) { ?>
                     <div class="notificacion">
@@ -168,7 +165,7 @@ $consulta->execute();
                     <?php } ?>
                 <?php } ?>
 
-                <div class="paginacion">
+                <div class="paginacion" id="paginacion">
                     <?php if ($page > 1): ?>
                         <a href="?page=<?php echo $page - 1; ?>" class="pag-btn">&laquo; Anterior</a>
                     <?php endif; ?>
@@ -201,27 +198,27 @@ $consulta->execute();
 
             <!------------------------------------------------ MODAL DE BUSQUEDA DE OBJETOS ----------------------------------->
 
-      
+
             <div class="modalBuscar" id="modalBuscar">
-    <div class="contenedorModalBuscar">
-        <div class="headerModalBuscar">
-            <h3>Buscar Usuario</h3>
-            <button class="cerrarModalBuscar" id="cerrarModalBuscar">&times;</button>
-        </div>
-        <div class="cuerpoModalBuscar">
-            <form action="objetos_usuario.php" method="post">
-                <div class="campo-formulario">
-                    <label for="user_id">Documento del Usuario</label>
-                    <input type="number" id="user_id" name="user_id" placeholder="Digite el documento" required>
+                <div class="contenedorModalBuscar">
+                    <div class="headerModalBuscar">
+                        <h3>Buscar Usuario</h3>
+                        <button class="cerrarModalBuscar" id="cerrarModalBuscar">&times;</button>
+                    </div>
+                    <div class="cuerpoModalBuscar">
+                        <form action="objetos_usuario.php" method="post">
+                            <div class="campo-formulario">
+                                <label for="user_id">Documento del Usuario</label>
+                                <input type="number" id="user_id" name="user_id" placeholder="Digite el documento" required>
+                            </div>
+                            <div class="botonesModalBuscar">
+                                <button type="button" class="cancelar-btn" id="cancelarBuscar">Cancelar</button>
+                                <button type="submit" name="objetos_submit" class="buscar-btn">Continuar</button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
-                <div class="botonesModalBuscar">
-                    <button type="button" class="cancelar-btn" id="cancelarBuscar">Cancelar</button>
-                    <button type="submit" name="objetos_submit" class="buscar-btn">Continuar</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
+            </div>
 
 
 
@@ -232,32 +229,32 @@ $consulta->execute();
     include('./components/modaEliminar.php');
     ?>
 
-<script>
-  // Modal de Búsqueda
-const modalBuscar = document.getElementById('modalBuscar');
-const abrirBuscar = document.getElementById('abrirBuscar');
-const cerrarModalBuscar = document.getElementById('cerrarModalBuscar');
-const cancelarBuscar = document.getElementById('cancelarBuscar');
+    <script>
+        // Modal de Búsqueda
+        const modalBuscar = document.getElementById('modalBuscar');
+        const abrirBuscar = document.getElementById('abrirBuscar');
+        const cerrarModalBuscar = document.getElementById('cerrarModalBuscar');
+        const cancelarBuscar = document.getElementById('cancelarBuscar');
 
-function cerrarBuscar() {
-    modalBuscar.style.visibility = 'hidden';
-    modalBuscar.style.opacity = '0';
-}
+        function cerrarBuscar() {
+            modalBuscar.style.visibility = 'hidden';
+            modalBuscar.style.opacity = '0';
+        }
 
-function abrirBuscarFunction() {
-    modalBuscar.style.visibility = 'visible';
-    modalBuscar.style.opacity = '1';
-}
+        function abrirBuscarFunction() {
+            modalBuscar.style.visibility = 'visible';
+            modalBuscar.style.opacity = '1';
+        }
 
-function cerrarBuscar(){
-    modalBuscar.style.visibility = 'hidden';
-    modalBuscar.style.opacity = '0';
-}
+        function cerrarBuscar() {
+            modalBuscar.style.visibility = 'hidden';
+            modalBuscar.style.opacity = '0';
+        }
 
-abrirBuscar.addEventListener('click', abrirBuscarFunction);
-cerrarModalBuscar.addEventListener('click', cerrarBuscar);
-cancelarBuscar.addEventListener('click', cerrarBuscar);
-</script>
+        abrirBuscar.addEventListener('click', abrirBuscarFunction);
+        cerrarModalBuscar.addEventListener('click', cerrarBuscar);
+        cancelarBuscar.addEventListener('click', cerrarBuscar);
+    </script>
 
     <script>
         const abrirEliminar = document.getElementById('abrirEliminar');
@@ -284,33 +281,70 @@ cancelarBuscar.addEventListener('click', cerrarBuscar);
 
         //<----------------------------- FILTRO PARA BUSCAR POR EL SERIAL ---------------------------> 
 
-        const objetos = document.querySelectorAll('.objetos');
+        const contenido = document.getElementById('contenido_tabla');
 
-        console.log(objetos)
+
         function filtrarPorSerial(serial) {
             const serial_buscado = serial.toUpperCase();
+            
 
             let consulta = `SELECT *, objetos.foto AS ob_pic FROM objetos
             INNER JOIN usuario ON usuario.id_documento = objetos.id_documento
             INNER JOIN estado ON estado.id_estado = objetos.id_estado
-            WHERE id_serial LIKE '%${serial_buscado}%' LIMIT 1,5`;
+            WHERE id_serial LIKE '%${serial_buscado}%' LIMIT 5`;
 
-            fetch('components/BusquedaBarra.php', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ consulta: consulta}) 
+            fetch('fetch/BusquedaBarra.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        consulta: consulta
+                    })
 
-            })
-            .then((response) => response.json())
-            .then(data => {
-                
-                console.log(data) 
+                })
+                .then((response) => response.json())
+                .then(data => {
 
-            });
 
-         
+                    if (data.error) {
+                        // objetos.forEach(objetos => {
+                        //         objetos.remove();
+                        //     });
+                    } else {
+
+                        console.log(data);
+                        data.forEach(generales => {
+                            const objetos = document.querySelectorAll('.objetos');
+                            const cartas = document.createElement('div');
+                            cartas.classList.add('objetos');
+                            objetos.forEach(objetos => {
+                                objetos.remove();
+                            });
+                            cartas.innerHTML = '';
+                            cartas.innerHTML = ` 
+                                <h4><img src=''../../uploads/${generales.foto}' alt="img" height="60px" width="60px" onerror="this.src='../../uploads/default_iconos.png'"></h4>
+                                <h4>${generales.id_serial}</h4>
+                                <h4>${generales.nombre}</h4>
+                                <h4>${generales.id_documento}</h4>
+                                <h4>${generales.nombre_completo}</h4>
+                                <h4>${generales.estado}</h4>
+                                <h4><ion-icon name="create-outline" size="large" onclick="window.location.href='editar_objetos_usu.php?id=${generales.id_serial}&owner=${generales.id_documento}&route=objetos_index.php'"></ion-icon></h4>
+                            
+                                `;
+
+
+                            const paginacion = document.getElementById('paginacion');
+                            contenido.insertBefore(cartas, paginacion);
+                        })
+
+                    }
+
+                }).catch(error => {
+                    console.error('Error:', error);
+                })
+
+
         }
     </script>
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>

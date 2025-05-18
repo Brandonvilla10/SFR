@@ -88,10 +88,11 @@ $total_filas = $consulta_total->fetchColumn();
 $paginas = ceil($total_filas / $limite_registros);
 
 // Obtener datos paginados
-$consulta = $con->prepare("SELECT *, vehiculos.foto AS veh_pic FROM vehiculos
-    INNER JOIN usuario ON usuario.id_documento = vehiculos.id_documento
-    INNER JOIN estado ON estado.id_estado = vehiculos.id_estado
-    LIMIT :start, :limit");
+$consulta = $con->prepare(
+"SELECT  v.foto AS veh_pic, v.id_placa, e.estado,u.id_documento, u.nombre_completo FROM vehiculos v
+        INNER JOIN usuario  u ON u.id_documento = v.id_documento
+        INNER JOIN estado e ON e.id_estado = v.id_estado WHERE v.id_estado != 4
+        LIMIT :start, :limit");
 $consulta->bindParam(':start', $start_record, PDO::PARAM_INT);
 $consulta->bindParam(':limit', $limite_registros, PDO::PARAM_INT);
 $consulta->execute();
@@ -133,8 +134,8 @@ $consulta->execute();
             </div>
 
 
-               <!-- formulario para eliminar -->
-               <div class="modalBuscar" id="modalBuscar">
+            <!-- formulario para eliminar -->
+            <div class="modalBuscar" id="modalBuscar">
                 <div class="contenedorModalBuscar">
                     <div class="headerModalBuscar">
                         <h3>Buscar Vehiculo</h3>
@@ -154,10 +155,10 @@ $consulta->execute();
                     </div>
                 </div>
             </div>
-          
+
 
             <hr class="separador">
-            <div class="contenido_tabla">
+            <div class="contenido_tabla" id="contenido">
                 <input class="BOTON_FILTRAR" placeholder="Filtrar vehiculo por placa" oninput="filtrarPorPlaca(this.value)">
 
                 <?php if ($consulta->rowCount() == 0) { ?>
@@ -185,7 +186,7 @@ $consulta->execute();
                     <?php } ?>
                 <?php } ?>
 
-                <div class="paginacion">
+                <div class="paginacion" id="paginacion">
                     <?php if ($page > 1): ?>
                         <a href="?page=<?php echo $page - 1; ?>" class="pag-btn">&laquo; Anterior</a>
                     <?php endif; ?>
@@ -291,7 +292,7 @@ $consulta->execute();
                 </div>
             </div>
 
-         
+
 
             <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
 
@@ -385,25 +386,68 @@ $consulta->execute();
                     modalEliminar.classList.add('estadoDevehiculos');
                 }
 
-                //  Hasta aqui va el codigo de abrir los modales
+                // <------------------------------------------- Hasta aqui va el codigo de abrir los modales ------------------------------->
+
+                const contenido = document.getElementById('contenido');
+
                 function filtrarPorPlaca(placa) {
                     const vehiculos = document.querySelectorAll('.vehiculos');
                     // Converti todo en minusculas porque si no no funciona buscando en minusculas
                     const placa_buscada = placa.toLowerCase();
 
-                    vehiculos.forEach(vehiculo => {
-                        const celdaPlaca = vehiculo.querySelectorAll('h4')[1];
 
-                        if (celdaPlaca) {
-                            const textoPlaca = celdaPlaca.textContent || celdaPlaca.innerText;
-                            // Converti tmbn en minusculas el de la placa de las columnas
-                            if (textoPlaca.toLowerCase().includes(placa_buscada)) {
-                                vehiculo.style.display = '';
+
+                    let consulta = `SELECT  v.foto AS veh_pic, v.id_placa, e.estado,u.id_documento, u.nombre_completo FROM vehiculos v
+                    INNER JOIN usuario  u ON u.id_documento = v.id_documento
+                    INNER JOIN estado e ON e.id_estado = v.id_estado
+                    WHERE v.id_placa LIKE '%${placa_buscada}%' LIMIT 5`;
+
+
+                    fetch('fetch/BusquedaBarra.php', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({
+                                consulta: consulta
+                            })
+                        })
+                        .then((response) => response.json())
+                        .then(data => {
+                          
+                            if (data.error) {
+                                const vehiculos = document.querySelectorAll('.vehiculos');
+                                vehiculos.forEach(vehiculo => {
+                                    vehiculo.remove();
+                                });
                             } else {
-                                vehiculo.style.display = 'none';
+                                const vehiculos = document.querySelectorAll('.vehiculos');
+                                vehiculos.forEach(vehiculo => {
+                                    vehiculo.remove();
+                                });
+                                data.forEach(generales => {
+                                    const cartas = document.createElement('div');
+                                    cartas.classList.add('vehiculos');
+                                    cartas.innerHTML = '';
+                                    const imagen = generales.veh_pic ? generales.veh_pic : 'default_vehiculos.png';
+                                    cartas.innerHTML = ` 
+                                    <h4><img src='../../uploads/${imagen}' alt="img" height="60px" width="60px" onerror="this.src='../../uploads/default_vehiculos.png'"></h4>
+                                    <h4>${generales.id_placa}</h4>
+                                    <h4>${generales.id_documento}</h4>
+                                    <h4>${generales.nombre_completo}</h4>
+                                    <h4>${generales.estado}</h4>
+                                    <h4><ion-icon name="create-outline" size="large" onclick="window.location.href='editar_vehiculo.php?placa=${generales.id_placa}'"></ion-icon></h4>
+                            
+                                    `;
+
+                                    const paginacion = document.getElementById('paginacion');
+                                    contenido.insertBefore(cartas, paginacion);
+                                })
+
                             }
-                        }
-                    });
+                        });
+
+
                 }
             </script>
 </body>

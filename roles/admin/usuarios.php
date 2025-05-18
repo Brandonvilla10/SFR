@@ -76,7 +76,7 @@ if (isset($_POST['eliminarSubmir'])) {
     }
 }
 
-if(isset( $_POST["agregarSubmit"])) {
+if (isset($_POST["agregarSubmit"])) {
 
     $id_documento = $_POST['id_documento'];
     $nombre_completo = $_POST['nombre_completo'];
@@ -92,7 +92,7 @@ if(isset( $_POST["agregarSubmit"])) {
     $nuevoUser->bindParam(':correo', $correo);
     $nuevoUser->bindParam(':contrasena', $hasPassword);
     $nuevoUser->bindParam(':id_rol', $id_rol);
-    $nuevoUser->execute(); 
+    $nuevoUser->execute();
 }
 
 ?>
@@ -187,7 +187,7 @@ if(isset( $_POST["agregarSubmit"])) {
 
             <!-- inicio del modal para agregar usuario -->
 
-            
+
             <div class="modalAgregar" id="modalAgregar">
                 <div class="contenedorModalAgregar">
                     <div class="headerModalAgregar">
@@ -246,7 +246,7 @@ if(isset( $_POST["agregarSubmit"])) {
             <hr class="separador">
             <!-------------------------------- TABLA DE USUARIOS ------------------------------------->
 
-            <div class="contenido_tabla">
+            <div class="contenido_tabla" id="contenido">
                 <input class="BOTON_FILTRAR" placeholder="Filtrar usuario por documento" oninput="filtrarPordocumento(this.value)">
                 <?php if ($consulta->rowCount() == 0) { ?>
                     <div class="notificacion">
@@ -275,7 +275,7 @@ if(isset( $_POST["agregarSubmit"])) {
                     <?php } ?>
                 <?php } ?>
 
-                <div class="paginacion">
+                <div class="paginacion" id="paginacion">
                     <?php if ($page > 1): ?>
                         <a href="?page=<?php echo $page - 1; ?>" class="pag-btn">&laquo; Anterior</a>
                     <?php endif; ?>
@@ -316,23 +316,67 @@ if(isset( $_POST["agregarSubmit"])) {
     <script>
         //<----------------------------- FILTRO PARA BUSCAR POR EL DOCUMENTO DE LA PERSONA ---------------------------> 
 
+        const contenido = document.getElementById('contenido');
+
         function filtrarPordocumento(serial) {
             const objetos = document.querySelectorAll('.objetos');
-            const serial_buscado = serial.toUpperCase();
+            const usuario_buscado = serial.toUpperCase();
 
-            objetos.forEach(objeto => {
-                const serialElement = objeto.querySelectorAll('h4')[1];
 
-                if (serialElement) {
-                    const textoSerial = serialElement.textContent || serialElement.innerText;
+            let consulta = `SELECT u.id_documento, u.nombre_completo, u.correo, u.foto, estado.estado, rol.nombre_rol  FROM usuario u
+            INNER JOIN rol ON u.id_rol = rol.id_rol
+            INNER JOIN estado ON estado.id_estado = u.id_estado
+            WHERE id_documento LIKE '%${usuario_buscado}%' LIMIT 5`;
 
-                    if (textoSerial.toUpperCase().includes(serial_buscado)) {
-                        objeto.style.display = '';
+            fetch('fetch/BusquedaBarra.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        consulta: consulta
+                    })
+                })
+                .then((response) => response.json())
+                .then(data => {
+
+               
+                    if (data.error) {
+                        const objetos = document.querySelectorAll('.objetos');
+                        objetos.forEach(objetos => {
+                            objetos.remove();
+                        });
+
                     } else {
-                        objeto.style.display = '';
+                        const objetos = document.querySelectorAll('.objetos');
+                        objetos.forEach(objetos => {
+                            objetos.remove();
+                        });
+                        data.forEach(generales => {
+                            const cartas = document.createElement('div');
+                            cartas.classList.add('objetos');
+                            cartas.innerHTML = '';
+                            const imagen = generales.foto ? generales.foto : 'usu.png';
+                            cartas.innerHTML = ` 
+                        <h4><img src='../../uploads/${imagen}' alt="img" height="60px" width="60px" onerror="this.src='../../uploads/usu.png'"></h4>
+                        <h4>${generales.id_documento}</h4>
+                        <h4>${generales.nombre_completo}</h4>
+                        <h4>${generales.nombre_rol}</h4>
+                        <h4>${generales.correo}</h4>
+                        <h4>${generales.estado}</h4>
+                        <h4><ion-icon name="create-outline" size="large" onclick="window.location.href='actualizar.php?documento=${generales.id_documento}&route=usuarios.php'"></ion-icon></h4>
+                        `;
+
+
+                            const paginacion = document.getElementById('paginacion');
+                            contenido.insertBefore(cartas, paginacion);
+                        })
+
                     }
-                }
-            });
+
+                }).catch(error => {
+                    console.error('Error:', error);
+                })
         }
     </script>
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>

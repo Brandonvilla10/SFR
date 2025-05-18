@@ -93,9 +93,9 @@ $total_filas = $consulta_total->fetchColumn();
 $paginas = ceil($total_filas / $limite_registros);
 
 // Obtener datos paginados
-$consulta = $con->prepare("SELECT *, objetos.foto AS ob_pic FROM objetos
-    INNER JOIN usuario ON usuario.id_documento = objetos.id_documento
-    INNER JOIN estado ON estado.id_estado = objetos.id_estado
+$consulta = $con->prepare("SELECT o.foto AS ob_pic, o.id_serial,o.nombre, o.id_documento, e.estado, u.nombre_completo FROM objetos o
+    INNER JOIN usuario u ON u.id_documento = o.id_documento
+    INNER JOIN estado  e ON e.id_estado = o.id_estado
     LIMIT :start, :limit");
 $consulta->bindParam(':start', $start_record, PDO::PARAM_INT);
 $consulta->bindParam(':limit', $limite_registros, PDO::PARAM_INT);
@@ -128,7 +128,7 @@ $consulta->execute();
                     <h1>Objetos</h1>
                     <p style="color:#858585">Administra los objetos según tu necesidad</p>
                 </div>
-                
+
 
 
                 <button class="buscar_objeto_titulo" id="abrirBuscar">Buscar Objetos</button>
@@ -225,7 +225,7 @@ $consulta->execute();
         </main>
     </div>
 
-    
+
 
     <script>
         // Modal de Búsqueda
@@ -254,7 +254,7 @@ $consulta->execute();
         cancelarBuscar.addEventListener('click', cerrarBuscar);
     </script>
 
- 
+
     <script>
         // <----------------------------- CERRAR Y ABRIR MODAL DE BUSQUEDA DE OBJETOS --------------------------->
         const plant = document.getElementById('estado-objetos');
@@ -275,44 +275,40 @@ $consulta->execute();
 
         function filtrarPorSerial(serial) {
             const serial_buscado = serial.toUpperCase();
-            
 
-            let consulta = `SELECT *, objetos.foto AS ob_pic FROM objetos
-            INNER JOIN usuario ON usuario.id_documento = objetos.id_documento
-            INNER JOIN estado ON estado.id_estado = objetos.id_estado
+
+            let consulta = `SELECT o.foto AS ob_pic, o.id_serial,o.nombre, o.id_documento, e.estado, u.nombre_completo FROM objetos o
+            INNER JOIN usuario u ON u.id_documento = o.id_documento
+            INNER JOIN estado  e ON e.id_estado = o.id_estado
             WHERE id_serial LIKE '%${serial_buscado}%' LIMIT 5`;
 
             fetch('fetch/BusquedaBarra.php', {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        consulta: consulta
-                    })
-
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({consulta: consulta})
                 })
                 .then((response) => response.json())
                 .then(data => {
 
 
                     if (data.error) {
-                        // objetos.forEach(objetos => {
-                        //         objetos.remove();
-                        //     });
+                        const objetos = document.querySelectorAll('.objetos');
+                        objetos.forEach(objetos => {
+                                objetos.remove();
+                        });
+                        
                     } else {
-
-                        console.log(data);
+                        const objetos = document.querySelectorAll('.objetos');
+                        objetos.forEach(objetos => {
+                            objetos.remove();
+                        });
                         data.forEach(generales => {
-                            const objetos = document.querySelectorAll('.objetos');
                             const cartas = document.createElement('div');
                             cartas.classList.add('objetos');
-                            objetos.forEach(objetos => {
-                                objetos.remove();
-                            });
                             cartas.innerHTML = '';
+                            const imagen = generales.ob_pic ? generales.ob_pic : 'default_iconos.png';
                             cartas.innerHTML = ` 
-                                <h4><img src=''../../uploads/${generales.foto}' alt="img" height="60px" width="60px" onerror="this.src='../../uploads/default_iconos.png'"></h4>
+                                <h4><img src='../../uploads/${imagen}' alt="img" height="60px" width="60px" onerror="this.src='../../uploads/default_iconos.png'"></h4>
                                 <h4>${generales.id_serial}</h4>
                                 <h4>${generales.nombre}</h4>
                                 <h4>${generales.id_documento}</h4>
@@ -322,9 +318,9 @@ $consulta->execute();
                             
                                 `;
 
-
-                            const paginacion = document.getElementById('paginacion');
-                            contenido.insertBefore(cartas, paginacion);
+                                
+                                const paginacion = document.getElementById('paginacion');
+                                contenido.insertBefore(cartas, paginacion);
                         })
 
                     }
@@ -335,6 +331,8 @@ $consulta->execute();
 
 
         }
+
+        //<-------------------------- fin del filtro para buscar por serial ----------------------------------->
     </script>
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
 </body>

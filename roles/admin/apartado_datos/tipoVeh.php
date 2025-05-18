@@ -108,8 +108,8 @@ if (isset($_POST["eliminarSubmir"])) {
             </div>
 
             <hr class="separador">
-            <div class="contenido_tabla">
-                <input class="BOTON_FILTRAR" placeholder="Filtrar por tipo vehiculo">
+            <div class="contenido_tabla" id="contenido">
+                <input class="BOTON_FILTRAR" placeholder="Filtrar por tipo vehiculo" oninput="filtrarPorTipo(this.value)">
 
                 <?php if ($consulta->rowCount() == 0) { ?>
                     <div class="notificacion">
@@ -119,18 +119,16 @@ if (isset($_POST["eliminarSubmir"])) {
                     <div class="encabezado">
                         <h4>identificador</h4>
                         <h4>Tipo vehiculo</h4>
-                        <h4>Accion</h4>
                     </div>
                     <?php foreach ($consulta as $filas) { ?>
                         <div class="vehiculos">
                             <h4><?php echo $filas['id_tipoVehiculo']; ?></h4>
                             <h4><?php echo $filas['tipoVehiculo']; ?></h4>
-                            <h4><ion-icon name="create-outline" size="large"></ion-icon></h4>
                         </div>
                     <?php } ?>
                 <?php } ?>
 
-                <div class="paginacion">
+                <div class="paginacion" id="paginacion">
                     <?php if ($page > 1): ?>
                         <a href="?page=<?php echo $page - 1; ?>" class="pag-btn">&laquo; Anterior</a>
                     <?php endif; ?>
@@ -170,5 +168,55 @@ if (isset($_POST["eliminarSubmir"])) {
                         abrir("Identificador Del Tipo De Vehiculo", 2, "Digite El Identificador Del Tipo De Vehiculo", "Eliminar Tipo De Vehiculo");
                     });
                 });
+
+
+                const contenido = document.getElementById('contenido');
+
+                function filtrarPorTipo(global) {
+
+                    const sololetras = global.replace(/[^a-zA-Z]/g, '');
+                    const vehiculos = document.querySelectorAll('.vehiculos');
+                    // Converti todo a minusculas 
+                    const general = sololetras.toLowerCase();
+
+
+                    let consulta = `SELECT * FROM tipovehiculo WHERE id_estado != 4 and tipovehiculo LIKE '%${general}%' LIMIT 5`;
+
+                    fetch('../fetch/BusquedaBarra.php', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({
+                                consulta: consulta
+                            })
+                        })
+                        .then((response) => response.json())
+                        .then(data => {
+                            if (data.error) {
+                                const vehiculos = document.querySelectorAll('.vehiculos');
+                                vehiculos.forEach(vehiculo => {
+                                    vehiculo.remove();
+                                });
+                            } else {
+                                const vehiculos = document.querySelectorAll('.vehiculos');
+                                vehiculos.forEach(vehiculo => {
+                                    vehiculo.remove();
+                                });
+                                data.forEach(generales => {
+                                    const cartas = document.createElement('div');
+                                    cartas.classList.add('vehiculos');
+                                    cartas.innerHTML = '';
+                                    cartas.innerHTML = ` 
+                                    <h4>${generales.id_tipoVehiculo}</h4>
+                                    <h4>${generales.tipoVehiculo}</h4>
+                                    `;
+
+                                    const paginacion = document.getElementById('paginacion');
+                                    contenido.insertBefore(cartas, paginacion);
+                                });
+                            }
+                        });
+                }
             </script>
             <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>

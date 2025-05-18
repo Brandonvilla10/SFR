@@ -1,7 +1,9 @@
-<?php
+<?php 
 session_start();
 require_once('../../../database/database.php');
 include('../components/alert.php');
+
+
 $conexion = new database;
 $con = $conexion->conectar();
 
@@ -10,8 +12,18 @@ $codigo = $_SESSION['documento'];
 $nombre = explode(" ", $_SESSION['nombre'])[0];
 $rol = $_SESSION['rol_name'];
 
-?>
 
+if (isset($_GET['error'])) {
+   
+        echo "
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                mostrarModal('mistake', 'Usuario no registrado, no es posible crear QR', 'codigoQR.php');
+            });
+        </script>";
+     
+
+}?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -19,7 +31,7 @@ $rol = $_SESSION['rol_name'];
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="../../../assets/img/LogoFR.png">
-    <title>Programas</title>
+    <title>Codigo QR</title>
     <link rel="stylesheet" href="css/marcas.css">
     <link rel="stylesheet" href="asideBar/asidebar.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
@@ -41,8 +53,18 @@ $rol = $_SESSION['rol_name'];
             </div>
 
             <hr class="separador">
-            <div class="contenido_tabla">
-                
+            <div class="contenido_QR">
+
+                <form action="GenerarQR.php" method="POST" class="formQR">
+                    <Label> Generar Codigo QR</Label>
+                    <div class="conjunto">
+                        <img src="https://static.vecteezy.com/system/resources/previews/024/675/057/non_2x/modern-color-business-qr-code-icons-with-long-shadow-effect-free-png.png" width="100px" alt="">
+                        <p>Digita el documento de la persona </p>
+                    </div>
+                    <input type="number" placeholder="Documento" name="documento">
+                    <button type="submit" value="GenerateQR" name="GenerateQR">Generar PDF descargable</button>
+                </form>
+
             </div>
 
 

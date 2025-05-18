@@ -115,8 +115,8 @@ if (isset($_POST["eliminarSubmir"])) {
             </div>
 
             <hr class="separador">
-            <div class="contenido_tabla">
-                <input class="BOTON_FILTRAR" placeholder="Filtrar por ficha " oninput="filtrarPorPlaca(this.value)">
+            <div class="contenido_tabla" id="contenido">
+                <input class="BOTON_FILTRAR" placeholder="Filtrar por ficha " oninput="filtrarPorFicha(this.value)">
 
                 <?php if ($consulta->rowCount() == 0) { ?>
                     <div class="notificacion">
@@ -128,7 +128,6 @@ if (isset($_POST["eliminarSubmir"])) {
                         <h4>Programa de Formacion</h4>
                         <h4>Nivel de Formacion</h4>
                         <h4>Jornada de Formacion</h4>
-                        <h4>Accion</h4>
                     </div>
                     <?php foreach ($consulta as $filas) { ?>
                         <div class="vehiculos">
@@ -136,13 +135,11 @@ if (isset($_POST["eliminarSubmir"])) {
                             <h4><?php echo $filas['nombrePrograma']; ?></h4>
                             <h4><?php echo $filas['nivelDeformacion']; ?></h4>
                             <h4><?php echo $filas['jornada']; ?></h4>
-                            <h4><ion-icon name="create-outline" size="large"></ion-icon></h4>
-
                         </div>
                     <?php } ?>
                 <?php } ?>
 
-                <div class="paginacion">
+                <div class="paginacion" id="paginacion">
                     <?php if ($page > 1): ?>
                         <a href="?page=<?php echo $page - 1; ?>" class="pag-btn">&laquo; Anterior</a>
                     <?php endif; ?>
@@ -172,16 +169,73 @@ if (isset($_POST["eliminarSubmir"])) {
                 </div>
             </div>
 
-<?php include("../components/modaEliminar.php"); ?>
+            <?php include("../components/modaEliminar.php"); ?>
 
             <script>
-                
                 const abrirEliminar = document.getElementById('abrirEliminar');
 
                 document.addEventListener('DOMContentLoaded', function() {
                     abrirEliminar.addEventListener('click', function() {
-                        abrir("Identificador De La Ficha", 2 ,"Digite El Numero De Ficha", "Eliminar Ficha" );
+                        abrir("Identificador De La Ficha", 2, "Digite El Numero De Ficha", "Eliminar Ficha");
                     });
                 });
+
+
+
+                //<------------------------ FUNCION PARA LA BARRA DE FILTRADO ----------------->
+                const contenido = document.getElementById('contenido');
+
+                function filtrarPorFicha(global) {
+
+                    const sololetras = global.replace(/[^0-9]/g, '');
+                    const vehiculos = document.querySelectorAll('.vehiculos');
+                    // Converti todo a minusculas 
+                    const general = sololetras.toLowerCase();
+
+              
+                    let consulta = `SELECT * FROM fichas 
+                                    NATURAL JOIN programa 
+                                    NATURAL JOIN nivelformacion 
+                                    NATURAL JOIN jornada 
+                                    WHERE id_estado != 4  and n_ficha LIKE '%${general}%' LIMIT 5`;
+
+                    fetch('../fetch/BusquedaBarra.php', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({
+                                consulta: consulta
+                            })
+                        })
+                        .then((response) => response.json())
+                        .then(data => {
+                            if (data.error) {
+                                const vehiculos = document.querySelectorAll('.vehiculos');
+                                vehiculos.forEach(vehiculo => {
+                                    vehiculo.remove();
+                                });
+                            } else {
+                                const vehiculos = document.querySelectorAll('.vehiculos');
+                                vehiculos.forEach(vehiculo => {
+                                    vehiculo.remove();
+                                });
+                                data.forEach(generales => {
+                                    const cartas = document.createElement('div');
+                                    cartas.classList.add('vehiculos');
+                                    cartas.innerHTML = '';
+                                    cartas.innerHTML = ` 
+                                    <h4>${generales.n_ficha}</h4>
+                                    <h4>${generales.nombrePrograma}</h4>
+                                    <h4>${generales.nivelDeformacion}</h4>
+                                    <h4>${generales.jornada}</h4>
+                                    `;
+
+                                    const paginacion = document.getElementById('paginacion');
+                                    contenido.insertBefore(cartas, paginacion);
+                                });
+                            }
+                        });
+                }
             </script>
             <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>

@@ -214,6 +214,82 @@
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
 }
 
+
+
+/* SECCION DE ESTILOS DEL QR */
+
+.contenido_QR{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    height: 65%;
+    margin-top: 2%;
+}
+
+.formQR{
+ 
+    margin-top: 10px;
+    padding: 5% 8% 5% 8%;
+    height: fit-content;
+    width: min(300px, 40%);
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    background-color: #FFFFFF;
+    border-color: black;
+    font-weight: 600;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+   
+
+}
+
+.formQR label{
+    color: black;
+    font-size: 2rem;
+    font-weight: 600;
+}
+.formQR input{
+    margin-top: 15px;
+    color: black;
+    padding: 10px;
+ 
+    font-size: 1rem;
+    border: 1px solid white;
+    background-color: #ffffff;
+    font-weight: 600;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.411);
+    width: 100%;
+}
+
+.conjunto{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    
+    font-weight: 200;
+    font-size: 1rem;
+    gap: 10px;
+
+}
+.formQR input:focus{
+    outline: none;
+    border-bottom: 1px solid black;
+}
+
+.formQR button{
+    background-color: #3762D2;
+    width: 100%;
+    color: white;
+    padding: 5px;
+    font-weight:500 ;
+    letter-spacing: 1px;
+    border-color: transparent;
+}
+
 @media (min-width:320px),
 (max-width:320px) {
     .container_grid {

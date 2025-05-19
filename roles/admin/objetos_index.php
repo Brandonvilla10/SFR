@@ -1,6 +1,3 @@
-
-
-
 <?php
 session_start();
 require_once('../../database/database.php');
@@ -96,9 +93,9 @@ $total_filas = $consulta_total->fetchColumn();
 $paginas = ceil($total_filas / $limite_registros);
 
 // Obtener datos paginados
-$consulta = $con->prepare("SELECT *, objetos.foto AS ob_pic FROM objetos
-    INNER JOIN usuario ON usuario.id_documento = objetos.id_documento
-    INNER JOIN estado ON estado.id_estado = objetos.id_estado
+$consulta = $con->prepare("SELECT o.foto AS ob_pic, o.id_serial,o.nombre, o.id_documento, e.estado, u.nombre_completo FROM objetos o
+    INNER JOIN usuario u ON u.id_documento = o.id_documento
+    INNER JOIN estado  e ON e.id_estado = o.id_estado
     LIMIT :start, :limit");
 $consulta->bindParam(':start', $start_record, PDO::PARAM_INT);
 $consulta->bindParam(':limit', $limite_registros, PDO::PARAM_INT);
@@ -131,7 +128,7 @@ $consulta->execute();
                     <h1>Objetos</h1>
                     <p style="color:#858585">Administra los objetos según tu necesidad</p>
                 </div>
-                
+
 
 
                 <button class="buscar_objeto_titulo" id="abrirBuscar">Buscar Objetos</button>
@@ -139,7 +136,7 @@ $consulta->execute();
             <hr class="separador">
             <!-------------------------------- TABLA DE OBJETOS ------------------------------------->
 
-            <div class="contenido_tabla">
+            <div class="contenido_tabla" id="contenido_tabla">
                 <input class="BOTON_FILTRAR" placeholder="Filtrar objeto por serial" oninput="filtrarPorSerial(this.value)" id="Filtro">
                 <?php if ($consulta->rowCount() == 0) { ?>
                     <div class="notificacion">
@@ -168,7 +165,7 @@ $consulta->execute();
                     <?php } ?>
                 <?php } ?>
 
-                <div class="paginacion">
+                <div class="paginacion" id="paginacion">
                     <?php if ($page > 1): ?>
                         <a href="?page=<?php echo $page - 1; ?>" class="pag-btn">&laquo; Anterior</a>
                     <?php endif; ?>
@@ -201,63 +198,63 @@ $consulta->execute();
 
             <!------------------------------------------------ MODAL DE BUSQUEDA DE OBJETOS ----------------------------------->
 
-      
+
             <div class="modalBuscar" id="modalBuscar">
-    <div class="contenedorModalBuscar">
-        <div class="headerModalBuscar">
-            <h3>Buscar Usuario</h3>
-            <button class="cerrarModalBuscar" id="cerrarModalBuscar">&times;</button>
-        </div>
-        <div class="cuerpoModalBuscar">
-            <form action="objetos_usuario.php" method="post">
-                <div class="campo-formulario">
-                    <label for="user_id">Documento del Usuario</label>
-                    <input type="number" id="user_id" name="user_id" placeholder="Digite el documento" required>
+                <div class="contenedorModalBuscar">
+                    <div class="headerModalBuscar">
+                        <h3>Buscar Usuario</h3>
+                        <button class="cerrarModalBuscar" id="cerrarModalBuscar">&times;</button>
+                    </div>
+                    <div class="cuerpoModalBuscar">
+                        <form action="objetos_usuario.php" method="post">
+                            <div class="campo-formulario">
+                                <label for="user_id">Documento del Usuario</label>
+                                <input type="number" id="user_id" name="user_id" placeholder="Digite el documento" required>
+                            </div>
+                            <div class="botonesModalBuscar">
+                                <button type="button" class="cancelar-btn" id="cancelarBuscar">Cancelar</button>
+                                <button type="submit" name="objetos_submit" class="buscar-btn">Continuar</button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
-                <div class="botonesModalBuscar">
-                    <button type="button" class="cancelar-btn" id="cancelarBuscar">Cancelar</button>
-                    <button type="submit" name="objetos_submit" class="buscar-btn">Continuar</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
+            </div>
 
 
 
         </main>
     </div>
 
-    
 
-<script>
-  // Modal de Búsqueda
-const modalBuscar = document.getElementById('modalBuscar');
-const abrirBuscar = document.getElementById('abrirBuscar');
-const cerrarModalBuscar = document.getElementById('cerrarModalBuscar');
-const cancelarBuscar = document.getElementById('cancelarBuscar');
 
-function cerrarBuscar() {
-    modalBuscar.style.visibility = 'hidden';
-    modalBuscar.style.opacity = '0';
-}
+    <script>
+        // Modal de Búsqueda
+        const modalBuscar = document.getElementById('modalBuscar');
+        const abrirBuscar = document.getElementById('abrirBuscar');
+        const cerrarModalBuscar = document.getElementById('cerrarModalBuscar');
+        const cancelarBuscar = document.getElementById('cancelarBuscar');
 
-function abrirBuscarFunction() {
-    modalBuscar.style.visibility = 'visible';
-    modalBuscar.style.opacity = '1';
-}
+        function cerrarBuscar() {
+            modalBuscar.style.visibility = 'hidden';
+            modalBuscar.style.opacity = '0';
+        }
 
-function cerrarBuscar(){
-    modalBuscar.style.visibility = 'hidden';
-    modalBuscar.style.opacity = '0';
-}
+        function abrirBuscarFunction() {
+            modalBuscar.style.visibility = 'visible';
+            modalBuscar.style.opacity = '1';
+        }
 
-abrirBuscar.addEventListener('click', abrirBuscarFunction);
-cerrarModalBuscar.addEventListener('click', cerrarBuscar);
-cancelarBuscar.addEventListener('click', cerrarBuscar);
-</script>
+        function cerrarBuscar() {
+            modalBuscar.style.visibility = 'hidden';
+            modalBuscar.style.opacity = '0';
+        }
 
- 
+        abrirBuscar.addEventListener('click', abrirBuscarFunction);
+        cerrarModalBuscar.addEventListener('click', cerrarBuscar);
+        cancelarBuscar.addEventListener('click', cerrarBuscar);
+    </script>
+
+
     <script>
         // <----------------------------- CERRAR Y ABRIR MODAL DE BUSQUEDA DE OBJETOS --------------------------->
         const plant = document.getElementById('estado-objetos');
@@ -273,34 +270,69 @@ cancelarBuscar.addEventListener('click', cerrarBuscar);
 
         //<----------------------------- FILTRO PARA BUSCAR POR EL SERIAL ---------------------------> 
 
-        const objetos = document.querySelectorAll('.objetos');
+        const contenido = document.getElementById('contenido_tabla');
 
-        console.log(objetos)
+
         function filtrarPorSerial(serial) {
             const serial_buscado = serial.toUpperCase();
 
-            let consulta = `SELECT *, objetos.foto AS ob_pic FROM objetos
-            INNER JOIN usuario ON usuario.id_documento = objetos.id_documento
-            INNER JOIN estado ON estado.id_estado = objetos.id_estado
-            WHERE id_serial LIKE '%${serial_buscado}%' LIMIT 1,5`;
 
-            fetch('components/BusquedaBarra.php', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ consulta: consulta}) 
+            let consulta = `SELECT o.foto AS ob_pic, o.id_serial,o.nombre, o.id_documento, e.estado, u.nombre_completo FROM objetos o
+            INNER JOIN usuario u ON u.id_documento = o.id_documento
+            INNER JOIN estado  e ON e.id_estado = o.id_estado
+            WHERE id_serial LIKE '%${serial_buscado}%' LIMIT 5`;
 
-            })
-            .then((response) => response.json())
-            .then(data => {
-                
-                console.log(data) 
+            fetch('fetch/BusquedaBarra.php', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({consulta: consulta})
+                })
+                .then((response) => response.json())
+                .then(data => {
 
-            });
 
-         
+                    if (data.error) {
+                        const objetos = document.querySelectorAll('.objetos');
+                        objetos.forEach(objetos => {
+                                objetos.remove();
+                        });
+                        
+                    } else {
+                        const objetos = document.querySelectorAll('.objetos');
+                        objetos.forEach(objetos => {
+                            objetos.remove();
+                        });
+                        data.forEach(generales => {
+                            const cartas = document.createElement('div');
+                            cartas.classList.add('objetos');
+                            cartas.innerHTML = '';
+                            const imagen = generales.ob_pic ? generales.ob_pic : 'default_iconos.png';
+                            cartas.innerHTML = ` 
+                                <h4><img src='../../uploads/${imagen}' alt="img" height="60px" width="60px" onerror="this.src='../../uploads/default_iconos.png'"></h4>
+                                <h4>${generales.id_serial}</h4>
+                                <h4>${generales.nombre}</h4>
+                                <h4>${generales.id_documento}</h4>
+                                <h4>${generales.nombre_completo}</h4>
+                                <h4>${generales.estado}</h4>
+                                <h4><ion-icon name="create-outline" size="large" onclick="window.location.href='editar_objetos_usu.php?id=${generales.id_serial}&owner=${generales.id_documento}&route=objetos_index.php'"></ion-icon></h4>
+                            
+                                `;
+
+                                
+                                const paginacion = document.getElementById('paginacion');
+                                contenido.insertBefore(cartas, paginacion);
+                        })
+
+                    }
+
+                }).catch(error => {
+                    console.error('Error:', error);
+                })
+
+
         }
+
+        //<-------------------------- fin del filtro para buscar por serial ----------------------------------->
     </script>
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
 </body>

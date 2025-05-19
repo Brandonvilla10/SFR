@@ -8,7 +8,6 @@ $codigo = $_SESSION['documento'];
 
 // Delete vehicle functionality
 if (isset($_POST['eliminar'])) {
-
     try {
 
         $id_placa = $_POST['eliminar'];
@@ -20,7 +19,7 @@ if (isset($_POST['eliminar'])) {
         echo "
         <script>
             document.addEventListener('DOMContentLoaded', function () {
-                mostrarModal('success', 'Vehiculo eliminado correctamente', 'vehiculos_usuarios.php');
+                mostrarModal('success', 'Vehiculo eliminado correctamente', 'vehiculos_usuarios.php&user_id='.$id_documento.'');
             });
         </script>";
     } catch (Exception $e) {
@@ -28,7 +27,7 @@ if (isset($_POST['eliminar'])) {
         echo "
         <script>
             document.addEventListener('DOMContentLoaded', function () {
-                mostrarModal('success', '  " . $e . "', 'vehiculos_usuarios.php');
+                mostrarModal('mistake', '  " . $e . "', 'vehiculos_usuarios.php');
             });
         </script>";
     }
@@ -43,7 +42,7 @@ if (empty($id_documento)) {
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             mostrarModal('mistake', 'No se ha especificado un usuario', 'vehiculos.php');
-        });
+        }); 
     </script>";
     exit();
 }
@@ -170,7 +169,7 @@ $totalPaginas = ceil($totalVehiculos / $registrosPorPagina);
                             <div class="object-actions">
                                 <button class="action-button delete-button" value="<?php echo $vehiculo['id_placa'] ?>" onclick="mostrarConfirmacion(this.value,'Segur@ Que Quieres Elimnar Este Vehiculo')">
                                     <i class="bi bi-trash3-fill"></i>
-                                </button>
+                                </button>   
                                 <button class="action-button edit-button" onclick="window.location.href='editar_vehiculo.php?placa=<?php echo $vehiculo['id_placa']; ?>&origen=usuarios&user_id=<?php echo $id_documento; ?>'">
                                     <i class="bi bi-pencil-square"></i>
                                 </button>

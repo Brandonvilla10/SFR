@@ -108,8 +108,8 @@ if (isset($_POST["eliminarSubmir"])) {
             </div>
 
             <hr class="separador">
-            <div class="contenido_tabla">
-                <input class="BOTON_FILTRAR" placeholder="Filtrar por nivel de formacion ">
+            <div class="contenido_tabla" id="contenido">
+                <input class="BOTON_FILTRAR" placeholder="Filtrar por nivel de formacion" oninput="filtrarPorNivel(this.value)">
 
                 <?php if ($consulta->rowCount() == 0) { ?>
                     <div class="notificacion">
@@ -118,19 +118,17 @@ if (isset($_POST["eliminarSubmir"])) {
                 <?php } else { ?>
                     <div class="encabezado">
                         <h4>id</h4>
-                        <h4>Programa de Formacion</h4>
-                        <h4>Accion</h4>
+                        <h4>Nivel de Formacion</h4>
                     </div>
                     <?php foreach ($consulta as $filas) { ?>
                         <div class="vehiculos">
                             <h4><?php echo $filas['id_nivelFormacion']; ?></h4>
                             <h4><?php echo $filas['nivelDeformacion']; ?></h4>
-                            <h4><ion-icon name="create-outline" size="large"></ion-icon></h4>
                         </div>
                     <?php } ?>
                 <?php } ?>
 
-                <div class="paginacion">
+                <div class="paginacion" id="paginacion">
                     <?php if ($page > 1): ?>
                         <a href="?page=<?php echo $page - 1; ?>" class="pag-btn">&laquo; Anterior</a>
                     <?php endif; ?>
@@ -170,6 +168,58 @@ if (isset($_POST["eliminarSubmir"])) {
                         abrir("Identificador Del Nivel De Programa", 2, "Digite El Identificador Del Nivel De Programa", "Eliminar Nivel");
                     });
                 });
+
+
+
+                //<------------------------ FUNCION PARA LA BARRA DE FILTRADO ----------------->
+                const contenido = document.getElementById('contenido');
+
+                function filtrarPorNivel(global) {
+
+                    const sololetras = global.replace(/[^a-zA-Z]/g, '');
+                    const vehiculos = document.querySelectorAll('.vehiculos');
+                    // Converti todo a minusculas 
+                    const general = sololetras.toLowerCase();
+
+
+                    let consulta = `SELECT * FROM nivelformacion WHERE id_estado != 4 and nivelDeformacion LIKE '%${general}%' LIMIT 5`;
+
+                    fetch('../fetch/BusquedaBarra.php', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({
+                                consulta: consulta
+                            })
+                        })
+                        .then((response) => response.json())
+                        .then(data => {
+                            if (data.error) {
+                                const vehiculos = document.querySelectorAll('.vehiculos');
+                                vehiculos.forEach(vehiculo => {
+                                    vehiculo.remove();
+                                });
+                            } else {
+                                const vehiculos = document.querySelectorAll('.vehiculos');
+                                vehiculos.forEach(vehiculo => {
+                                    vehiculo.remove();
+                                });
+                                data.forEach(generales => {
+                                    const cartas = document.createElement('div');
+                                    cartas.classList.add('vehiculos');
+                                    cartas.innerHTML = '';
+                                    cartas.innerHTML = ` 
+                                    <h4>${generales.id_nivelFormacion}</h4>
+                                    <h4>${generales.nivelDeformacion}</h4>
+                                    `;
+
+                                    const paginacion = document.getElementById('paginacion');
+                                    contenido.insertBefore(cartas, paginacion);
+                                });
+                            }
+                        });
+                }
             </script>
 
             <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>

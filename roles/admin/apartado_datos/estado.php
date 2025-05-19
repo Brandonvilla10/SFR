@@ -58,8 +58,8 @@ $consulta->execute();
             </div>
 
             <hr class="separador">
-            <div class="contenido_tabla">
-                <input class="BOTON_FILTRAR" placeholder="Filtrar por estado ">
+            <div class="contenido_tabla" id="contenido">
+                <input class="BOTON_FILTRAR" placeholder="Filtrar por estado" oninput="filtrarPorEstado(this.value)">
 
                 <?php if ($consulta->rowCount() == 0) { ?>
                     <div class="notificacion">
@@ -69,18 +69,16 @@ $consulta->execute();
                     <div class="encabezado">
                         <h4>identificado</h4>
                         <h4>Estado</h4>
-                        <h4>Accion</h4>
                     </div>
                     <?php foreach ($consulta as $filas) { ?>
                         <div class="vehiculos">
                             <h4><?php echo $filas['id_estado']; ?></h4>
                             <h4><?php echo $filas['estado']; ?></h4>
-                            <h4><ion-icon name="create-outline" size="large"></ion-icon></h4>
                         </div>
                     <?php } ?>
                 <?php } ?>
 
-                <div class="paginacion">
+                <div class="paginacion" id="paginacion">
                     <?php if ($page > 1): ?>
                         <a href="?page=<?php echo $page - 1; ?>" class="pag-btn">&laquo; Anterior</a>
                     <?php endif; ?>
@@ -109,8 +107,59 @@ $consulta->execute();
                     <?php endif; ?>
                 </div>
 
-  
+
             </div>
+            <script>
+                //<------------------------ FUNCION PARA LA BARRA DE FILTRADO ----------------->
+                const contenido = document.getElementById('contenido');
+
+                function filtrarPorEstado(global) {
+
+                    const sololetras = global.replace(/[^a-zA-Z]/g, '');
+                    const vehiculos = document.querySelectorAll('.vehiculos');
+                    // Converti todo a minusculas 
+                    const general = sololetras.toLowerCase();
+
+
+                    let consulta = `SELECT * FROM estado WHERE estado LIKE '%${general}%' LIMIT 5`;
+
+                    fetch('../fetch/BusquedaBarra.php', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({
+                                consulta: consulta
+                            })
+                        })  
+                        .then((response) => response.json())
+                        .then(data => {
+                            if (data.error) {
+                                const vehiculos = document.querySelectorAll('.vehiculos');
+                                vehiculos.forEach(vehiculo => {
+                                    vehiculo.remove();
+                                });
+                            } else {
+                                const vehiculos = document.querySelectorAll('.vehiculos');
+                                vehiculos.forEach(vehiculo => {
+                                    vehiculo.remove();
+                                });
+                                data.forEach(generales => {
+                                    const cartas = document.createElement('div');
+                                    cartas.classList.add('vehiculos');
+                                    cartas.innerHTML = '';
+                                    cartas.innerHTML = ` 
+                                    <h4>${generales.id_estado}</h4>
+                                    <h4>${generales.estado}</h4>
+                                    `;
+
+                                    const paginacion = document.getElementById('paginacion');
+                                    contenido.insertBefore(cartas, paginacion);
+                                });
+                            }
+                        });
+                }
+            </script>
 
 
             <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>

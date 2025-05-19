@@ -56,8 +56,12 @@ $total_filas = $consulta_total->fetchColumn();
 $paginas = ceil($total_filas / $limite_registros);
 
 // Obtener datos paginados
-$consulta = $con->prepare("SELECT * FROM marca WHERE id_estado  != 4
-    LIMIT :start, :limit ");
+$consulta = $con->prepare(
+    "SELECT * FROM marca INNER JOIN tipomarca 
+    ON tipomarca.id_tipo_marca = marca.id_tipo_marca
+    WHERE id_estado != 4
+    LIMIT :start, :limit "
+);
 $consulta->bindParam(':start', $start_record, PDO::PARAM_INT);
 $consulta->bindParam(':limit', $limite_registros, PDO::PARAM_INT);
 $consulta->execute();
@@ -69,7 +73,7 @@ if (isset($_POST["eliminarSubmir"])) {
 
     $identificador = $_POST['identificador'];
     $passwordAdmin = $_POST['passwordAdmin'];
-    
+
     $consultaAdmin = $con->prepare("SELECT contraseña FROM usuario WHERE id_documento = :documento AND id_rol = 1");
     $consultaAdmin->bindParam(':documento', $codigo);
     $consultaAdmin->execute();
@@ -139,7 +143,7 @@ if (isset($_POST["eliminarSubmir"])) {
                     <h1>Marcas</h1>
                     <p>Administra las marcas segun tu necesidad</p>
                 </div>
-                
+
 
                 <button type="submit" name="abrirModal" class="buscar_objeto_titulo" id="abrirEliminar">Eliminar</button>
 
@@ -149,8 +153,8 @@ if (isset($_POST["eliminarSubmir"])) {
             </div>
 
             <hr class="separador">
-            <div class="contenido_tabla">
-                <input class="BOTON_FILTRAR" placeholder="Filtrar vehiculo por placa" oninput="filtrarPorPlaca(this.value)">
+            <div class="contenido_tabla" id="contenido">
+                <input class="BOTON_FILTRAR" placeholder="Filtrar por nombre marca" oninput="filtrarPorPlaca(this.value)">
 
                 <?php if ($consulta->rowCount() == 0) { ?>
                     <div class="notificacion">
@@ -160,18 +164,18 @@ if (isset($_POST["eliminarSubmir"])) {
                     <div class="encabezado">
                         <h4>ID</h4>
                         <h4>Nombre Marca</h4>
-                        <h4>Accion</h4>
+                        <h4>tipo Marca</h4>
                     </div>
                     <?php foreach ($consulta as $filas) { ?>
                         <div class="vehiculos">
                             <h4><?php echo $filas['id_marca']; ?></h4>
                             <h4><?php echo $filas['nombre_marca']; ?></h4>
-                            <h4><ion-icon name="create-outline" size="large" onclick="window.location.href='editar_vehiculo.php?placa=<?php echo $filas['id_placa']; ?>'"></ion-icon></h4>
+                            <h4><?php echo $filas['nombre_tipo_marca'] ?></h4>
                         </div>
                     <?php } ?>
                 <?php } ?>
 
-                <div class="paginacion">
+                <div class="paginacion" id="paginacion">
                     <?php if ($page > 1): ?>
                         <a href="?page=<?php echo $page - 1; ?>">&laquo; Anterior</a>
                     <?php endif; ?>
@@ -298,34 +302,63 @@ if (isset($_POST["eliminarSubmir"])) {
 
         document.addEventListener('DOMContentLoaded', function() {
             abrirEliminar.addEventListener('click', function() {
-                abrir("Identificador De La Marca", 1,"Digite el identificador de la marca", "Eliminar Marca" );
+                abrir("Identificador De La Marca", 1, "Digite el identificador de la marca", "Eliminar Marca");
             });
         });
     </script>
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
     <script>
-        function filtrarPorPlaca(placa) {
 
-            const soloLetras = placa.replace(/[^a-zA-Z]/g, '');
+        const contenido = document.getElementById('contenido');
+        function filtrarPorPlaca(marca) {
+
+            const soloLetras = marca.replace(/[^a-zA-Z]/g, '');
             const vehiculos = document.querySelectorAll('.vehiculos');
             // Converti todo a minusculas 
-            const placa_buscada = soloLetras.toLowerCase();
+            const marcaBuscada = soloLetras.toLowerCase();
 
-            vehiculos.forEach(vehiculo => {
-                const celdaPlaca = vehiculo.querySelectorAll('h4')[0];
+         
+            let consulta = `SELECT * FROM marca 
+            INNER JOIN tipomarca on tipomarca.id_tipo_marca = marca.id_tipo_marca WHERE id_estado !=4 and nombre_marca LIKE '%${marcaBuscada}%' LIMIT 5`;
 
-                if (celdaPlaca) {
-                    const textoPlaca = celdaPlaca.textContent || celdaPlaca.innerText;
-                    const letrasPlaca = textoPlaca.replace(/[^a-zA-Z]/g, '').toLowerCase();
+            fetch('../fetch/BusquedaBarra.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        consulta: consulta
+                    })
+                })
+                .then((response) => response.json())
+                .then(data => {
+                    if (data.error) {
+                                const vehiculos = document.querySelectorAll('.vehiculos');
+                                vehiculos.forEach(vehiculo => {
+                                    vehiculo.remove();
+                                });
+                            } else {
+                                const vehiculos = document.querySelectorAll('.vehiculos');
+                                vehiculos.forEach(vehiculo => {
+                                    vehiculo.remove();
+                                });
+                                data.forEach(generales => {
+                                    const cartas = document.createElement('div');
+                                    cartas.classList.add('vehiculos');
+                                    cartas.innerHTML = '';
+                                    const imagen = generales.veh_pic ? generales.veh_pic : 'default_vehiculos.png';
+                                    cartas.innerHTML = ` 
+                                    <h4>${generales.id_marca}</h4>
+                                    <h4>${generales.nombre_marca}</h4>
+                                    <h4>${generales.nombre_tipo_marca}</h4>
+                                    `;
 
-                    if (letrasPlaca.includes(placa_buscada)) {
-                        vehiculo.style.display = '';
-                    } else {
-                        vehiculo.style.display = 'none';
-                    }
-                }
-            });
+                                    const paginacion = document.getElementById('paginacion');
+                                    contenido.insertBefore(cartas, paginacion);
+                                });
+                            }
+                });
         }
     </script>
 </body>

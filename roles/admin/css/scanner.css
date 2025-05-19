@@ -231,6 +231,7 @@
       height: clamp(600px, 100%, 650px);
       position: absolute;
       z-index: 100;
+      top: 10px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -544,4 +545,9 @@
   
   .botonObservacion:hover {
       background-color: #4a8ec0;
+  }
+
+  .instructions{
+    position:absolute;
+    top: 0;
   }

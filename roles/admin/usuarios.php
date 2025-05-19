@@ -45,7 +45,7 @@ if (isset($_POST['eliminarSubmir'])) {
 
     if ($result && $passwordAdmin && password_verify($passwordAdmin, $result['contraseña'])) {
 
-        $usuarioDesactivar = $con->prepare("UPDATE usuario SET id_estado = 2 WHERE id_documento = :documento");
+        $usuarioDesactivar = $con->prepare("UPDATE usuario SET id_estado = 4 WHERE id_documento = :documento");
         $usuarioDesactivar->bindParam(':documento', $documentoUsuario);
         $usuarioDesactivar->execute();
 

@@ -431,7 +431,7 @@ function scanQR() {
     setTimeout(() => {
       videoContainer.style.opacity = 1;
       requestAnimationFrame(scanQR);
-    }, 2000);
+    }, 1000);
   }
 }
 

@@ -6,8 +6,12 @@ $conexion = new database;
 $con = $conexion->conectar();
 $codigo = $_SESSION['documento'];
 
-// Delete vehicle functionality
+
+$id_documento =  $_SESSION['user_id'];
+
+
 if (isset($_POST['eliminar'])) {
+
     try {
 
         $id_placa = $_POST['eliminar'];
@@ -19,7 +23,7 @@ if (isset($_POST['eliminar'])) {
         echo "
         <script>
             document.addEventListener('DOMContentLoaded', function () {
-                mostrarModal('success', 'Vehiculo eliminado correctamente', 'vehiculos_usuarios.php&user_id='.$id_documento.'');
+                mostrarModal('success', 'Vehiculo eliminado correctamente', 'vehiculos_usuarios.php');
             });
         </script>";
     } catch (Exception $e) {
@@ -27,7 +31,7 @@ if (isset($_POST['eliminar'])) {
         echo "
         <script>
             document.addEventListener('DOMContentLoaded', function () {
-                mostrarModal('mistake', '  " . $e . "', 'vehiculos_usuarios.php');
+                mostrarModal('success', '  " . $e . "', 'vehiculos_usuarios.php');
             });
         </script>";
     }
@@ -35,14 +39,13 @@ if (isset($_POST['eliminar'])) {
 
 
 
-$id_documento = isset($_POST['user_id']) ? $_POST['user_id'] : (isset($_GET['user_id']) ? $_GET['user_id'] : '');
 
 if (empty($id_documento)) {
     echo "
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             mostrarModal('mistake', 'No se ha especificado un usuario', 'vehiculos.php');
-        }); 
+        });
     </script>";
     exit();
 }
@@ -167,7 +170,7 @@ $totalPaginas = ceil($totalVehiculos / $registrosPorPagina);
                                 </div>
                             </div>
                             <div class="object-actions">
-                                <button class="action-button delete-button" value="<?php echo $vehiculo['id_placa'] ?>" onclick="mostrarConfirmacion(this.value,'Segur@ Que Quieres Elimnar Este Vehiculo')">
+                                <button class="action-button delete-button" value="<?php echo $vehiculo['id_placa'] ?>" onclick="mostrarConfirmacion(this.value,'Segur@ Que Quieres Eliminar Este Vehiculo')">
                                     <i class="bi bi-trash3-fill"></i>
                                 </button>   
                                 <button class="action-button edit-button" onclick="window.location.href='editar_vehiculo.php?placa=<?php echo $vehiculo['id_placa']; ?>&origen=usuarios&user_id=<?php echo $id_documento; ?>'">
@@ -224,11 +227,7 @@ $totalPaginas = ceil($totalVehiculos / $registrosPorPagina);
 
         const modalConfirmacionButton = document.querySelectorAll(".modalConfirmacionButton")
 
-        // modalConfirmacionButton.forEach((element) => {
-        //     element.addEventListener("click", () => {
-        //         mostrarConfirmacion("Estas Seguro De Eliminar Este Objeto")
-        //     })
-        // })
+   
 
         function mostrarConfirmacion(valorBoton, mensaje, callback) {
             mensajeConfirmacion.textContent = mensaje;

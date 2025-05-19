@@ -96,6 +96,17 @@ $consulta = $con->prepare(
 $consulta->bindParam(':start', $start_record, PDO::PARAM_INT);
 $consulta->bindParam(':limit', $limite_registros, PDO::PARAM_INT);
 $consulta->execute();
+
+
+if(isset($_POST["objetos_submit"])) {
+    $documento = $_POST["user_id"];
+    
+    // Store document ID in session to pass it to next page
+    $_SESSION['user_id'] = $documento;
+    
+    echo "<script>    window.location.href = 'vehiculos_usuarios.php';</script>";
+    exit();
+}
 ?>
 
 <!DOCTYPE html>
@@ -134,7 +145,7 @@ $consulta->execute();
             </div>
 
 
-            <!-- formulario para eliminar -->
+            <!-- formulario para buscar -->
             <div class="modalBuscar" id="modalBuscar">
                 <div class="contenedorModalBuscar">
                     <div class="headerModalBuscar">
@@ -142,7 +153,7 @@ $consulta->execute();
                         <button class="cerrarModalBuscar" id="cerrarModalBuscar">&times;</button>
                     </div>
                     <div class="cuerpoModalBuscar">
-                        <form action="vehiculos_usuarios.php" method="post">
+                        <form  method="post">
                             <div class="campo-formulario">
                                 <label for="user_id">Documento del Usuario</label>
                                 <input type="number" id="user_id" name="user_id" placeholder="Digite el documento" required>

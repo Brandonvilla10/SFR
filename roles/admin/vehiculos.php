@@ -101,7 +101,7 @@ $consulta->execute();
 if(isset($_POST["objetos_submit"])) {
     $documento = $_POST["user_id"];
     
-    // Store document ID in session to pass it to next page
+   
     $_SESSION['user_id'] = $documento;
     
     echo "<script>    window.location.href = 'vehiculos_usuarios.php';</script>";

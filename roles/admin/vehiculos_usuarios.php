@@ -7,7 +7,7 @@ $con = $conexion->conectar();
 $codigo = $_SESSION['documento'];
 
 
-// $id_documento =  $_SESSION['user_id'];
+$id_documento =  $_SESSION['user_id'];
 
 
 if (isset($_POST['eliminar'])) {

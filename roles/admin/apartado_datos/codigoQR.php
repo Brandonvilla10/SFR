@@ -45,14 +45,6 @@ if (isset($_GET['error'])) {
         </aside>
 
         <main class="grid_contenido_plantilla">
-            <div class="titulo">
-                <div>
-                    <h1>Generar Codigo QR</h1>
-                    <p>Genera el codigo QR de la persona que necesites</p>
-                </div>
-            </div>
-
-            <hr class="separador">
             <div class="contenido_QR">
 
                 <form action="GenerarQR.php" method="POST" class="formQR">
@@ -62,7 +54,7 @@ if (isset($_GET['error'])) {
                         <p>Digita el documento de la persona </p>
                     </div>
                     <input type="number" placeholder="Documento" name="documento">
-                    <button type="submit" value="GenerateQR" name="GenerateQR">Generar PDF descargable</button>
+                    <button type="submit" value="GenerateQR" name="GenerateQR">Generar PDF Descargable</button>
                 </form>
 
             </div>

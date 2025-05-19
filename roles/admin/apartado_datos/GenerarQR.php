@@ -26,16 +26,28 @@ if (isset($_POST['documento'])) {
     ob_clean();
 
     // Crear PDF
-    $pdf = new TCPDF();
-    $pdf->SetMargins(0, 0, 0);
-    $pdf->SetAutoPageBreak(true, 10);
+    $pdf = new TCPDF('P', 'mm', 'LETTER', true, 'UTF-8', false);
+    $pdf->setPrintHeader(false);
     $pdf->AddPage();
+
+
+    // azul
+    $pdf->SetFillColor(0, 134, 204);
+    $pdf->RoundedRect(0, -4, 216, 30, 5, '1111', 'F'); // solo redondea abajo
+    
+
+    $pdf->SetFont('helvetica', 'B', 20);
+    $pdf->SetTextColor(255  , 255, 255);
+    // Encabezado sin línea, usando MultiCell para evitar bordes visibles o efectos raros
+    $pdf->SetXY(10, 10);
+    $pdf->MultiCell(0, 20, 'SENA FAST REGISTER', 0, 'C', 0, 1);
+    $pdf->Ln(10); // Agrega espacio debajo del título
 
     // Estilo del código QR
     $style = [
-        'border' => 1,
-        'vpadding' => 'auto',
-        'hpadding' => 'auto',
+        'border' => 0,
+        'vpadding' => 0,
+        'hpadding' => 0,
         'fgcolor' => [0, 0, 0],
         'bgcolor' => false,
         'module_width' => 1,
@@ -43,17 +55,20 @@ if (isset($_POST['documento'])) {
     ];
 
     // Generar QR (centrado en la página aproximadamente)
-    $pdf->write2DBarcode((string)$documento, 'QRCODE,H', 85, 60, 40, 40, $style, 'N');
+    $qrSize = 70; // tamaño en mm
+    $x = ($pdf->getPageWidth() - $qrSize) / 2;
+    $y = 80;
+    $pdf->write2DBarcode((string)$documento, 'QRCODE,H', $x, $y, $qrSize, $qrSize, $style, 'N');;
 
     // Texto debajo del QR
+    $pdf->SetTextColor(0, 0, 0);
     $pdf->SetFont('helvetica', '', 14);
-    $pdf->Ln(110);
-    $pdf->Cell(0, 10, "Nombre: $nombre", 0, 1, 'C');
-    $pdf->Cell(0, 10, "Documento: $documento", 0, 1, 'C');
+    $pdf->SetY($y + $qrSize + 10);
+    $pdf->Cell(0, 10, $nombre, 0, 1, 'C');
+    $pdf->Cell(0, 10, $documento, 0, 1, 'C');
 
     // Mostrar el PDF en navegador
     $pdf->Output('codigo_qr.pdf', 'I');
 
     exit();
 }
-

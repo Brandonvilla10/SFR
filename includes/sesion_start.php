@@ -34,7 +34,7 @@ session_start();
 
                             // ADMINISTRADOR
                 $_SESSION['rol_name'] ="Administrador";
-                header("location: ../roles/admin/home.php");
+                header("location: ../roles/admin/index.php");
                 exit(); 
 
             }elseif($_SESSION['rol'] == 2){

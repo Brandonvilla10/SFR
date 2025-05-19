@@ -29,7 +29,7 @@ if(isset($_FILES['foto'])){
             $nombre = $_POST['nombre'] ?? '';
             $caracteristica = $_POST['caracteristica'] ?? '';
             $marca = $_POST['marca'] ?? '';
-            $estado = $_POST['estado'] ?? '';
+            $estado = 1;
             $tipoObjeto = $_POST['tipoObjeto'] ?? '';
             $user_id = $_POST['user_id'] ?? '';
     

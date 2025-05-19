@@ -137,7 +137,7 @@ $usuario_foto_path = !empty($resultado['foto']) ? $mostrar : $usu;
                 <div class="content-container">
                     <div class="user-info">
                         <div class="user-avatar">
-                            <img class="personaAzul" id="fotoUsuario" src="<?php echo $usuario_foto_path; ?>" alt="Foto de perfil" onerror="this.src='../../uploads/user.png'">
+                            <img class="personaAzul" id="fotoUsuario" src="<?php echo $usuario_foto_path; ?>" alt="Foto de perfil" onerror="this.src='../../uploads/usu.png'">
 
                         </div>
                         <div class="user-details">

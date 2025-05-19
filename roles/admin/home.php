@@ -59,6 +59,9 @@ $rol = $_SESSION['rol_name']; // Rol del usuario
           ">0</span>
         </div>
         <i class="bi bi-headset"></i>
+        <button id="btnReportes" style="margin-left: 15px; padding: 8px 16px; border-radius: 5px; border: none; background: #007bff; color: #fff; cursor: pointer;">
+          Reportes
+        </button>
       </div>
     </header>
 
@@ -283,7 +286,33 @@ function actualizarContadorNotificaciones() {
 }
 actualizarContadorNotificaciones();
 setInterval(actualizarContadorNotificaciones, 30000);
+
+// Reportes: abrir/cerrar modal
+document.getElementById('btnReportes').onclick = function() {
+  document.getElementById('modalReportes').style.display = 'flex';
+};
+document.getElementById('cerrarModalReportes').onclick = function() {
+  document.getElementById('modalReportes').style.display = 'none';
+};
+document.getElementById('modalReportes').onclick = function(e) {
+  if (e.target === this) this.style.display = 'none';
+};
 </script>
+<!-- Modal Reportes -->
+<div id="modalReportes" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.4); z-index:9999; align-items:center; justify-content:center;">
+  <div style="background:#fff; padding:30px; border-radius:10px; min-width:300px; position:relative;">
+    <h2>Generar Reporte PDF</h2>
+    <form id="formReporte" method="POST" action="generar_reporte.php" target="_blank">
+      <label>Fecha inicio:</label>
+      <input type="date" name="fecha_inicio" required><br><br>
+      <label>Fecha fin:</label>
+      <input type="date" name="fecha_fin" required><br><br>
+      <!-- Puedes agregar más filtros aquí -->
+      <button type="submit" style="background:#007bff; color:#fff; border:none; padding:8px 16px; border-radius:5px;">Descargar PDF</button>
+      <button type="button" id="cerrarModalReportes" style="margin-left:10px;">Cancelar</button>
+    </form>
+  </div>
+</div>
 </body>
 
 </html>

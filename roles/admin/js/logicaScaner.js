@@ -327,7 +327,7 @@ function scanQR() {
             <div class="tarjetaObjeto" data-id="${objeto.id_serial}" >
             <div class="divFoto">
                                             <p>${objeto.id_serial}</p>
-                                            <img src="../../uploads/${(objeto.objetoFoto) ?? 'default_iconos.png'}" width="80px" height="80px" alt="objeto">
+                                            <img src="../../uploads/${(objeto.objetoFoto) ?? 'default_iconos.png'}" onerror="this.src='../../uploads/default_iconos.png'" width="80px" height="80px" alt="objeto">
                                         </div>
                                         
                                         <div class="divCaracteristicas">
@@ -366,7 +366,7 @@ function scanQR() {
                <div class="tarjeticaVehiculo" data-id="${vehiculo.id_placa}" >
                                             <div class="divFoto">
                                             <p>${vehiculo.id_placa}</p>
-                                                <img src="../../uploads/${vehiculo.foto}" width="80px" height="80px" alt="objeto">
+                                                <img src="../../uploads/${vehiculo.foto}" width="80px" onerror="this.src='../../uploads/default_vehiculos.png'" height="80px" alt="objeto">
                                             </div>
 
                                             <div style="display: flex; flex-direction:column; justify-content:center; width:150px; margin-left:20px;">

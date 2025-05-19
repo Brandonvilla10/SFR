@@ -138,27 +138,19 @@ async function registrarEntrada() {
         console.log(error);
     } finally {
         // aqui se vacian los arrays para que no se repitan los datos
-        // esta funcion esta exportada del archivo "modalObservacion" lo que hace es vaciar el array 
+        entradaObjetos = [];
+        entradavehiculos = [];
+        limpiarObservaciones() // esta funcion esta exportada del archivo "modalObservacion" lo que hace es vaciar el array 
 
         cerrar();
     }
 }
 
-
-
-const selecionarObjetos = document.querySelector(".maincontainercentermodal");
-const selecionarObjetosModal = document.getElementById("selecionarObjetosModal")
+const selecionarObjetos = document.getElementById("selecionarObjetos")
 
 function cerrar() {
     selecionarObjetos.classList.add("desaparecerModal")
     selecionarObjetos.classList.remove("aparecerModal")
-
-    selecionarObjetosModal.classList.remove("aparecerModal")
-    selecionarObjetosModal.classList.add("desaparecerModal")
-    
-    entradaObjetos = [];
-    entradavehiculos = [];
-    limpiarObservaciones()
 }
 
 // todo esto es para la parte del qr y lo que se necesita para que funcione
@@ -279,7 +271,9 @@ function scanQR() {
                     let informacionUsuario =
                         document.getElementById("informacionUsuario");
                     let contenedorObjetos = document.getElementById("contenedorObjetos");
-                    let contenedorVehiculos = document.getElementById("contenedorVehiculos");
+                    let contenedorVehiculos = document.getElementById(
+                        "contenedorVehiculos"
+                    );
 
                     // ----------------------------------------------------------------------------------------
 
@@ -301,7 +295,7 @@ function scanQR() {
 
                     informacionUsuario.innerHTML += `
           <div onclick="cerrar()" class="divCerrar"><span class="cerrar" >X</span></div> 
-                    <img src="../../uploads/${info.foto}" alt="Foto de perfil del usuario" onerror="this.src='../../uploads/usu.png'" class="fotoDePerfil">
+                    <img src="../../uploads/${info.foto}" alt="Foto de perfil del usuario" class="fotoDePerfil">
 
                     <b style="font-size:1.5rem;margin-bottom:30px;">Datos Del Usuario</b>
 
@@ -327,7 +321,7 @@ function scanQR() {
             <div class="tarjetaObjeto" data-id="${objeto.id_serial}" >
             <div class="divFoto">
                                             <p>${objeto.id_serial}</p>
-                                            <img src="../../uploads/${(objeto.objetoFoto) ?? 'default_iconos.png'}" onerror="this.src='../../uploads/default_iconos.png'" width="80px" height="80px" alt="objeto">
+                                            <img src="../../uploads/${(objeto.objetoFoto) ?? 'default_iconos.png'}" width="80px" height="80px" alt="objeto">
                                         </div>
                                         
                                         <div class="divCaracteristicas">
@@ -366,7 +360,7 @@ function scanQR() {
                <div class="tarjeticaVehiculo" data-id="${vehiculo.id_placa}" >
                                             <div class="divFoto">
                                             <p>${vehiculo.id_placa}</p>
-                                                <img src="../../uploads/${vehiculo.foto}" width="80px" onerror="this.src='../../uploads/default_vehiculos.png'" height="80px" alt="objeto">
+                                                <img src="../../uploads/${vehiculo.foto}" width="80px" height="80px" alt="objeto">
                                             </div>
 
                                             <div style="display: flex; flex-direction:column; justify-content:center; width:150px; margin-left:20px;">
@@ -405,7 +399,7 @@ function scanQR() {
 
                 datosUsuario();
 
-                const selecionarObjetos = document.querySelector(".maincontainercentermodal");
+                const selecionarObjetos = document.getElementById("selecionarObjetos");
                 selecionarObjetos.classList.add("aparecerModal");
                 selecionarObjetos.classList.remove("desaparecerModal");
 

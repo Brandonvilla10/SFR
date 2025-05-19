@@ -96,7 +96,7 @@ try {
                     <div class="user-info">
 
                         <div class="user-avatar">
-                            <img src="../../uploads/<?php echo (empty($usuario['foto'])) ?  'usu.png' :  $usuario['foto']; ?>" alt="Imagen del usuario">
+                            <img src="../../uploads/<?php echo (empty($usuario['foto'])) ?  'usu.png' :  $usuario['foto']; ?>" alt="Imagen del usuario" onerror="this.src='../../uploads/usu.png'">
                         </div>
 
                         <div class="user-details">
@@ -136,7 +136,7 @@ try {
                             <form action="" method="POST" enctype="multipart/form-data" class="grid-form">
 
                                 <label for="name" class="form-label">Serial</label>
-                                <input type="text" id="name" name="serial_nuevo" class="form-input" placeholder="nombre" value="<?php echo $consulta_1['id_serial'] ?>">
+                                <input type="text" id="name" class="form-input" placeholder="nombre" value="<?php echo $consulta_1['id_serial'] ?>" readonly>
                                 <input type="text" id="name" name="serial" class="form-input" placeholder="nombre" value="<?php echo $consulta_1['id_serial'] ?>" hidden>
 
                                 <label for="" class="form-label">Nombre</label>
@@ -156,7 +156,7 @@ try {
                                         </option>
 
                                         <?php
-                                        $sql = $con->prepare("SELECT * FROM marca WHERE id_marca != '$consulta_1[id_marca]'");
+                                        $sql = $con->prepare("SELECT * FROM marca WHERE id_tipo_marca = 2 and id_marca != '$consulta_1[id_marca]'");
                                         $sql->execute();
 
                                         $consulta_2 = $sql->fetchAll();
@@ -225,18 +225,16 @@ try {
     if (isset($_POST['enviar'])) {
 
         $ruta = $_GET['route'];
-        $id_serial = $_POST['serial_nuevo'];
-        $serial_anterior = $_POST['serial'];
+        $serial = $_POST['serial'];
         $nombre_objeto = $_POST['nombre_nuevo'];
         $caracteristica = $_POST['carac_nueva'];
         $marca = $_POST['marca_nueva'];
         $estado = $_POST['estado_nuevo'];
         
 
-        $cambiar_datos = $con->prepare("UPDATE objetos SET id_serial = :serial_objeto, nombre = :nombre, caracteristica =  :caract, id_marca = :marca, id_estado = :estado WHERE id_serial = :serial_anterior");
-        $cambiar_datos->bindParam(':serial_objeto', $id_serial, PDO::PARAM_STR);
+        $cambiar_datos = $con->prepare("UPDATE objetos SET nombre = :nombre, caracteristica =  :caract, id_marca = :marca, id_estado = :estado WHERE id_serial = :serial");
         $cambiar_datos->bindParam(':nombre', $nombre_objeto, PDO::PARAM_STR);
-        $cambiar_datos->bindParam(':serial_anterior', $serial_anterior, PDO::PARAM_STR);
+        $cambiar_datos->bindParam(':serial', $serial, PDO::PARAM_STR);
         $cambiar_datos->bindParam(':caract', $caracteristica, PDO::PARAM_STR);
         $cambiar_datos->bindParam(':marca', $marca, PDO::PARAM_STR);
         $cambiar_datos->bindParam(':estado', $estado, PDO::PARAM_STR);

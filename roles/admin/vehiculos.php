@@ -411,7 +411,7 @@ if(isset($_POST["objetos_submit"])) {
                     let consulta = `SELECT  v.foto AS veh_pic, v.id_placa, e.estado,u.id_documento, u.nombre_completo FROM vehiculos v
                     INNER JOIN usuario  u ON u.id_documento = v.id_documento
                     INNER JOIN estado e ON e.id_estado = v.id_estado
-                    WHERE v.id_placa LIKE '%${placa_buscada}%' LIMIT 5`;
+                    WHERE v.id_estado != 4 and v.id_placa LIKE '%${placa_buscada}%' LIMIT 5`;
 
 
                     fetch('fetch/BusquedaBarra.php', {

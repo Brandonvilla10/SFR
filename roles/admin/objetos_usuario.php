@@ -206,11 +206,11 @@ if (isset($_POST["eliminarSubmir"])) {
                 <div class="objects-grid">
 
                     <?php $sql = $con->prepare("SELECT *, usuario.foto AS user_foto , objetos.foto AS object_foto FROM  objetos 
-                INNER JOIN marca ON marca.id_marca  = objetos.id_marca
-                INNER JOIN usuario ON usuario.id_documento = objetos.id_documento
-                INNER JOIN estado ON estado.id_estado = objetos.id_estado 
-                INNER JOIN tipoobjeto ON tipoobjeto.id_tipoObjeto = objetos.id_tipoObjeto
-                WHERE objetos.id_documento ='$buscar_usu' and objetos.id_estado = 1 or objetos.id_estado = 2");
+                    INNER JOIN marca ON marca.id_marca  = objetos.id_marca
+                    INNER JOIN usuario ON usuario.id_documento = objetos.id_documento
+                    INNER JOIN estado ON estado.id_estado = objetos.id_estado 
+                    INNER JOIN tipoobjeto ON tipoobjeto.id_tipoObjeto = objetos.id_tipoObjeto
+                    WHERE objetos.id_documento ='$buscar_usu' and objetos.id_estado = 1 or objetos.id_estado = 2");
                     $sql->execute();
 
                     $consulta_2 = $sql->fetchAll();
@@ -293,7 +293,7 @@ if (isset($_POST["eliminarSubmir"])) {
                 <label for="" class="label_titulo">Marca</label>
                 <select name="marca" id="marca" class="selectos">
 
-                    <?php $sql = $con->prepare("SELECT * FROM marca ");
+                    <?php $sql = $con->prepare("SELECT * FROM marca WHERE id_tipo_marca = 2");
                     $sql->execute();
                     $consulta_2 = $sql->fetchAll();
 
@@ -378,37 +378,36 @@ if (isset($_POST["eliminarSubmir"])) {
             document.addEventListener('DOMContentLoaded', function() {
                 const form = document.getElementById('formCrearObjeto');
                 const botonEnviar = document.getElementById('CrearObjeto');
-
+                
                 form.addEventListener('submit', function(e) {
-
+                    
                     e.preventDefault();
-
+                    
                     const serial = document.getElementById('serial').value;
                     const nombre = document.getElementById('nombre').value;
                     const foto = document.getElementById('foto').value;
                     const caracteristicas = document.getElementById('caracteristicas').value;
                     const marca = document.getElementById('marca').value;
-                    const estado = document.getElementById('estado').value;
                     const tipo = document.getElementById('tipo').value;
-
+                    
                     // expresiones
-
+                    
                     const serialExp = /^[A-Z0-9\-]{3,20}$/i;
                     const nombreExp = /^[A-Za-z\s]{2,}$/;
-
+                    
                     if (!serialExp.test(serial)) {
-
+                        
                         mostrarModal('mistake', 'El serial no es valido. Solo letras, numeros y guiones. Mínimo 3 caracteres.');
-
-
+                        
+                        
                         return;
                     }
-
+                    
                     if (!nombreExp.test(nombre)) {
                         mostrarModal('mistake', 'El nombre no es valido. Solo letras, numeros y espacios, mínimo 2 caracteres.');
                         return;
                     }
-
+                    
                     if (foto === '') {
                         mostrarModal('mistake', 'Debes seleccionar una imagen para el objeto.');
 
@@ -420,7 +419,7 @@ if (isset($_POST["eliminarSubmir"])) {
                         return;
                     }
 
-                    if (!marca || !estado || !tipo) {
+                    if (!marca || !tipo) {
                         mostrarModal('mistake', 'Debes seleccionar marca, estado y tipo de objeto..');
                         return;
                     }
@@ -429,7 +428,7 @@ if (isset($_POST["eliminarSubmir"])) {
                     if (confirm('¿Deseas crear este objeto?')) {
                         form.submit(); // Todo OK, se envía
                     }
-
+                    
 
                 });
             });

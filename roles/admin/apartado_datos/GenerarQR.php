@@ -20,40 +20,78 @@ if (isset($_POST['documento'])) {
     }
 
     $nombre = $resultado['nombre_completo'];
-    $documento = $resultado['id_documento'];
+
 
     // Crear PDF
     ob_clean();
 
-    // Crear PDF
-    $pdf = new TCPDF();
+    // Configurar PDF en tamaño carta (216 x 279 mm)
+    $pdf = new TCPDF('P', 'mm', 'LETTER', true, 'UTF-8', false);
+
+    // Eliminar márgenes por defecto
     $pdf->SetMargins(0, 0, 0);
-    $pdf->SetAutoPageBreak(true, 10);
+    $pdf->SetAutoPageBreak(false, 0);
+
     $pdf->AddPage();
 
-    // Estilo del código QR
+    // Imagen de fondo - ajustada a toda la página carta
+    $pdf->Image(
+        '../imgAdmin/QR_plantilla.png',
+        0,      // x = 0 (borde izquierdo)
+        0,      // y = 0 (borde superior)
+        216,    // ancho = ancho de página carta (216mm)
+        279,    // alto = alto de página carta (279mm)
+        'PNG',
+        '',
+        '',
+        false,  // resize = false para estirar la imagen
+        300,
+        'C',    // align = centro
+        false,
+        false,
+        0
+    );
+
+    // Estilo para QR con color #132370 (azul oscuro)
     $style = [
-        'border' => 1,
-        'vpadding' => 'auto',
-        'hpadding' => 'auto',
-        'fgcolor' => [0, 0, 0],
-        'bgcolor' => false,
+        'border' => 0,
+        'vpadding' => 0,
+        'hpadding' => 0,
+        'fgcolor' => [19, 35, 112],  // RGB para #132370
+        'bgcolor' => false,           // Fondo transparente
         'module_width' => 1,
         'module_height' => 1
     ];
 
-    // Generar QR (centrado en la página aproximadamente)
-    $pdf->write2DBarcode((string)$documento, 'QRCODE,H', 85, 60, 40, 40, $style, 'N');
+    // Tamaño del QR (un poco más grande para tamaño carta)
+    $qrSize = 80;
 
-    // Texto debajo del QR
-    $pdf->SetFont('helvetica', '', 14);
-    $pdf->Ln(110);
-    $pdf->Cell(0, 10, "Nombre: $nombre", 0, 1, 'C');
-    $pdf->Cell(0, 10, "Documento: $documento", 0, 1, 'C');
+    // Posición horizontal centrada
+    $x = ($pdf->getPageWidth() - $qrSize) / 2;
 
-    // Mostrar el PDF en navegador
-    $pdf->Output('codigo_qr.pdf', 'I');
+    // Altura total del contenido (QR + texto)
+    $contenidoAltura = $qrSize + 10; // QR + espacio + texto
 
+    // Posición vertical centrada
+    $y = ($pdf->getPageHeight() - $contenidoAltura) / 2;
+
+    // Dibujar QR centrado
+    $pdf->write2DBarcode((string)$documento, 'QRCODE,H', $x, $y, $qrSize, $qrSize, $style, 'N');
+
+    // Configuración de texto
+    $pdf->SetTextColor(0, 0, 0);  // Texto en negro
+    $pdf->SetFont('helvetica', '', 16);  // Tamaño de fuente un poco mayor
+
+    // Posición Y para el texto (debajo del QR)
+    $textY = $y + $qrSize + 14;
+
+    // Texto centrado: nombre
+    $pdf->SetXY(0, $textY);
+    $pdf->Cell(0, 10, $nombre, 0, 1, 'C');
+
+
+
+    // Mostrar PDF
+    $pdf->Output('QR_'. $nombre,'D');
     exit();
 }
-

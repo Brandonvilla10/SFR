@@ -159,7 +159,7 @@ $usu = "../../uploads/usu.png";
                                 <form action="" method="POST" enctype="multipart/form-data" class="grid-form">
 
                                     <label for="name" class="form-label">Documento </label>
-                                    <input type="text" id="name" name="id_documento" class="form-input" placeholder="nombre" value="<?php echo $fila['id_documento']; ?>">
+                                    <input type="text" id="name" class="form-input" placeholder="nombre" value="<?php echo $fila['id_documento']; ?>" readonly>
                                     <input type="text" id="name" name="id_documento" class="form-input" placeholder="nombre" value="<?php echo $fila['id_documento']; ?>" hidden>
 
                                     <label for="" class="form-label">Nombre</label>

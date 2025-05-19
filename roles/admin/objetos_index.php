@@ -96,6 +96,7 @@ $paginas = ceil($total_filas / $limite_registros);
 $consulta = $con->prepare("SELECT o.foto AS ob_pic, o.id_serial,o.nombre, o.id_documento, e.estado, u.nombre_completo FROM objetos o
     INNER JOIN usuario u ON u.id_documento = o.id_documento
     INNER JOIN estado  e ON e.id_estado = o.id_estado
+    WHERE o.id_estado!= 4
     LIMIT :start, :limit");
 $consulta->bindParam(':start', $start_record, PDO::PARAM_INT);
 $consulta->bindParam(':limit', $limite_registros, PDO::PARAM_INT);
@@ -140,7 +141,7 @@ $consulta->execute();
                 <input class="BOTON_FILTRAR" placeholder="Filtrar objeto por serial" oninput="filtrarPorSerial(this.value)" id="Filtro">
                 <?php if ($consulta->rowCount() == 0) { ?>
                     <div class="notificacion">
-                        <h4>No hay objetos registrados</h4>
+                        <h4>SIN OBJETOS</h4>
                     </div>
                 <?php } else { ?>
                     <div class="encabezado">
@@ -280,7 +281,7 @@ $consulta->execute();
             let consulta = `SELECT o.foto AS ob_pic, o.id_serial,o.nombre, o.id_documento, e.estado, u.nombre_completo FROM objetos o
             INNER JOIN usuario u ON u.id_documento = o.id_documento
             INNER JOIN estado  e ON e.id_estado = o.id_estado
-            WHERE id_serial LIKE '%${serial_buscado}%' LIMIT 5`;
+            WHERE o.id_estado  != 4 and id_serial LIKE '%${serial_buscado}%' LIMIT 5`;
 
             fetch('fetch/BusquedaBarra.php', {
                     method: 'POST',

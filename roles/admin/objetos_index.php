@@ -154,7 +154,7 @@ $consulta->execute();
                     </div>
                     <?php foreach ($consulta as $generales) { ?>
                         <div class="objetos">
-                            <h4><img src="../../uploads/<?php echo isset($generales['ob_pic']) && $generales['ob_pic'] !== '' ? $generales['ob_pic'] : 'default_iconos.png'; ?>" alt="img" height="60px" width="60px" onerror="this.src='../../uploads/default_iconos.png'"></h4>
+                            <h4><img src="../../uploads/<?php echo isset($generales['ob_pic']) && $generales['ob_pic'] !== '' ? $generales['ob_pic'] : 'default_iconos.png'; ?>" alt="img" height="60px" width="60px" onerror="this.src='../../uploads/default_iconos.png'"></h4>   
                             <h4><?php echo $generales['id_serial']; ?></h4>
                             <h4><?php echo $generales['nombre']; ?></h4>
                             <h4><?php echo $generales['id_documento']; ?></h4>

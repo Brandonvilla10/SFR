@@ -1,562 +1,553 @@
 * {
-  margin: 0;
-  padding: 0;
-  transition: 1s;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
-
-:root{
-    --colorAzul : #63AEE8 
-}
-
-::-webkit-scrollbar {
-    width: 6px;   
-    height: 10px;  
-  }
-  
-  
-  ::-webkit-scrollbar-thumb {
-    background-color: #63AEE8; 
-    border-radius: 10px;
-  }
-  
-  
-  ::-webkit-scrollbar-track {
-    background-color: transparent;
-  }
-
-/* Estilos generales para el contenedor principal */
-.container {
-    max-width: 600px;
-    margin: 0 auto;
-    padding: 20px;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    color: #333;
-    text-align: center;
-}
-
-/* Título del escáner */
-.container h1 {
-    color: #128C7E; /* Color verde de WhatsApp */
-    margin-bottom: 25px;
-    font-size: 24px;
-    font-weight: 600;
-}
-
-/* Estilo de los botones */
-#startButton, #stopButton {
-    background-color: #63AEE8; /* Verde brillante de WhatsApp */
-    color: white;
-    border: none;
-    padding: 12px 20px;
-    margin: 10px 5px;
-    border-radius: 24px;
-    font-size: 16px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: background-color 0.3s;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-}
-
-#startButton:hover, #stopButton:hover {
-    background-color: #6ee2d4; /* Verde oscuro al hacer hover */
-}
-
-#startButton:disabled, #stopButton:disabled {
-    background-color: #ccc;
-    cursor: not-allowed;
-}
-
-/* Contenedor del video */
-#videoContainer {
-    position: relative;
-    width: 100%;
-    min-width: 400px;
-    max-width: 400px;
-    height: 400px;
-    margin: 20px auto;
-    border-radius: 10px;
-    overflow: hidden;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-}
-
-/* Estilo del video */
-#video {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    position: absolute;
-    top: 0;
-    left: 0;
-}
-
-/* Estilo del canvas */
-#canvas {
-    display: none; /* Ocultamos el canvas ya que solo lo usamos para procesamiento */
-}
-
-/* Marco de escaneo estilo WhatsApp */
-#videoContainer::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    border: 60px solid rgba(0, 0, 0, 0.5);
-    box-sizing: border-box;
-    z-index: 2;
-}
-
-/* Área de escaneo transparent */
-#videoContainer::after {
-    content: '';
-    position: absolute;
-    top: 60px;
-    left: 60px;
-    right: 60px;
-    bottom: 60px;
-    border: 2px solid #63AEE8;
-    border-radius: 12px;
-    box-sizing: border-box;
-    z-index: 3;
-}
-
-/* Animación de línea de escaneo */
-@keyframes scanLine {
-    0% {
-        top: 60px;
-    }
-    50% {
-        top: calc(100% - 60px - 2px);
-    }
-    100% {
-        top: 60px;
-    }
-}
-
-#videoContainer .scan-line {
-    position: absolute;
-    top: 60px;
-    left: 60px;
-    right: 60px;
-    height: 2px;
-    background-color: #63AEE8;
-    z-index: 4;
-    animation: scanLine 3s ease-in-out infinite;
-}
-
-/* Resultados del escaneo */
-#result {
-    background-color: #f5f5f5;
-    padding: 15px;
-    border-radius: 10px;
-    margin-top: 20px;
-    color: #333;
-    font-size: 16px;
-    word-break: break-all;
-    border-left: 4px solid #63AEE8;
-}
-
-/* Estilos responsivos */
-@media (max-width: 480px) {
-    #videoContainer {
-        height: 300px;
-    }
-    
-    #videoContainer::before {
-        border-width: 40px;
-    }
-    
-    #videoContainer::after {
-        top: 40px;
-        left: 40px;
-        right: 40px;
-        bottom: 40px;
-    }
-    
-    @keyframes scanLine {
-        0% {
-            top: 40px;
-        }
-        50% {
-            top: calc(100% - 40px - 2px);
-        }
-        100% {
-            top: 40px;
-        }
-    }
-    
-    #videoContainer .scan-line {
-        top: 40px;
-        left: 40px;
-        right: 40px;
-    }
-}
-
-
-
-
-
-.alerta.aparecer {
-    opacity: 1;
-    visibility: visible;
-}
-
-.alerta {
-    width: 100vw;
-    height: 100vh;
-    display: flex; 
-    position: fixed;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-
-    color: white;
-    font-size: 1.5rem;
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 1s ease, visibility 1s ease;
-}
-.alertaBienvenida{
-    font-size: 3.5rem;
-    font-weight:bolder;
-    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    color: white ;
-}
-
-
-.selecionarObjetos{
-    width:  clamp(1000px, 100%, 1615px);
-    height: clamp(600px, 100%, 650px);
-    position: absolute;
-    z-index: 100;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    
-    /* main conteiner de la parte del modal de selecionar objetos */
-}
-
-.divCerrar{
-    width: 30px;
-    height: 30px;
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    border-radius: 100%;
-    color: white;
-    background-color: #001133;
-    cursor: pointer;
-}
-
-.cerrar{
-    font-weight: bold;
-    
-}
-
-
-
-.aparecerModal{
-    opacity: 1;
-    visibility: visible;
-    
-}
-
-.desaparecerModal{
-    opacity: 0;
-    visibility: hidden;
-    
-}
-
-.maincontainercentermodal{
-    width: 100%;
-    height: 100%;
-    position: fixed;
-    top: 0;
-    left: 0;
-    background-color: rgba(0, 0, 0, 0.5);
-    display: flex;
-    z-index: 1001;
-}
-
-
-
-.registrarObjeto{
-    width: 90%;
-    height: 96%;
-    background-color: white;
-    /* border: 2px solid black; */
-    border-radius: 10px;
-    box-shadow: -1px 7px 17px rgba(0, 0, 0, 0.737);
-
-    /* modal para registrar objetos */
-}
-
-/* formulario */
-.elementoUsuario{
-    width: 100%;
-    height: 100%;
-    display: flex;
-}
-
-.informacionUsuario{
-    width: 30%; 
-    border-top-left-radius: 10px;
-    border-bottom-left-radius: 10px;
-    height: 100%;
-    color: #0A3D62;
-    position: relative;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    background-color: var(--colorAzul);
-    line-height: 30px;
-    
-}
-
-.fotoDePerfil{
-    border-radius: 100%;
-    width: 100px;
-    height: 100px;
-}
-
-.contenedorObjetosVehiculos{
-    flex:  1;
-    border-top-right-radius: 10px ;
-    display: flex;
-    justify-content: space-evenly;
-    align-items: center;
-}
-
-.divCaracteristicas{
-    display: flex; 
-    flex-direction: column; 
-    justify-content: center; 
-    width: clamp(100px, 100%, 130px);
-    box-sizing: border-box;
-    word-wrap: break-word;
-    overflow-wrap: break-word;
-}
-
-.objetos, .tarjetaVehiculo{
-    width: 450px;
-    height: 90%;
-    border: 2px #63AEE8 solid;
-    border-radius: 10px;
-    overflow-y: scroll;
-    
-}
-
-
-.tarjetaObjeto, .tarjeticaVehiculo{
-    position: relative;
-    display: flex;
-    padding: 15px;
-    margin: 10px;
-    border-radius: 10px;
-    cursor: pointer;
-    height: 100px;
-    transition: all 0.2s ease;
-    background-color: white;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.50);
-}
-
-.divcategorias{
-    height: 100%;
-    width: clamp(80px, 100%, 100px);
-    word-wrap: break-word;
-}
-
-.divObservacion{
-    width: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex: 1;
-}
-
-.activarObservacion:hover{
-    transform: scale(1.1) rotate(90deg);
-    background-color: white;
-    color: var(--colorAzul);
-}
-
-.activarObservacion{
-    transform: rotate(90deg);
-    background-color: #2196F3;
-    font-weight: 700;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    padding: 5px 10px;
-    transition: 1s;
-
-}
-
-.tarjetaObjeto:hover, .tarjeticaVehiculo:hover{
-    transform: scale(0.9);
-    background-color: #63AEE8;
-    
-}
-.divFoto{
-    width: auto;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-}
-
-.tituloCategoria{
-    font-size: 0.7rem;
-    color: rgb(71, 69, 69);
-}
-
-.tipoObjeto{
-    font-size: 0.6rem;
-}
-
-.seleccionado{
-    transform: scale(0.9);
-    background-color: #63AEE8;
-    
-    
-}
-
-.submit-btn {
-    background-color: #003366; 
-    color: white; 
-    border: none; 
-    padding: 12px 20px; 
-    font-size: 16px; 
-    cursor: pointer; 
-    border-radius: 5px; 
-    transition: background-color 0.3s ease;
-  }
-
-  .submit-btn:hover {
-    background-color: #002244; 
-  }
-
-  .submit-btn:active {
-    background-color: #001133; 
-  }
-
-
-  /* diseño para el modal de observacion */
-
-
-
-.modalObservaciones {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1001;
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.3s ease, visibility 0.1s ease;
-}
-
-.modalObservaciones.aparecerModal {
-    opacity: 1;
-    visibility: visible;
-}
-
-.contenedorModalObservaciones {
-    width: 500px;
-    background-color: white;
-    border-radius: 10px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-    overflow: hidden;
-}
-
-.headerModal {
-    background-color: #63AEE8;
-    color: white;
-    padding: 15px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.headerModal h3 {
     margin: 0;
-    font-size: 1.2rem;
-}
-
-.cerrarModal {
-    background: none;
-    border: none;
-    color: white;
-    font-size: 1.5rem;
-    cursor: pointer;
     padding: 0;
-    line-height: 1;
-}
-
-.cuerpoModal {
-    padding: 20px;
-}
-
-#textoObservacion {
-    width: 100%;
-    height: 150px;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    resize: none;
+    transition: 1s;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    margin-bottom: 15px;
-    box-sizing: border-box;
-}
+  }
+  
+  :root{
+      --colorAzul : #63AEE8 
+  }
+  
+  ::-webkit-scrollbar {
+      width: 6px;   
+      height: 10px;  
+    }
+    
+    
+    ::-webkit-scrollbar-thumb {
+      background-color: #63AEE8; 
+      border-radius: 10px;
+    }
+    
+    
+    ::-webkit-scrollbar-track {
+      background-color: transparent;
+    }
+  
+  /* Estilos generales para el contenedor principal */
+  .container {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      color: #333;
+      text-align: center;
+  }
+  
+  /* Título del escáner */
+  .container h1 {
+      color: #128C7E; /* Color verde de WhatsApp */
+      margin-bottom: 25px;
+      font-size: 24px;
+      font-weight: 600;
+  }
+  
+  /* Estilo de los botones */
+  #startButton, #stopButton {
+      background-color: #63AEE8; /* Verde brillante de WhatsApp */
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      margin: 10px 5px;
+      border-radius: 24px;
+      font-size: 16px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  }
+  
+  #startButton:hover, #stopButton:hover {
+      background-color: #6ee2d4; /* Verde oscuro al hacer hover */
+  }
+  
+  #startButton:disabled, #stopButton:disabled {
+      background-color: #ccc;
+      cursor: not-allowed;
+  }
+  
+  /* Contenedor del video */
+  #videoContainer {
+      position: relative;
+      width: 100%;
+      min-width: 400px;
+      max-width: 400px;
+      height: 400px;
+      margin: 20px auto;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  }
+  
+  /* Estilo del video */
+  #video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      position: absolute;
+      top: 0;
+      left: 0;
+  }
+  
+  /* Estilo del canvas */
+  #canvas {
+      display: none; /* Ocultamos el canvas ya que solo lo usamos para procesamiento */
+  }
+  
+  /* Marco de escaneo estilo WhatsApp */
+  #videoContainer::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      border: 60px solid rgba(0, 0, 0, 0.5);
+      box-sizing: border-box;
+      z-index: 2;
+  }
+  
+  /* Área de escaneo transparent */
+  #videoContainer::after {
+      content: '';
+      position: absolute;
+      top: 60px;
+      left: 60px;
+      right: 60px;
+      bottom: 60px;
+      border: 2px solid #63AEE8;
+      border-radius: 12px;
+      box-sizing: border-box;
+      z-index: 3;
+  }
+  
+  /* Animación de línea de escaneo */
+  @keyframes scanLine {
+      0% {
+          top: 60px;
+      }
+      50% {
+          top: calc(100% - 60px - 2px);
+      }
+      100% {
+          top: 60px;
+      }
+  }
+  
+  #videoContainer .scan-line {
+      position: absolute;
+      top: 60px;
+      left: 60px;
+      right: 60px;
+      height: 2px;
+      background-color: #63AEE8;
+      z-index: 4;
+      animation: scanLine 3s ease-in-out infinite;
+  }
+  
+  /* Resultados del escaneo */
+  #result {
+      background-color: #f5f5f5;
+      padding: 15px;
+      border-radius: 10px;
+      margin-top: 20px;
+      color: #333;
+      font-size: 16px;
+      word-break: break-all;
+      border-left: 4px solid #63AEE8;
+  }
+  
+  /* Estilos responsivos */
+  @media (max-width: 480px) {
+      #videoContainer {
+          height: 300px;
+      }
+      
+      #videoContainer::before {
+          border-width: 40px;
+      }
+      
+      #videoContainer::after {
+          top: 40px;
+          left: 40px;
+          right: 40px;
+          bottom: 40px;
+      }
+      
+      @keyframes scanLine {
+          0% {
+              top: 40px;
+          }
+          50% {
+              top: calc(100% - 40px - 2px);
+          }
+          100% {
+              top: 40px;
+          }
+      }
+      
+      #videoContainer .scan-line {
+          top: 40px;
+          left: 40px;
+          right: 40px;
+      }
+  }
+  
+  
+  
+  
+  
+  .alerta.aparecer {
+      opacity: 1;
+      visibility: visible;
+  }
+  
+  .alerta {
+      width: 100vw;
+      height: 100vh;
+      display: flex; 
+      position: fixed;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+  
+      color: white;
+      font-size: 1.5rem;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 1s ease, visibility 1s ease;
+  }
+  .alertaBienvenida{
+      font-size: 3.5rem;
+      font-weight:bolder;
+      font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      color: white ;
+  }
+  
+  
+  .selecionarObjetos{
+      width:  clamp(1000px, 100%, 1615px);
+      height: clamp(600px, 100%, 650px);
+      position: absolute;
+      z-index: 100;
+      top: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      
+      /* main conteiner de la parte del modal de selecionar objetos */
+  }
+  
+  .divCerrar{
+      width: 30px;
+      height: 30px;
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      border-radius: 100%;
+      color: white;
+      background-color: #001133;
+      cursor: pointer;
+  }
+  
+  .cerrar{
+      font-weight: bold;
+      
+  }
+  
+  .aparecerModal{
+      opacity: 1;
+      visibility: visible;
+  }
+  
+  .desaparecerModal{
+      opacity: 0;
+      visibility: hidden;
+  }
+  
+  
+  
+  .registrarObjeto{
+      width: 90%;
+      height: 96%;
+      background-color: white;
+      /* border: 2px solid black; */
+      border-radius: 10px;
+      box-shadow: -1px 7px 17px rgba(0, 0, 0, 0.737);
+  
+      /* modal para registrar objetos */
+  }
+  
+  /* formulario */
+  .elementoUsuario{
+      width: 100%;
+      height: 100%;
+      display: flex;
+  }
+  
+  .informacionUsuario{
+      width: 30%; 
+      border-top-left-radius: 10px;
+      border-bottom-left-radius: 10px;
+      height: 100%;
+      color: #0A3D62;
+      position: relative;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      background-color: var(--colorAzul);
+      line-height: 30px;
+      
+  }
+  
+  .fotoDePerfil{
+      border-radius: 100%;
+      width: 100px;
+      height: 100px;
+  }
+  
+  .contenedorObjetosVehiculos{
+      flex:  1;
+      border-top-right-radius: 10px ;
+      display: flex;
+      justify-content: space-evenly;
+      align-items: center;
+  }
+  
+  .divCaracteristicas{
+      display: flex; 
+      flex-direction: column; 
+      justify-content: center; 
+      width: clamp(100px, 100%, 130px);
+      box-sizing: border-box;
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+  }
+  
+  .objetos, .tarjetaVehiculo{
+      width: 450px;
+      height: 90%;
+      border: 2px #63AEE8 solid;
+      border-radius: 10px;
+      overflow-y: scroll;
+      
+  }
+  
+  
+  .tarjetaObjeto, .tarjeticaVehiculo{
+      position: relative;
+      display: flex;
+      padding: 15px;
+      margin: 10px;
+      border-radius: 10px;
+      cursor: pointer;
+      height: 100px;
+      transition: all 0.2s ease;
+      background-color: white;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.50);
+  }
+  
+  .divcategorias{
+      height: 100%;
+      width: clamp(80px, 100%, 100px);
+      word-wrap: break-word;
+  }
+  
+  .divObservacion{
+      width: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex: 1;
+  }
+  
+  .activarObservacion:hover{
+      transform: scale(1.1) rotate(90deg);
+      background-color: white;
+      color: var(--colorAzul);
+  }
+  
+  .activarObservacion{
+      transform: rotate(90deg);
+      background-color: #2196F3;
+      font-weight: 700;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      padding: 5px 10px;
+      transition: 1s;
+  
+  }
+  
+  .tarjetaObjeto:hover, .tarjeticaVehiculo:hover{
+      transform: scale(0.9);
+      background-color: #63AEE8;
+      
+  }
+  .divFoto{
+      width: auto;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+  }
+  
+  .tituloCategoria{
+      font-size: 0.7rem;
+      color: rgb(71, 69, 69);
+  }
+  
+  .tipoObjeto{
+      font-size: 0.6rem;
+  }
+  
+  .seleccionado{
+      transform: scale(0.9);
+      background-color: #63AEE8;
+      
+      
+  }
+  
+  .submit-btn {
+      background-color: #003366; 
+      color: white; 
+      border: none; 
+      padding: 12px 20px; 
+      font-size: 16px; 
+      cursor: pointer; 
+      border-radius: 5px; 
+      transition: background-color 0.3s ease;
+    }
+  
+    .submit-btn:hover {
+      background-color: #002244; 
+    }
+  
+    .submit-btn:active {
+      background-color: #001133; 
+    }
+  
+  
+    /* diseño para el modal de observacion */
+  
+  
+  
+  .modalObservaciones {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1001;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s ease, visibility 0.1s ease;
+  }
+  
+  .modalObservaciones.aparecerModal {
+      opacity: 1;
+      visibility: visible;
+  }
+  
+  .contenedorModalObservaciones {
+      width: 500px;
+      background-color: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+      overflow: hidden;
+  }
+  
+  .headerModal {
+      background-color: #63AEE8;
+      color: white;
+      padding: 15px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+  }
+  
+  .headerModal h3 {
+      margin: 0;
+      font-size: 1.2rem;
+  }
+  
+  .cerrarModal {
+      background: none;
+      border: none;
+      color: white;
+      font-size: 1.5rem;
+      cursor: pointer;
+      padding: 0;
+      line-height: 1;
+  }
+  
+  .cuerpoModal {
+      padding: 20px;
+  }
+  
+  #textoObservacion {
+      width: 100%;
+      height: 150px;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      resize: none;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin-bottom: 15px;
+      box-sizing: border-box;
+  }
+  
+  .botonesModal {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+  }
+  
+  .cancelar-btn {
+      background-color: #f1f1f1;
+      color: #333;
+      border: none;
+      padding: 10px 15px;
+      font-size: 14px;
+      cursor: pointer;
+      border-radius: 5px;
+      transition: background-color 0.3s ease;
+  }
+  
+  .cancelar-btn:hover {
+      background-color: #e1e1e1;
+  }
+  
+  /* Botón para abrir observaciones en cada tarjeta */
+  .botonObservacion {
+      transform: rotate(90deg);
+      position: absolute;
+      top: 50%;
+      right: -6%;
+      transform-origin: center;
+      background-color: #63AEE8;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      padding: 5px 10px;
+      font-size: 0.8rem;
+      cursor: pointer;
+      transition: background-color 0.3s;
+  }
+  
+  .botonObservacion:hover {
+      background-color: #4a8ec0;
+  }
 
-.botonesModal {
-    display: flex;
-    justify-content: flex-end;
-    gap: 10px;
-}
-
-.cancelar-btn {
-    background-color: #f1f1f1;
-    color: #333;
-    border: none;
-    padding: 10px 15px;
-    font-size: 14px;
-    cursor: pointer;
-    border-radius: 5px;
-    transition: background-color 0.3s ease;
-}
-
-.cancelar-btn:hover {
-    background-color: #e1e1e1;
-}
-
-/* Botón para abrir observaciones en cada tarjeta */
-.botonObservacion {
-    transform: rotate(90deg);
-    position: absolute;
-    top: 50%;
-    right: -6%;
-    transform-origin: center;
-    background-color: #63AEE8;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    padding: 5px 10px;
-    font-size: 0.8rem;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
-
-.botonObservacion:hover {
-    background-color: #4a8ec0;
-}
+  .instructions{
+    position:absolute;
+    top: 0;
+  }

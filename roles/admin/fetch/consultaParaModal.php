@@ -20,7 +20,11 @@ if (!$documento) {
     $datosUsuario = $usuario->fetch(PDO::FETCH_ASSOC);
 
     $estadoUsuario = $datosUsuario['id_estado'];
-    
+
+    if($datosUsuario['id_estado'] == 2){
+        echo json_encode(['innactivo' => true, ]);
+        exit;
+    }
 
     $consultaObjetos = $con->prepare("SELECT *, objetos.foto as objetoFoto,  usuario.foto AS user_foto , objetos.foto AS object_foto FROM  objetos 
                         INNER JOIN marca ON marca.id_marca  = objetos.id_marca
@@ -77,3 +81,4 @@ if (!$documento) {
 
  
 ?>
+

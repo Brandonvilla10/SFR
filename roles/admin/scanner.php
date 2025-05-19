@@ -4,29 +4,6 @@ $conexion = new database;
 $con = $conexion->conectar();
 session_start();
 
-if (!isset($_SESSION['documento'])) {
-    header("Location: ../../index.php");
-    exit();
-}
-
-// Establecer la variable @documento_generador en MySQL desde la sesión
-try {
-    $sql = $con->prepare("SELECT nombre_completo FROM usuario WHERE id_documento = $_SESSION[documento]");
-    $sql->execute();
-    $nombre = $sql->fetch(PDO::FETCH_ASSOC);
-    $con->exec("SET @documento_generador = '$nombre[nombre_completo]'");
-
-    // Verificar que la variable se haya establecido correctamente
-    $check = $con->query("SELECT @documento_generador as nombre");
-    $result = $check->fetch(PDO::FETCH_ASSOC);
-    if (empty($result['nombre'])) {
-        // Si sigue vacía, establecer un valor predeterminado
-        $con->exec("SET @documento_generador = 'Usuario Sistema'");
-    }
-} catch (Exception $e) {
-    echo '<p>Error al definir el documento generador: ' . htmlspecialchars($e->getMessage()) . '</p>';
-    exit;
-}
 
 ?>
 
@@ -48,7 +25,6 @@ try {
 <body>
 
     <!-- Modal de Observaciones -->
-
     <div class="modalObservaciones desaparecerModal" id="modalObservaciones">
         <div class="contenedorModalObservaciones">
             <div class="headerModal">
@@ -78,22 +54,24 @@ try {
 
 
 
-        <div class="instructions">
 
-            <div class="container">
-                <h1>Lector de Código QR</h1>
-
-
-
-                <button id="startButton">Iniciar Cámara</button>
-                <button id="stopButton" disabled>Detener Cámara</button>
-            </div>
-        </div>
 
 
         <main class="grid_contenido_plantilla">
 
             <div class="container">
+
+                <div class="instructions">
+
+                    <div class="container">
+                        <h1>Lector de Código QR</h1>
+
+
+
+                        <button id="startButton">Iniciar Cámara</button>
+                        <button id="stopButton" disabled>Detener Cámara</button>
+                    </div>
+                </div>
 
                 <div id="videoContainer">
                     <video id="video" playsinline></video>
@@ -105,9 +83,7 @@ try {
 
             <!-- Toda esta parte sera destinada para el modal que hablamos el 04/21/2025 acerca de la parte del registro que tiene el celador  -->
 
-        <section class="maincontainercentermodal desaparecerModal" id="selecionarObjetos">
-
-            <div class="selecionarObjetos" id="selecionarObjetosModal">
+            <div class="selecionarObjetos desaparecerModal" id="selecionarObjetos">
                 <div class="registrarObjeto">
 
                     <div class="elementoUsuario">
@@ -116,6 +92,9 @@ try {
 
                             <!-- aqui va algo de codigo html solo que se pone con javascript, esta en el archivo logicascaner -->
                         </div>
+
+
+
 
 
                         <div class=" contenedorObjetosVehiculos">
@@ -139,14 +118,16 @@ try {
 
                                 </div>
                                 <!-- terminar paras los vehiculos -->
-                                
+
                             </div>
-                            
+
                         </div>
-                    </form>
+
+
+
+                        </form>
+                    </div>
                 </div>
-            </div>
-        </section>
 
 
 

@@ -69,18 +69,6 @@ if(isset($_POST["botoncito"])){
 };
 
 ?>
-
-
-
-
-
-
-
-
-
-
-
-
     <section class="container">
         <!-- cree un section llamado container que contuviera ambos section los cuales son los de columna derecha y columna izquierda que tambien lo agregue ya que teniamos era un div llamado cuadrado azul y no se podia acomodar de la mejor manera  -->
         <section class="ColumnaIzquierda">

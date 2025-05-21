@@ -13,10 +13,7 @@ $stmt = $con->prepare("SET @documento_generador = :doc");
 $stmt->bindValue(':doc', $documento);
 $stmt->execute();
 
-// Marcar notificaciones como leídas al entrar a la página
-$stmtLeidas = $con->prepare("UPDATE notificaciones SET leida = 1 WHERE id_afectado = :doc AND leida = 0");
-$stmtLeidas->bindValue(':doc', $documento);
-$stmtLeidas->execute();
+
 ?>
 
 <!DOCTYPE html>
@@ -54,7 +51,7 @@ $stmtLeidas->execute();
             <input type="text" class="buscar_documento_con_icono" id="buscarDocumento"
                    placeholder="Buscar por documento..." 
                    value="<?php htmlspecialchars($documentoBuscado); ?>">
-                   
+                                   <span id="contadorNotificaciones" style="display:none" class="badge"></span>
 
             <!-- Botón para mostrar/ocultar los filtros adicionales -->
             <button id="toggleFiltros">Mostrar filtros</button>
@@ -182,6 +179,23 @@ window.addEventListener('DOMContentLoaded', function() {
         cargarNotificaciones(1); // Carga las notificaciones
     }
 });
+
+function actualizarContadorNotificaciones() {
+    fetch('fetch/contar_notificaciones.php')
+        .then(response => response.json())
+        .then(data => {
+            const contador = document.getElementById('contadorNotificaciones');
+            if (data.total > 0) {
+                contador.textContent = data.total;
+                contador.style.display = 'inline-block';
+            } else {
+                contador.style.display = 'none';
+            }
+        });
+}
+
+window.addEventListener('DOMContentLoaded', actualizarContadorNotificaciones);
+setInterval(actualizarContadorNotificaciones, 30000); // cada 30 segundos
 </script>
 
 </body>

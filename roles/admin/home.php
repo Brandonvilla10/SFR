@@ -313,6 +313,19 @@ document.getElementById('modalReportes').onclick = function(e) {
     </form>
   </div>
 </div>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  document.getElementById('btnReportes').onclick = function() {
+    document.getElementById('modalReportes').style.display = 'flex';
+  };
+  document.getElementById('cerrarModalReportes').onclick = function() {
+    document.getElementById('modalReportes').style.display = 'none';
+  };
+  document.getElementById('modalReportes').onclick = function(e) {
+    if (e.target === this) this.style.display = 'none';
+  };
+});
+</script>
 </body>
 
 </html>

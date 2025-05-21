@@ -78,7 +78,21 @@ try {
         echo '<div class="grid-notificaciones">';
         foreach ($notificaciones as $notif) {
             echo '<div class="notificacion">';
-            echo '<h4>' . htmlspecialchars($notif['tipo_evento'] . ' en ' . $notif['tabla_afectada']) . '</h4>';
+            $tipoEvento = $notif['tipo_evento'];
+            switch ($tipoEvento) {
+                case 'INSERT':
+                    $tipoEventoMostrar = 'Agregado';
+                    break;
+                case 'UPDATE':
+                    $tipoEventoMostrar = 'Actualizado';
+                    break;
+                case 'DELETE':
+                    $tipoEventoMostrar = 'Eliminado';
+                    break;
+                default:
+                    $tipoEventoMostrar = $tipoEvento;
+            }
+            echo "<b>{$tipoEventoMostrar} en {$notif['tabla_afectada']}</b>";
             echo '<p>' . htmlspecialchars($notif['descripcion']) . '</p>';
             echo '<small>Realizado por: ' . htmlspecialchars($notif['documento_generador']) . '</small>';
             echo '<time>' . date("d/m/Y H:i", strtotime($notif['fecha'])) . '</time>';

@@ -38,6 +38,7 @@ session_start();
                     <button class="cancelar-btn" id="cancelarObservacion">Cancelar</button>
                 </div>
             </div>
+
         </div>
     </div>
     <!-- Fin Modal de Observaciones -->
@@ -70,7 +71,9 @@ session_start();
 
                         <button id="startButton">Iniciar Cámara</button>
                         <button id="stopButton" disabled>Detener Cámara</button>
+
                     </div>
+
                 </div>
 
                 <div id="videoContainer">
@@ -78,7 +81,16 @@ session_start();
                     <canvas id="canvas"></canvas>
                 </div>
 
-                <div id="result">El resultado del código QR aparecerá aquí...</div>
+                <div class="manual-search-container">
+                    <input type="number" 
+                           class="manual-search-input" 
+                           placeholder="Ingresar Documento Manualmente"
+                           id="documentoManual">
+
+                    <button class="manual-search-button" id="buscarDocumentoManual" >Buscar</button>
+                </div>
+
+                
             </div>
 
             <!-- Toda esta parte sera destinada para el modal que hablamos el 04/21/2025 acerca de la parte del registro que tiene el celador  -->

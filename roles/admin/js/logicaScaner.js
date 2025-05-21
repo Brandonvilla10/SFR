@@ -194,7 +194,7 @@ function stopCamera() {
   startButton.disabled = false;
   stopButton.disabled = true;
 
-  resultDiv.textContent = " Haz clic en 'Iniciar Cámara'.";
+
 }
 
 // Función para escanear el código QR
@@ -233,187 +233,11 @@ function scanQR() {
           startCamera();
         }, 7);
 
-        async function datosUsuario() {
-          const datos = await fetch("./fetch/consultaParaModal.php", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/x-www-form-urlencoded",
-            },
-            body: code.data,
-          });
-
-          //   contedores aqui van declarados
-          let informacionUsuario =
-            document.getElementById("informacionUsuario");
-          let contenedorObjetos = document.getElementById("contenedorObjetos");
-          let contenedorVehiculos = document.getElementById(
-            "contenedorVehiculos"
-          );
-
-          // ----------------------------------------------------------------------------------------
-
-          // declaracion de variables segun la respuesta del documento ./fetch/consultaáraModal
-          let respuesta = await datos.json();
-
-          if (respuesta.innactivo == true) {
-   
-            alertaBienvenida.innerHTML = "Usuario Inactivo";
-
-            alerta.classList.add("aparecer");
-            alerta.style.background = "red";
-            setTimeout(() => {
-              alerta.classList.remove("aparecer");
-            }, 3000);
-
-            cerrar();
-
-            
-          }
-
-          let info = respuesta.datosPersonales;
-          let objetosRespuesta = respuesta.objetos;
-          let vehiculosRespuesta = respuesta.vehiculos;
-
-
-          //   vacio los contenedores antes de (por si las moscas)
-          informacionUsuario.innerHTML = "";
-          contenedorObjetos.innerHTML = "";
-          contenedorVehiculos.innerHTML = "";
-
-          // -------------------------------------------------------
-
-          informacionUsuario.innerHTML += `
-          <div onclick="cerrar()" class="divCerrar"><span class="cerrar" >X</span></div> 
-                    <img src="../../uploads/${
-                      info.foto
-                    }" alt="Foto de perfil del usuario" class="fotoDePerfil">
-
-                    <b style="font-size:1.5rem;margin-bottom:30px;">Datos Del Usuario</b>
-
-                    <p><b> Nombre Usuario:</b> <br> ${info.nombre_completo} </p>
-                    <p><b> Documento:</b> <br> ${info.id_documento} </p>
-                    <p><b> Correo Electronico: </b> <br> ${info.correo} </p>
-                    <p><b> Rol Del Usuario:</b> <br> ${info.nombre_rol} </p>
-                    <input type="submit" id="botonRegistrarEntrada" value="${
-                      info.id_estado === 1
-                        ? "Registrar Entrada"
-                        : "Registrar Salida"
-                    }" class="submit-btn">`;
-
-          const botonRegistrarEntrada = document.getElementById(
-            "botonRegistrarEntrada"
-          );
-          if (botonRegistrarEntrada) {
-            botonRegistrarEntrada.addEventListener("click", registrarEntrada);
-          }
-
-          if (objetosRespuesta.length == 0) {
-            contenedorObjetos.innerHTML = "";
-          }
-
-          if (objetosRespuesta.length > 0) {
-            objetosRespuesta.forEach(function (objeto) {
-              contenedorObjetos.innerHTML += `
-
-            <div class="tarjetaObjeto" data-id="${objeto.id_serial}" >
-            <div class="divFoto">
-                                            <p>${objeto.id_serial}</p>
-                                            <img src="../../uploads/${
-                                              objeto.objetoFoto ??
-                                              "default_iconos.png"
-                                            }" width="80px" height="80px" alt="objeto">
-                                        </div>
-                                        
-                                        <div class="divCaracteristicas">
-                                            <h4>${objeto.nombre}</h4>
-                                            <p style="font-size: 0.8rem">${
-                                              objeto.caracteristica
-                                            }</p>
-                                        </div>
-
-                                        <div class="divcategorias">
-                                            <b class="tituloCategoria">Marca:</b>
-                                            <p class="tipoObjeto">${
-                                              objeto.nombre_marca
-                                            }</p>
-                                            <b class="tituloCategoria">Estado:</b>
-                                            <p class="tipoObjeto">${
-                                              objeto.estado
-                                            }</p>
-                                            <b class="tituloCategoria">Tipo:</b>
-                                            <p class="tipoObjeto">${
-                                              objeto.tipoObjeto
-                                            }</p>
-                                            </div>
-                                            </div>`;
-            });
-
-            document.querySelectorAll(".tarjetaObjeto").forEach((tarjeta) => {
-              tarjeta.addEventListener("click", () => {
-                toggleSelection(tarjeta);
-              });
-            });
-          }
-
-          // aqui se llama la funcion para hacer que ella cree los botones dependiendo de la cantidad de tajetas que encuentre esto es para los objetos
-          agregarBotonesObservacion();
-
-          // aqui se evalua el contenedor de vehiculos si es 0 lo que devuelve el json pues se vacia sino entonces imprime
-
-          if (vehiculosRespuesta.length > 0) {
-            vehiculosRespuesta.forEach(function (vehiculo) {
-              contenedorVehiculos.innerHTML += `
-            
-               <div class="tarjeticaVehiculo" data-id="${vehiculo.id_placa}" >
-                                            <div class="divFoto">
-                                            <p>${vehiculo.id_placa}</p>
-                                                <img src="../../uploads/${vehiculo.foto}" width="80px" height="80px" alt="objeto">
-                                            </div>
-
-                                            <div style="display: flex; flex-direction:column; justify-content:center; width:150px; margin-left:20px;">
-                                                <p>Carateristica Del Vehiculo:</p>
-                                                <h4>${vehiculo.caracteristicas}</h4>
-
-                                            </div>
-
-                                            <div>
-                                                <b class="tituloCategoria">Marca:</b>
-                                                <p class="tipoObjeto">${vehiculo.nombre_marca} </p>
-                                                <b class="tituloCategoria">Estado:</b>
-                                                <p class="tipoObjeto"> ${vehiculo.estado} </p>
-                                                <b class="tituloCategoria">Tipo:</b>
-                                                <p class="tipoObjeto">${vehiculo.tipoVehiculo} </p>
-                                            </div>
-                                        </div>
-                                  
-            
-            `;
-            });
-
-            if (vehiculosRespuesta.length == 0) {
-              contenedorVehiculos.innerHTML = "";
-            }
-
-            document
-              .querySelectorAll(".tarjeticaVehiculo")
-              .forEach((tarjeta) => {
-                tarjeta.addEventListener("click", () => {
-                  toggleSelectionVehiculo(tarjeta);
-                });
-              });
-
-            agregarBotonesVehiculos();
-          }
-        }
-
-        datosUsuario();
-
-        const selecionarObjetos = document.getElementById("selecionarObjetos");
-        selecionarObjetos.classList.add("aparecerModal");
-        selecionarObjetos.classList.remove("desaparecerModal");
-
+        
+        logicaInformacion(code.data);
         documento = code.data;
         return documento;
+
       } else {
         stopCamera();
         videoContainer.style.background = "red";
@@ -441,3 +265,191 @@ stopButton.addEventListener("click", stopCamera);
 
 // Detener la cámara al salir de la página
 window.addEventListener("beforeunload", stopCamera);
+
+
+// aqui viene la activacion de la funciotn logicaInformacion para cuando digitan el documento
+
+const documentoManual = document.getElementById("documentoManual");
+const buscarDocumentoManual = document.getElementById("buscarDocumentoManual");
+
+buscarDocumentoManual.addEventListener('click', () => {
+  const documento = documentoManual.value.trim();
+  if (documento) {
+    logicaInformacion(documento);
+    documentoManual.value = "";
+  }
+})
+
+// aqui separo la funcion que va a devovler toda la informacion del usuario y los objetos que tiene asignados
+
+function logicaInformacion(documento) {
+  async function datosUsuario() {
+    const datos = await fetch("./fetch/consultaParaModal.php", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      body: documento,
+    });
+
+    //   contedores aqui van declarados
+    let informacionUsuario = document.getElementById("informacionUsuario");
+    let contenedorObjetos = document.getElementById("contenedorObjetos");
+    let contenedorVehiculos = document.getElementById("contenedorVehiculos");
+
+    // ----------------------------------------------------------------------------------------
+
+    // declaracion de variables segun la respuesta del documento ./fetch/consultaáraModal
+    let respuesta = await datos.json();
+
+    if (respuesta.innactivo == true) {
+      alertaBienvenida.innerHTML = "Usuario Inactivo";
+
+      alerta.classList.add("aparecer");
+      alerta.style.background = "red";
+      setTimeout(() => {
+        alerta.classList.remove("aparecer");
+      }, 3000);
+
+      cerrar();
+    }
+
+    let info = respuesta.datosPersonales;
+    let objetosRespuesta = respuesta.objetos;
+    let vehiculosRespuesta = respuesta.vehiculos;
+
+    //   vacio los contenedores antes de (por si las moscas)
+    informacionUsuario.innerHTML = "";
+    contenedorObjetos.innerHTML = "";
+    contenedorVehiculos.innerHTML = "";
+
+    // -------------------------------------------------------
+
+    informacionUsuario.innerHTML += `
+        <div onclick="cerrar()" class="divCerrar"><span class="cerrar" >X</span></div> 
+                  <img src="../../uploads/${
+                    info.foto
+                  }" alt="Foto de perfil del usuario" class="fotoDePerfil">
+
+                  <b style="font-size:1.5rem;margin-bottom:30px;">Datos Del Usuario</b>
+
+                  <p><b> Nombre Usuario:</b> <br> ${info.nombre_completo} </p>
+                  <p><b> Documento:</b> <br> ${info.id_documento} </p>
+                  <p><b> Correo Electronico: </b> <br> ${info.correo} </p>
+                  <p><b> Rol Del Usuario:</b> <br> ${info.nombre_rol} </p>
+                  <input type="submit" id="botonRegistrarEntrada" value="${
+                    info.id_estado === 1
+                      ? "Registrar Entrada"
+                      : "Registrar Salida"
+                  }" class="submit-btn">`;
+
+    const botonRegistrarEntrada = document.getElementById(
+      "botonRegistrarEntrada"
+    );
+    if (botonRegistrarEntrada) {
+      botonRegistrarEntrada.addEventListener("click", registrarEntrada);
+    }
+
+    if (objetosRespuesta.length == 0) {
+      contenedorObjetos.innerHTML = "";
+    }
+
+    if (objetosRespuesta.length > 0) {
+      objetosRespuesta.forEach(function (objeto) {
+        contenedorObjetos.innerHTML += `
+
+          <div class="tarjetaObjeto" data-id="${objeto.id_serial}" >
+          <div class="divFoto">
+                                          <p>${objeto.id_serial}</p>
+                                          <img src="../../uploads/${
+                                            objeto.objetoFoto ??
+                                            "default_iconos.png"
+                                          }" width="80px" height="80px" alt="objeto">
+                                      </div>
+                                      
+                                      <div class="divCaracteristicas">
+                                          <h4>${objeto.nombre}</h4>
+                                          <p style="font-size: 0.8rem">${
+                                            objeto.caracteristica
+                                          }</p>
+                                      </div>
+
+                                      <div class="divcategorias">
+                                          <b class="tituloCategoria">Marca:</b>
+                                          <p class="tipoObjeto">${
+                                            objeto.nombre_marca
+                                          }</p>
+                                          <b class="tituloCategoria">Estado:</b>
+                                          <p class="tipoObjeto">${
+                                            objeto.estado
+                                          }</p>
+                                          <b class="tituloCategoria">Tipo:</b>
+                                          <p class="tipoObjeto">${
+                                            objeto.tipoObjeto
+                                          }</p>
+                                          </div>
+                                          </div>`;
+      });
+
+      document.querySelectorAll(".tarjetaObjeto").forEach((tarjeta) => {
+        tarjeta.addEventListener("click", () => {
+          toggleSelection(tarjeta);
+        });
+      });
+    }
+
+    // aqui se llama la funcion para hacer que ella cree los botones dependiendo de la cantidad de tajetas que encuentre esto es para los objetos
+    agregarBotonesObservacion();
+
+    // aqui se evalua el contenedor de vehiculos si es 0 lo que devuelve el json pues se vacia sino entonces imprime
+
+    if (vehiculosRespuesta.length > 0) {
+      vehiculosRespuesta.forEach(function (vehiculo) {
+        contenedorVehiculos.innerHTML += `
+          
+             <div class="tarjeticaVehiculo" data-id="${vehiculo.id_placa}" >
+                                          <div class="divFoto">
+                                          <p>${vehiculo.id_placa}</p>
+                                              <img src="../../uploads/${vehiculo.foto}" width="80px" height="80px" alt="objeto">
+                                          </div>
+
+                                          <div style="display: flex; flex-direction:column; justify-content:center; width:150px; margin-left:20px;">
+                                              <p>Carateristica Del Vehiculo:</p>
+                                              <h4>${vehiculo.caracteristicas}</h4>
+
+                                          </div>
+
+                                          <div>
+                                              <b class="tituloCategoria">Marca:</b>
+                                              <p class="tipoObjeto">${vehiculo.nombre_marca} </p>
+                                              <b class="tituloCategoria">Estado:</b>
+                                              <p class="tipoObjeto"> ${vehiculo.estado} </p>
+                                              <b class="tituloCategoria">Tipo:</b>
+                                              <p class="tipoObjeto">${vehiculo.tipoVehiculo} </p>
+                                          </div>
+                                      </div>
+                                
+          
+          `;
+      });
+
+      if (vehiculosRespuesta.length == 0) {
+        contenedorVehiculos.innerHTML = "";
+      }
+
+      document.querySelectorAll(".tarjeticaVehiculo").forEach((tarjeta) => {
+        tarjeta.addEventListener("click", () => {
+          toggleSelectionVehiculo(tarjeta);
+        });
+      });
+
+      agregarBotonesVehiculos();
+    }
+  }
+
+  datosUsuario();
+
+  const selecionarObjetos = document.getElementById("selecionarObjetos");
+  selecionarObjetos.classList.add("aparecerModal");
+  selecionarObjetos.classList.remove("desaparecerModal");
+}

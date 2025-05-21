@@ -193,8 +193,6 @@ function stopCamera() {
 
   startButton.disabled = false;
   stopButton.disabled = true;
-
-
 }
 
 // Función para escanear el código QR
@@ -233,10 +231,8 @@ function scanQR() {
           startCamera();
         }, 7);
 
-        
         logicaInformacion(code.data);
-        documento = code.data;
-        return documento;
+
 
       } else {
         stopCamera();
@@ -266,31 +262,31 @@ stopButton.addEventListener("click", stopCamera);
 // Detener la cámara al salir de la página
 window.addEventListener("beforeunload", stopCamera);
 
-
 // aqui viene la activacion de la funciotn logicaInformacion para cuando digitan el documento
 
 const documentoManual = document.getElementById("documentoManual");
 const buscarDocumentoManual = document.getElementById("buscarDocumentoManual");
 
-buscarDocumentoManual.addEventListener('click', () => {
+buscarDocumentoManual.addEventListener("click", () => {
   const documento = documentoManual.value.trim();
   if (documento) {
     logicaInformacion(documento);
     documentoManual.value = "";
   }
-})
+});
 
 // aqui separo la funcion que va a devovler toda la informacion del usuario y los objetos que tiene asignados
 
-function logicaInformacion(documento) {
+function logicaInformacion(parametroDocumento) {
   async function datosUsuario() {
     const datos = await fetch("./fetch/consultaParaModal.php", {
       method: "POST",
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",
       },
-      body: documento,
+      body: parametroDocumento,
     });
+
 
     //   contedores aqui van declarados
     let informacionUsuario = document.getElementById("informacionUsuario");
@@ -299,8 +295,15 @@ function logicaInformacion(documento) {
 
     // ----------------------------------------------------------------------------------------
 
+
+
     // declaracion de variables segun la respuesta del documento ./fetch/consultaáraModal
     let respuesta = await datos.json();
+
+    if(respuesta.error){
+      cerrar()
+      location.reload()
+    }
 
     if (respuesta.innactivo == true) {
       alertaBienvenida.innerHTML = "Usuario Inactivo";
@@ -452,4 +455,8 @@ function logicaInformacion(documento) {
   const selecionarObjetos = document.getElementById("selecionarObjetos");
   selecionarObjetos.classList.add("aparecerModal");
   selecionarObjetos.classList.remove("desaparecerModal");
+
+  documento = parametroDocumento;
+
+  return documento;
 }

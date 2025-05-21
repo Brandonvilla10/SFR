@@ -238,4 +238,18 @@ $usuario_foto_path = !empty($resultado['foto']) ? $mostrar : $usu;
 
 </body>
 
+<script>
+            function limitar(elemento, limite) {
+            elemento.addEventListener("input", () => {
+                if (elemento.value.length > limite) {
+                    elemento.value = elemento.value.substring(0, limite)
+                }
+                console.log(elemento.value.length)
+            })
+        }
+
+        const caracteristicas = document.getElementById("caracteristicas")
+        limitar(caracteristicas, 100) 
+        
+</script>
 </html>

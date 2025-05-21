@@ -89,21 +89,22 @@ $paginas = ceil($total_filas / $limite_registros);
 
 // Obtener datos paginados
 $consulta = $con->prepare(
-"SELECT  v.foto AS veh_pic, v.id_placa, e.estado,u.id_documento, u.nombre_completo FROM vehiculos v
+    "SELECT  v.foto AS veh_pic, v.id_placa, e.estado,u.id_documento, u.nombre_completo FROM vehiculos v
         INNER JOIN usuario  u ON u.id_documento = v.id_documento
         INNER JOIN estado e ON e.id_estado = v.id_estado WHERE v.id_estado != 4
-        LIMIT :start, :limit");
+        LIMIT :start, :limit"
+);
 $consulta->bindParam(':start', $start_record, PDO::PARAM_INT);
 $consulta->bindParam(':limit', $limite_registros, PDO::PARAM_INT);
 $consulta->execute();
 
 
-if(isset($_POST["objetos_submit"])) {
+if (isset($_POST["objetos_submit"])) {
     $documento = $_POST["user_id"];
-    
-   
+
+
     $_SESSION['user_id'] = $documento;
-    
+
     echo "<script>    window.location.href = 'vehiculos_usuarios.php';</script>";
     exit();
 }
@@ -153,7 +154,7 @@ if(isset($_POST["objetos_submit"])) {
                         <button class="cerrarModalBuscar" id="cerrarModalBuscar">&times;</button>
                     </div>
                     <div class="cuerpoModalBuscar">
-                        <form  method="post">
+                        <form method="post">
                             <div class="campo-formulario">
                                 <label for="user_id">Documento del Usuario</label>
                                 <input type="number" id="user_id" name="user_id" placeholder="Digite el documento" required>
@@ -170,7 +171,7 @@ if(isset($_POST["objetos_submit"])) {
 
             <hr class="separador">
             <div class="contenido_tabla" id="contenido">
-                <input class="BOTON_FILTRAR" placeholder="Filtrar vehiculo por placa" oninput="filtrarPorPlaca(this.value)">
+                <input class="BOTON_FILTRAR" placeholder="Filtrar vehiculo por placa" oninput="filtrarPorPlaca(this.value)" id="filtro">
 
                 <?php if ($consulta->rowCount() == 0) { ?>
                     <div class="notificacion">
@@ -332,6 +333,14 @@ if(isset($_POST["objetos_submit"])) {
                 abrirBuscar.addEventListener('click', abrirBuscarFunction);
                 cerrarModalBuscar.addEventListener('click', cerrarBuscar);
                 cancelarBuscar.addEventListener('click', cerrarBuscar);
+
+                const user_id = document.getElementById("user_id")
+
+                user_id.addEventListener("input", () => {
+                    if (user_id.value.length > 10) {
+                        user_id.value = user_id.value.substring(0, 10)
+                    }
+                })
             </script>
 
             <script>
@@ -406,6 +415,13 @@ if(isset($_POST["objetos_submit"])) {
                     // Converti todo en minusculas porque si no no funciona buscando en minusculas
                     const placa_buscada = placa.toLowerCase();
 
+                    const filtro = document.getElementById('filtro');
+
+                    filtro.addEventListener('input', () => {
+                        if (filtro.value.length > 10) {
+                            filtro.value = filtro.value.substring(0, 10)
+                        }
+                    })
 
 
                     let consulta = `SELECT  v.foto AS veh_pic, v.id_placa, e.estado,u.id_documento, u.nombre_completo FROM vehiculos v
@@ -425,7 +441,7 @@ if(isset($_POST["objetos_submit"])) {
                         })
                         .then((response) => response.json())
                         .then(data => {
-                          
+
                             if (data.error) {
                                 const vehiculos = document.querySelectorAll('.vehiculos');
                                 vehiculos.forEach(vehiculo => {

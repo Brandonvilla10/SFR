@@ -121,18 +121,7 @@
     </section>
     
 
-    <div class="daniel">
-        
-        <div>
-            <img src="assets/img/Nosotrosimg/Daniel .png" alt="Imagen de un agregado" class ="img_daniel" width="236px" height="230px">
-        </div>
-        <div>
-            <h1>Daniel Tovar</h1>        
-        </div>
-        <div>
-            <p class="subtitulosh3V2">Responsable y creador del apartado <br> asistencia</p>
-        </div>
-    </div>
+   
 </section>
 
 <section class="valores">

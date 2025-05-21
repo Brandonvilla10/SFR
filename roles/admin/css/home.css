@@ -10,6 +10,28 @@ html,body{
     overflow-x: hidden;
 }
 
+
+:root{
+    --colorAzul : #63AEE8 
+}
+
+::-webkit-scrollbar {
+    width: 6px;   
+    height: 10px;  
+  }
+  
+  
+  ::-webkit-scrollbar-thumb {
+    background-color: #63AEE8; 
+    border-radius: 10px;
+  }
+  
+  
+  ::-webkit-scrollbar-track {
+    background-color: transparent;
+  }
+
+
 /* Contenedor principal con diseño en grid */
 .container_grid{
     display: grid;

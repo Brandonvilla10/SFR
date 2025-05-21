@@ -7,7 +7,7 @@ $conexion = new database;
 $con = $conexion->conectar();
 
 if (!isset($_SESSION['documento'])) {
-    header("Location: ../../index.php");   
+    header("Location: ../../index.php");
     exit();
 }
 
@@ -16,39 +16,39 @@ if (!isset($_SESSION['documento'])) {
 try {
 
     // Establecer la variable @documento_generador en MySQL desde la sesión
-        try {
-            $sql = $con->prepare("SELECT nombre_completo FROM usuario WHERE id_documento = $_SESSION[documento]");
-            $sql->execute();
-            $nombre = $sql->fetch(PDO::FETCH_ASSOC);
-            $con->exec("SET @documento_generador = '$nombre[nombre_completo]'");
-            
-            // Verificar que la variable se haya establecido correctamente
-            $check = $con->query("SELECT @documento_generador as nombre");
-            $result = $check->fetch(PDO::FETCH_ASSOC);
-            if (empty($result['nombre'])) {
-                // Si sigue vacía, establecer un valor predeterminado
-                $con->exec("SET @documento_generador = 'Usuario Sistema'");
-            }
-        } catch (Exception $e) {
-            echo '<p>Error al definir el documento generador: ' . htmlspecialchars($e->getMessage()) . '</p>';
-            exit;
+    try {
+        $sql = $con->prepare("SELECT nombre_completo FROM usuario WHERE id_documento = $_SESSION[documento]");
+        $sql->execute();
+        $nombre = $sql->fetch(PDO::FETCH_ASSOC);
+        $con->exec("SET @documento_generador = '$nombre[nombre_completo]'");
+
+        // Verificar que la variable se haya establecido correctamente
+        $check = $con->query("SELECT @documento_generador as nombre");
+        $result = $check->fetch(PDO::FETCH_ASSOC);
+        if (empty($result['nombre'])) {
+            // Si sigue vacía, establecer un valor predeterminado
+            $con->exec("SET @documento_generador = 'Usuario Sistema'");
         }
+    } catch (Exception $e) {
+        echo '<p>Error al definir el documento generador: ' . htmlspecialchars($e->getMessage()) . '</p>';
+        exit;
+    }
     //EXTRAIGO LOS DATOS DE LA PERSONA
     $id_documento = $_GET['owner'];
     $id_serial = $_GET['id'];
     $ruta = $_GET['route'];
-    
+
     $user = $con->prepare("SELECT nombre_completo, foto, correo, id_documento FROM usuario WHERE id_documento = :doc");
     $user->bindParam(":doc", $id_documento, PDO::PARAM_INT);
     $user->execute();
-    
+
     $usuario = $user->fetch(PDO::FETCH_ASSOC);
-    
+
     // CONSULTO LA RUTA
-    
+
     $_SESSION['objeto_buscado'] = $id_serial;
     $_SESSION['objetos_usu'] = $id_documento;
-  
+
 
     $objetos_1 = $con->prepare("SELECT * FROM objetos 
      INNER JOIN marca ON objetos.id_marca = marca.id_marca
@@ -57,8 +57,6 @@ try {
     $objetos_1->execute();
 
     $consulta_1 = $objetos_1->fetch();
-
-
 } catch (PDOException) {
 
     //
@@ -104,7 +102,7 @@ try {
                             <p><strong>Nombre:</strong> <?php echo $usuario['nombre_completo'] ?></p>
                             <p><strong>Correo:</strong> <?php echo $usuario['correo']; ?></p>
                             <p><strong>Documento:</strong> <?php echo $usuario['id_documento'] ?></p>
-                        </div>  
+                        </div>
 
                     </div>
 
@@ -140,10 +138,10 @@ try {
                                 <input type="text" id="name" name="serial" class="form-input" placeholder="nombre" value="<?php echo $consulta_1['id_serial'] ?>" hidden>
 
                                 <label for="" class="form-label">Nombre</label>
-                                <input type="text" name="nombre_nuevo" class="form-input" value="<?php echo $consulta_1['nombre'] ?>">
+                                <input type="text" name="nombre_nuevo" class="form-input" id="nombreObjeto" value="<?php echo $consulta_1['nombre'] ?>">
 
                                 <label for="" class="form-label">Caracteristicas</label>
-                                <textarea class="form-input caracteristica" name="carac_nueva" placeholder="Escribe aquí..."><?php echo $consulta_1['caracteristica'] ?></textarea>
+                                <textarea class="form-input caracteristica" name="carac_nueva" id="caracteristicaObjeto" placeholder="Escribe aquí..."><?php echo $consulta_1['caracteristica'] ?></textarea>
 
                                 <div class="form-group">
 
@@ -230,7 +228,7 @@ try {
         $caracteristica = $_POST['carac_nueva'];
         $marca = $_POST['marca_nueva'];
         $estado = $_POST['estado_nuevo'];
-        
+
 
         $cambiar_datos = $con->prepare("UPDATE objetos SET nombre = :nombre, caracteristica =  :caract, id_marca = :marca, id_estado = :estado WHERE id_serial = :serial");
         $cambiar_datos->bindParam(':nombre', $nombre_objeto, PDO::PARAM_STR);
@@ -240,7 +238,7 @@ try {
         $cambiar_datos->bindParam(':estado', $estado, PDO::PARAM_STR);
         $cambiar_datos->execute();
 
-         echo "
+        echo "
             <script>
                 document.addEventListener('DOMContentLoaded', function () {
                     mostrarModal('success', 'Objeto Actualizado con exito', '$ruta');
@@ -250,6 +248,22 @@ try {
     }
     ?>
     <script>
+        function limitar(elemento, limite) {
+            elemento.addEventListener("input", () => {
+                if (elemento.value.length > limite) {
+                    elemento.value = elemento.value.substring(0, limite)
+                }
+                
+            })
+        }
+
+
+        const nombreObjeto = document.getElementById("nombreObjeto")
+        const caracteristicaObjeto = document.getElementById("caracteristicaObjeto")
+
+        limitar(nombreObjeto,50)
+        limitar(caracteristicaObjeto,50)
+
         const imagen = document.getElementById('imagen_objeto');
         const input = document.getElementById('fileUpload')
 

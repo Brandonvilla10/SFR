@@ -253,6 +253,14 @@ $consulta->execute();
         abrirBuscar.addEventListener('click', abrirBuscarFunction);
         cerrarModalBuscar.addEventListener('click', cerrarBuscar);
         cancelarBuscar.addEventListener('click', cerrarBuscar);
+
+        const user_id = document.getElementById("user_id");
+
+        user_id.addEventListener('input', () => {
+            if(user_id.value.length > 10){
+                user_id.value = user_id.value.substring(0, 10)
+            }
+        })
     </script>
 
 
@@ -273,6 +281,13 @@ $consulta->execute();
 
         const contenido = document.getElementById('contenido_tabla');
 
+        const Filtro = document.getElementById('Filtro');
+
+        Filtro.addEventListener('input', () => {
+            if(Filtro.value.length > 10){
+                Filtro.value = Filtro.value.substring(0, 10)
+            }
+        })
 
         function filtrarPorSerial(serial) {
             const serial_buscado = serial.toUpperCase();

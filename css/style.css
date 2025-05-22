@@ -116,7 +116,7 @@ body, html {
         margin-top: 22px;
         border-radius: 59px; /* Bordes redondeados */
         color: white; /* Texto blanco */
-        border: 3px solid #ffffff; /* Borde blanco */
+        border:2px solid #ffffff; /* Borde blanco */
         font-size: larger;
         font-weight: bolder; /* Texto más grueso */
         background: #1c8f05; /* Verde oscuro */
@@ -138,6 +138,7 @@ body, html {
         min-height: 230px;
         max-height: 500px;
         height: 350px;
+        object-fit: contain;
         
     }
 
@@ -187,11 +188,6 @@ body, html {
     }
 
 
-    /* Fondo blanco ajustado */
-    .fondoBlanco {
-        width: 53vh;
-        height: 61vh;
-    }
 
         /* --- Barra de redes sociales (no mover esto jajaja) --- */
         .social-bar {

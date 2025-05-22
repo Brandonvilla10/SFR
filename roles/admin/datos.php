@@ -28,7 +28,7 @@ $rol = $_SESSION['rol_name'];
 
     <main class="grid_contenido_plantilla">
         <div class="titulo">
-            <div>
+            <div class="tituloDatos">
                 <h1>Datos</h1>
                 <p>Administra los datos segun tu necesidad</p>
             </div>

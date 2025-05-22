@@ -65,6 +65,8 @@
     padding: 10px;
 }
 
+
+
 .object-card {
     background-color: var(--card-bg);
     border-radius: var(--border-radius);
@@ -219,6 +221,13 @@
     }
     .grid_contenido_plantilla {
         grid-area: main;
+    }
+    .tituloDatos{
+        margin-left: 18%;
+        padding-top: 10%;
+    }
+    .separador{
+        width: 100%;
     }
 }
 

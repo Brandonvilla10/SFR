@@ -106,7 +106,7 @@ if (isset($_POST["eliminarSubmir"])) {
 
         <main class="grid_contenido_plantilla">
             <div class="titulo">
-                <div>
+                <div class="tituloSection">
                     <h1>Fichas</h1>
                     <p>Administra todas las fichas segun tu necesidad</p>
                 </div>

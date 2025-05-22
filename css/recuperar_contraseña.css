@@ -269,18 +269,67 @@ a {
 }
 
 .botonVolverInicial{
-    
-}
-
-.botonVolver{
     position: absolute;
     top: 10px;
-    left: 0;
-    font-weight: 700;
-    padding: 10px;
+    left: 30px;
+    display: flex;
+    padding: 1px 7px 0px 4px;
     background-color: #1c8f05;
-    color: white;
+    z-index: 4000;
+    transition: .3s ease;
+    border:  none   ;
+    justify-content: center;
+    align-items: center;
     border-radius: 10px;
-    box-shadow: 3px 2px 0px #105203;
-    font-size: clamp(0.8rem, 2.5vw, 1.1rem);
 }
+
+
+.volverTexto{
+    columns: white;
+    visibility: hidden;
+    opacity: 1;
+    width: 1px;
+    color: white;
+    font-size: 1.4rem;
+    font-weight: 700;
+}
+
+@keyframes aparecerTexto {
+    from{
+        opacity: 0;
+        transform: translate(-50px);
+    }to{
+        opacity: 1;
+        visibility: visible;
+        transform: translate(10);
+    }
+}
+
+.flecha{
+    font-weight: 700;
+    transition: 0.2s;
+    
+}
+.botonVolverInicial:hover{
+    padding: 1px 70px 0px 7px;
+    transition: .3s ease;
+
+    .flecha{
+        transform: rotate(180deg);
+
+    }
+
+    .volverTexto{
+        animation: aparecerTexto 0.5s ease-in-out forwards;
+        width: 20px;
+      
+    }
+
+}
+
+
+.MensajeVolver{
+    font-size: clamp(0.8rem, 2.5vw, 1.6rem);
+    font-weight: 700;
+}
+

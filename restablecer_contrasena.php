@@ -55,7 +55,7 @@ if(!isset($correo)){
 
         <section class ="env_correo">
 
-            <a href="" class="botonVolver"><p> < Volver</p></a>
+            
 
             <form action="" method="post" class="datos_form">
             <h1 style="padding-bottom: 20px; color: rgba(58, 170, 53, 255);">Recuperar contraseña</h1>  

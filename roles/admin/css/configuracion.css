@@ -137,6 +137,8 @@
     width: clamp(60px, 100%, 120px);
     height: clamp(60px, 100%, 120px);
     border-radius: 10px;
+    box-sizing: border-box;
+    padding: 20px;
 }
 
     .fotoUsuarioText {
@@ -170,6 +172,7 @@
 
     .configuracion{
         margin: 3%;
+        height: auto;
         width: clamp(300px, 100%, 90%);
         flex-direction: column-reverse;
         align-items: center;

@@ -51,7 +51,7 @@ $stmt->execute();
             <input type="text" class="buscar_documento_con_icono" id="buscarDocumento"
                    placeholder="Buscar por documento..." 
                    value="<?php htmlspecialchars($documentoBuscado); ?>">
-                                   <span id="contadorNotificaciones" style="display:none" class="badge"></span>
+                                   
 
             <!-- Botón para mostrar/ocultar los filtros adicionales -->
             <button id="toggleFiltros">Mostrar filtros</button>
@@ -60,7 +60,7 @@ $stmt->execute();
             <div id="filtrosOpcionales" style="display:none; margin-top: 10px;">
                 <!-- Selector para filtrar por módulo -->
                 <select id="tablaAfectada">
-                    <option value="">-- Seleccionar módulo --</option>
+                    <option value=""> Modulo </option>
                     <option value="vehiculos">Vehículos</option>
                     <option value="objetos">Objetos</option>
                     <option value="usuarios">Usuarios</option>

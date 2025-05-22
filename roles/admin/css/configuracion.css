@@ -3,6 +3,26 @@
     padding: 0;
     margin: 0;
 }
+:root{
+    --colorAzul : #63AEE8 
+}
+
+::-webkit-scrollbar {
+    width: 6px;   
+    height: 10px;  
+  }
+  
+  
+  ::-webkit-scrollbar-thumb {
+    background-color: #63AEE8; 
+    border-radius: 10px;
+  }
+  
+  
+  ::-webkit-scrollbar-track {
+    background-color: transparent;
+  }
+
 .tituloConfig{
     display: flex;
     width: 100%;
@@ -117,6 +137,8 @@
     width: clamp(60px, 100%, 120px);
     height: clamp(60px, 100%, 120px);
     border-radius: 10px;
+    box-sizing: border-box;
+    padding: 20px;
 }
 
     .fotoUsuarioText {
@@ -150,6 +172,7 @@
 
     .configuracion{
         margin: 3%;
+        height: auto;
         width: clamp(300px, 100%, 90%);
         flex-direction: column-reverse;
         align-items: center;

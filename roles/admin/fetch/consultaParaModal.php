@@ -19,6 +19,11 @@ if (!$documento) {
     $usuario->execute();
     $datosUsuario = $usuario->fetch(PDO::FETCH_ASSOC);
 
+    if(!$datosUsuario){
+        echo json_encode(['error' => 'Usuario no encontrado']);
+        exit;
+    }
+
     $estadoUsuario = $datosUsuario['id_estado'];
 
     if($datosUsuario['id_estado'] == 2){

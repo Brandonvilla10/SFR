@@ -157,6 +157,19 @@ session_start();
             selecionarObjetos.classList.add("desaparecerModal")
             selecionarObjetos.classList.remove("aparecerModal")
         }
+
+
+        const documentoManual = document.getElementById("documentoManual") 
+
+        documentoManual.addEventListener("input", () => {
+            
+            if(documentoManual.value.length > 10){
+                documentoManual.value = documentoManual.value.substring(0, 10)
+            }
+            
+        })
+
+
     </script>
 </body>
 

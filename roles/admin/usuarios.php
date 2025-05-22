@@ -247,7 +247,7 @@ if (isset($_POST["agregarSubmit"])) {
             <!-------------------------------- TABLA DE USUARIOS ------------------------------------->
 
             <div class="contenido_tabla" id="contenido">
-                <input class="BOTON_FILTRAR" placeholder="Filtrar usuario por documento" oninput="filtrarPordocumento(this.value)">
+                <input class="BOTON_FILTRAR" placeholder="Filtrar usuario por documento" oninput="filtrarPordocumento(this.value)" id="filtro">
                 <?php if ($consulta->rowCount() == 0) { ?>
                     <div class="notificacion">
                         <h4>No hay usuarios registrados</h4>
@@ -322,6 +322,13 @@ if (isset($_POST["agregarSubmit"])) {
             const objetos = document.querySelectorAll('.objetos');
             const usuario_buscado = serial.toUpperCase();
 
+            const filtro = document.getElementById('filtro')
+
+            filtro.addEventListener("input", () =>{
+                if(filtro.value.length > 10){
+                    filtro.value = filtro.value.substring(0, 10)
+                }
+            })
 
             let consulta = `SELECT u.id_documento, u.nombre_completo, u.correo, u.foto, estado.estado, rol.nombre_rol  FROM usuario u
             INNER JOIN rol ON u.id_rol = rol.id_rol

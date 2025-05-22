@@ -193,8 +193,6 @@ function stopCamera() {
 
   startButton.disabled = false;
   stopButton.disabled = true;
-
-
 }
 
 // Función para escanear el código QR
@@ -233,10 +231,8 @@ function scanQR() {
           startCamera();
         }, 7);
 
-        
         logicaInformacion(code.data);
-        documento = code.data;
-        return documento;
+
 
       } else {
         stopCamera();
@@ -266,31 +262,31 @@ stopButton.addEventListener("click", stopCamera);
 // Detener la cámara al salir de la página
 window.addEventListener("beforeunload", stopCamera);
 
-
 // aqui viene la activacion de la funciotn logicaInformacion para cuando digitan el documento
 
 const documentoManual = document.getElementById("documentoManual");
 const buscarDocumentoManual = document.getElementById("buscarDocumentoManual");
 
-buscarDocumentoManual.addEventListener('click', () => {
+buscarDocumentoManual.addEventListener("click", () => {
   const documento = documentoManual.value.trim();
   if (documento) {
     logicaInformacion(documento);
     documentoManual.value = "";
   }
-})
+});
 
 // aqui separo la funcion que va a devovler toda la informacion del usuario y los objetos que tiene asignados
 
-function logicaInformacion(documento) {
+function logicaInformacion(parametroDocumento) {
   async function datosUsuario() {
     const datos = await fetch("./fetch/consultaParaModal.php", {
       method: "POST",
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",
       },
-      body: documento,
+      body: parametroDocumento,
     });
+
 
     //   contedores aqui van declarados
     let informacionUsuario = document.getElementById("informacionUsuario");
@@ -299,8 +295,15 @@ function logicaInformacion(documento) {
 
     // ----------------------------------------------------------------------------------------
 
+
+
     // declaracion de variables segun la respuesta del documento ./fetch/consultaáraModal
     let respuesta = await datos.json();
+
+    if(respuesta.error){
+      cerrar()
+      location.reload()
+    }
 
     if (respuesta.innactivo == true) {
       alertaBienvenida.innerHTML = "Usuario Inactivo";
@@ -324,12 +327,12 @@ function logicaInformacion(documento) {
     contenedorVehiculos.innerHTML = "";
 
     // -------------------------------------------------------
-
+    
     informacionUsuario.innerHTML += `
         <div onclick="cerrar()" class="divCerrar"><span class="cerrar" >X</span></div> 
                   <img src="../../uploads/${
                     info.foto
-                  }" alt="Foto de perfil del usuario" class="fotoDePerfil">
+                  }" onerror="this.src='../../uploads/usu.png'"  alt="Foto de perfil del usuario" class="fotoDePerfil" >
 
                   <b style="font-size:1.5rem;margin-bottom:30px;">Datos Del Usuario</b>
 
@@ -364,7 +367,7 @@ function logicaInformacion(documento) {
                                           <img src="../../uploads/${
                                             objeto.objetoFoto ??
                                             "default_iconos.png"
-                                          }" width="80px" height="80px" alt="objeto">
+                                          }" onerror="this.src='../../uploads/default_iconos.png'" width="80px" height="80px" alt="objeto">
                                       </div>
                                       
                                       <div class="divCaracteristicas">
@@ -410,7 +413,7 @@ function logicaInformacion(documento) {
              <div class="tarjeticaVehiculo" data-id="${vehiculo.id_placa}" >
                                           <div class="divFoto">
                                           <p>${vehiculo.id_placa}</p>
-                                              <img src="../../uploads/${vehiculo.foto}" width="80px" height="80px" alt="objeto">
+                                              <img src="../../uploads/${vehiculo.foto}" onerror="this.src='../../uploads/default_vehiculos.png'" width="80px" height="80px" alt="objeto">
                                           </div>
 
                                           <div style="display: flex; flex-direction:column; justify-content:center; width:150px; margin-left:20px;">
@@ -452,4 +455,8 @@ function logicaInformacion(documento) {
   const selecionarObjetos = document.getElementById("selecionarObjetos");
   selecionarObjetos.classList.add("aparecerModal");
   selecionarObjetos.classList.remove("desaparecerModal");
+
+  documento = parametroDocumento;
+
+  return documento;
 }

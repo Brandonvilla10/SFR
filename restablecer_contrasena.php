@@ -54,6 +54,9 @@ if(!isset($correo)){
     <section class="form_place">
 
         <section class ="env_correo">
+
+            
+
             <form action="" method="post" class="datos_form">
             <h1 style="padding-bottom: 20px; color: rgba(58, 170, 53, 255);">Recuperar contraseña</h1>  
                 

@@ -255,3 +255,15 @@ a {
     }
 
 }
+.volver{
+    position: absolute;
+    top: 10px;
+    left: 35px;
+    font-size: clamp(1.5rem, 2.5vw, 4rem);
+   
+
+}
+
+.env_correo{
+    position: relative;
+}

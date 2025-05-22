@@ -14,7 +14,7 @@ const inputs = document.querySelectorAll("#formulario input")
 const expresiones = {
     documento: /^\d{6,10}$/,
     nombre: /^[a-zA-ZÀ-ÿ\s]{4,40}$/,
-    password: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@#$!%?&])[A-Za-z\d@#$!%?&]{8,16}$/,
+    password: /^(?=.*[A-Z])(?=.*\d)[A-Za-z\d@#$!%?&]{6,12}$/,
     correo: /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/,
 }
 

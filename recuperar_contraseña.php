@@ -26,6 +26,7 @@ session_start();
             <section class="env_correo">
 
                 <form action="config\env_mailer.php" class="datos_form" method="post">
+                    
                     <h1 style="padding-bottom: 50px; color: rgba(58, 170, 53, 255);">Recuperar contraseña</h1>  
                     <label for="correo" class="texto">Ingresar correo electrónico</label>
                     <input type="text" id="correo" class="datos" name="correo" placeholder="ej.@soy.sena.edu.co">

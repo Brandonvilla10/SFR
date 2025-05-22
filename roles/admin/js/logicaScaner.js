@@ -327,12 +327,12 @@ function logicaInformacion(parametroDocumento) {
     contenedorVehiculos.innerHTML = "";
 
     // -------------------------------------------------------
-
+    
     informacionUsuario.innerHTML += `
         <div onclick="cerrar()" class="divCerrar"><span class="cerrar" >X</span></div> 
                   <img src="../../uploads/${
                     info.foto
-                  }" alt="Foto de perfil del usuario" class="fotoDePerfil">
+                  }" onerror="this.src='../../uploads/usu.png'"  alt="Foto de perfil del usuario" class="fotoDePerfil" >
 
                   <b style="font-size:1.5rem;margin-bottom:30px;">Datos Del Usuario</b>
 
@@ -367,7 +367,7 @@ function logicaInformacion(parametroDocumento) {
                                           <img src="../../uploads/${
                                             objeto.objetoFoto ??
                                             "default_iconos.png"
-                                          }" width="80px" height="80px" alt="objeto">
+                                          }" onerror="this.src='../../uploads/default_iconos.png'" width="80px" height="80px" alt="objeto">
                                       </div>
                                       
                                       <div class="divCaracteristicas">
@@ -413,7 +413,7 @@ function logicaInformacion(parametroDocumento) {
              <div class="tarjeticaVehiculo" data-id="${vehiculo.id_placa}" >
                                           <div class="divFoto">
                                           <p>${vehiculo.id_placa}</p>
-                                              <img src="../../uploads/${vehiculo.foto}" width="80px" height="80px" alt="objeto">
+                                              <img src="../../uploads/${vehiculo.foto}" onerror="this.src='../../uploads/default_vehiculos.png'" width="80px" height="80px" alt="objeto">
                                           </div>
 
                                           <div style="display: flex; flex-direction:column; justify-content:center; width:150px; margin-left:20px;">

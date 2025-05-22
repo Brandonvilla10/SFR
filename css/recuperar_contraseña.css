@@ -267,3 +267,20 @@ a {
 .env_correo{
     position: relative;
 }
+
+.botonVolverInicial{
+    
+}
+
+.botonVolver{
+    position: absolute;
+    top: 10px;
+    left: 0;
+    font-weight: 700;
+    padding: 10px;
+    background-color: #1c8f05;
+    color: white;
+    border-radius: 10px;
+    box-shadow: 3px 2px 0px #105203;
+    font-size: clamp(0.8rem, 2.5vw, 1.1rem);
+}

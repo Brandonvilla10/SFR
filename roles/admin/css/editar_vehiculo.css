@@ -52,7 +52,7 @@ h1 {
     color: #5DADE2;
     text-align: center;
     margin-top:50px;
-    font-size: 2.5rem;
+    font-size: 2.3rem;
 }
 
 .content-container {
@@ -314,6 +314,10 @@ h1 {
         flex-direction: column;
         align-items: center;
     }
+
+        .container_grid{
+            grid-template: "main" auto / auto;
+        }
     .user-info,
     .form-container {
         width: 100%;
@@ -370,3 +374,4 @@ h1 {
     background-color: #1F618D;
     transform: translateY(-2px);
 }
+

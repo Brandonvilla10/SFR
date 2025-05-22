@@ -121,7 +121,8 @@ hr{
     .menu_iconos_burguer{
         display: block;
         border: 0;
-        right: 56px;
+        right: 48px;
+        top:10px;
         font-size: 2.5rem;
         background-color: transparent;
         cursor: pointer;

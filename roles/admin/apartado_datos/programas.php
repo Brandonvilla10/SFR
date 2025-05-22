@@ -73,7 +73,36 @@ if (isset($_POST["eliminarSubmir"])) {
        </script>";
     }
 }
+///////////////////////////////////////////////////////////////////// AGG PROGRAMA ////////////////////////////////////////////////////////////////////////////////////////////////
+if (isset($_POST['submitprograma'])) {
+    $programa = ucwords(strtolower($_POST['programa']));
 
+    $check_programa = $con->prepare("SELECT nombrePrograma FROM programa WHERE nombrePrograma = :nombre");
+    $check_programa->bindParam(':nombre', $programa);
+    $check_programa->execute();
+    $existe_programa = $check_programa->fetch(PDO::FETCH_ASSOC);
+
+    if ($existe_programa) {
+        echo "
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                mostrarModal('mistake', 'Programa de formacion ya existente','programas.php');
+            });
+        </script>";
+        exit();
+    } else {
+        $consultaPrograma = $con->prepare("INSERT INTO programa (nomprePrograma,id_estado) VALUES (:nombre,1)");
+        $consultaPrograma->bindParam(':nombre', $programa);
+        $consultaPrograma->execute();
+        echo "
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                mostrarModal('success', 'Programa de formacion agregado exitosamente','programas.php');
+            });
+        </script>";
+        exit();
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -86,6 +115,7 @@ if (isset($_POST["eliminarSubmir"])) {
     <title>Programas</title>
     <link rel="stylesheet" href="css/marcas.css">
     <link rel="stylesheet" href="asideBar/asidebar.css">
+    <link rel="stylesheet" href="../components/modalAgregar.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="../components/modaEliminar.css">
 
@@ -104,7 +134,7 @@ if (isset($_POST["eliminarSubmir"])) {
                     <p>Administra todas los programas segun requieras</p>
                 </div>
                 <button class="buscar_objeto_titulo" id="abrirEliminar">Eliminar Programa</button>
-                <button class="buscar_objeto_titulo">Crear programa</button>
+                <button class="buscar_objeto_titulo" id="abrirAgregar">Crear programa</button>
             </div>
 
             <hr class="separador">
@@ -157,6 +187,57 @@ if (isset($_POST["eliminarSubmir"])) {
                     <?php endif; ?>
                 </div>
             </div>
+            <button class="footer-button animate-button" onclick="window.location.href='../datos.php'">Regresar</button>
+           
+            <!--<--------------------------------------------------------- MODAL AGREGAR --------------------------------------------------->
+            <div class="modalAgregar" id="modalAgregar">
+                <div class="contenedormodalAgregar">
+                    <div class="headermodalAgregar">
+                        <h3>Agregar Programa De Formacion</h3>
+                        <button class="cerrarmodalAgregar" id="cerrarmodalAgregar">&times;</button>
+                    </div>
+                    <div class="cuerpomodalAgregar">
+                        <form action="" method="post">
+                            <div class="campo-formulario">
+                                <label for="programa">Programa de formacion</label>
+                                <input type="text" id="programa" name="programa" placeholder="Digite el nombre del programa de formacion" require>
+                            </div>
+                            <div class="botonesmodalAgregar">
+                                <button type="button" class="cancelar-btn" id="cancelarBuscar">Cancelar</button>
+                                <button type="submit" name="submitprograma" class="buscar-btn">Crear</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            
+        </main>
+            <?php include("../components/modaEliminar.php"); ?>
+            <script>
+                const modalAgregar = document.getElementById('modalAgregar');
+                const abrirBuscar = document.getElementById('abrirAgregar');
+                const cerrarmodalAgregar = document.getElementById('cerrarmodalAgregar');
+                const cancelarBuscar = document.getElementById('cancelarBuscar');
+
+                function cerrarBuscar() {
+                    modalAgregar.style.visibility = 'hidden';
+                    modalAgregar.style.opacity = '0';
+                }
+            
+                function abrirBuscarFunction() {
+                    modalAgregar.style.visibility = 'visible';
+                    modalAgregar.style.opacity = '1';
+                }
+            
+                function cerrarBuscar(){
+                    modalAgregar.style.visibility = 'hidden';
+                    modalAgregar.style.opacity = '0';
+                }
+            
+                abrirBuscar.addEventListener('click', abrirBuscarFunction);
+                cerrarmodalAgregar.addEventListener('click', cerrarBuscar);
+                cancelarBuscar.addEventListener('click', cerrarBuscar);
+            </script>
 
             <?php include("../components/modaEliminar.php"); ?>
 
@@ -220,5 +301,17 @@ if (isset($_POST["eliminarSubmir"])) {
                         });
                 }
             </script>
-
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    const encabezado = document.querySelector('.encabezado');
+                    if (encabezado && encabezado.querySelectorAll('h4').length === 2) {
+                        const contenidoTabla = document.querySelector('.contenido_tabla');
+                        if (contenidoTabla) {
+                            contenidoTabla.style.width = '80%';
+                            contenidoTabla.style.backgroundcolor = 'red';
+                        }
+                    
+                    }
+                });
+            </script>
             <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>

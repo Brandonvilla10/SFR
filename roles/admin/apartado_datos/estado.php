@@ -26,6 +26,38 @@ $consulta = $con->prepare("SELECT * FROM estado LIMIT :start, :limit");
 $consulta->bindParam(':start', $start_record, PDO::PARAM_INT);
 $consulta->bindParam(':limit', $limite_registros, PDO::PARAM_INT);
 $consulta->execute();
+
+//////////////////////////////////////////////////////////// AGG ESTADO ///////////////////////////////////////////////////////////////////////////////////////////////////////////
+        
+if (isset($_POST['submitestado'])) {
+    $nom_estado = ucwords(strtolower($_POST['estado']));
+    
+    $check_estado = $con->prepare("SELECT estado FROM estado WHERE estado = :nombre_estado");
+    $check_estado->bindParam(':nombre_estado', $nom_estado);
+    $check_estado->execute();
+    $existe_estado = $check_estado->fetch(PDO::FETCH_ASSOC);
+
+    if ($existe_estado) {
+        echo "
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                mostrarModal('mistake', 'Estado ya existente','estado.php');
+            });
+        </script>";
+        exit();
+    } else {
+        $estado = $con->prepare("INSERT INTO estado (estado) VALUES (:nombre_estado)");
+        $estado->bindParam(':nombre_estado', $nom_estado);
+        $estado->execute();
+        echo "
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                mostrarModal('success', 'Estado agregado exitosamente','estado.php');
+            });
+        </script>";
+        exit();
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -38,6 +70,7 @@ $consulta->execute();
     <title>Programas</title>
     <link rel="stylesheet" href="css/marcas.css">
     <link rel="stylesheet" href="asideBar/asidebar.css">
+    <link rel="stylesheet" href="../components/modalAgregar.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
 </head>
@@ -54,7 +87,7 @@ $consulta->execute();
                     <h1>Estados</h1>
                     <p>Administra todos las estados segun requieras</p>
                 </div>
-                <button class="buscar_objeto_titulo">Crear estado</button>
+                <button class="buscar_objeto_titulo" id="abrirAgregar">Crear estado</button>
             </div>
 
             <hr class="separador">
@@ -67,7 +100,7 @@ $consulta->execute();
                     </div>
                 <?php } else { ?>
                     <div class="encabezado">
-                        <h4>identificado</h4>
+                        <h4>ID</h4>
                         <h4>Estado</h4>
                     </div>
                     <?php foreach ($consulta as $filas) { ?>
@@ -106,9 +139,58 @@ $consulta->execute();
                         <a href="?page=<?php echo $page + 1; ?>" class="pag-btn">Siguiente &raquo;</a>
                     <?php endif; ?>
                 </div>
-
-
+                
+            <button class="footer-button animate-button" onclick="window.location.href='../datos.php'">Regresar</button>
+           
             </div>
+
+            <!--<--------------------------------------------------------- MODAL AGREGAR --------------------------------------------------->
+            <div class="modalAgregar" id="modalAgregar">
+                <div class="contenedormodalAgregar">
+                    <div class="headermodalAgregar">
+                        <h3>Agregar Estado</h3>
+                        <button class="cerrarmodalAgregar" id="cerrarmodalAgregar">&times;</button>
+                    </div>
+                    <div class="cuerpomodalAgregar">
+                        <form action="" method="post">
+                            <div class="campo-formulario">
+                                <label for="nom_marca">Nombre de el estado</label>
+                                <input class="input-modal" type="text" id="estado" name="estado" placeholder="Digite el nombre de el estado " required>
+                            </div>
+                            <div class="botonesmodalAgregar">
+                                <button type="button" class="cancelar-btn" id="cancelarBuscar">Cancelar</button>
+                                <button type="submit" name="submitestado" class="buscar-btn">Crear</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </main>
+        <script>
+            const modalAgregar = document.getElementById('modalAgregar');
+            const abrirBuscar = document.getElementById('abrirAgregar');
+            const cerrarmodalAgregar = document.getElementById('cerrarmodalAgregar');
+            const cancelarBuscar = document.getElementById('cancelarBuscar');
+
+            function cerrarBuscar() {
+                modalAgregar.style.visibility = 'hidden';
+                modalAgregar.style.opacity = '0';
+            }
+        
+            function abrirBuscarFunction() {
+                modalAgregar.style.visibility = 'visible';
+                modalAgregar.style.opacity = '1';
+            }
+        
+            function cerrarBuscar(){
+                modalAgregar.style.visibility = 'hidden';
+                modalAgregar.style.opacity = '0';
+            }
+        
+            abrirBuscar.addEventListener('click', abrirBuscarFunction);
+            cerrarmodalAgregar.addEventListener('click', cerrarBuscar);
+            cancelarBuscar.addEventListener('click', cerrarBuscar);
+        </script>
             <script>
                 //<------------------------ FUNCION PARA LA BARRA DE FILTRADO ----------------->
                 const contenido = document.getElementById('contenido');
@@ -161,5 +243,17 @@ $consulta->execute();
                 }
             </script>
 
-
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    const encabezado = document.querySelector('.encabezado');
+                    if (encabezado && encabezado.querySelectorAll('h4').length === 2) {
+                        const contenidoTabla = document.querySelector('.contenido_tabla');
+                        if (contenidoTabla) {
+                            contenidoTabla.style.width = '80%';
+                            contenidoTabla.style.backgroundcolor = 'red';
+                        }
+                    
+                    }
+                });
+            </script>
             <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>

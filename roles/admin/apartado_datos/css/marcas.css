@@ -185,9 +185,9 @@
 
 .footer-button {
     display: block;
-    width: 100%;
+    width: auto;
     max-width: 200px;
-    margin: 30px auto;
+    margin: 0;
     padding: 12px 20px;
     background-color: #6c757d;
     color: white;
@@ -199,8 +199,10 @@
     font-weight: 500;
     transition: var(--transition);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    position: absolute;
     opacity: 0;
     transform: translateY(20px);
+    right: 20px;
 }
 
 .footer-button.animate-button {
@@ -215,10 +217,9 @@
 }
 
 
-
 /* SECCION DE ESTILOS DEL QR */
 
-.contenido_QR{
+.contenido_QR {
     display: flex;
     justify-content: space-around;
     align-items: center;
@@ -226,8 +227,7 @@
     margin-top: 2%;
 }
 
-.formQR{
- 
+.formQR {
     margin-top: 10px;
     padding: 5% 8% 5% 8%;
     height: fit-content;
@@ -242,20 +242,18 @@
     border-color: black;
     font-weight: 600;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-   
-
 }
 
-.formQR label{
+.formQR label {
     color: black;
     font-size: 2rem;
     font-weight: 600;
 }
-.formQR input{
+
+.formQR input {
     margin-top: 15px;
     color: black;
     padding: 10px;
- 
     font-size: 1rem;
     border: 1px solid white;
     background-color: #ffffff;
@@ -264,28 +262,27 @@
     width: 100%;
 }
 
-.conjunto{
+.conjunto {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    
     font-weight: 200;
     font-size: 1rem;
     gap: 10px;
-
 }
-.formQR input:focus{
+
+.formQR input:focus {
     outline: none;
     border-bottom: 1px solid black;
 }
 
-.formQR button{
+.formQR button {
     background-color: #3762D2;
     width: 100%;
     color: white;
     padding: 5px;
-    font-weight:500 ;
+    font-weight: 500;
     letter-spacing: 1px;
     border-color: transparent;
 }
@@ -491,10 +488,24 @@
         margin: 30px 0 15px 80px;
     }
     .contenido_tabla {
+        position: relative;
         justify-self: center;
         width: 90%;
         border-collapse: collapse;
         overflow-y: auto;
+        padding-bottom: 70px;
+    }
+    .contenido_tabla img {
+        position: absolute;
+        bottom: 20px;
+        right: 20px;
+        width: 3%;
+        height: auto;
+        cursor: pointer;
+        transition: transform 0.3s ease;
+    }
+    .contenido_tabla img:hover {
+        transform: scale(1.2);
     }
     /* pAGINACION */
 }

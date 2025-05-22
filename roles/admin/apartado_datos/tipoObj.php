@@ -73,7 +73,36 @@ if (isset($_POST["eliminarSubmir"])) {
        </script>";
     }
 }
+///////////////////////////////////////////////////////////////////// AGG TIPO ////////////////////////////////////////////////////////////////////////////////////////////////
+if (isset($_POST['submittipo'])) {
+    $tipo = ucwords(strtolower($_POST['tipo']));
 
+    $check_tipo = $con->prepare("SELECT tipoObjeto FROM tipoobjeto WHERE tipoObjeto = :tipo");
+    $check_tipo->bindParam(':tipo', $tipo);
+    $check_tipo->execute();
+    $existe_tipo = $check_tipo->fetch(PDO::FETCH_ASSOC);
+
+    if ($existe_tipo) {
+        echo "
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                mostrarModal('mistake', 'Tipo de objeto ya existente','tipoObj.php');
+            });
+        </script>";
+        exit();
+    } else {
+        $consultaTipo = $con->prepare("INSERT INTO tipoobjeto (tipoObjeto,id_estado) VALUES (:tipo,1)");
+        $consultaTipo->bindParam(':tipo', $tipo);
+        $consultaTipo->execute();
+        echo "
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                mostrarModal('success', 'Tipo de objeto agregado exitosamente','tipoObj.php');
+            });
+        </script>";
+        exit();
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -86,6 +115,7 @@ if (isset($_POST["eliminarSubmir"])) {
     <title>Tipo Objeto</title>
     <link rel="stylesheet" href="css/marcas.css">
     <link rel="stylesheet" href="asideBar/asidebar.css">
+    <link rel="stylesheet" href="../components/modalAgregar.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="../components/modaEliminar.css">
 
@@ -104,7 +134,7 @@ if (isset($_POST["eliminarSubmir"])) {
                     <p>Administra todas los tipos de objetos </p>
                 </div>
                 <button class="buscar_objeto_titulo" id="abrirEliminar">Eliminar Tipo Vehiculo</button>
-                <button class="buscar_objeto_titulo">Crear nuevo tipo</button>
+                <button class="buscar_objeto_titulo" id="abrirAgregar">Crear nuevo tipo</button>
             </div>
 
             <hr class="separador">
@@ -157,8 +187,59 @@ if (isset($_POST["eliminarSubmir"])) {
                         <a href="?page=<?php echo $page + 1; ?>" class="pag-btn">Siguiente &raquo;</a>
                     <?php endif; ?>
                 </div>
-            </div>
+                
+            <button class="footer-button animate-button" onclick="window.location.href='../datos.php'">Regresar</button>
 
+            </div>
+            <!--<--------------------------------------------------------- MODAL AGREGAR --------------------------------------------------->
+            <div class="modalAgregar" id="modalAgregar">
+                <div class="contenedormodalAgregar">
+                    <div class="headermodalAgregar">
+                        <h3>Agregar Tipo De Objeto</h3>
+                        <button class="cerrarmodalAgregar" id="cerrarmodalAgregar">&times;</button>
+                    </div>
+                    <div class="cuerpomodalAgregar">
+                        <form action="" method="post">
+                            <div class="campo-formulario">
+                                <label for="tipo">Tipo de objeto</label>
+                                <input type="text" id="tipo" name="tipo" placeholder="Digite el tipo de objeto" require>
+                            </div>
+                            <div class="botonesmodalAgregar">
+                                <button type="button" class="cancelar-btn" id="cancelarBuscar">Cancelar</button>
+                                <button type="submit" name="submittipo" class="buscar-btn">Crear</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            
+        </main>
+            <?php include("../components/modaEliminar.php"); ?>
+            <script>
+                const modalAgregar = document.getElementById('modalAgregar');
+                const abrirBuscar = document.getElementById('abrirAgregar');
+                const cerrarmodalAgregar = document.getElementById('cerrarmodalAgregar');
+                const cancelarBuscar = document.getElementById('cancelarBuscar');
+
+                function cerrarBuscar() {
+                    modalAgregar.style.visibility = 'hidden';
+                    modalAgregar.style.opacity = '0';
+                }
+            
+                function abrirBuscarFunction() {
+                    modalAgregar.style.visibility = 'visible';
+                    modalAgregar.style.opacity = '1';
+                }
+            
+                function cerrarBuscar(){
+                    modalAgregar.style.visibility = 'hidden';
+                    modalAgregar.style.opacity = '0';
+                }
+            
+                abrirBuscar.addEventListener('click', abrirBuscarFunction);
+                cerrarmodalAgregar.addEventListener('click', cerrarBuscar);
+                cancelarBuscar.addEventListener('click', cerrarBuscar);
+            </script>
             <?php include("../components/modaEliminar.php"); ?>
 
             <script>
@@ -223,5 +304,18 @@ if (isset($_POST["eliminarSubmir"])) {
                             }
                         });
                 }
+            </script>
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    const encabezado = document.querySelector('.encabezado');
+                    if (encabezado && encabezado.querySelectorAll('h4').length === 2) {
+                        const contenidoTabla = document.querySelector('.contenido_tabla');
+                        if (contenidoTabla) {
+                            contenidoTabla.style.width = '80%';
+                            contenidoTabla.style.backgroundcolor = 'red';
+                        }
+                    
+                    }
+                });
             </script>
             <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>

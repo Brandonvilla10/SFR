@@ -9,14 +9,81 @@ $codigo = $_SESSION['documento'];
 $nombre = explode(" ", $_SESSION['nombre'])[0];
 $rol = $_SESSION['rol_name'];
 
+// Aca defino la página actual
+$page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+$limite_registros = 5;
+
+// Aca esta el limite de los objetos
+$start_record = ($page - 1) * $limite_registros;
+
+// Contar total de registros
+$consulta_total = $con->prepare("SELECT COUNT(*) FROM marca");
+$consulta_total->execute();
+$total_filas = $consulta_total->fetchColumn();
+$paginas = ceil($total_filas / $limite_registros);
+
+// Obtener datos paginados
+$consulta = $con->prepare("SELECT * FROM marca WHERE id_estado  != 4
+    LIMIT :start, :limit ");
+$consulta->bindParam(':start', $start_record, PDO::PARAM_INT);
+$consulta->bindParam(':limit', $limite_registros, PDO::PARAM_INT);
+$consulta->execute();
 
 
-//agg marca
+include("../components/alert.php");
+
+if (isset($_POST["eliminarSubmir"])) {
+    
+    $identificador = $_POST['identificador'];
+    $passwordAdmin = $_POST['passwordAdmin'];
+    
+    $consultaAdmin = $con->prepare("SELECT contraseña FROM usuario WHERE id_documento = :documento AND id_rol = 1");
+    $consultaAdmin->bindParam(':documento', $codigo);
+    $consultaAdmin->execute();
+    $result = $consultaAdmin->fetch(PDO::FETCH_ASSOC);
+    
+    
+    
+    if ($result && $passwordAdmin && password_verify($passwordAdmin, $result['contraseña'])) {
+        
+        $marcaDesactivar = $con->prepare("UPDATE marca SET id_estado = 4 WHERE id_marca = :identificador");
+        $marcaDesactivar->bindParam(':identificador', $identificador);
+        $marcaDesactivar->execute();
+        
+        
+        if ($marcaDesactivar->rowCount() == 0) {
+            echo "
+            <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                mostrarModal('mistake', 'Objeto No Encontrado', 'marcas.php');
+                });
+                </script>";
+            } else {
+                echo "
+                <script>
+                document.addEventListener('DOMContentLoaded', function () {
+                    mostrarModal('success', 'Objeto Eliminado', 'marcas.php');
+                    });
+                    </script>";
+                }
+            } else {
+
+                echo "
+                <script>
+                document.addEventListener('DOMContentLoaded', function () {
+               mostrarModal('mistake', 'Contraseña Mal Digitada',  'marcas.php' );
+               });
+               </script>";
+            }
+        }
+        
+//////////////////////////////////////////////////////////// AGG MARCA ///////////////////////////////////////////////////////////////////////////////////////////////////////////
+        
 if (isset($_POST['submitmarca'])) {
-    $nom_marca = strtoupper($_POST['marca']);
-    $tipo_marca = 1;
+    $nom_marca = ucwords(strtolower($_POST['marca']));
+    $tipo_marca = $_POST['tipomarca'];
 
-    // Verificar si la marca ya existe
+    
     $check_marca = $con->prepare("SELECT nombre_marca FROM marca WHERE nombre_marca = :nombre_marca");
     $check_marca->bindParam(':nombre_marca', $nom_marca);
     $check_marca->execute();
@@ -26,94 +93,25 @@ if (isset($_POST['submitmarca'])) {
         echo "
         <script>
             document.addEventListener('DOMContentLoaded', function () {
-                mostrarModal('mistake', 'la marca ya existe en el sistema','vehiculos.php');
+                mostrarModal('mistake', 'Marca ya existente','marcas.php');
             });
         </script>";
         exit();
     } else {
-        $marca = $con->prepare("INSERT INTO marca (nombre_marca,id_tipo_marca) VALUES (:nombre_marca, :id_tipo_marca)");
+        $marca = $con->prepare("INSERT INTO marca (nombre_marca,id_tipo_marca,id_estado) VALUES (:nombre_marca, :id_tipo_marca, 1)");
         $marca->bindParam(':nombre_marca', $nom_marca);
         $marca->bindParam(':id_tipo_marca', $tipo_marca);
-
-        if ($marca->execute()) {
-            echo "<script>alert('Marca agregada correctamente');
-            window.location.href = 'vehiculos.php';</script>";
-        }
-    }
-}
-
-// Aca defino la página actual
-$page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
-$limite_registros = 5;
-
-// Aca esta el limite de los objetos
-$start_record = ($page - 1) * $limite_registros;
-
-// Contar total de registros
-$consulta_total = $con->prepare("SELECT COUNT(*) FROM vehiculos");
-$consulta_total->execute();
-$total_filas = $consulta_total->fetchColumn();
-$paginas = ceil($total_filas / $limite_registros);
-
-// Obtener datos paginados
-$consulta = $con->prepare(
-    "SELECT * FROM marca INNER JOIN tipomarca 
-    ON tipomarca.id_tipo_marca = marca.id_tipo_marca
-    WHERE id_estado != 4
-    LIMIT :start, :limit "
-);
-$consulta->bindParam(':start', $start_record, PDO::PARAM_INT);
-$consulta->bindParam(':limit', $limite_registros, PDO::PARAM_INT);
-$consulta->execute();
-
-
-include("../components/alert.php");
-
-if (isset($_POST["eliminarSubmir"])) {
-
-    $identificador = $_POST['identificador'];
-    $passwordAdmin = $_POST['passwordAdmin'];
-
-    $consultaAdmin = $con->prepare("SELECT contraseña FROM usuario WHERE id_documento = :documento AND id_rol = 1");
-    $consultaAdmin->bindParam(':documento', $codigo);
-    $consultaAdmin->execute();
-    $result = $consultaAdmin->fetch(PDO::FETCH_ASSOC);
-
-
-
-    if ($result && $passwordAdmin && password_verify($passwordAdmin, $result['contraseña'])) {
-
-        $marcaDesactivar = $con->prepare("UPDATE marca SET id_estado = 4 WHERE id_marca = :identificador");
-        $marcaDesactivar->bindParam(':identificador', $identificador);
-        $marcaDesactivar->execute();
-
-
-        if ($marcaDesactivar->rowCount() == 0) {
-            echo "
-            <script>
-               document.addEventListener('DOMContentLoaded', function () {
-                   mostrarModal('mistake', 'Objeto No Encontrado', 'marcas.php');
-               });
-           </script>";
-        } else {
-            echo "
-            <script>
-               document.addEventListener('DOMContentLoaded', function () {
-                   mostrarModal('success', 'Objeto Eliminado', 'marcas.php');
-               });
-           </script>";
-        }
-    } else {
+        $marca->execute();
 
         echo "
         <script>
-           document.addEventListener('DOMContentLoaded', function () {
-               mostrarModal('mistake', 'Contraseña Mal Digitada',  'marcas.php' );
-           });
-       </script>";
+            document.addEventListener('DOMContentLoaded', function () {
+                mostrarModal('success', 'Marca agregada exitosamente','marcas.php');
+            });
+        </script>";
+        exit();
     }
 }
-
 ?>
 
 <!DOCTYPE html>
@@ -126,6 +124,7 @@ if (isset($_POST["eliminarSubmir"])) {
     <title>MARCAS</title>
     <link rel="stylesheet" href="css/marcas.css">
     <link rel="stylesheet" href="asideBar/asidebar.css">
+    <link rel="stylesheet" href="../components/modalAgregar.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="../components/modaEliminar.css">
 
@@ -143,8 +142,6 @@ if (isset($_POST["eliminarSubmir"])) {
                     <h1>Marcas</h1>
                     <p>Administra las marcas segun tu necesidad</p>
                 </div>
-
-
                 <button type="submit" name="abrirModal" class="buscar_objeto_titulo" id="abrirEliminar">Eliminar</button>
 
                 <button type="submit" name="abrirModal" class="buscar_objeto_titulo" id="abrirAgregar">Agregar</button>
@@ -153,8 +150,8 @@ if (isset($_POST["eliminarSubmir"])) {
             </div>
 
             <hr class="separador">
-            <div class="contenido_tabla" id="contenido">
-                <input class="BOTON_FILTRAR" placeholder="Filtrar por nombre marca" oninput="filtrarPorPlaca(this.value)">
+            <div class="contenido_tabla">
+                <input class="BOTON_FILTRAR" placeholder="Filtrar vehiculo por placa" oninput="filtrarPorPlaca(this.value)">
 
                 <?php if ($consulta->rowCount() == 0) { ?>
                     <div class="notificacion">
@@ -164,18 +161,17 @@ if (isset($_POST["eliminarSubmir"])) {
                     <div class="encabezado">
                         <h4>ID</h4>
                         <h4>Nombre Marca</h4>
-                        <h4>tipo Marca</h4>
+                        
                     </div>
                     <?php foreach ($consulta as $filas) { ?>
                         <div class="vehiculos">
                             <h4><?php echo $filas['id_marca']; ?></h4>
                             <h4><?php echo $filas['nombre_marca']; ?></h4>
-                            <h4><?php echo $filas['nombre_tipo_marca'] ?></h4>
                         </div>
                     <?php } ?>
                 <?php } ?>
 
-                <div class="paginacion" id="paginacion">
+                <div class="paginacion">
                     <?php if ($page > 1): ?>
                         <a href="?page=<?php echo $page - 1; ?>">&laquo; Anterior</a>
                     <?php endif; ?>
@@ -190,83 +186,72 @@ if (isset($_POST["eliminarSubmir"])) {
                         <a href="?page=<?php echo $page + 1; ?>">Siguiente &raquo;</a>
                     <?php endif; ?>
                 </div>
+                
+            <button class="footer-button animate-button" onclick="window.location.href='../datos.php'">Regresar</button>
+           
             </div>
-
-
-
-
-            <div class="buscar_user estadoDevehiculos" id="estado-vehiculos">
-                <button class="vehiculos_cerrar_button" id="close-vehiculos" onclick="retirarPlantilla()"><i class="bi bi-x-lg"></i></button> <!-- ESTE ES EL TEXTO -->
-                <div class="img_fondo">
-
-                    <form action="vehiculos_usuarios.php" class="inside_img_fondo" method="post">
-                        <h1>Identificar Vehiculo de Usuario</h1>
-
-                        <p>Digite el documento del usuario</p>
-
-                        <input type="number" name="user_id" required class="vehiculos_input">
-
-                        <input type="submit" value="Continuar" class="vehiculos_submit" name="vehiculos_submit">
-                    </form>
+           
+<!------------------------------------------------ MODAL DE AGREGAR MARCA ----------------------------------->
+    
+            <div class="modalAgregar" id="modalAgregar">
+                <div class="contenedormodalAgregar">
+                    <div class="headermodalAgregar">
+                        <h3>Agregar Marca</h3>
+                        <button class="cerrarmodalAgregar" id="cerrarmodalAgregar">&times;</button>
+                    </div>
+                    <div class="cuerpomodalAgregar">
+                        <form action="marcas.php" method="post">
+                            <div class="campo-formulario">
+                                <label for="nom_marca">Nombre de la marca</label>
+                                <input class="input-modal" type="text" id="nom_marca" name="marca" placeholder="Digite el nombre de la marca " required>
+                            </div>
+                            <div class="campo-formulario">
+                                <label for="tipomarca">Tipo de marca</label>
+                                <select class="input-modal" id="tipomarca" name="tipomarca" required>
+                                    <option value="">Seleccione un tipo de marca</option>
+                                    <option value="1">Vehiculo</option>
+                                    <option value="2">Objeto</option>
+                                </select>
+                            </div>
+                        
+                            <div class="botonesmodalAgregar">
+                                <button type="button" class="cancelar-btn" id="cancelarBuscar">Cancelar</button>
+                                <button type="submit" name="submitmarca" class="buscar-btn">Crear</button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
 
-            <div class="buscar_user estadoDevehiculos" id="estado-vehiculos2">
-                <button class="vehiculos_cerrar_button" id="close-vehiculos2" onclick="retirarPlantilla2()"><i class="bi bi-x-lg"></i></button>
-                <div class="img_fondo">
-                    <form class="inside_img_fondo" method="post">
-                        <h1>¿Que deseas agregar?</h1>
+        </main>
+    </div>
 
-                        <input type="button" value="Vehiculo" class="vehiculos_submit" onclick="window.location.href='aggVehiculo.php'">
+<script>
+    
+    const modalAgregar = document.getElementById('modalAgregar');
+    const abrirBuscar = document.getElementById('abrirAgregar');
+    const cerrarmodalAgregar = document.getElementById('cerrarmodalAgregar');
+    const cancelarBuscar = document.getElementById('cancelarBuscar');
 
-                        <input type="button" value="Marca" class="vehiculos_submit" onclick="window.location.href='apartado_datos/marcas.php'">
+    function cerrarBuscar() {
+        modalAgregar.style.visibility = 'hidden';
+        modalAgregar.style.opacity = '0';
+    }
 
-                        <input type="button" value="Modelo" class="vehiculos_submit" onclick="window.location.href='apartado_datos/modelo.php'">
-                    </form>
-                </div>
-            </div>
+    function abrirBuscarFunction() {
+        modalAgregar.style.visibility = 'visible';
+        modalAgregar.style.opacity = '1';
+    }
 
-            <!-- Formulario para agregar marca -->
-            <div class="buscar_user estadoDevehiculos" id="formulario-marca">
-                <button class="vehiculos_cerrar_button" onclick="cerrarFormularioVehiculo()"><i class="bi bi-x-lg"></i></button>
-                <div class="img_fondo">
-                    <form action="" class="inside_img_fondo" method="post" enctype="multipart/form-data">
-                        <h1>Registrar Marca</h1>
+    function cerrarBuscar(){
+        modalAgregar.style.visibility = 'hidden';
+        modalAgregar.style.opacity = '0';
+    }
 
-                        <input type="text" name="marca" required class="vehiculos_input" placeholder="Nombre de la marca">
-
-                        <div style="display: flex; justify-content: space-between; width: 100%; margin-top: 15px;">
-                            <input type="button" value="Volver" class="vehiculos_submit" style="background-color: #63AEE8" onclick="volverAOpciones()">
-                            <input type="submit" value="Registrar" class="vehiculos_submit" name="submitmarca">
-                        </div>
-                    </form>
-                </div>
-            </div>
-
-            <!-- Formulario para agregar modelo -->
-            <div class="buscar_user estadoDevehiculos" id="formulario-modelo">
-                <button class="vehiculos_cerrar_button" onclick="cerrarFormularioModelo()"><i class="bi bi-x-lg"></i></button>
-                <div class="img_fondo">
-                    <form action="" class="inside_img_fondo" method="post">
-                        <h1>Registrar Modelo</h1>
-
-                        <select name="nombre_modelo" required class="vehiculos_input">
-                            <option value="">Seleccione el año del modelo</option>
-                            <?php
-                            $current_year = date('Y');
-                            for ($year = $current_year; $year >= 1800; $year--) {
-                                echo "<option value='$year'>$year</option>";
-                            }
-                            ?>
-                        </select>
-
-                        <div style="display: flex; justify-content: space-between; width: 100%; margin-top: 15px;">
-                            <input type="button" value="Volver" class="vehiculos_submit" style="background-color: #63AEE8" onclick="volverAOpciones()">
-                            <input type="submit" value="Registrar" class="vehiculos_submit" name="modelo">
-                        </div>
-                    </form>
-                </div>
-            </div>
+    abrirBuscar.addEventListener('click', abrirBuscarFunction);
+    cerrarmodalAgregar.addEventListener('click', cerrarBuscar);
+    cancelarBuscar.addEventListener('click', cerrarBuscar);
+</script>
 
             <!-- formulario para eliminar -->
             <div class="buscar_user estadoDevehiculos" id="modal-eliminar">
@@ -302,65 +287,49 @@ if (isset($_POST["eliminarSubmir"])) {
 
         document.addEventListener('DOMContentLoaded', function() {
             abrirEliminar.addEventListener('click', function() {
-                abrir("Identificador De La Marca", 1, "Digite el identificador de la marca", "Eliminar Marca");
+                abrir("Identificador De La Marca", 1,"Digite el identificador de la marca", "Eliminar Marca" );
             });
         });
     </script>
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
     <script>
+        function filtrarPorPlaca(placa) {
 
-        const contenido = document.getElementById('contenido');
-        function filtrarPorPlaca(marca) {
-
-            const soloLetras = marca.replace(/[^a-zA-Z]/g, '');
+            const soloLetras = placa.replace(/[^a-zA-Z]/g, '');
             const vehiculos = document.querySelectorAll('.vehiculos');
             // Converti todo a minusculas 
-            const marcaBuscada = soloLetras.toLowerCase();
+            const placa_buscada = soloLetras.toLowerCase();
 
-         
-            let consulta = `SELECT * FROM marca 
-            INNER JOIN tipomarca on tipomarca.id_tipo_marca = marca.id_tipo_marca WHERE id_estado !=4 and nombre_marca LIKE '%${marcaBuscada}%' LIMIT 5`;
+            vehiculos.forEach(vehiculo => {
+                const celdaPlaca = vehiculo.querySelectorAll('h4')[0];
 
-            fetch('../fetch/BusquedaBarra.php', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        consulta: consulta
-                    })
-                })
-                .then((response) => response.json())
-                .then(data => {
-                    if (data.error) {
-                                const vehiculos = document.querySelectorAll('.vehiculos');
-                                vehiculos.forEach(vehiculo => {
-                                    vehiculo.remove();
-                                });
-                            } else {
-                                const vehiculos = document.querySelectorAll('.vehiculos');
-                                vehiculos.forEach(vehiculo => {
-                                    vehiculo.remove();
-                                });
-                                data.forEach(generales => {
-                                    const cartas = document.createElement('div');
-                                    cartas.classList.add('vehiculos');
-                                    cartas.innerHTML = '';
-                                    const imagen = generales.veh_pic ? generales.veh_pic : 'default_vehiculos.png';
-                                    cartas.innerHTML = ` 
-                                    <h4>${generales.id_marca}</h4>
-                                    <h4>${generales.nombre_marca}</h4>
-                                    <h4>${generales.nombre_tipo_marca}</h4>
-                                    `;
+                if (celdaPlaca) {
+                    const textoPlaca = celdaPlaca.textContent || celdaPlaca.innerText;
+                    const letrasPlaca = textoPlaca.replace(/[^a-zA-Z]/g, '').toLowerCase();
 
-                                    const paginacion = document.getElementById('paginacion');
-                                    contenido.insertBefore(cartas, paginacion);
-                                });
-                            }
-                });
+                    if (letrasPlaca.includes(placa_buscada)) {
+                        vehiculo.style.display = '';
+                    } else {
+                        vehiculo.style.display = 'none';
+                    }
+                }
+            });
         }
     </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const encabezado = document.querySelector('.encabezado');
+            if (encabezado && encabezado.querySelectorAll('h4').length === 2) {
+                const contenidoTabla = document.querySelector('.contenido_tabla');
+                if (contenidoTabla) {
+                    contenidoTabla.style.width = '80%';
+                }
+
+            }
+        });
+    </script>
+
 </body>
 
 </html>

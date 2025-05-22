@@ -73,7 +73,37 @@ if (isset($_POST["eliminarSubmir"])) {
        </script>";
     }
 }
+///////////////////////////////////////////// AGG MODELO /////////////////////////////////////////////
+    
+if (isset($_POST['submitmodelo'])) {
+    $añoModelo = $_POST['modelo'];
 
+    $check_modelo = $con->prepare("SELECT fecha_modelo FROM modelo WHERE fecha_modelo = :modelo");
+    $check_modelo->bindParam(':modelo', $añoModelo);
+    $check_modelo->execute();
+    $existe_modelo = $check_modelo->fetch(PDO::FETCH_ASSOC);
+
+    if ($existe_modelo) {
+        echo "
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                mostrarModal('mistake', 'Modelo ya existente','modelo.php');
+            });
+        </script>";
+        exit();
+    } else {
+        $modelo = $con->prepare("INSERT INTO modelo (fecha_modelo,id_estado) VALUES (:modelo,1)");
+        $modelo->bindParam(':modelo', $añoModelo);
+        $modelo->execute();
+        echo "
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                mostrarModal('success', 'Modelo agregado exitosamente','modelo.php');
+            });
+        </script>";
+        exit();
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -86,6 +116,7 @@ if (isset($_POST["eliminarSubmir"])) {
     <title>Programas</title>
     <link rel="stylesheet" href="css/marcas.css">
     <link rel="stylesheet" href="asideBar/asidebar.css">
+    <link rel="stylesheet" href="../components/modalAgregar.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="../components/modaEliminar.css">
 
@@ -104,7 +135,7 @@ if (isset($_POST["eliminarSubmir"])) {
                     <p>Administra todos los modelos segun lo que necesites</p>
                 </div>
                 <button class="buscar_objeto_titulo" id="abrirEliminar">Eliminar Nivel</button>
-                <button class="buscar_objeto_titulo">Crear modelo</button>
+                <button class="buscar_objeto_titulo" id="abrirAgregar">Crear modelo</button>
             </div>
 
             <hr class="separador">
@@ -156,12 +187,66 @@ if (isset($_POST["eliminarSubmir"])) {
                         <a href="?page=<?php echo $page + 1; ?>" class="pag-btn">Siguiente &raquo;</a>
                     <?php endif; ?>
                 </div>
-
-
+                
+            <button class="footer-button animate-button" onclick="window.location.href='../datos.php'">Regresar</button>
+           
             </div>
-
+                <!--<--------------------------------------------------------- MODAL AGREGAR --------------------------------------------------->
+            <div class="modalAgregar" id="modalAgregar">
+                <div class="contenedormodalAgregar">
+                    <div class="headermodalAgregar">
+                        <h3>Agregar Modelo</h3>
+                        <button class="cerrarmodalAgregar" id="cerrarmodalAgregar">&times;</button>
+                    </div>
+                    <div class="cuerpomodalAgregar">
+                        <form action="" method="post">
+                            <div class="campo-formulario">
+                                <label for="nom_marca">Año del modelo</label>
+                                <select class="input-modal" id="modelo" name="modelo" required>
+                                    <option value="">Seleccione un año</option>
+                                    <?php
+                                    $año_actual = date("Y");
+                                    for ($i = $año_actual; $i >= 1900; $i--) {
+                                        echo "<option value=\"$i\">$i</option>";
+                                    }
+                                    ?>
+                                </select>
+                            </div>
+                            <div class="botonesmodalAgregar">
+                                <button type="button" class="cancelar-btn" id="cancelarBuscar">Cancelar</button>
+                                <button type="submit" name="submitmodelo" class="buscar-btn">Crear</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </main>
             <?php include("../components/modaEliminar.php"); ?>
+            <script>
+                const modalAgregar = document.getElementById('modalAgregar');
+                const abrirBuscar = document.getElementById('abrirAgregar');
+                const cerrarmodalAgregar = document.getElementById('cerrarmodalAgregar');
+                const cancelarBuscar = document.getElementById('cancelarBuscar');
 
+                function cerrarBuscar() {
+                    modalAgregar.style.visibility = 'hidden';
+                    modalAgregar.style.opacity = '0';
+                }
+            
+                function abrirBuscarFunction() {
+                    modalAgregar.style.visibility = 'visible';
+                    modalAgregar.style.opacity = '1';
+                }
+            
+                function cerrarBuscar(){
+                    modalAgregar.style.visibility = 'hidden';
+                    modalAgregar.style.opacity = '0';
+                }
+            
+                abrirBuscar.addEventListener('click', abrirBuscarFunction);
+                cerrarmodalAgregar.addEventListener('click', cerrarBuscar);
+                cancelarBuscar.addEventListener('click', cerrarBuscar);
+            </script>
             <script>
 
 
@@ -223,5 +308,18 @@ if (isset($_POST["eliminarSubmir"])) {
                             }
                         });
                 }
+            </script>
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    const encabezado = document.querySelector('.encabezado');
+                    if (encabezado && encabezado.querySelectorAll('h4').length === 2) {
+                        const contenidoTabla = document.querySelector('.contenido_tabla');
+                        if (contenidoTabla) {
+                            contenidoTabla.style.width = '80%';
+                            contenidoTabla.style.backgroundcolor = 'red';
+                        }
+                    
+                    }
+                });
             </script>
             <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>

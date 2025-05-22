@@ -32,8 +32,60 @@ $consulta->bindParam(':start', $start_record, PDO::PARAM_INT);
 $consulta->bindParam(':limit', $limite_registros, PDO::PARAM_INT);
 $consulta->execute();
 
+// --------------------------------- consultas para mostrar en el modal agregar -------------------------------------------------------
+$consultaProgramas = $con->prepare("SELECT * FROM programa WHERE id_estado = 1 ORDER BY nombrePrograma");
+$consultaProgramas->execute();
+$programas = $consultaProgramas->fetchAll(PDO::FETCH_ASSOC);
 
-// ----------------------------------este aparatod es para el modal para eliminar fichas-----------------------------------
+$consultaNiveles = $con->prepare("SELECT * FROM nivelformacion WHERE id_estado = 1 ORDER BY nivelDeformacion");
+$consultaNiveles->execute();
+$niveles = $consultaNiveles->fetchAll(PDO::FETCH_ASSOC);
+
+$consultaJornadas = $con->prepare("SELECT * FROM jornada ORDER BY jornada");
+$consultaJornadas->execute();
+$jornadas = $consultaJornadas->fetchAll(PDO::FETCH_ASSOC);
+
+// --------------------------------- consultas para el modal agregar -------------------------------------------------------
+if (isset($_POST["submitfichas"])) {
+
+    $num_ficha = $_POST['num_ficha'];
+    $programa = $_POST['programa'];
+    $nivel = $_POST['nivel'];
+    $jornada = $_POST['jornada'];
+    $dias_seleccionados = isset($_POST['dias']) ? $_POST['dias'] : [];
+    $dias_string = implode(', ', $dias_seleccionados);
+
+    $verificar = $con->prepare("SELECT * FROM fichas WHERE n_ficha = :ficha");
+    $verificar->bindParam(':ficha', $num_ficha);
+    $verificar->execute();
+ 
+    if ($verificar->rowCount() > 0) {
+        echo "
+        <script>
+           document.addEventListener('DOMContentLoaded', function () {
+               mostrarModal('mistake', 'Numero de ficha existente', 'fichas.php');
+           });
+       </script>";
+        exit();
+    }
+
+    $consulta = $con->prepare("INSERT INTO fichas (n_ficha, dias, id_programaFormacion, id_nivelFormacion, id_jornada, id_estado) VALUES (:ficha, :dias, :programa, :nivel, :jornada, 1)");
+    $consulta->bindParam(':dias', $dias_string);
+    $consulta->bindParam(':ficha', $num_ficha);
+    $consulta->bindParam(':programa', $programa);
+    $consulta->bindParam(':nivel', $nivel);
+    $consulta->bindParam(':jornada', $jornada);
+    $consulta->execute();
+   
+    echo "
+        <script>
+           document.addEventListener('DOMContentLoaded', function () {
+               mostrarModal('success', 'Ficha registrada exitosamente', 'fichas.php');
+           });
+       </script>";
+        exit();
+}
+// ----------------------------------este apartado es para el modal para eliminar fichas-----------------------------------
 
 
 if (isset($_POST["eliminarSubmir"])) {
@@ -93,6 +145,7 @@ if (isset($_POST["eliminarSubmir"])) {
     <title>Fichas</title>
     <link rel="stylesheet" href="css/marcas.css">
     <link rel="stylesheet" href="asideBar/asidebar.css">
+    <link rel="stylesheet" href="../components/modalAgregar.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="../components/modaEliminar.css">
 
@@ -111,12 +164,12 @@ if (isset($_POST["eliminarSubmir"])) {
                     <p>Administra todas las fichas segun tu necesidad</p>
                 </div>
                 <button class="buscar_objeto_titulo" id="abrirEliminar">Eliminar Ficha</button>
-                <button class="buscar_objeto_titulo">Crear Ficha</button>
+                <button class="buscar_objeto_titulo" id= "abrirAgregar">Crear Ficha</button>
             </div>
 
             <hr class="separador">
-            <div class="contenido_tabla" id="contenido">
-                <input class="BOTON_FILTRAR" placeholder="Filtrar por ficha " oninput="filtrarPorFicha(this.value)">
+            <div class="contenido_tabla">
+                <input class="BOTON_FILTRAR" placeholder="Filtrar por ficha " oninput="filtrarPorPlaca(this.value)">
 
                 <?php if ($consulta->rowCount() == 0) { ?>
                     <div class="notificacion">
@@ -128,6 +181,7 @@ if (isset($_POST["eliminarSubmir"])) {
                         <h4>Programa de Formacion</h4>
                         <h4>Nivel de Formacion</h4>
                         <h4>Jornada de Formacion</h4>
+                        <h4>Dias de formacion</h4>
                     </div>
                     <?php foreach ($consulta as $filas) { ?>
                         <div class="vehiculos">
@@ -135,11 +189,13 @@ if (isset($_POST["eliminarSubmir"])) {
                             <h4><?php echo $filas['nombrePrograma']; ?></h4>
                             <h4><?php echo $filas['nivelDeformacion']; ?></h4>
                             <h4><?php echo $filas['jornada']; ?></h4>
+                            <h4><?php echo $filas['dias']; ?></h4>
+
                         </div>
                     <?php } ?>
                 <?php } ?>
 
-                <div class="paginacion" id="paginacion">
+                <div class="paginacion">
                     <?php if ($page > 1): ?>
                         <a href="?page=<?php echo $page - 1; ?>" class="pag-btn">&laquo; Anterior</a>
                     <?php endif; ?>
@@ -167,75 +223,124 @@ if (isset($_POST["eliminarSubmir"])) {
                         <a href="?page=<?php echo $page + 1; ?>" class="pag-btn">Siguiente &raquo;</a>
                     <?php endif; ?>
                 </div>
+                
+            <button class="footer-button animate-button" onclick="window.location.href='../datos.php'">Regresar</button>
+           
             </div>
 
-            <?php include("../components/modaEliminar.php"); ?>
+     <!------------------------------------------------ MODAL DE CREAR FICHA ----------------------------------->
 
-            <script>
-                const abrirEliminar = document.getElementById('abrirEliminar');
+      
+            <div class="modalAgregar" id="modalAgregar">
+                <div class="contenedormodalAgregar">
+                    <div class="headermodalAgregar">
+                        <h3>Crear Ficha</h3>
+                        <button class="cerrarmodalAgregar" id="cerrarmodalAgregar">&times;</button>
+                    </div>
+                    <div class="cuerpomodalAgregar">
+                        <form action="fichas.php" method="post">
+                            <div class="campo-formulario">
+                                <label for="num_ficha">Numero de ficha</label>
+                                <input class="input-modal" type="number" id="num_ficha" name="num_ficha" placeholder="Digite el numero de ficha" required>
+                            </div>
+                            <div class="campo-formulario">
+                                <label for="programa">Programa de Formacion</label>
+                                <select id="programa" name="programa" required>
+                                    <option value="">Seleccione un programa</option>
+                                    <?php foreach ($programas as $programa): ?>
+                                        <option value="<?php echo $programa['id_programaFormacion'] ?>"><?php echo $programa['nombrePrograma']; ?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                
+                            <div class="campo-formulario">
+                                <label for="nivel">Nivel de Formacion</label>
+                                <select id="nivel" name="nivel" required>
+                                    <option value="">Seleccione un nivel</option>
+                                    <?php foreach ($niveles as $nivel): ?>
+                                        <option value="<?php echo $nivel['id_nivelFormacion'] ?>"><?php echo $nivel['nivelDeformacion']; ?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                                    
+                            <div class="campo-formulario">
+                                <label for="jornada">Jornada de Formacion</label>
+                                <select id="jornada" name="jornada" required>
+                                    <option value="">Seleccione una jornada</option>
+                                    <?php foreach ($jornadas as $jornada): ?>
+                                        <option value="<?php echo $jornada['id_jornada']; ?>"><?php echo $jornada['jornada']; ?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                            <div class="campo-formulario">
+                                <label>Dias de Formacion</label>
+                                <div class="checkbox-group">
+                                    <input type="checkbox" name="dias[]" value="Lunes"> 
+                                    <h5>Lunes</h5>
+                                    <input type="checkbox" name="dias[]" value="Martes">
+                                    <h5>Martes</h5>
+                                    <input type="checkbox" name="dias[]" value="Miercoles">
+                                    <h5>Miercoles</h5>
+                                    <input type="checkbox" name="dias[]" value="Jueves">
+                                    <h5>Jueves</h5>
+                                    <input type="checkbox" name="dias[]" value="Viernes">
+                                    <h5>Viernes</h5>
+                                    <input type="checkbox" name="dias[]" value="Sabado">
+                                    <h5>Sabado</h5>
+                                </div>
+                            </div>
+                            <div class="botonesmodalAgregar">
+                                <button type="button" class="cancelar-btn" id="cancelarBuscar">Cancelar</button>
+                                <button type="submit" name="submitfichas" class="buscar-btn">Crear</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
 
-                document.addEventListener('DOMContentLoaded', function() {
-                    abrirEliminar.addEventListener('click', function() {
-                        abrir("Identificador De La Ficha", 2, "Digite El Numero De Ficha", "Eliminar Ficha");
-                    });
-                });
+        </main>
+    </div>
 
+<script>
+    
+    const modalAgregar = document.getElementById('modalAgregar');
+    const abrirBuscar = document.getElementById('abrirAgregar');
+    const cerrarmodalAgregar = document.getElementById('cerrarmodalAgregar');
+    const cancelarBuscar = document.getElementById('cancelarBuscar');
 
+    function cerrarBuscar() {
+        modalAgregar.style.visibility = 'hidden';
+        modalAgregar.style.opacity = '0';
+    }
 
-                //<------------------------ FUNCION PARA LA BARRA DE FILTRADO ----------------->
-                const contenido = document.getElementById('contenido');
+    function abrirBuscarFunction() {
+        modalAgregar.style.visibility = 'visible';
+        modalAgregar.style.opacity = '1';
+    }
 
-                function filtrarPorFicha(global) {
+    function cerrarBuscar(){
+        modalAgregar.style.visibility = 'hidden';
+        modalAgregar.style.opacity = '0';
+    }
 
-                    const sololetras = global.replace(/[^0-9]/g, '');
-                    const vehiculos = document.querySelectorAll('.vehiculos');
-                    // Converti todo a minusculas 
-                    const general = sololetras.toLowerCase();
+    abrirBuscar.addEventListener('click', abrirBuscarFunction);
+    cerrarmodalAgregar.addEventListener('click', cerrarBuscar);
+    cancelarBuscar.addEventListener('click', cerrarBuscar);
+</script>
 
-              
-                    let consulta = `SELECT * FROM fichas 
-                                    NATURAL JOIN programa 
-                                    NATURAL JOIN nivelformacion 
-                                    NATURAL JOIN jornada 
-                                    WHERE id_estado != 4  and n_ficha LIKE '%${general}%' LIMIT 5`;
+<?php include("../components/modaEliminar.php"); ?>
 
-                    fetch('../fetch/BusquedaBarra.php', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json'
-                            },
-                            body: JSON.stringify({
-                                consulta: consulta
-                            })
-                        })
-                        .then((response) => response.json())
-                        .then(data => {
-                            if (data.error) {
-                                const vehiculos = document.querySelectorAll('.vehiculos');
-                                vehiculos.forEach(vehiculo => {
-                                    vehiculo.remove();
-                                });
-                            } else {
-                                const vehiculos = document.querySelectorAll('.vehiculos');
-                                vehiculos.forEach(vehiculo => {
-                                    vehiculo.remove();
-                                });
-                                data.forEach(generales => {
-                                    const cartas = document.createElement('div');
-                                    cartas.classList.add('vehiculos');
-                                    cartas.innerHTML = '';
-                                    cartas.innerHTML = ` 
-                                    <h4>${generales.n_ficha}</h4>
-                                    <h4>${generales.nombrePrograma}</h4>
-                                    <h4>${generales.nivelDeformacion}</h4>
-                                    <h4>${generales.jornada}</h4>
-                                    `;
+ <script>
+     
+     const abrirEliminar = document.getElementById('abrirEliminar');
+     document.addEventListener('DOMContentLoaded', function() {
+         abrirEliminar.addEventListener('click', function() {
+             abrir("Identificador De La Ficha", 2 ,"Digite El Numero De Ficha", "Eliminar Ficha" );
+         });
+     }); 
+ </script>
+ <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
 
-                                    const paginacion = document.getElementById('paginacion');
-                                    contenido.insertBefore(cartas, paginacion);
-                                });
-                            }
-                        });
-                }
-            </script>
-            <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+</body>
+
+</html>

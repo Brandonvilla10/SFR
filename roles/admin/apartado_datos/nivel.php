@@ -73,7 +73,37 @@ if (isset($_POST["eliminarSubmir"])) {
        </script>";
     }
 }
+///////////////////////////////////////////// AGG NIVEL /////////////////////////////////////////////
+    
+if (isset($_POST['submitnivel'])) {
+    $nivel = ucwords(strtolower($_POST['nivel']));
 
+    $check_nivel = $con->prepare("SELECT nivelDeformacion FROM nivelformacion WHERE nivelDeformacion = :nivel");
+    $check_nivel->bindParam(':nivel', $nivel);
+    $check_nivel->execute();
+    $existe_nivel = $check_nivel->fetch(PDO::FETCH_ASSOC);
+
+    if ($existe_nivel) {
+        echo "
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                mostrarModal('mistake', 'Nivel de formacion ya existente','nivel.php');
+            });
+        </script>";
+        exit();
+    } else {
+        $consultaNivel = $con->prepare("INSERT INTO nivelformacion (nivelDeFormacion,id_estado) VALUES (:nivel,1)");
+        $consultaNivel->bindParam(':nivel', $nivel);
+        $consultaNivel->execute();
+        echo "
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                mostrarModal('success', 'Nivel de formacion agregado exitosamente','nivel.php');
+            });
+        </script>";
+        exit();
+    }
+}
 ?>
 
 
@@ -87,6 +117,7 @@ if (isset($_POST["eliminarSubmir"])) {
     <title>Nivel Formacion</title>
     <link rel="stylesheet" href="css/marcas.css">
     <link rel="stylesheet" href="asideBar/asidebar.css">
+    <link rel="stylesheet" href="../components/modalAgregar.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="../components/modaEliminar.css">
 </head>
@@ -104,7 +135,7 @@ if (isset($_POST["eliminarSubmir"])) {
                     <p>Administra todos los niveles segun lo requieras</p>
                 </div>
                 <button class="buscar_objeto_titulo" id="abrirEliminar">Eliminar Nivel</button>
-                <button class="buscar_objeto_titulo">Crear nuevo nivel</button>
+                <button class="buscar_objeto_titulo" id="abrirAgregar">Crear Nivel de Formacion</button>
             </div>
 
             <hr class="separador">
@@ -156,10 +187,59 @@ if (isset($_POST["eliminarSubmir"])) {
                         <a href="?page=<?php echo $page + 1; ?>" class="pag-btn">Siguiente &raquo;</a>
                     <?php endif; ?>
                 </div>
+                
+            <button class="footer-button animate-button" onclick="window.location.href='../datos.php'">Regresar</button>
+           
             </div>
 
-            <?php include("../components/modaEliminar.php");  ?>
+            <!--<--------------------------------------------------------- MODAL AGREGAR --------------------------------------------------->
+            <div class="modalAgregar" id="modalAgregar">
+                <div class="contenedormodalAgregar">
+                    <div class="headermodalAgregar">
+                        <h3>Agregar Nivel De Formacion</h3>
+                        <button class="cerrarmodalAgregar" id="cerrarmodalAgregar">&times;</button>
+                    </div>
+                    <div class="cuerpomodalAgregar">
+                        <form action="" method="post">
+                            <div class="campo-formulario">
+                                <label for="nivel">Nivel de formacion</label>
+                                <input type="text" id="nivel" name="nivel" placeholder="Digite el nivel de formacion" require>
+                            </div>
+                            <div class="botonesmodalAgregar">
+                                <button type="button" class="cancelar-btn" id="cancelarBuscar">Cancelar</button>
+                                <button type="submit" name="submitnivel" class="buscar-btn">Crear</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </main>
+            <?php include("../components/modaEliminar.php"); ?>
+            <script>
+                const modalAgregar = document.getElementById('modalAgregar');
+                const abrirBuscar = document.getElementById('abrirAgregar');
+                const cerrarmodalAgregar = document.getElementById('cerrarmodalAgregar');
+                const cancelarBuscar = document.getElementById('cancelarBuscar');
 
+                function cerrarBuscar() {
+                    modalAgregar.style.visibility = 'hidden';
+                    modalAgregar.style.opacity = '0';
+                }
+            
+                function abrirBuscarFunction() {
+                    modalAgregar.style.visibility = 'visible';
+                    modalAgregar.style.opacity = '1';
+                }
+            
+                function cerrarBuscar(){
+                    modalAgregar.style.visibility = 'hidden';
+                    modalAgregar.style.opacity = '0';
+                }
+            
+                abrirBuscar.addEventListener('click', abrirBuscarFunction);
+                cerrarmodalAgregar.addEventListener('click', cerrarBuscar);
+                cancelarBuscar.addEventListener('click', cerrarBuscar);
+            </script>
             <script>
                 const abrirEliminar = document.getElementById('abrirEliminar');
 
@@ -221,5 +301,17 @@ if (isset($_POST["eliminarSubmir"])) {
                         });
                 }
             </script>
-
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    const encabezado = document.querySelector('.encabezado');
+                    if (encabezado && encabezado.querySelectorAll('h4').length === 2) {
+                        const contenidoTabla = document.querySelector('.contenido_tabla');
+                        if (contenidoTabla) {
+                            contenidoTabla.style.width = '80%';
+                            contenidoTabla.style.backgroundcolor = 'red';
+                        }
+                    
+                    }
+                });
+            </script>
             <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>

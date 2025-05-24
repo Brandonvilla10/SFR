@@ -76,6 +76,7 @@ if (isset($_FILES['foto'])) {
    
                     <script>
                         document.addEventListener('DOMContentLoaded', function () {
+
                         mostrarModal('mistake', 'Imagen muy pesada, maximo 2MB', '../roles/admin/configuracion.php'); 
                         });
                     

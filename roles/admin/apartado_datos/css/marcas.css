@@ -238,7 +238,7 @@
     margin-top: 10px;
     padding: 5% 8% 5% 8%;
     height: fit-content;
-    width: min(300px, 40%);
+    width: min(300px, 50%);
     border-radius: 10px;
     display: flex;
     flex-direction: column;

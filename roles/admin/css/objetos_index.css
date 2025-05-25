@@ -185,7 +185,7 @@
   background-color: #20638f;
 }
 
-@media (min-width: 320px), (max-width: 320px) {
+@media (min-width: 320px) {
   .container_grid {
     display: grid;
     grid-template: "main" 90px "main" auto "sidebar" 80px / auto;
@@ -306,6 +306,14 @@
   .aside_barra {
     grid-area: sidebar;
   }
+
+  .encabezado{
+    visibility: unset;
+    opacity: 1;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  }
+
   .grid_contenido_plantilla {
     grid-area: main;
   }
@@ -327,6 +335,7 @@
   .objetos {
     grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
     grid-gap: 3px;
+    word-wrap: break-word;
   }
   .objetos h4 {
     font-size: 0.9em;

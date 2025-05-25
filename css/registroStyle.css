@@ -94,11 +94,11 @@ a {
         padding: 0 0 2px 10px;
     }
     .datos::placeholder {
-        color: green;
+        color: rgb(78, 93, 109);
         /* Verde tenue */
         opacity: 60%;
         /* Un poco transparente */
-        font-weight: bold;
+        font-weight: 600;
     }
     .datos:focus{
         border: 1px solid #ffffff;

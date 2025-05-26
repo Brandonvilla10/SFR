@@ -4,10 +4,9 @@ require_once('../../../database/database.php');
 include('../components/alert.php');
 $conexion = new database;
 $con = $conexion->conectar();
+include('../../../includes/sesion_validar_datos.php');
 
-$codigo = $_SESSION['documento'];
-$nombre = explode(" ", $_SESSION['nombre'])[0];
-$rol = $_SESSION['rol_name'];
+$codigo = isset($_SESSION['documento']) ? $_SESSION['documento'] : '';
 
 // Aca defino la página actual
 $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
@@ -52,6 +51,8 @@ if (isset($_POST["submitfichas"])) {
     $programa = $_POST['programa'];
     $nivel = $_POST['nivel'];
     $jornada = $_POST['jornada'];
+    $fecha_ini = $_POST['fecha_ini'];
+    $fecha_fin = $_POST['fecha_fin'];
     $dias_seleccionados = isset($_POST['dias']) ? $_POST['dias'] : [];
     $dias_string = implode(', ', $dias_seleccionados);
 
@@ -69,9 +70,11 @@ if (isset($_POST["submitfichas"])) {
         exit();
     }
 
-    $consulta = $con->prepare("INSERT INTO fichas (n_ficha, dias, id_programaFormacion, id_nivelFormacion, id_jornada, id_estado) VALUES (:ficha, :dias, :programa, :nivel, :jornada, 1)");
+    $consulta = $con->prepare("INSERT INTO fichas (n_ficha, dias, fecha_ini, fecha_fin ,id_programaFormacion, id_nivelFormacion, id_jornada, id_estado) VALUES (:ficha, :dias, :fecha_ini , :fecha_fin, :programa, :nivel, :jornada, 1)");
     $consulta->bindParam(':dias', $dias_string);
     $consulta->bindParam(':ficha', $num_ficha);
+    $consulta->bindParam(':fecha_ini', $fecha_ini);
+    $consulta->bindParam(':fecha_fin', $fecha_fin);
     $consulta->bindParam(':programa', $programa);
     $consulta->bindParam(':nivel', $nivel);
     $consulta->bindParam(':jornada', $jornada);
@@ -182,6 +185,7 @@ if (isset($_POST["eliminarSubmir"])) {
                         <h4>Nivel de Formacion</h4>
                         <h4>Jornada de Formacion</h4>
                         <h4>Dias de formacion</h4>
+                        <h4>Fecha Fin</h4>
                     </div>
                     <?php foreach ($consulta as $filas) { ?>
                         <div class="vehiculos">
@@ -189,11 +193,12 @@ if (isset($_POST["eliminarSubmir"])) {
                             <h4><?php echo $filas['nombrePrograma']; ?></h4>
                             <h4><?php echo $filas['nivelDeformacion']; ?></h4>
                             <h4><?php echo $filas['jornada']; ?></h4>
-                            <h4><?php echo $filas['dias']; ?></h4>
+                            <h4><?php echo $filas['dias'] ?? "sin dias" ;?></h4>
+                            <h4><?php echo $filas['fecha_fin'] ?? "Sin fecha Fin"; ?></h4>
 
                         </div>
                     <?php } ?>
-                <?php } ?>
+                <?php }  ?>
 
                 <div class="paginacion">
                     <?php if ($page > 1): ?>
@@ -253,25 +258,40 @@ if (isset($_POST["eliminarSubmir"])) {
                                 </select>
                             </div>
                 
-                            <div class="campo-formulario">
-                                <label for="nivel">Nivel de Formacion</label>
-                                <select id="nivel" name="nivel" required>
-                                    <option value="">Seleccione un nivel</option>
-                                    <?php foreach ($niveles as $nivel): ?>
-                                        <option value="<?php echo $nivel['id_nivelFormacion'] ?>"><?php echo $nivel['nivelDeformacion']; ?></option>
-                                    <?php endforeach; ?>
-                                </select>
+                            <div class="conjuntoModal">
+                                
+                                <div>
+                                    <label for="nivel">Nivel de Formacion</label>
+                                    <select id="nivel" name="nivel" required>
+                                        <option value="">Seleccione un nivel</option>
+                                        <?php foreach ($niveles as $nivel): ?>
+                                            <option value="<?php echo $nivel['id_nivelFormacion'] ?>"><?php echo $nivel['nivelDeformacion']; ?></option>
+                                            <?php endforeach; ?>
+                                        </select>
+                                </div>
+                            
+                                <div >
+                                    <label for="jornada">Jornada de Formacion</label>
+                                    <select id="jornada" name="jornada" required>
+                                        <option value="">Seleccione una jornada</option>
+                                        <?php foreach ($jornadas as $jornada): ?>
+                                            <option value="<?php echo $jornada['id_jornada']; ?>"><?php echo $jornada['jornada']; ?></option>
+                                            <?php endforeach; ?>
+                                        </select>
+                                </div>
                             </div>
-                                    
-                            <div class="campo-formulario">
-                                <label for="jornada">Jornada de Formacion</label>
-                                <select id="jornada" name="jornada" required>
-                                    <option value="">Seleccione una jornada</option>
-                                    <?php foreach ($jornadas as $jornada): ?>
-                                        <option value="<?php echo $jornada['id_jornada']; ?>"><?php echo $jornada['jornada']; ?></option>
-                                    <?php endforeach; ?>
-                                </select>
+
+                            <div class="conjuntoModal">
+                                <div>    
+                                    <label for="fecha_ini">Fecha Inicio</label>
+                                    <input class="input-modal" type="date" id="fecha_ini" name="fecha_ini" required>
+                                </div>
+                                <div>
+                                    <label for="fecha_fin">Fecha Fin</label>
+                                    <input class="input-modal" type="date" id="fecha_fin" name="fecha_fin"  required>
+                                </div>
                             </div>
+
                             <div class="campo-formulario">
                                 <label>Dias de Formacion</label>
                                 <div class="checkbox-group">
@@ -338,6 +358,20 @@ if (isset($_POST["eliminarSubmir"])) {
              abrir("Identificador De La Ficha", 2 ,"Digite El Numero De Ficha", "Eliminar Ficha" );
          });
      }); 
+
+
+    //  Validacion Formulario
+
+    const fechaInicio = document.getElementById('fecha_ini');
+    const fechaFin = document.getElementById('fecha_fin');
+    
+    fechaFin.addEventListener('blur', function() {
+        if (fechaInicio.value >  fechaFin.value) {
+            mostrarModal('mistake', 'Fecha Fin Mayor a la fecha inicio' );
+            fechaFin.value = '';
+        }
+    })
+
  </script>
  <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
 

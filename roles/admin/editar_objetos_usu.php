@@ -6,10 +6,7 @@ $conexion = new database;
 $con = $conexion->conectar();
 include('../../includes/sesion_validar.php');
 
-if (!isset($_SESSION['documento'])) {
-    header("Location: ../../index.php");
-    exit();
-}
+
 
 // !-- AQUI  ESTA LA CONSULTA A LA BASE DE DATOS ACERCA DEL OBJETO -->
 

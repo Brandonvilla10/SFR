@@ -6,11 +6,6 @@ $conexion = new database;
 $con = $conexion->conectar();
 include('../../includes/sesion_validar.php');
 
-if (!isset($_SESSION['documento'])) {
-    header("Location: ../../index.php");   
-    exit();
-}
-
 // Establecer la variable @documento_generador en MySQL desde la sesión
     try {
         $sql = $con->prepare("SELECT nombre_completo FROM usuario WHERE id_documento = $_SESSION[documento]");

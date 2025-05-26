@@ -6,9 +6,9 @@ $con = $conexion->conectar();
 include("components/alert.php");
 include('../../includes/sesion_validar.php');
 
-$codigo = $_SESSION['documento'];
-$nombre = explode(" ", $_SESSION['nombre'])[0];
-$rol = $_SESSION['rol_name'];
+$codigo = isset($_SESSION['documento']) ? $_SESSION['documento'] : '';
+$nombre = isset($_SESSION['nombre']) ? explode(" ", $_SESSION['nombre'])[0] : '';
+$rol = isset($_SESSION['rol_name']) ? $_SESSION['rol_name'] : '';
 
 // Aca defino la página actual
 $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;

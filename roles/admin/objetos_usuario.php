@@ -6,14 +6,11 @@ $conexion = new database;
 $con = $conexion->conectar();
 include('../../includes/sesion_validar.php');
 
-$codigo = $_SESSION['documento'];
-$nombre = explode(" ", $_SESSION['nombre'])[0];
-$rol = $_SESSION['rol_name'];
+$codigo = isset($_SESSION['documento']) ? $_SESSION['documento'] : '';
+$nombre = isset($_SESSION['nombre']) ? explode(" ", $_SESSION['nombre'])[0] : '';
+$rol = isset($_SESSION['rol_name']) ? $_SESSION['rol_name'] : '';
 
-if (!isset($_SESSION['documento'])) {
-    header("Location: ../../index.php");
-    exit();
-}
+
 
 // Establecer la variable @documento_generador en MySQL desde la sesión
 try {

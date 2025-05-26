@@ -6,9 +6,8 @@ $conexion = new database;
 $con = $conexion->conectar();
 include('../../includes/sesion_validar.php');
 
-$codigo = $_SESSION['documento'];
-$nombre = explode(" ", $_SESSION['nombre'])[0];
-$rol = $_SESSION['rol_name'];
+$codigo = isset($_SESSION['documento']) ? $_SESSION['documento'] : '';
+
 ?>
 
 <!DOCTYPE html>

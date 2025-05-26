@@ -2,16 +2,13 @@
 session_start();
 include('components/alert.php');
 require_once('../../database/database.php');
+include('../../includes/sesion_validar.php');
 $conexion = new database;
 $con = $conexion->conectar();
-include('../../includes/sesion_validar.php');
 
-// Establece una nueva conexión a la base de datos
-
-// Obtiene información del usuario desde la sesión
-$codigo = $_SESSION['documento']; // Documento del usuario
-$nombre = explode(" ", $_SESSION['nombre'])[0]; // Primer nombre del usuario
-$rol = $_SESSION['rol_name']; // Rol del usuario
+$codigo = isset($_SESSION['documento']) ? $_SESSION['documento'] : '';
+$nombre = isset($_SESSION['nombre']) ? explode(" ", $_SESSION['nombre'])[0] : '';
+$rol = isset($_SESSION['rol_name']) ? $_SESSION['rol_name'] : '';
 ?>
 
 <!DOCTYPE html>
@@ -42,8 +39,23 @@ $rol = $_SESSION['rol_name']; // Rol del usuario
         <p>Rol: administrador</p> <!-- Muestra el rol del usuario -->
       </div>
       <div class="home_iconos">
-        <i class="bi bi-bell"></i> <!-- Icono de notificación -->
-        <i class="bi bi-headset"></i> <!-- Icono de asistencia -->
+        <div id="notificacion-wrapper" style="position: relative; display: inline-block; cursor:pointer;">
+          <i class="bi bi-bell" id="iconoNotificaciones" style="font-size: 2rem;"></i>
+          <span id="contadorNotificaciones" style="
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: red;
+            color: white;
+            border-radius: 50%;
+            padding: 2px 7px;
+            font-size: 12px;
+            display: none;
+          ">0</span>
+        </div>
+        <button id="btnReportes" style="margin-left: 15px; padding: 8px 16px; border-radius: 5px; border: none; background: #007bff; color: #fff; cursor: pointer;">
+          Reportes
+        </button>
       </div>
     </header>
 
@@ -248,6 +260,77 @@ $rol = $_SESSION['rol_name']; // Rol del usuario
 
     });
   </script>
+  <script>
+document.getElementById('iconoNotificaciones').addEventListener('click', function() {
+    window.location.href = 'notificaciones.php';
+});
+
+function actualizarContadorNotificaciones() {
+    fetch('fetch/contar_notificaciones.php')
+        .then(response => response.json())
+        .then(data => {
+            const contador = document.getElementById('contadorNotificaciones');
+            if (data.total > 0) {
+                contador.textContent = data.total;
+                contador.style.display = 'inline-block';
+            } else {
+                contador.style.display = 'none';
+            }
+        });
+}
+actualizarContadorNotificaciones();
+setInterval(actualizarContadorNotificaciones, 30000);
+
+// Reportes: abrir/cerrar modal
+document.getElementById('btnReportes').onclick = function() {
+  document.getElementById('modalReportes').style.display = 'flex';
+};
+document.getElementById('cerrarModalReportes').onclick = function() {
+  document.getElementById('modalReportes').style.display = 'none';
+};
+document.getElementById('modalReportes').onclick = function(e) {
+  if (e.target === this) this.style.display = 'none';
+};
+</script>
+<!-- Modal Reportes -->
+<div id="modalReportes" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.4); z-index:9999; align-items:center; justify-content:center;">
+  <div style="background:#fff; padding:30px; border-radius:10px; min-width:300px; position:relative;">
+    <h2>Generar Reporte PDF</h2>
+      <form id="formReporte" method="POST" action="generar_reporte.php" target="_blank" style="display: flex; flex-direction: column; gap: 16px; min-width: 260px;">
+        <label for="fecha_inicio" style="font-weight: 500;">Fecha inicio:</label>
+        <input type="date" name="fecha_inicio" id="fecha_inicio" required style="padding: 6px; border-radius: 5px; border: 1px solid #ccc;">
+
+        <label for="fecha_fin" style="font-weight: 500;">Fecha fin:</label>
+        <input type="date" name="fecha_fin" id="fecha_fin" required style="padding: 6px; border-radius: 5px; border: 1px solid #ccc;">
+
+        <label for="tabla_afectada" style="font-weight: 500;">Módulo:</label>
+        <select name="tabla_afectada" id="tabla_afectada" style="padding: 6px; border-radius: 5px; border: 1px solid #ccc;">
+            <option value=""> Modulo </option>
+            <option value="usuario">Usuarios</option>
+            <option value="vehiculos">Vehículos</option>
+            <option value="objetos">Objetos</option>
+        </select>
+
+        <div style="display: flex; gap: 12px; margin-top: 10px; justify-content: flex-end;">
+          <button type="submit" style="background:#007bff; color:#fff; border:none; padding:8px 16px; border-radius:5px;">Descargar PDF</button>
+          <button type="button" id="cerrarModalReportes" style="background:#007bff; color:#fff; border:none; padding:8px 16px; border-radius:5px;">Cancelar</button>
+        </div>
+      </form>
+  </div>
+</div>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  document.getElementById('btnReportes').onclick = function() {
+    document.getElementById('modalReportes').style.display = 'flex';
+  };
+  document.getElementById('cerrarModalReportes').onclick = function() {
+    document.getElementById('modalReportes').style.display = 'none';
+  };
+  document.getElementById('modalReportes').onclick = function(e) {
+    if (e.target === this) this.style.display = 'none';
+  };
+});
+</script>
 </body>
 
 </html>

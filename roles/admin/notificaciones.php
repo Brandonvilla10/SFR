@@ -12,6 +12,14 @@ $stmt = $con->prepare("SET @documento_generador = :doc");
 $stmt->bindValue(':doc', $documento);
 $stmt->execute();
 
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['marcar_leidas'])) {
+    $stmt = $con->prepare("UPDATE notificaciones SET leida = 1 WHERE id_afectado = :doc AND leida = 0");
+    $stmt->bindValue(':doc', $documento);
+    $stmt->execute();
+    echo json_encode(['success' => true]);
+    exit;
+}
+
 
 ?>
 
@@ -193,8 +201,28 @@ function actualizarContadorNotificaciones() {
         });
 }
 
-window.addEventListener('DOMContentLoaded', actualizarContadorNotificaciones);
-setInterval(actualizarContadorNotificaciones, 30000); // cada 30 segundos
+// Llama a esta función cuando se se de el clic en la campana esa 
+function marcarNotificacionesComoLeidas() {
+    fetch('notificaciones.php', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+        body: 'marcar_leidas=1'
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (data.success) {
+            actualizarContadorNotificaciones();
+        }
+    });
+}
+
+// Llama a la función al cargar la página de notificaciones
+window.addEventListener('DOMContentLoaded', function() {
+    marcarNotificacionesComoLeidas();
+    actualizarContadorNotificaciones();
+});
+
+setInterval(actualizarContadorNotificaciones, 10000); // cada 10 segundos
 </script>
 
 </body>

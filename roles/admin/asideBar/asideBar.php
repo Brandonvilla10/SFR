@@ -28,7 +28,7 @@ $rol =$_SESSION['rol_name'];
     <aside id="barraLateral" class="fuera">
         <div class="Logo">
             <img src="../../assets/img/LogoFR.png" class="logoSenaFast" alt="Logo">
-            <h3 style="color: white;" >SenaFast</h3>
+            <h3 style="color: white;" class="senaP">SenaFast</h3>
         </div>
 
         <hr class="white">

@@ -9,10 +9,9 @@ a{
     text-decoration: none;
 }
 
-
-
-
-
+.senaP{
+    margin-top: 0;
+}
 
 aside{
     height: clamp(600px,100%,100%);
@@ -133,12 +132,20 @@ hr{
     }
     .seccionUsuario{
         flex-direction: column;
+        height: 100%
     }
     .contenedorUsuario{
         width: 100%;
         margin-top: auto;
     }
+
+    .logoSenaFast{
+        display: none;
+    }
     
+    .senaP{
+        margin-top: 50px;
+    }
 }
 
 @media (min-width: 769px){
@@ -154,5 +161,8 @@ hr{
         min-width: 100px;
         width: 180px;
         transition: 0.5s;
+    }
+    .senaP{
+        margin-top: 0;
     }
 }

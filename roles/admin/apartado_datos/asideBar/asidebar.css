@@ -100,6 +100,10 @@ hr{
     display: none;
 }
 
+.senaP{
+    margin-top: 0;
+}
+
 @media (min-width:320px) and (max-width:767px){
     aside{
         overflow: auto;
@@ -133,10 +137,18 @@ hr{
     }
     .seccionUsuario{
         flex-direction: column;
+        height: 100%;
     }
     .contenedorUsuario{
         width: 100%;
         margin-top: auto;
+    }
+
+    .logoSenaFast{
+        display: none;
+    }
+    .senaP{
+        margin-top: 50px;
     }
     
 }
@@ -154,5 +166,8 @@ hr{
         min-width: 100px;
         width: 180px;
         transition: 0.5s;
+    }
+    .senaP{
+        margin-top: 0;
     }
 }

@@ -1,14 +1,12 @@
 <?php
-// Inicia la sesión PHP
 session_start();
-
-// Se requiere el archivo de base de datos y se incluye el archivo de validación de sesión
+include('components/alert.php');
 require_once('../../database/database.php');
+$conexion = new database;
+$con = $conexion->conectar();
 include('../../includes/sesion_validar.php');
 
 // Establece una nueva conexión a la base de datos
-$conexion = new database;
-$con = $conexion->conectar();
 
 // Obtiene información del usuario desde la sesión
 $codigo = $_SESSION['documento']; // Documento del usuario

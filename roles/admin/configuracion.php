@@ -1,8 +1,10 @@
-    <?php
-    include('../../database/database.php');
-    $conexion = new database;
-    $con = $conexion->conectar();
-    session_start();
+<?php
+session_start();
+include('components/alert.php');
+include('../../database/database.php');
+$conexion = new database;
+$con = $conexion->conectar();
+include('../../includes/sesion_validar.php');
 
 
     $_SESSION['referer'] = $_SERVER['PHP_SELF'];

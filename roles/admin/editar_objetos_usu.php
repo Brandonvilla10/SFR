@@ -1,10 +1,10 @@
 <?php
 session_start();
 require_once('../../database/database.php');
-// include('../../includes/sesion_validar.php');
 include 'components/alert.php';
 $conexion = new database;
 $con = $conexion->conectar();
+include('../../includes/sesion_validar.php');
 
 if (!isset($_SESSION['documento'])) {
     header("Location: ../../index.php");

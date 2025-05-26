@@ -2,6 +2,7 @@
 <?php
 
 session_start();
+include('../roles/admin/components/alert.php');
 
     require_once('../database/database.php');
     $conex = new database;               //  ESTO VA ENLAZADO CON EL ARCHIVO DATABASE.PHP
@@ -13,23 +14,16 @@ session_start();
         $documento = $_POST['documento'];
         $password = $_POST['password'];
 
-
         $sql = $con->prepare("SELECT * FROM usuario WHERE id_documento = '$documento'");
         $sql-> execute();
-
         $fila =$sql->fetch();
 
-    
-
-        if($fila && password_verify($password,$fila['contraseña']) && $fila['id_estado'] == 1 OR $fila['id_estado'] == 3){
+        if($fila && password_verify($password,$fila['contraseña']) && $fila['id_estado'] != 2){
 
             $_SESSION['documento']= $fila['id_documento'];
             $_SESSION['rol']= $fila['id_rol'];
             $_SESSION['nombre'] = $fila['nombre_completo'];
-            
-
-            // SOLO INSERTE 3 VARIABLES A LA GLOBAL SESION 
-
+                
             if($_SESSION['rol'] == 1){
 
                             // ADMINISTRADOR
@@ -51,13 +45,24 @@ session_start();
                 header("location: ../roles/funcionario/index.php");
                 exit();
             }
-        }
-        else{
-            echo "<script>alert('Error de usuario (inactivo o credenciales Invalidas)')</script>";
-            echo "<script>window.location = '../index.php'</script>";
+        }elseif($fila && $fila['id_estado'] == 2){
+            echo "
+                <script>
+                    document.addEventListener('DOMContentLoaded', function () {
+                        mostrarModal('mistake', 'Usuario inactivo, por favor comuniquese a senafastregister@gmail.com para ser activado nuevamente', '../index.php');
+                    });
+                </script>";
             exit();
 
-         }
+        }else{
+            echo "
+                <script>
+                    document.addEventListener('DOMContentLoaded', function () {
+                        mostrarModal('mistake', 'Credenciales incorrectas', '../index.php');
+                    });
+                </script>";
+            exit();
+        }
 
 
 

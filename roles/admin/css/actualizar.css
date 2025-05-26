@@ -1,30 +1,25 @@
-
-
 * {
   padding: 0;
   margin: 0;
 }
 
-:root{
-  --colorAzul : #63AEE8 
+:root {
+  --colorAzul: #63aee8;
 }
 
 ::-webkit-scrollbar {
-  width: 6px;   
-  height: 10px;  
+  width: 6px;
+  height: 10px;
 }
-
 
 ::-webkit-scrollbar-thumb {
-  background-color: #63AEE8; 
+  background-color: #63aee8;
   border-radius: 10px;
 }
-
 
 ::-webkit-scrollbar-track {
   background-color: transparent;
 }
-
 
 .container_grid {
   display: grid;
@@ -38,7 +33,7 @@
   grid-area: main;
 }
 
-.aside_barra{
+.aside_barra {
   grid-area: sidebar;
 }
 
@@ -53,9 +48,9 @@
 }
 
 h1 {
-  color: #5DADE2;
+  color: #5dade2;
   text-align: center;
-  margin-top:50px;
+  margin-top: 50px;
   font-size: 2.5rem;
 }
 
@@ -117,7 +112,7 @@ h1 {
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  background-color: #5DADE2;
+  background-color: #5dade2;
   position: relative;
 }
 
@@ -160,7 +155,7 @@ h1 {
 .edit-icon {
   background: none;
   border: none;
-  color: #5DADE2;
+  color: #5dade2;
   cursor: pointer;
   font-size: 0.9rem;
   padding: 0;
@@ -189,7 +184,7 @@ h1 {
 
 .btn-submit {
   padding: 12px 30px;
-  background-color: #2980B9;
+  background-color: #2980b9;
   color: white;
   border: none;
   border-radius: 25px;
@@ -208,7 +203,7 @@ h1 {
 }
 
 .btn-submit:hover {
-  background-color: #1F618D;
+  background-color: #1f618d;
   transform: translateY(-2px);
 }
 
@@ -301,10 +296,9 @@ h1 {
   padding-bottom: 20px;
 }
 
-
 /* Estilo especifico para el ultimo elemento del formulario */
 
-.form-inputs> :last-child {
+.form-inputs > :last-child {
   margin-bottom: 10px;
 }
 
@@ -317,32 +311,32 @@ h1 {
 
 @media (max-width: 768px) {
   .content-container {
-      flex-direction: column;
-      align-items: center;
+    flex-direction: column;
+    align-items: center;
   }
   .user-info,
   .form-container {
-      width: 100%;
+    width: 100%;
   }
   .form-container {
-      flex-direction: column;
-      padding: 25px;
+    flex-direction: column;
+    padding: 25px;
   }
   .form-inputs {
-      width: 100%;
+    width: 100%;
   }
   .image-preview {
-      flex-direction: column;
-      align-items: center;
-      width: 100%;
-      margin-bottom: 30px;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 30px;
   }
   .image-column {
-      width: 100%;
-      margin-bottom: 20px;
+    width: 100%;
+    margin-bottom: 20px;
   }
 
-  .container_grid{
+  .container_grid {
     grid-template: "main" auto / auto;
   }
 }
@@ -358,7 +352,7 @@ h1 {
 
 .btn-return {
   padding: 6px 15px;
-  background-color: #2980B9;
+  background-color: #2980b9;
   color: white;
   border: none;
   border-radius: 20px;
@@ -377,9 +371,74 @@ h1 {
 }
 
 .btn-return:hover {
-  background-color: #1F618D;
+  background-color: #1f618d;
   transform: translateY(-2px);
 }
 
+.buscarFicha {
+  width: 100%;
+  padding: 8px 15px;
+  border-radius: 25px;
+  border: none;
+  font-size: 0.9rem;
+  box-sizing: border-box;
+  padding-right: 40px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  height: 36px;
+  margin-bottom: 5px;
+  background-color: #f0f0f0;
+}
 
+.fichaContenido{
+  width: 100%;
+  height: 200px;
+  background-color: white;
+  padding: 10px;
+  margin-top: 10px;
+  border: 1px solid #ddd;
+  visibility: hidden;
+  opacity: 0;
+  border: 1px solid ;
+}
 
+.inputBuscar{
+  text-align: start;
+  width: 100%;
+  height: 25px;
+  border: 1px solid black;
+  background-color: transparent;
+  color: black;
+  border-radius: 30px;
+  margin: 0 0 15px 0;
+}
+
+.contenedorResultado{
+  width: 100%;
+  height: auto;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+#fichaActual{
+  border: none;
+  color: black;
+  background-color: #f0f0f0;
+}
+
+.busquedaFicha{
+  width: 100px;
+  justify-self: center;
+  text-align: center;
+  border: 2px solid #63aee8;
+  border-radius: 10px;
+  padding: 10px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.busquedaFicha:hover{
+  background-color: #63aee8;
+  color: white;
+
+}

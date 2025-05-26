@@ -19,7 +19,7 @@ $sql = $con->prepare("SELECT
     usuario.id_documento, 
     usuario.correo, 
     rol.*,     
-    estado.*   
+    estado.*
 FROM usuario
 LEFT JOIN estado ON estado.id_estado = usuario.id_estado
 LEFT JOIN rol ON rol.id_rol = usuario.id_rol
@@ -60,7 +60,12 @@ if (isset($_POST['submit'])) {
             $updates[] = 'id_rol = :id_rol';
             $params[':id_rol'] = $_POST['id_rol'];
         }
-
+        if (!empty($_POST['fichaActual'])) {
+            $insertarDetalle = $con->prepare("INSERT INTO detallematricula (id_documento, id_ficha, id_estado) VALUES (:id_documento, :id_ficha, 1)");
+            $insertarDetalle->bindParam(':id_documento', $documentoVentana, PDO::PARAM_STR);
+            $insertarDetalle->bindParam(':id_ficha', $_POST['fichaActual'], PDO::PARAM_STR);
+            $insertarDetalle->execute();
+        }
 
         // Ejecutar actualización si hay datos
         if (!empty($updates)) {
@@ -71,7 +76,7 @@ if (isset($_POST['submit'])) {
             $actualizacion->execute($params);
 
 
-          
+
             echo "
             <script>
                 document.addEventListener('DOMContentLoaded', function () {
@@ -213,6 +218,43 @@ $usu = "../../uploads/usu.png";
                                             }
                                             ?>
                                         </select>
+
+                                        <?php
+
+                                        $sqlficha = $con->prepare('SELECT * FROM detallematricula WHERE id_documento = :documento AND id_estado != 4 ORDER BY id_detalle DESC LIMIT 1');
+                                        $sqlficha->bindParam(':documento', $documentoVentana, PDO::FETCH_ASSOC);
+                                        $sqlficha->execute();
+                                        $resultado = $sqlficha->fetch(PDO::FETCH_ASSOC);
+
+                                        ?>
+
+                                        <label for="ficha" class="form-label">Ficha</label>
+
+                                        <div class="buscarFicha" id="buscarFicha">
+                                            <input name="fichaActual" id="fichaActual" type="number" readonly value="<?php echo ($resultado) ? $resultado['id_ficha'] : "No Asignada"  ?>">
+
+                                            <div class="fichaContenido">
+
+                                                <input type="number" oninput="buscarFichaFunction(this.value)" class="inputBuscar" placeholder="Buscar Ficha">
+
+                                                <div class="contenedorResultado" id="contenedorResultado">
+
+                                                    <?php
+                                                    $sqlficha = $con->prepare('SELECT * FROM fichas WHERE id_estado != 4');
+                                                    $sqlficha->execute();
+                                                    $resultado = $sqlficha->fetchAll(PDO::FETCH_ASSOC);
+
+                                                    foreach ($resultado as $resu) {
+                                                    ?>
+
+
+                                                        <button class="busquedaFicha" value="<?php echo $resu['n_ficha'] ?>"> <?php echo $resu['n_ficha'] ?> </button>
+
+
+                                                    <?php } ?>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
 
                                     <div class="form-actions">
@@ -227,172 +269,103 @@ $usu = "../../uploads/usu.png";
 
 
                         </div>
-
-
-
-
                     </div>
                 </div>
             </main>
         </div>
 
-        <!-- <section class="mainSection">
-
-    <div class="backgrond">
-        <div class="personaCard">
-            <div class="FotoDePerfil">
-                <div class="ContainerImagen">
-                    <img class="imgDeLaPersona" id="fotoUsuario" src="<?php echo !empty($resultado['foto']) ? $mostar : $usu ?>" alt="Foto de perfil">
-                    <div class="containerr">
-                        <form action="../../uploadsAdmin/upload.php?documento=<?php echo $documentoVentana ?>" style="margin-top: 6px;" method="POST" enctype="multipart/form-data">
-                            <label class="custom-file-upload">
-                                <input type="file" name="foto" id="fileInput" onchange="previewFoto(event)" />
-                                Subir Foto
-                            </label>
-                            <button type="submit" class="guardar" id="botonGuardar" name="submit">Guardar</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-
-            <div class="inputsDatos">
-                <form action="" method="POST">
-                    <div class="column">
-                        <p class="TipoCampo">Documento</p>
-                        <input id="documento" name="id_documento" class="inputsClaseGeneral" type="text" value="<?php echo $fila['id_documento']; ?>" >
-                    </div>
-                    <div class="column">
-                        <p class="TipoCampo">Nombre</p>
-                        <input id="nombreCompleto" name="nombre_completo" class="inputsClaseGeneral" type="text" value="<?php echo $fila['nombre_completo']; ?>" >
-                    </div>
-
-                    <div class="column">
-                        <p class="TipoCampo">Correo</p>
-                        <input id="correo" name="correo" class="inputsClaseGeneral" type="text" value="<?php echo $fila['correo']; ?>" >
-                    </div>
-
-                    <div class="column">
-                    <p class="TipoCampo">Ficha</p>
-                        <select name="ficha" class="inputsClaseGeneral"  id="">
-                            <option class="" value="">Ficha Actual:  <?php echo empty($fila['n_ficha']) ? "No tiene ficha" : $fila['n_ficha']; ?></option>
-                            <?php
-
-                            $sqlrol = $con->prepare("SELECT * FROM fichas   ");
-                            // $sqlrol->bindParam(':n_ficha', $fila['n_ficha'], PDO::PARAM_INT);
-                            $sqlrol->execute();
-                            $sqlrol = $sqlrol->fetchAll(PDO::FETCH_ASSOC);
-                            foreach ($sqlrol as $resu) {
-                            ?>
-                                <option value="<?php echo $resu['n_ficha'] ?> " ><?php echo $resu['n_ficha']; ?> </option>
-                            <?php
-                            }
-                            ?>
-                        </select>
-                    </div>
-
-                   
-                    <div class="column">
-                    <p class="TipoCampo">Formacion</p>
-                        <select name="programa" class="inputsClaseGeneral"  id="">
-                            <option class="" value=""><?php echo empty($fila['nombrePrograma']) ? "No Tiene Programa" : $fila['nombrePrograma']; ?></option>
-                            <?php
-                            $sqlrol = $con->prepare("SELECT * FROM programa ");
-                            $sqlrol->execute();
-                            $sqlrol = $sqlrol->fetchAll(PDO::FETCH_ASSOC);
-
-                            foreach ($sqlrol as $resu) {
-                            ?>
-                                <option value="<?php echo empty($resu['id_programaFormacion']) ? 'vacio' : $resu['id_programaFormacion']; ?> "><?php echo $resu['nombrePrograma']; ?> </option>
-                            <?php
-                            }
-                            ?>
-                        </select>
-                    </div>
-
-                    <div class="column">
-                    <p class="TipoCampo">Nivel De Formacion</p>
-                        <select name="nivelDeformacion" class="inputsClaseGeneral"  id="">
-                            <option class="" value=""><?php echo empty($fila['nivelDeformacion']) ? "Sin Formacion" : $fila['nivelDeformacion']; ?></option>
-                            <?php
-                            $sqlrol = $con->prepare("SELECT * FROM nivelformacion ");
-                            $sqlrol->execute();
-                            $sqlrol = $sqlrol->fetchAll(PDO::FETCH_ASSOC);
-
-                            foreach ($sqlrol as $resu) {
-                            ?>
-                                <option value="<?php echo $resu['id_nivelFormacion']; ?> "><?php echo $resu['nivelDeformacion']; ?> </option>
-                            <?php
-                            }
-                            ?>
-                        </select>
-                    </div>
-
-                    
-                    <div class="column">
-                    <p class="TipoCampo">Jornada</p>
-                        <select name="jornada" class="inputsClaseGeneral"  id="">
-                            <option class="" value="">Jornada Actual:  <?php echo $fila['jornada']; ?></option>
-                            <?php
-                            $sqlrol = $con->prepare("SELECT * FROM jornada ");
-                            // $sqlrol->bindParam(':jornada', $fila['id_jornada']);
-                            $sqlrol->execute();
-                            $sqlrol = $sqlrol->fetchAll(PDO::FETCH_ASSOC);
-
-                            foreach ($sqlrol as $resu) {
-                            ?>
-                                <option value="<?php echo $resu['id_jornada']; ?>" ><?php echo $resu['jornada']; ?> </option>
-                            <?php
-                            }
-                            ?>
-                        </select>
-                    </div>
-
-                    <div class="column">
-                    <p class="TipoCampo">Estado</p>
-                        <select name="id_estado" class="inputsClaseGeneral"  id="">
-                            <option class="" value="">Estado Actual:  <?php echo $fila['estado']; ?></option>
-                            <?php
-                            $sqlrol = $con->prepare("SELECT * FROM estado ");
-                            // $sqlrol->bindParam(':id_estado', $fila['id_estado']);
-                            $sqlrol->execute();
-                            $sqlrol = $sqlrol->fetchAll(PDO::FETCH_ASSOC);
-
-                            foreach ($sqlrol as $resu) {
-                            ?>
-                                <option value="<?php echo $resu['id_estado']; ?> " ><?php echo $resu['estado']; ?> </option>
-                            <?php
-                            }
-                            ?>
-                        </select>
-                    </div >
-                    <div class="column">
-                        <p class="TipoCampo">Roles</p>
-                        <select name="id_rol" class="inputsClaseGeneral"  id="">
-                            <option  value="">Rol Actual:  <?php echo $fila['nombre_rol']; ?></option>
-                            <?php
-                            $sqlrol = $con->prepare("SELECT * FROM rol ");
-                            // $sqlrol->bindParam(':id_rol', $fila['id_rol']);
-                            $sqlrol->execute();
-                            $sqlrol = $sqlrol->fetchAll(PDO::FETCH_ASSOC);
-
-                            foreach ($sqlrol as $resu) {
-                            ?>
-                                <option value="<?php echo $resu['id_rol']; ?> " ><?php echo $resu['nombre_rol']; ?> </option>
-                            <?php
-                            }
-                            ?>
-                        </select>
-                    </div>
-
-                    <input id="submit" type="submit" name="submit" class="enviarConfig"  value="Confirmar">
-                </form>
-            </div>
-        </div>
-    </div>
-</section> -->
 
 
         <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const buscarFicha = document.getElementById("buscarFicha");
+                const fichaContenido = document.querySelector(".fichaContenido");
+
+                buscarFicha.addEventListener("click", () => {
+                    if (fichaContenido.style.visibility == "hidden") {
+                        fichaContenido.style.visibility = "visible"
+                        fichaContenido.style.opacity = 1
+                    } else {
+                        fichaContenido.style.visibility = "hidden"
+                        fichaContenido.style.opacity = 0
+                    }
+
+
+                })
+
+                fichaContenido.addEventListener("click", (e) => {
+                    e.stopPropagation()
+                })
+
+                const fichaActual = document.getElementById("fichaActual")
+
+                function fichaAsignar(ficha) {
+
+                    const valorNumerico = parseInt(ficha, 10);
+
+                    if (!isNaN(valorNumerico)) {
+                        fichaActual.value = valorNumerico;
+
+                    }
+                }
+
+                const busquedaFicha = document.querySelectorAll(".busquedaFicha")
+                busquedaFicha.forEach((elemento) => {
+                    elemento.addEventListener("click", (e) => {
+                        fichaAsignar(elemento.value)
+                        e.preventDefault()
+                    })
+                })
+
+
+
+
+            })
+
+
+            function fichaAsignar(ficha) {
+
+                const valorNumerico = parseInt(ficha, 10);
+
+                if (!isNaN(valorNumerico)) {
+                    fichaActual.value = valorNumerico;
+
+                }
+            }
+
+            const contenedorResultado = document.getElementById("contenedorResultado")
+
+            async function buscarFichaFunction(filtro) {
+
+                const response = await fetch("./fetch/consultaFichas.php", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: filtro
+                })
+                const data = await response.json()
+                
+
+                contenedorResultado.innerHTML = ""
+                data.forEach(element => {
+                    contenedorResultado.innerHTML += `
+                    
+                    <button type="button" class="busquedaFicha"  value="${element.n_ficha}"> ${element.n_ficha} </button>
+
+                    `
+                });
+
+                document.querySelectorAll(".busquedaFicha").forEach((elemento) => {
+                    elemento.addEventListener("click", (e) => {
+                        e.preventDefault();
+                        fichaAsignar(elemento.value);
+                    });
+                });
+            }
+
+
+
             const expresiones = {
                 documento: /^\d{6,10}$/,
                 nombre: /^[a-zA-ZÀ-ÿ\s]{4,40}$/,

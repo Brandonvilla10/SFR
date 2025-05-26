@@ -94,10 +94,10 @@ try {
             }
             echo "<b>{$tipoEventoMostrar} en {$notif['tabla_afectada']}</b>";
             echo '<p>' . htmlspecialchars($notif['descripcion']) . '</p>';
-            echo '<small>Realizado por: ' . htmlspecialchars($notif['documento_generador']) . '</small>';
+            echo '<small>Realizado por: ' . htmlspecialchars(isset($notif['documento_generador']) ? $notif['documento_generador'] : 'Usuario Del Sistema') . '</small>';
             echo '<time>' . date("d/m/Y H:i", strtotime($notif['fecha'])) . '</time>';
             echo '</div>';
-        }
+        }   
         echo '</div>';
 
         // PAGINACIÓN INTELIGENTE

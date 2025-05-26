@@ -1,6 +1,7 @@
 
 <?php
 require_once("database/database.php");
+include('./roles/admin/components/alert.php');
 $conexion = new database;
 $con = $conexion->conectar();
 ?>

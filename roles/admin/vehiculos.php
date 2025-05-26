@@ -92,7 +92,7 @@ $paginas = ceil($total_filas / $limite_registros);
 $consulta = $con->prepare(
     "SELECT  v.foto AS veh_pic, v.id_placa, e.estado,u.id_documento, u.nombre_completo FROM vehiculos v
         INNER JOIN usuario  u ON u.id_documento = v.id_documento
-        INNER JOIN estado e ON e.id_estado = v.id_estado WHERE v.id_estado != 4
+        INNER JOIN estado e ON e.id_estado = v.id_estado WHERE v.id_estado != 4 AND v.id_estado != 3
         LIMIT :start, :limit"
 );
 $consulta->bindParam(':start', $start_record, PDO::PARAM_INT);
@@ -190,7 +190,7 @@ if (isset($_POST["objetos_submit"])) {
                     <?php foreach ($consulta as $filas) { ?>
                         <div class="vehiculos">
                             <h4><img src="../../uploads/<?php echo $filas['veh_pic'] ?>" alt="img" height="60px" width="60px" onerror="this.src='../../uploads/default_vehiculos.png'"></h4>
-                            <h4><?php echo $filas['id_placa']; ?></h4>
+                            <h4><?php echo htmlentities($filas['id_placa']); ?></h4>
                             <h4><?php echo $filas['id_documento']; ?></h4>
                             <h4><?php echo $filas['nombre_completo']; ?></h4>
                             <h4><?php echo $filas['estado']; ?></h4>

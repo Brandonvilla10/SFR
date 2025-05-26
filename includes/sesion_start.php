@@ -3,6 +3,7 @@
 
 session_start();
 
+    require_once('../roles/admin/components/alert.php');
 
     require_once('../database/database.php');
     $conex = new database;               //  ESTO VA ENLAZADO CON EL ARCHIVO DATABASE.PHP

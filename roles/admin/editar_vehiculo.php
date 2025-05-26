@@ -4,11 +4,7 @@ require_once('../../database/database.php');
 include 'components/alert.php';
 $conexion = new database;
 $con = $conexion->conectar();
-
-if (!isset($_SESSION['documento'])) {
-    header("Location: ../../index.php");   
-    exit();
-}
+include('../../includes/sesion_validar.php');
 
 // Establecer la variable @documento_generador en MySQL desde la sesión
     try {

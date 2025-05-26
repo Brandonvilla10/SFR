@@ -1,10 +1,10 @@
 <?php
+session_start();
+include('components/alert.php');
 include('../../database/database.php');
-
 $conexion = new database;
 $con = $conexion->conectar();
-
-
+include('../../includes/sesion_validar.php');
 
 $registrosPorPagina = 30;
 

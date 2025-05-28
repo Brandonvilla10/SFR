@@ -198,19 +198,6 @@ $usuario_foto_path = !empty($usuario['foto']) ? '../../uploads/' . $usuario['fot
                                     <input type="hidden" name="id_documento" value="<?php echo $usuario['id_documento']; ?>">
 
                                     <div class="form-group">
-                                        <label for="placa" class="form-label">Placa</label>
-                                        <input type="text" class="form-input" id="placa" name="placa" required placeholder="Ingrese la placa">
-                                        <button type="button" class="edit-icon"><i class="bi bi-pencil-square"></i></button>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label for="caracteristicas" class="form-label">Caracteristicas</label>
-                                        <input type="text" class="form-input" id="caracteristicas" name="caracteristicas"
-                                            placeholder="Caracteristicas del vehículo">
-                                        <button type="button" class="edit-icon"><i class="bi bi-pencil-square"></i></button>
-                                    </div>
-
-                                    <div class="form-group">
                                         <label for="id_tipoVehiculo" class="form-label">Tipo de Vehiculo</label>
                                         <select class="form-input" id="id_tipoVehiculo" name="id_tipoVehiculo" required>
                                             <option value="">Seleccione Tipo</option>
@@ -225,6 +212,21 @@ $usuario_foto_path = !empty($usuario['foto']) ? '../../uploads/' . $usuario['fot
                                             <?php endforeach; ?>
                                         </select>
                                     </div>
+
+                                    <div class="form-group">
+                                        <label for="placa" class="form-label">Placa</label>
+                                        <input type="text" class="form-input" id="placa" name="placa" required placeholder="Ingrese la placa" maxlength="7">
+                                        <button type="button" class="edit-icon"><i class="bi bi-pencil-square"></i></button>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="caracteristicas" class="form-label">Caracteristicas</label>
+                                        <input type="text" class="form-input" id="caracteristicas" name="caracteristicas"
+                                            placeholder="Caracteristicas del vehículo">
+                                        <button type="button" class="edit-icon"><i class="bi bi-pencil-square"></i></button>
+                                    </div>
+
+
 
                                     <div class="form-group">
                                         <label for="id_marca" class="form-label">Marca</label>
@@ -337,6 +339,32 @@ $usuario_foto_path = !empty($usuario['foto']) ? '../../uploads/' . $usuario['fot
                 });
             }
         });
+
+        const placas = document.getElementById('placa');
+        var correct = true;
+        if (placas) {
+             
+            placas.addEventListener('input', function() {
+                let value = this.value.toUpperCase();
+
+                // Elimina todo lo que no sea letra o número
+                value = value.replace(/[^A-Z0-9]/g, '');
+
+                // Si empieza con número, limpiar el campo
+                if (value.length > 0 && /^[0-9]/.test(value)) {
+                    this.value = '';
+                    return;
+                }
+
+                // Extraer letras y números (sin importar el orden)
+                const letras = value.replace(/[^A-Z]/g, '').slice(0, 3);
+                const numeros = value.replace(/[^0-9]/g, '').slice(0, 3);
+
+                // Construir el valor final sin guion
+                this.value = letras + numeros;
+            });
+        }
+        
     </script>
 </body>
 

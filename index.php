@@ -105,7 +105,7 @@ $con = $conexion->conectar();
 <script>
     // expresiones regulares para validacion de documento y contraseña
 const docRegex = /^\d{6,10}$/;
-const passRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@#$!%*?&])[A-Za-z\d@#$!%*?&]{8,}$/;
+const passRegex = /^(?=.*[A-Z])(?=.*\d)[A-Za-z\d@#$!%?&]{6,12}$/;
 // ------------------------------------------------------------------------------------------------
 
     const documento = document.getElementById("documento");

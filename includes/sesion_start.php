@@ -3,9 +3,9 @@
 
 session_start();
 
-    require_once('../roles/admin/components/alert.php');
 
-    require_once('../database/database.php');
+require_once('../database/database.php');
+require_once('../roles/admin/components/alert.php');
     $conex = new database;               //  ESTO VA ENLAZADO CON EL ARCHIVO DATABASE.PHP
     $con = $conex->conectar();
 
@@ -29,21 +29,21 @@ session_start();
 
                             // ADMINISTRADOR
                 $_SESSION['rol_name'] ="Administrador";
-                header("location: ../roles/admin/index.php");
+                echo " <script> window.location.href='../roles/admin/index.php' </script>";
                 exit(); 
 
-            }elseif($_SESSION['rol'] == 2){
+                }elseif($_SESSION['rol'] == 2){
 
                             // APRENDIZ
                 $_SESSION['rol_name'] ="Aprendiz";
-                header("location: ../roles/aprendiz/index.php");
+                    echo " <script> window.location.href='../roles/aprendiz/index.php'</script>";
                 exit();
 
             }elseif($_SESSION['rol'] ==3){
 
                             // FUNCIONARIO
                 $_SESSION['rol_name'] ="Funcionario";
-                header("location: ../roles/funcionario/index.php");
+                    echo "<script> window.location.href='../roles/funcionario/index.php'</script>";
                 exit();
             }
         }elseif($fila && $fila['id_estado'] == 2){

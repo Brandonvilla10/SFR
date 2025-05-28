@@ -227,9 +227,9 @@ $rol = isset($_SESSION['rol_name']) ? $_SESSION['rol_name'] : '';
     const datos_donut = new Chart(donita, {
       type: "doughnut", // Tipo de gráfico: dona
       data: {
-        labels: ['vehículos activos', 'vehículos inactivos'], // Etiquetas para el gráfico de dona
+        labels: ['vehículos activos', 'vehículos Inactivos'], // Etiquetas para el gráfico de dona
         datasets: [{
-          label: 'Vehículos en el centro', // Título del gráfico de dona
+          label: 'Vehículos Activos', // Título del gráfico de dona
           data: [<?php echo $resultado['total'] ?>, <?php echo $resultadoInnactivo['innactivos'] ?>], // Datos de vehículos activos e inactivos
           backgroundColor: ['blue', 'red'], // Colores de las porciones
           borderWidth: 2 // Grosor del borde de las porciones

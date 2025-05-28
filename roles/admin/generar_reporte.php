@@ -2,7 +2,7 @@
 ob_clean();
 ob_start();
 
-require_once(__DIR__ . '/../../TCPDF-main/tcpdf.php'); // Ajusta la ruta según tu estructura
+require_once(__DIR__ . '/../../js/TCPDF/tcpdf.php'); // Ajusta la ruta según tu estructura
 
 $fecha_inicio = $_POST['fecha_inicio'];
 $fecha_fin = $_POST['fecha_fin'];

@@ -1,10 +1,8 @@
-
-
 <?php
 
 class database{
 
-    private $host ="localhost:3306";
+    private $host ="localhost:3307";
     private $database = "databasesft";
     private $user = "root";
     private $password = "";

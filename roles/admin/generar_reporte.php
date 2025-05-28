@@ -1,5 +1,4 @@
 <?php
-ob_clean();
 ob_start();
 
 require_once(__DIR__ . '/../../js/TCPDF/tcpdf.php'); // Ajusta la ruta según tu estructura
@@ -77,6 +76,3 @@ $html .= '</table>';
 
 $pdf->writeHTML($html, true, false, true, false, '');
 $pdf->Output('reporte.pdf', 'I');
-
-ob_end_flush();
-?>

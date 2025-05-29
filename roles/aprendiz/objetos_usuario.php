@@ -33,30 +33,11 @@ try {
 
 
 
-if (isset($_POST['objetos_submit'])) {
 
-    $_SESSION['objetos_usu'] = $_POST['user_id'];
-    $usuario = $_POST['user_id'];
-
-    $validacion = $con->prepare("SELECT * FROM  usuario WHERE id_documento = '$usuario'");
-    $validacion->execute();
-
-
-    $consulta_1 = $validacion->fetch();
-
-    if (!$consulta_1) {
-        echo "
-        <script>
-            document.addEventListener('DOMContentLoaded', function () {
-                mostrarModal('mistake', 'Usuario no encontrado', 'objetos_index.php');
-            });
-        </script>";
-        exit();
-    }
-}
 
 
 $buscar_usu = $_SESSION['documento'];
+
 
 $mostrar = $con->prepare("SELECT * FROM  usuario WHERE id_documento = '$buscar_usu'");
 $mostrar->execute();
@@ -207,7 +188,7 @@ if (isset($_POST["eliminarSubmir"])) {
                     INNER JOIN usuario ON usuario.id_documento = objetos.id_documento
                     INNER JOIN estado ON estado.id_estado = objetos.id_estado 
                     INNER JOIN tipoobjeto ON tipoobjeto.id_tipoObjeto = objetos.id_tipoObjeto
-                    WHERE objetos.id_documento ='$buscar_usu' and objetos.id_estado = 1 or objetos.id_estado = 2");
+                    WHERE objetos.id_documento ='$buscar_usu' and objetos.id_estado = 1");
                     $sql->execute();
 
                     $consulta_2 = $sql->fetchAll();
@@ -313,8 +294,7 @@ if (isset($_POST["eliminarSubmir"])) {
                     <?php } ?>
                 </select>
 
-                <input type="hidden" name="user_id" value="<?php echo $_SESSION['objetos_usu'] ?>">
-
+                <input type="hidden" name="user_id" value="<?php echo $buscar_usu ?>">
                 <button type="submit" id="CrearObjeto" name="CrearObjeto" class="CrearObjeto"> Crear Objeto </button>
                 <button type="button" class="regresar" onclick="cerrarModalObjetos()"> CERRAR</button>
 

@@ -28,7 +28,7 @@ if(isset($_POST["botoncito"])){
     $contrasena = $_POST['contrasena'];
     $ficha = 1;
     $codigo = $_POST['documento'];
-    $estado = 2;
+    $estado = 1;
     $rol = 2;
 
 
@@ -57,7 +57,7 @@ if(isset($_POST["botoncito"])){
             echo "  
             <script>
                 document.addEventListener('DOMContentLoaded', function () {
-                    mostrarModal('success', 'Usuario ingresado exitoxamente', 'index.php');
+                    mostrarModal('success', 'Usuario registrado exitoxamente', 'index.php');
                 });
             </script>";
             exit();
@@ -92,7 +92,7 @@ if(isset($_POST["botoncito"])){
                         <input type="email" class="datos" name="correo"  placeholder="Email"/>
                         <span class="invisible">No se permiten simbolos diferentes del @</span>
                         <input type="password" class="datos" name="contrasena" id="password" placeholder="Contraseña"/>
-                        <span class="invisible">Minimo 8 caracteres, 1 Mayuscula, 1 simbolo </span>
+                        <span class="invisible">Minimo 8 caracteres, 1 Mayuscula,1 numero </span>
                         <input type="password" class="datos" name="verify" id="passVerify" placeholder="Confirmar Contraseña"/>
                         <span class="invisible">Las contraseñas no coinciden</span>
                     </div>

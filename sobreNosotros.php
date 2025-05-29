@@ -21,7 +21,7 @@
             <div class="nosotros_1">
                 <div class="izquierda">
 
-                <img src="assets/img/Nosotrosimg/SobreNosotros.png" alt="">
+                <img src="assets/img/Nosotrosimg/SobreNosotros.webp" alt="">
                 </div>
                 <div class="derecha"> 
                     <h1>Sobre Nosotros</h1>
@@ -52,7 +52,7 @@
 
 
                 <div class="derecha-1"> 
-                    <img src="assets/img/Nosotrosimg/cohete.png">
+                    <img src="assets/img/Nosotrosimg/cohete.webp">
                 </div>
             
 
@@ -72,10 +72,10 @@
                     </div>
                 </div>
                 <div class ="derecha-2">
-                    <img src="assets/img/Nosotrosimg/binoculares.png" alt="Imagen de unos binoculares">
+                    <img src="assets/img/Nosotrosimg/binoculares.webp" alt="Imagen de unos binoculares">
                 </div>
-                    
-                
+
+
             </div>
 
             <div class="nosotros_3">
@@ -85,28 +85,28 @@
                 <div class="wrapper_four">
                     <div class ="only-wrapper">
 
-                        <img src="assets/img/Nosotrosimg/Gabi .png" alt="Imagen de un desarrollador" width="236px" height="208px">
+                        <img src="assets/img/Nosotrosimg/Gabi .webp" alt="Imagen de un desarrollador" width="236px" height="208px">
                         <h1>Devia Marin Gabriela</h1>
                         <p>Especialista en desarrollo <br>de software y lider del equipo.</p>
                     
                     </div>
                     <div class ="only-wrapper">
 
-                        <img src="assets/img/Nosotrosimg/Brandon  (1).png" alt="Imagen de un desarrollador" width="236px" height="208px">
+                        <img src="assets/img/Nosotrosimg/Brandon  (1).webp" alt="Imagen de un desarrollador" width="236px" height="208px">
                         <h1>Villanueva Serrano Brandon</h1>
                         <p>Experto en analisis de datos y <br> optimizacion de procesos.</p>
                     
                     </div>
                     <div class ="only-wrapper">
 
-                        <img src="assets/img/Nosotrosimg/Chiky .png" alt="Imagen de un desarrollador" width="236px" height="208px">
+                        <img src="assets/img/Nosotrosimg/Chiky .webp" alt="Imagen de un desarrollador" width="236px" height="208px">
                         <h1>Velandia Machado Alejandro</h1>
                         <p>Encargado de la seguridad <br> informatica y soporte técnico.</p>
                     
                     </div>
                     <div class ="only-wrapper">
 
-                        <img src="assets/img/Nosotrosimg/Juan.png" alt="Imagen de un desarrollador" width="236px" height="208px" >
+                        <img src="assets/img/Nosotrosimg/Juan.webp" alt="Imagen de un desarrollador" width="236px" height="208px" >
                         <h1>Vallejo Rodriguez Juan Esteban</h1>
                         <p>Responsable de la experiencia del <br> usuario y diseño de interfaces.</p>
                     
@@ -134,26 +134,26 @@
 <div class="divIconos">
 
     <div>
-        <img src="assets/img/Nosotrosimg/reloj_mano.png" alt="" class="iconosImagenes">
+        <img src="assets/img/Nosotrosimg/reloj_mano.webp" alt="" class="iconosImagenes">
         <h3 class="subtitulosh3">Puntualidad</h3>
         <p class="subtitulosh3V2">Valoramos y promevemos el respeto por el <br> tiempo de todos los usuarios y colaboradoreas.</p>
     </div>
     <div>
-        <img src="assets/img/Nosotrosimg/tuerquita.png" class="iconosImagenes">
+        <img src="assets/img/Nosotrosimg/tuerquita.webp" class="iconosImagenes">
         <h3 class="subtitulosh3">Innovacion</h3>  
         <p class="subtitulosh3V2">Nos esforzamos continuamente por desarrollar <br> y aplicar nuevas tecnologías para mejorar nuestros servicios.</p>
     </div>
 
     
     <div>
-        <img src="assets/img/Nosotrosimg/medalla.png" alt="" class="iconosImagenes">
+        <img src="assets/img/Nosotrosimg/medalla.webp" alt="" class="iconosImagenes">
         <h3 class="subtitulosh3">Calidad</h3>
         <p class="subtitulosh3V2">Garantizamos la excelencia en cada aspeto <br> de nuestro software y servicio.</p>
     </div>
-    
+
     <div>
-        <img src="assets/img/Nosotrosimg/seguridad.png" alt="" class="iconosImagenes">
-        <h3 class="subtitulosh3">Seguridad</h3>        
+        <img src="assets/img/Nosotrosimg/seguridad.webp" alt="" class="iconosImagenes">
+        <h3 class="subtitulosh3">Seguridad</h3>
         <p class="subtitulosh3V2">Prioridad en la proteccion de datos y la  seguridad <br> de nuestros usuarios</p>
     </div>
 

@@ -26,12 +26,12 @@
       <div class="numeros">
       <h3 style="color:cornflowerblue ;">Chat Virtual</h3>
         <div class="whatsapp">
-          <img style="object-fit: cover;" height="30px" width="30px" src="assets/img/iconosRedesSociales/whatsapp (1).png" alt="Whatassp">
+          <img style="object-fit: cover;" height="30px" width="30px" src="assets/img/iconosRedesSociales/whatsapp (1).webp" alt="Whatassp">
           <p class="telefono">3228023705</p>
         </div>
 
         <div class="whatsapp">
-          <img style="object-fit: cover;" height="30px" width="30px" src="assets/img/iconosRedesSociales/whatsapp (1).png" alt="Whatassp">
+          <img style="object-fit: cover;" height="30px" width="30px" src="assets/img/iconosRedesSociales/whatsapp (1).webp" alt="Whatassp">
           <p class="telefono">3228023705</p>
         </div>
       </div>
@@ -40,8 +40,8 @@
         <strong class="tituloCorreo" style="color: cornflowerblue; font-size:large;">Correo Electronico</strong>
 
         <div style="display: flex;flex-direction:row;margin-top: 10px;justify-content: center;">
-          <img style="object-fit: cover;" height="30px" width="30px" src="assets/img/iconosRedesSociales/correo-electronico.png" alt="">
-          
+          <img style="object-fit: cover;" height="30px" width="30px" src="assets/img/iconosRedesSociales/correo-electronico.webp" alt="">
+
           <p style="font-weight: 600;">senafastregister@gmail.com</p>
         </div>
       </div>

@@ -62,7 +62,7 @@ $con = $conexion->conectar();
 
     <!-- aqui va la imagen que esta a la derecha del index -->
     <section class="columnaDerecha">
-        <img src="assets/img/indeximg/Image_Index.png" height="500px" width="679px" class="imgPersonitas" alt="">
+        <img src="assets/img/indeximg/Image_Index.webp" height="500px" width="679px" class="imgPersonitas" alt="">
     </section>
 
 <!-- ------------------------------------------------------------------------------------------------------------------------     -->
@@ -75,10 +75,10 @@ $con = $conexion->conectar();
             <img src="assets/img/iconosRedesSociales/tik-tok.webp" width="28px" height="28px alt="">
         </a>
         <a href="https://www.instagram.com" target="_blank" class="social-icon">
-            <img src="assets/img/iconosRedesSociales/facebook.png" width="28px" height="28px alt="">
+            <img src="assets/img/iconosRedesSociales/facebook.webp" width="28px" height="28px alt="">
         </a>
         <a href="https://www.tiktok.com" class="social-icon">
-            <img src="assets/img/iconosRedesSociales/logotipo-de-instagram.png"  width="28px" height="28px">
+            <img src="assets/img/iconosRedesSociales/logotipo-de-instagram.webp"  width="28px" height="28px">
         </a>
     </div>
 

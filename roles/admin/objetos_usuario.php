@@ -275,17 +275,17 @@ if (isset($_POST["eliminarSubmir"])) {
             <form action="../../uploads/upload_crear_objeto.php" id="formCrearObjeto" method="POST" enctype="multipart/form-data" class="datos_basicos">
 
                 <label for="serial" class="label_titulo">Serial</label>
-                <input type="text" id="serial" name="serial" class="data_input" placeholder="Serial">
+                <input type="text" id="serial" name="serial" class="data_input" placeholder="Serial" maxlength="25">
 
                 <label for="" class="label_titulo">Nombre</label>
-                <input type="text" id="nombre" name="nombre" class="data_input">
+                <input type="text" id="nombre" name="nombre" class="data_input" maxlength="45">
 
                 <label for="foto" class="label_titulo">Foto</label>
 
                 <input type="file" id="foto" name="foto" class="data_input">
 
                 <label for="" class="label_titulo">Caracteristicas</label>
-                <textarea class="input_caracteristica" id="caracteristicas" name="caracteristica" placeholder="Escribe aquí..."></textarea>
+                <textarea class="input_caracteristica" id="caracteristicas" name="caracteristica" placeholder="Escribe aquí..." maxlength="120"></textarea>
 
                 <label for="" class="label_titulo">Marca</label>
                 <select name="marca" id="marca" class="selectos">
@@ -390,7 +390,7 @@ if (isset($_POST["eliminarSubmir"])) {
                     // expresiones
                     
                     const serialExp = /^[A-Z0-9\-]{3,20}$/i;
-                    const nombreExp = /^[A-Za-z\s]{2,}$/;
+                    const nombreExp = /^[A-Za-z\s]{4,20}$/;
                     
                     if (!serialExp.test(serial)) {
                         
@@ -401,7 +401,7 @@ if (isset($_POST["eliminarSubmir"])) {
                     }
                     
                     if (!nombreExp.test(nombre)) {
-                        mostrarModal('mistake', 'El nombre no es valido. Solo letras, numeros y espacios, mínimo 2 caracteres.');
+                        mostrarModal('mistake', 'El nombre no es valido. Solo letras, numeros y espacios, mínimo 4 caracteres.');
                         return;
                     }
                     

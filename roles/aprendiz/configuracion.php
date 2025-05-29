@@ -138,7 +138,7 @@ if (isset($_POST['submit'])) {
 
                 </div>
 
-                <img class="imgConfig" src="../../assets/img/configuracion/imgconfi.png" alt="Img configuraciones" width="400px" height="400px">
+                <img class="imgConfig" src="../../assets/img/configuracion/imgconfi.webp" alt="Img configuraciones" width="400px" height="400px">
             </section>
 
         </main>

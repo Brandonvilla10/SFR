@@ -26,7 +26,7 @@ $rol = isset($_SESSION['rol_name']) ? $_SESSION['rol_name'] : '';
 </head>
 
 <body>
-  <div class="container_grid">
+  <div class="container_grid" id="ocultar_contenido">
 
     <!-- Barra lateral -->
     <aside class="aside_barra">
@@ -197,12 +197,19 @@ $rol = isset($_SESSION['rol_name']) ? $_SESSION['rol_name'] : '';
 
   <script>
     window.addEventListener('load', function() {
+            cosas = document.getElementById('ocultar_contenido');
+            cosas.style.opacity="0";
             fondo = document.getElementById('fondo');
+            
             setTimeout(function() {
-                fondo.classList.add('fade-out');
-                setTimeout(function() {
-                    fondo.style.display='none';
-                }, 1000); 
+              fondo.classList.add('fade-out');
+            }, 1000); 
+            setTimeout(function() {
+              
+              fondo.style.display='none';
+              cosas.style.opacity="1";
+        
+              
             }, 1000); 
 
             

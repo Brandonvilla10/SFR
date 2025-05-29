@@ -58,9 +58,9 @@ if (isset($_POST['objetos_submit'])) {
 
 $buscar_usu = $_SESSION['documento'];
 
+
 $mostrar = $con->prepare("SELECT * FROM  usuario WHERE id_documento = '$buscar_usu'");
 $mostrar->execute();
-
 $primera_parte = $mostrar->fetch();
 
 
@@ -207,7 +207,7 @@ if (isset($_POST["eliminarSubmir"])) {
                     INNER JOIN usuario ON usuario.id_documento = objetos.id_documento
                     INNER JOIN estado ON estado.id_estado = objetos.id_estado 
                     INNER JOIN tipoobjeto ON tipoobjeto.id_tipoObjeto = objetos.id_tipoObjeto
-                    WHERE objetos.id_documento ='$buscar_usu' and objetos.id_estado = 1 or objetos.id_estado = 2");
+                    WHERE objetos.id_documento ='$buscar_usu' and objetos.id_estado = 1");
                     $sql->execute();
 
                     $consulta_2 = $sql->fetchAll();

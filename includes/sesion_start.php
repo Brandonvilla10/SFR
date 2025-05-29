@@ -43,7 +43,7 @@ require_once('../roles/admin/components/alert.php');
 
                             // VIGILANTE
                 $_SESSION['rol_name'] ="Vigilante";
-                    echo "<script> window.location.href='../roles/funcionario/index.php'</script>";
+                    echo "<script> window.location.href='../roles/vigilante/index.php'</script>";
                 exit();
             }
         }elseif($fila && $fila['id_estado'] == 2){

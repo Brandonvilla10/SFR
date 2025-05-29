@@ -7,7 +7,7 @@ $con = $conexion->conectar();
 include('../../includes/sesion_validar.php');
 
 
-$id_documento =  $_SESSION['documento'];;
+$id_documento =  $_SESSION['documento'];
 
 
 if (isset($_POST['eliminar'])) {
@@ -94,7 +94,7 @@ $sql = "SELECT
         LEFT JOIN marca m ON m.id_marca = v.id_marca
         LEFT JOIN modelo mo ON mo.id_modelo = v.id_modelo
         LEFT JOIN estado e ON e.id_estado = v.id_estado
-        WHERE v.id_documento = :id_documento and v.id_estado = 1 or v.id_estado = 2
+        WHERE v.id_documento = :id_documento and v.id_estado = 1 
         LIMIT :offset, :limit";
 
 $stmt = $con->prepare($sql);
@@ -112,6 +112,17 @@ $stmtCount->bindParam(':id_documento', $id_documento);
 $stmtCount->execute();
 $totalVehiculos = $stmtCount->fetchColumn();
 $totalPaginas = ceil($totalVehiculos / $registrosPorPagina);
+
+if (isset($_POST['editarBoton'])) {
+    $diccionario = $_POST['editarBoton'];
+    $placa = explode(',', $diccionario)[0];
+    $redireccion = explode(',', $diccionario)[1];
+    
+    $_SESSION['placa'] = $placa;
+    $_SESSION['redireccion'] = $redireccion;
+    echo '<script>window.location = "./editar_vehiculo.php"</script>';
+    exit();
+}
 ?>
 
 <!DOCTYPE html>
@@ -143,7 +154,11 @@ $totalPaginas = ceil($totalVehiculos / $registrosPorPagina);
                 </div>
 
                 <div class="objects-grid">
-                    <?php foreach ($vehiculos as $vehiculo): ?>
+                    <?php foreach ($vehiculos as $vehiculo):
+                        $array = array(
+                            'id_placa' => $vehiculo['id_placa'],
+                            'redireccion' => './vehiculos_usuarios.php'
+                        ) ?>
                         <div class="object-card">
                             <div class="object-header">
                                 <div class="object-icon">
@@ -172,10 +187,13 @@ $totalPaginas = ceil($totalVehiculos / $registrosPorPagina);
                             <div class="object-actions">
                                 <button class="action-button delete-button" value="<?php echo $vehiculo['id_placa'] ?>" onclick="mostrarConfirmacion(this.value,'Segur@ Que Quieres Eliminar Este Vehiculo')">
                                     <i class="bi bi-trash3-fill"></i>
-                                </button>   
-                                <button class="action-button edit-button" onclick="window.location.href='editar_vehiculo.php?placa=<?php echo $vehiculo['id_placa']; ?>&origen=usuarios&user_id=<?php echo $id_documento; ?>'">
-                                    <i class="bi bi-pencil-square"></i>
                                 </button>
+                                <form action="" method="post">
+                                    <button type="submit" class="action-button edit-button" name="editarBoton"
+                                    value="<?php echo implode(',', $array); ?>">
+                                        <i class="bi bi-pencil-square"></i>
+                                    </button>
+                                </form>
                             </div>
                         </div>
                     <?php endforeach; ?>
@@ -225,7 +243,7 @@ $totalPaginas = ceil($totalVehiculos / $registrosPorPagina);
 
         const modalConfirmacionButton = document.querySelectorAll(".modalConfirmacionButton")
 
-   
+
 
         function mostrarConfirmacion(valorBoton, mensaje, callback) {
             mensajeConfirmacion.textContent = mensaje;

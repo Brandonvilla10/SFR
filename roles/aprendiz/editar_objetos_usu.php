@@ -31,9 +31,9 @@ try {
         exit;
     }
     //EXTRAIGO LOS DATOS DE LA PERSONA
-    $id_documento = $_GET['owner'];
-    $id_serial = $_GET['id'];
-    $ruta = $_GET['route'];
+    $id_documento = $_SESSION['documento'];
+    $id_serial = $_SESSION['id_serial'];
+    $ruta = $_SESSION['redireccion'];
 
     $user = $con->prepare("SELECT nombre_completo, foto, correo, id_documento FROM usuario WHERE id_documento = :doc");
     $user->bindParam(":doc", $id_documento, PDO::PARAM_INT);
@@ -58,6 +58,11 @@ try {
 
     //
 }
+
+
+   
+                                       
+
 
 ?>
 <!DOCTYPE html>
@@ -113,10 +118,9 @@ try {
                                         <i class="bi bi-upload"></i>
                                         <span>Subir Foto</span>
                                     </div>
-                                    <form action="../../uploads/upload_objetos.php" method="POST" enctype="multipart/form-data" class="overlay" id="form-objetos">
-
+                                    <form action="../../uploadsGlobal/upload_objetos.php"  method="POST" enctype="multipart/form-data" class="overlay" id="form-objetos">
+                                        <input type="hidden" name="direccion" value="../roles/aprendiz/editar_objetos_usu.php">
                                         <input type="hidden" name="serial" value="<?php echo $consulta_1['id_serial']; ?>">
-                                        <input type="hidden" name="ruta" value="<?php echo $ruta; ?>">
                                         <input type="file" class="file_input" id="fileUpload" name="foto" onchange="document.getElementById('form-objetos').submit()">
 
                                     </form>
@@ -193,7 +197,7 @@ try {
     //  ENVIO DE LOS DATOS MEDIANTE PHP 
     if (isset($_POST['enviar'])) {
 
-        $ruta = $_GET['route'];
+
         $serial = $_POST['serial'];
         $nombre_objeto = $_POST['nombre_nuevo'];
         $caracteristica = $_POST['carac_nueva'];

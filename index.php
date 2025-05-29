@@ -72,7 +72,7 @@ $con = $conexion->conectar();
 
     <div class="social-bar">
         <a href="https://www.facebook.com" target="_blank" class="social-icon">
-            <img src="assets/img/iconosRedesSociales/tik-tok.png" width="28px" height="28px alt="">
+            <img src="assets/img/iconosRedesSociales/tik-tok.webp" width="28px" height="28px alt="">
         </a>
         <a href="https://www.instagram.com" target="_blank" class="social-icon">
             <img src="assets/img/iconosRedesSociales/facebook.png" width="28px" height="28px alt="">

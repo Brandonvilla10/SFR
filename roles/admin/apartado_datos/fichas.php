@@ -16,7 +16,7 @@ $limite_registros = 5;
 $start_record = ($page - 1) * $limite_registros;
 
 // Contar total de registros
-$consulta_total = $con->prepare("SELECT COUNT(*) FROM fichas");
+$consulta_total = $con->prepare("SELECT COUNT(*) FROM fichas WHERE id_estado != 4");
 $consulta_total->execute();
 $total_filas = $consulta_total->fetchColumn();
 $paginas = ceil($total_filas / $limite_registros);

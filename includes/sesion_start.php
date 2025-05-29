@@ -39,10 +39,10 @@ require_once('../roles/admin/components/alert.php');
                     echo " <script> window.location.href='../roles/aprendiz/index.php'</script>";
                 exit();
 
-            }elseif($_SESSION['rol'] ==3){
+            }elseif($_SESSION['rol'] ==5){
 
-                            // FUNCIONARIO
-                $_SESSION['rol_name'] ="Funcionario";
+                            // VIGILANTE
+                $_SESSION['rol_name'] ="Vigilante";
                     echo "<script> window.location.href='../roles/funcionario/index.php'</script>";
                 exit();
             }

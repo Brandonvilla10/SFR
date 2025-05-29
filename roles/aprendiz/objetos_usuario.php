@@ -33,27 +33,7 @@ try {
 
 
 
-if (isset($_POST['objetos_submit'])) {
 
-    $_SESSION['objetos_usu'] = $_POST['user_id'];
-    $usuario = $_POST['user_id'];
-
-    $validacion = $con->prepare("SELECT * FROM  usuario WHERE id_documento = '$usuario'");
-    $validacion->execute();
-
-
-    $consulta_1 = $validacion->fetch();
-
-    if (!$consulta_1) {
-        echo "
-        <script>
-            document.addEventListener('DOMContentLoaded', function () {
-                mostrarModal('mistake', 'Usuario no encontrado', 'objetos_index.php');
-            });
-        </script>";
-        exit();
-    }
-}
 
 
 $buscar_usu = $_SESSION['documento'];
@@ -313,8 +293,7 @@ if (isset($_POST["eliminarSubmir"])) {
                     <?php } ?>
                 </select>
 
-                <input type="hidden" name="user_id" value="<?php echo $_SESSION['objetos_usu'] ?>">
-
+                <input type="hidden" name="user_id" value="<?php echo $buscar_usu ?>">
                 <button type="submit" id="CrearObjeto" name="CrearObjeto" class="CrearObjeto"> Crear Objeto </button>
                 <button type="button" class="regresar" onclick="cerrarModalObjetos()"> CERRAR</button>
 

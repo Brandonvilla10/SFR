@@ -43,7 +43,7 @@ $rol =$_SESSION['rol_name'];
             <p class="seccionTexto">Objetos</p>
         </div></a>
 
-        <a href="./vehiculos.php"> <div class="seccion">
+        <a href="./vehiculos_usuarios.php"> <div class="seccion">
             <img class="icono" src="asidebar/icons/carroBlanco.png" alt="">
             <p class="seccionTexto">Vehiculos</p>
         </div></a>

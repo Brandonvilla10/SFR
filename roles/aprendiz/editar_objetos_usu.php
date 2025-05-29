@@ -198,15 +198,13 @@ try {
         $nombre_objeto = $_POST['nombre_nuevo'];
         $caracteristica = $_POST['carac_nueva'];
         $marca = $_POST['marca_nueva'];
-        $estado = $_POST['estado_nuevo'];
 
 
-        $cambiar_datos = $con->prepare("UPDATE objetos SET nombre = :nombre, caracteristica =  :caract, id_marca = :marca, id_estado = :estado WHERE id_serial = :serial");
+        $cambiar_datos = $con->prepare("UPDATE objetos SET nombre = :nombre, caracteristica =  :caract, id_marca = :marca WHERE id_serial = :serial");
         $cambiar_datos->bindParam(':nombre', $nombre_objeto, PDO::PARAM_STR);
         $cambiar_datos->bindParam(':serial', $serial, PDO::PARAM_STR);
         $cambiar_datos->bindParam(':caract', $caracteristica, PDO::PARAM_STR);
         $cambiar_datos->bindParam(':marca', $marca, PDO::PARAM_STR);
-        $cambiar_datos->bindParam(':estado', $estado, PDO::PARAM_STR);
         $cambiar_datos->execute();
 
         echo "

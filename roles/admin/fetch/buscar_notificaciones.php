@@ -15,8 +15,8 @@ $documento = $_GET['documento'] ?? null;
 $tabla = $_GET['tabla'] ?? null;
 $fecha = $_GET['fecha'] ?? null;
 $pagina = isset($_GET['pagina']) ? max(1, intval($_GET['pagina'])) : 1;
-$por_pagina = 20;
-$offset = ($pagina - 1) * $por_pagina;
+$notificaciones_por_pagina = 12;
+$offset = ($pagina - 1) * $notificaciones_por_pagina;
 
 // Arreglos para construir la consulta dinámica
 $where = []; //where condicional
@@ -46,7 +46,7 @@ $query = "SELECT * FROM notificaciones";
 if (count($where) > 0) {
     $query .= " WHERE " . implode(" AND ", $where);
 }
-$query .= " ORDER BY fecha DESC LIMIT :limit OFFSET :offset";
+$query .= " ORDER BY fecha DESC LIMIT :inicio, :limite";
 
 // Para contar el total de resultados (para la paginación)
 $count_query = "SELECT COUNT(*) FROM notificaciones";
@@ -68,8 +68,8 @@ try {
     foreach ($params as $key => $val) {
         $sql->bindValue($key, $val);
     }
-    $sql->bindValue(':limit', $por_pagina, PDO::PARAM_INT);
-    $sql->bindValue(':offset', $offset, PDO::PARAM_INT);
+    $sql->bindValue(':inicio', $offset, PDO::PARAM_INT);
+    $sql->bindValue(':limite', $notificaciones_por_pagina, PDO::PARAM_INT);
     $sql->execute();
     $notificaciones = $sql->fetchAll(PDO::FETCH_ASSOC);
 
@@ -101,7 +101,7 @@ try {
         echo '</div>';
 
         // PAGINACIÓN INTELIGENTE
-        $total_paginas = ceil($total / $por_pagina);
+        $total_paginas = ceil($total / $notificaciones_por_pagina);
         if ($total_paginas > 1) {
             echo '<div class="paginacion-tabla">';
             $max_btns = 5; // Número máximo de botones visibles

@@ -41,7 +41,6 @@ $buscar_usu = $_SESSION['documento'];
 
 $mostrar = $con->prepare("SELECT * FROM  usuario WHERE id_documento = '$buscar_usu'");
 $mostrar->execute();
-
 $primera_parte = $mostrar->fetch();
 
 

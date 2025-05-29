@@ -5,6 +5,8 @@ include('../roles/admin/components/alert.php');
 $conexion = new database;
 $con = $conexion->conectar();
 
+
+
 if (isset($_POST['submit']) || isset($_FILES['foto'])) {
 
     $uploadDir = '../uploads/';
@@ -17,11 +19,10 @@ if (isset($_POST['submit']) || isset($_FILES['foto'])) {
     $allowedExtensions = ['jpg', 'jpeg', 'png', 'gif'];
     $fileExt = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
     
-    $documento = $_SESSION['objetos_usu'];
+    $documento = $_SESSION['documento'];
     $serial = $_POST['serial'];
-    $ruta = $_POST['ruta'];
-    
-    
+    $ruta = $_POST['direccion'];
+ 
     if (in_array($fileExt, $allowedExtensions)) {
         if ($fileError === 0) {
             if ($fileSize < 2 * 1024 * 1024) {
@@ -39,7 +40,7 @@ if (isset($_POST['submit']) || isset($_FILES['foto'])) {
    
                     <script>
                         document.addEventListener('DOMContentLoaded', function () {
-                        mostrarModal('success', 'imagen actualizada correctamente', '../roles/admin/editar_objetos_usu.php?id=$serial&owner=$documento&route=$ruta'); 
+                        mostrarModal('success', 'imagen actualizada correctamente', '$ruta'); 
                         });
                     
                     </script>";
@@ -50,7 +51,7 @@ if (isset($_POST['submit']) || isset($_FILES['foto'])) {
    
                     <script>
                         document.addEventListener('DOMContentLoaded', function () {
-                        mostrarModal('mistake', 'Error de direccion de imagen', '../roles/admin/editar_objetos_usu.php?id=$serial&owner=$documento&route=$ruta'); 
+                        mostrarModal('mistake', 'Error de direccion de imagen', '$ruta'); 
                         });
                     
                     </script>";
@@ -62,7 +63,7 @@ if (isset($_POST['submit']) || isset($_FILES['foto'])) {
    
             <script>
                 document.addEventListener('DOMContentLoaded', function () {
-                mostrarModal('mistake', 'Imagen muy pesada, maximo 2MB','../roles/admin/editar_objetos_usu.php?id=$serial&owner=$documento&route=$ruta'); 
+                mostrarModal('mistake', 'Imagen muy pesada, maximo 2MB','.$ruta'); 
                 });
             </script>";
 
@@ -74,7 +75,7 @@ if (isset($_POST['submit']) || isset($_FILES['foto'])) {
    
             <script>
                 document.addEventListener('DOMContentLoaded', function () {
-                mostrarModal('mistake', 'imagen Corrupta no valida','../roles/admin/editar_objetos_usu.php?id=$serial&owner=$documento&route=$ruta'); 
+                mostrarModal('mistake', 'imagen Corrupta no valida','$ruta'); 
                 });  
             </script>";
 
@@ -87,7 +88,7 @@ if (isset($_POST['submit']) || isset($_FILES['foto'])) {
    
         <script>
             document.addEventListener('DOMContentLoaded', function () {
-               mostrarModal('mistake', 'extensiones no permitidas, solo jpg, jpeg, png y gif','../roles/admin/editar_objetos_usu.php?id=$serial&owner=$documento&route=$ruta'); 
+               mostrarModal('mistake', 'extensiones no permitidas, solo jpg, jpeg, png y gif','$ruta'); 
             });
           
         </script>";
@@ -100,7 +101,7 @@ if (isset($_POST['submit']) || isset($_FILES['foto'])) {
    
     <script>
             document.addEventListener('DOMContentLoaded', function () {
-               mostrarModal('mistake', 'Imagen no valida','../roles/admin/objetos_index.php'); 
+               mostrarModal('mistake', 'Imagen no valida','$ruta'); 
             });
           
     </script>";

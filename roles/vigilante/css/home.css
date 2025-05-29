@@ -1,0 +1,401 @@
+* {
+    padding: 0;
+    margin: 0;
+}
+
+html,
+body {
+    height: 100vh;
+    /* Altura completa de la ventana del navegador */
+    width: 100vw;
+    /* Ancho completo de la ventana del navegador */
+    background-color: #f7f7f7;
+    /* Fondo gris claro */
+    overflow-x: hidden;
+}
+
+:root {
+    --colorAzul: #63AEE8
+}
+
+::-webkit-scrollbar {
+    width: 6px;
+    height: 10px;
+}
+
+ ::-webkit-scrollbar-thumb {
+    background-color: #63AEE8;
+    border-radius: 10px;
+}
+
+ ::-webkit-scrollbar-track {
+    background-color: transparent;
+}
+
+
+/* Contenedor principal con diseño en grid */
+
+.container_grid {
+    display: grid;
+    grid-template: "sidebar header " 100px "sidebar main" auto / auto auto;
+    /* Define el grid con dos columnas */
+    width: 100%;
+    height: 100%;
+    overflow-x: hidden;
+}
+
+
+/* Ajustes para pantallas más grandes que 767px (tabletas y escritorios) */
+
+@media (min-width: 767px) {
+    .container_grid {
+        display: grid;
+        grid-template: "sidebar header" 130px "sidebar main" auto / 100px 1fr;
+        /* El grid se ajusta para dispositivos más grandes */
+        width: 100%;
+        height: 100%;
+    }
+    /* Estilos para el encabezado */
+    .home_header {
+        grid-area: header;
+        display: flex;
+        margin: 0;
+        padding: 15px 30px 0 30px;
+        background: #FFFFFF;
+        /* Fondo blanco */
+        width: auto;
+        height: 100px;
+        justify-content: space-between;
+        /* Espacio entre los elementos */
+        align-items: center;
+    }
+    .home_titulo {
+        font-size: 20px;
+        font-weight: 800;
+    }
+    .home_titulo p {
+        font-size: 20px;
+        font-weight: 300;
+    }
+    /* Estilos para los íconos del encabezado */
+    .home_iconos {
+        display: flex;
+        font-size: 30px;
+        margin: 10px;
+        gap: 15px;
+        color: #4F4F4F;
+        /* Íconos en gris oscuro */
+    }
+    /* asignar el area para la barra lateral */
+    .aside_barra {
+        grid-area: sidebar;
+    }
+    /* Ajustes para el contenido principal (gráficas y tabla) */
+    .grid_contenido_plantilla {
+        grid-area: main;
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+    .ingresos_usuarios::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 4px;
+        height: 100%;
+        background: linear-gradient(to bottom, #3498db, #2980b9);
+        /* Gradiente azul claro */
+        border-radius: 0 15px 15px 0;
+        transform: scaleY(0);
+        transform-origin: top;
+        transition: transform 0.4s ease;
+    }
+    .ingresos_usuarios.animar::after {
+        transform: scaleY(1);
+        /* se expande */
+    }
+    /* Tamaño de las gráficas */
+    #barras {
+        width: 100px;
+        height: 100px;
+    }
+    #donut {
+        width: 100px;
+        height: 100px;
+    }
+    /* Estilos para la tabla de usuarios */
+    .ingresos_usuarios {
+        position: relative;
+        height: 45%;
+        max-height: 310px;
+        background-color: #FFFFFF;
+        width: auto;
+        box-sizing: border-box;
+        margin: 0 20px 0 20px;
+        padding: 15px;
+        border-radius: 25px;
+        overflow: hidden;
+    }
+    .descripcion_tabla {
+        padding-left: 20px;
+    }
+    /* Ajustes para la tabla */
+    .tabla_home {
+        margin-top: 10px;
+        height: 200px;
+        overflow-y: auto;
+    }
+    .tabla_users {
+        width: 100%;
+        table-layout: fixed;
+        padding: 5px;
+        border-collapse: collapse;
+        font-size: 14px;
+    }
+    .tabla_users thead {
+        background-color: #f7f7f7;
+    }
+    .tabla_users th {
+        color: #4F4F4F;
+        border-bottom: 3px solid #4F4F4F;
+        padding: 5px;
+    }
+    .tabla_users td {
+        border-bottom: 2px solid #f7f7f7;
+        padding: 10px;
+        text-align: center;
+    }
+    .reportes {
+        border-radius: 10px;
+        background-color: rgba(71, 70, 70, 0.185);
+        border: transparent;
+        padding: 1rem;
+        font-weight: 500;
+        cursor: pointer;
+    }
+}
+
+
+/* Ajuste de alturas para pantallas más grandes */
+
+@media (min-width:768px) {
+    .container_grid {
+        display: grid;
+        grid-template: "sidebar header" 130px "sidebar main" auto / auto 1fr;
+        /* El grid se ajusta para dispositivos más grandes */
+        width: 100%;
+        height: 100%;
+    }
+}
+
+@media (min-width:320px),
+(max-width:320px) {
+    .container_grid {
+        display: grid;
+        grid-template: "header" 90px "main" auto "sidebar" auto /auto;
+        width: 100%;
+        height: 100%;
+    }
+    .aside_barra {
+        grid-area: sidebar;
+    }
+    .grid_contenido_plantilla {
+        grid-area: main;
+    }
+}
+
+@media (min-width:320px),
+(max-width:320px) {
+    .container_grid {
+        display: grid;
+        grid-template: "sidebar header" 130px "sidebar main" auto / auto 1fr;
+        width: 100%;
+        height: 100%;
+        min-height: 600px;
+    }
+    .home_header {
+        grid-area: header;
+        display: flex;
+        margin: 0;
+        padding: 15px 30px 0 30px;
+        background: #FFFFFF;
+        width: auto;
+        height: 100px;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .home_titulo {
+        font-size: 20px;
+        font-weight: 800;
+    }
+    .home_titulo p {
+        font-size: 20px;
+        font-weight: 300;
+    }
+    .home_iconos {
+        display: flex;
+        font-size: 30px;
+        margin: 10px;
+        gap: 15px;
+        color: #4F4F4F;
+    }
+    .aside_barra {
+        grid-area: sidebar;
+    }
+    /* CAMBIOS DEL HOME GRAFICAS */
+    .grid_contenido_plantilla {
+        grid-area: main;
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+    #barras {
+        width: 100px;
+        height: 100px;
+    }
+    #donut {
+        width: 100px;
+        height: 100px;
+    }
+    .ingresos_usuarios {
+        display: block;
+        height: 45%;
+        max-height: 310px;
+        background-color: #FFFFFF;
+        width: auto;
+        box-sizing: border-box;
+        margin: 0 20px 0 20px;
+        padding: 15px;
+        border-radius: 25px;
+    }
+    .descripcion_tabla {
+        padding-left: 20px;
+    }
+    .tabla_home {
+        margin-top: 10px;
+        height: 200px;
+        overflow-y: auto;
+        overflow-x: auto;
+    }
+    .tabla_users {
+        width: 100%;
+        table-layout: fixed;
+        padding: 5px;
+        border-collapse: collapse;
+        font-size: 9px;
+        min-width: 315px;
+    }
+    .tabla_users thead {
+        background-color: #f7f7f7;
+    }
+    .tabla_users th {
+        color: #4F4F4F;
+        border-bottom: 3px solid #4F4F4F;
+        padding: 5px;
+    }
+    .tabla_users td {
+        border-bottom: 2px solid #f7f7f7;
+        padding: 10px;
+        text-align: center;
+    }
+}
+
+@media (min-width: 767px) {
+    .container_grid {
+        display: grid;
+        grid-template: "sidebar header" 130px "sidebar main" auto / auto 1fr;
+        width: 100%;
+        height: 100%;
+        min-height: 758px;
+    }
+    /* CAMBIOS DEL HOME HEADER  */
+    .home_header {
+        grid-area: header;
+        display: flex;
+        margin: 0;
+        padding: 15px 30px 0 30px;
+        background: #FFFFFF;
+        width: auto;
+        height: 100px;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .home_titulo {
+        font-size: 20px;
+        font-weight: 800;
+    }
+    .home_titulo p {
+        font-size: 20px;
+        font-weight: 300;
+    }
+    .home_iconos {
+        display: flex;
+        font-size: 30px;
+        margin: 10px;
+        gap: 15px;
+        color: #4F4F4F;
+    }
+    /* HASTA AQUI VAN LOS CAMBIOS  */
+    .aside_barra {
+        grid-area: sidebar;
+    }
+    /* CAMBIOS DEL HOME GRAFICAS */
+    .grid_contenido_plantilla {
+        grid-area: main;
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+    #barras {
+        width: 100px;
+        height: 100px;
+    }
+    #donut {
+        width: 100px;
+        height: 100px;
+    }
+    /* AQUI TERMINA LO DE LAS GRAFICAS Y EMPIZA LO DE LA TABLA  */
+    .ingresos_usuarios {
+        position: static;
+        height: 45%;
+        max-height: 310px;
+        background-color: #FFFFFF;
+        width: auto;
+        box-sizing: border-box;
+        margin: 0 20px 0 20px;
+        padding: 15px;
+        border-radius: 25px;
+    }
+    .descripcion_tabla {
+        padding-left: 20px;
+    }
+    .tabla_home {
+        margin-top: 10px;
+        height: 200px;
+        overflow-y: auto;
+    }
+    .tabla_users {
+        width: 100%;
+        table-layout: fixed;
+        padding: 5px;
+        border-collapse: collapse;
+        font-size: 14px;
+    }
+    .tabla_users thead {
+        background-color: #f7f7f7;
+    }
+    .tabla_users th {
+        color: #4F4F4F;
+        border-bottom: 3px solid #4F4F4F;
+        padding: 5px;
+    }
+    .tabla_users td {
+        border-bottom: 2px solid #f7f7f7;
+        padding: 10px;
+        text-align: center;
+    }
+}
+
+
+/* AJUSTE DE ALTURAS */

@@ -48,20 +48,9 @@ $rol =$_SESSION['rol_name'];
             <p class="seccionTexto">Vehiculos</p>
         </div></a>
 
-        <a href="./usuarios.php"> <div class="seccion">
-            <img class="icono" src="asidebar/icons/usuarioBlanco.png" alt="">
-            <p class="seccionTexto">Usuarios</p>
-        </div></a>
-
-
         <a href="./scanner.php"> <div class="seccion">
             <img class="icono" src="asidebar/icons/escanearBlanco.png" alt="">
             <p class="seccionTexto">Escanear</p>
-        </div></a>
-
-        <a href="./datos.php"> <div class="seccion">
-            <img class="icono" src="asidebar/icons/datos.png" alt="">
-            <p class="seccionTexto">Datos</p>
         </div></a>
 
         <hr class="white">

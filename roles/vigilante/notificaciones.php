@@ -7,7 +7,7 @@ $con = $conexion->conectar();
 
 $documentoBuscado = $_SESSION['documento'] ?? '';
 
-$documento = isset($_SESSION['documento']) ? $_SESSION['documento'] : '';// o el dato del usuario logueado
+$documento = isset($_SESSION['documento']) ? $_SESSION['documento'] : '';
 $stmt = $con->prepare("SET @documento_generador = :doc");
 $stmt->bindValue(':doc', $documento);
 $stmt->execute();

@@ -10,71 +10,6 @@ $codigo = $_SESSION['documento'];
 $nombre = explode(" ", $_SESSION['nombre'])[0];
 $rol = $_SESSION['rol_name'];
 
-//agg marca
-if (isset($_POST['submitmarca'])) {
-    $nom_marca = strtoupper($_POST['marca']);
-    $tipo_marca = 1;
-
-    // Verificar si la marca ya existe
-    $check_marca = $con->prepare("SELECT nombre_marca FROM marca WHERE nombre_marca = :nombre_marca");
-    $check_marca->bindParam(':nombre_marca', $nom_marca);
-    $check_marca->execute();
-    $existe_marca = $check_marca->fetch(PDO::FETCH_ASSOC);
-
-    if ($existe_marca) {
-        echo "
-        <script>
-            document.addEventListener('DOMContentLoaded', function () {
-                mostrarModal('mistake', 'la marca ya existe en el sistema','vehiculos.php');
-            });
-        </script>";
-        exit();
-    } else {
-        $marca = $con->prepare("INSERT INTO marca (nombre_marca,id_tipo_marca) VALUES (:nombre_marca, :id_tipo_marca)");
-        $marca->bindParam(':nombre_marca', $nom_marca);
-        $marca->bindParam(':id_tipo_marca', $tipo_marca);
-
-        if ($marca->execute()) {
-            echo "<script>alert('Marca agregada correctamente');
-            window.location.href = 'vehiculos.php';</script>";
-        }
-    }
-}
-
-//agg modelo
-if (isset($_POST['modelo'])) {
-    $nom_modelo = $_POST['nombre_modelo'];
-
-    // Verificar si el modelo ya existe
-    $check_modelo = $con->prepare("SELECT fecha_modelo FROM modelo WHERE fecha_modelo = :fecha_modelo");
-    $check_modelo->bindParam(':fecha_modelo', $nom_modelo);
-    $check_modelo->execute();
-    $existe_modelo = $check_modelo->fetch(PDO::FETCH_ASSOC);
-
-    if ($existe_modelo) {
-        echo "
-        <script>
-            document.addEventListener('DOMContentLoaded', function () {
-                mostrarModal('mistake', 'Modelo ya existente', 'vehiculos.php');
-            });
-        </script>";
-        exit();
-    } else {
-        $modelo = $con->prepare("INSERT INTO modelo (fecha_modelo) VALUES (:fecha_modelo)");
-        $modelo->bindParam(':fecha_modelo', $nom_modelo);
-
-        if ($modelo->execute()) {
-            echo "
-            <script>
-                document.addEventListener('DOMContentLoaded', function () {
-                    mostrarModal('success', 'Modelo agregado correctamente', 'vehiculos.php');
-                });
-            </script>";
-            exit();
-        }
-    }
-}
-
 // Aca defino la página actual
 $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 $limite_registros = 5;
@@ -83,7 +18,7 @@ $limite_registros = 5;
 $start_record = ($page - 1) * $limite_registros;
 
 // Contar total de registros
-$consulta_total = $con->prepare("SELECT COUNT(*) FROM vehiculos");
+$consulta_total = $con->prepare("SELECT COUNT(*) FROM vehiculos WHERE id_estado != 4");
 $consulta_total->execute();
 $total_filas = $consulta_total->fetchColumn();
 $paginas = ceil($total_filas / $limite_registros);
@@ -92,7 +27,7 @@ $paginas = ceil($total_filas / $limite_registros);
 $consulta = $con->prepare(
     "SELECT  v.foto AS veh_pic, v.id_placa, e.estado,u.id_documento, u.nombre_completo FROM vehiculos v
         INNER JOIN usuario  u ON u.id_documento = v.id_documento
-        INNER JOIN estado e ON e.id_estado = v.id_estado WHERE v.id_estado != 4 AND v.id_estado != 3
+        INNER JOIN estado e ON e.id_estado = v.id_estado WHERE v.id_estado != 4
         LIMIT :start, :limit"
 );
 $consulta->bindParam(':start', $start_record, PDO::PARAM_INT);

@@ -16,14 +16,16 @@ $limite_registros = 5;
 $start_record = ($page - 1) * $limite_registros;
 
 // Contar total de registros
-$consulta_total = $con->prepare("SELECT COUNT(*) FROM marca");
+$consulta_total = $con->prepare("SELECT COUNT(*) FROM marca WHERE id_estado != 4");
 $consulta_total->execute();
 $total_filas = $consulta_total->fetchColumn();
 $paginas = ceil($total_filas / $limite_registros);
 
 // Obtener datos paginados
-$consulta = $con->prepare("SELECT * FROM marca WHERE id_estado  != 4
-    LIMIT :start, :limit ");
+$consulta = $con->prepare("SELECT * FROM marca
+INNER JOIN tipomarca ON marca.id_tipo_marca = tipomarca.id_tipo_marca 
+WHERE id_estado  != 4
+LIMIT :start, :limit ");
 $consulta->bindParam(':start', $start_record, PDO::PARAM_INT);
 $consulta->bindParam(':limit', $limite_registros, PDO::PARAM_INT);
 $consulta->execute();
@@ -160,12 +162,14 @@ if (isset($_POST['submitmarca'])) {
                     <div class="encabezado">
                         <h4>ID</h4>
                         <h4>Nombre Marca</h4>
+                        <h4>Tipo Marca</h4>
                         
                     </div>
                     <?php foreach ($consulta as $filas) { ?>
                         <div class="vehiculos">
                             <h4><?php echo $filas['id_marca']; ?></h4>
                             <h4><?php echo $filas['nombre_marca']; ?></h4>
+                            <h4><?php echo $filas['nombre_tipo_marca'];?></h4>
                         </div>
                     <?php } ?>
                 <?php } ?>

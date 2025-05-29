@@ -148,7 +148,7 @@ $usuario_foto_path = !empty($usuario['foto']) ? '../../uploads/' . $usuario['fot
                         <form action="" method="POST">
                             <div class="form-group">
                                 <label for="id_documento" class="form-label">Documento del Usuario</label>
-                                <input type="text" class="form-input" id="id_documento" name="id_documento" required placeholder="Ingrese el documento del usuario">
+                                <input type="text" class="form-input" id="id_documento" name="id_documento"  placeholder="Ingrese el documento del usuario">
                             </div>
                             <input type="submit" class="btn-submit" name="buscar_usuario" value="BUSCAR USUARIO">
                         </form>
@@ -194,12 +194,12 @@ $usuario_foto_path = !empty($usuario['foto']) ? '../../uploads/' . $usuario['fot
                             </div>
 
                             <div class="form-inputs">
-                                <form action="" method="POST" class="grid-form">
+                                <form action="" method="POST" class="grid-form" id="grid-form" >
                                     <input type="hidden" name="id_documento" value="<?php echo $usuario['id_documento']; ?>">
 
                                     <div class="form-group">
                                         <label for="id_tipoVehiculo" class="form-label">Tipo de Vehiculo</label>
-                                        <select class="form-input" id="id_tipoVehiculo" name="id_tipoVehiculo" required>
+                                        <select class="form-input" name="id_tipoVehiculo" id="tipoVehiculo" >
                                             <option value="">Seleccione Tipo</option>
                                             <?php
                                             $consulta_tipos = $con->prepare("SELECT * FROM tipovehiculo ORDER BY tipoVehiculo");
@@ -215,7 +215,7 @@ $usuario_foto_path = !empty($usuario['foto']) ? '../../uploads/' . $usuario['fot
 
                                     <div class="form-group">
                                         <label for="placa" class="form-label">Placa</label>
-                                        <input type="text" class="form-input" id="placa" name="placa" required placeholder="Ingrese la placa" maxlength="7">
+                                        <input type="text" class="form-input" name="placa" id="placa"  placeholder="Ingrese la placa" maxlength="7">
                                         <button type="button" class="edit-icon"><i class="bi bi-pencil-square"></i></button>
                                     </div>
 
@@ -230,7 +230,7 @@ $usuario_foto_path = !empty($usuario['foto']) ? '../../uploads/' . $usuario['fot
 
                                     <div class="form-group">
                                         <label for="id_marca" class="form-label">Marca</label>
-                                        <select class="form-input" id="id_marca" name="id_marca" required>
+                                        <select class="form-input" name="id_marca" id="marca" >
                                             <option value="">Seleccione Marca</option>
                                             <?php
                                             $consulta_marcas = $con->prepare("SELECT * FROM marca ORDER BY nombre_marca");
@@ -246,7 +246,7 @@ $usuario_foto_path = !empty($usuario['foto']) ? '../../uploads/' . $usuario['fot
 
                                     <div class="form-group">
                                         <label for="id_modelo" class="form-label">Modelo</label>
-                                        <select class="form-input" id="id_modelo" name="id_modelo" required>
+                                        <select class="form-input" name="id_modelo" id="modelo" >
                                             <option value="">Seleccione Modelo</option>
                                             <?php
                                             $consulta_modelos = $con->prepare("SELECT * FROM modelo ORDER BY fecha_modelo DESC");
@@ -364,6 +364,21 @@ $usuario_foto_path = !empty($usuario['foto']) ? '../../uploads/' . $usuario['fot
                 this.value = letras + numeros;
             });
         }
+
+        
+        const modelo = document.getElementById('modelo').value;
+        const marca = document.getElementById('marca').value;
+        const caracte = document.getElementById('caracteristicas').value;
+        const tipoVehiculo =  document.getElementById('tipoVehiculo').value;
+
+        document.getElementById('grid-form').addEventListener('submit', function(event) {
+
+            event.preventDefault(); 
+            if (!placa.value || !tipoVehiculo.value || !marca.value || !modelo.value || !caracte.value) {
+                mostrarModal('mistake', 'Hay campos del formulario vacios', '');
+            }
+        });
+
         
     </script>
 </body>

@@ -25,11 +25,11 @@ try {
     exit;
 }
 
-$placa = isset($_GET['placa']) ? trim($_GET['placa']) : '';
-$origen = isset($_GET['origen']) ? $_GET['origen'] : 'vehiculos';
+$placa = isset($_SESSION['placa']) ? trim($_SESSION['placa']) : '';
+$origen = isset($_SESSION['redireccion']) ? $_SESSION['redireccion'] : 'vehiculos';
 
-$user_id = isset($_GET['user_id']) ? $_GET['user_id'] : '';
-$pagina_retorno = ($origen === 'usuarios') ? "vehiculos_usuarios.php?user_id=$user_id" : 'vehiculos.php';
+$user_id = isset($_SESSION['documento']) ? $_SESSION['documento'] : '';
+
 
 
 $consulta = $con->prepare("SELECT v.*, u.nombre_completo, u.id_documento, u.correo,
@@ -53,7 +53,7 @@ if (!$vehiculo) {
     echo "
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            mostrarModal('mistake', 'Vehiculo no encontrado', 'vehiculos.php');
+            mostrarModal('mistake', 'Vehiculo no encontrado', '$origen');
         });
     </script>";
     exit();
@@ -82,7 +82,7 @@ if (isset($_POST['actualizar'])) {
         echo "
             <script>
                 document.addEventListener('DOMContentLoaded', function () {
-                    mostrarModal('success', 'Vehiculo Actualizado con exito', '$pagina_retorno');
+                    mostrarModal('success', 'Vehiculo Actualizado con exito', '$origen');
                 });
             </script>";
         exit();
@@ -90,7 +90,7 @@ if (isset($_POST['actualizar'])) {
         echo "
             <script>
                 document.addEventListener('DOMContentLoaded', function () {
-                    mostrarModal('mistake', 'Error al actualizar el vehiculo', '$pagina_retorno');
+                    mostrarModal('mistake', 'Error al actualizar el vehiculo', '$origen');
                 });
             </script>";
         exit();
@@ -159,7 +159,8 @@ $usuario_foto_path = !empty($resultado['foto']) ? $mostrar : $usu;
                                         <i class="bi bi-upload"></i>
                                         <span>Subir foto</span>
                                     </div>
-                                    <form action="../../uploads/uploadVehiculos.php?placa=<?php echo $vehiculo['id_placa']; ?>" method="POST" enctype="multipart/form-data" id="form-vehicle-photo">
+                                    <form action="../../uploadsGlobal/uploadVehiculos.php" method="POST" enctype="multipart/form-data" id="form-vehicle-photo">
+                                        <input type="hidden" name="direccion" value="../roles/aprendiz/editar_vehiculo.php">
                                         <input type="hidden" name="tipo_foto" value="vehiculo">
                                         <input type="hidden" name="ruta" value="<?php echo $origen ?>">
                                         <input type="hidden" name="user_id" value="<?php echo $user_id ?>">
@@ -177,7 +178,8 @@ $usuario_foto_path = !empty($resultado['foto']) ? $mostrar : $usu;
                                         <i class="bi bi-upload"></i>
                                         <span>Subir foto</span>
                                     </div>
-                                    <form action="../../uploads/uploadVehiculos.php?placa=<?php echo $vehiculo['id_placa']; ?>" method="POST" enctype="multipart/form-data" id="form-card-photo">
+                                    <form action="../../uploadsGlobal/uploadVehiculos.php" method="POST" enctype="multipart/form-data" id="form-card-photo">
+                                        <input type="hidden" name="direccion" value="../roles/aprendiz/editar_vehiculo.php">
                                         <input type="hidden" name="tipo_foto" value="tarjeta">
                                         <input type="hidden" name="ruta" value="editar_vehiculo.php">
                                         <input type="file" name="foto" onchange="document.getElementById('form-card-photo').submit()">

@@ -6,8 +6,6 @@ $conexion = new database;
 $con = $conexion->conectar();
 include('../../includes/sesion_validar.php');
 
-
-$_SESSION['referer'] = $_SERVER['PHP_SELF'];
 $codigo = $_SESSION['documento'];
 
 $sql = $con->prepare("SELECT * FROM usuario INNER JOIN rol ON rol.id_rol = usuario.id_rol WHERE id_documento = :documento");

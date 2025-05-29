@@ -3,6 +3,7 @@ session_start();
 include('components/alert.php');
 require_once('../../database/database.php');
 include('../../includes/sesion_validar.php');
+include('components/loading.php');
 $conexion = new database;
 $con = $conexion->conectar();
 
@@ -188,8 +189,8 @@ $rol = isset($_SESSION['rol_name']) ? $_SESSION['rol_name'] : '';
   // Convertir los arrays a formato JSON para usar en JavaScript
   $etiquetasJSON = json_encode($etiquetas); // esto es lo que le pone mon,tue,wed,thu,fri etc
   $datosJSON = json_encode($datos); // conteo de los dias den cuanto entraron
-  
-  
+
+
   ?>
 
   <!-- Importación de iconos -->
@@ -197,6 +198,21 @@ $rol = isset($_SESSION['rol_name']) ? $_SESSION['rol_name'] : '';
   <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 
   <script>
+    window.addEventListener('load', function() {
+            fondo = document.getElementById('fondo');
+            setTimeout(function() {
+                fondo.classList.add('fade-out');
+                setTimeout(function() {
+                    fondo.style.display='none';
+                }, 1000); 
+            }, 1000); 
+
+            
+            ; // Cambia el valor a 1000 si deseas que se muestre durante 1 segundo
+            
+
+        });
+
     // Gráfico de barras
     const barras = document.getElementById('barras');
     const datas = new Chart(barras, {
@@ -261,41 +277,41 @@ $rol = isset($_SESSION['rol_name']) ? $_SESSION['rol_name'] : '';
     });
   </script>
   <script>
-document.getElementById('iconoNotificaciones').addEventListener('click', function() {
-    window.location.href = 'notificaciones.php';
-});
+    document.getElementById('iconoNotificaciones').addEventListener('click', function() {
+      window.location.href = 'notificaciones.php';
+    });
 
-function actualizarContadorNotificaciones() {
-    fetch('fetch/contar_notificaciones.php')
+    function actualizarContadorNotificaciones() {
+      fetch('fetch/contar_notificaciones.php')
         .then(response => response.json())
         .then(data => {
-            const contador = document.getElementById('contadorNotificaciones');
-            if (data.total > 0) {
-                contador.textContent = data.total;
-                contador.style.display = 'inline-block';
-            } else {
-                contador.style.display = 'none';
-            }
+          const contador = document.getElementById('contadorNotificaciones');
+          if (data.total > 0) {
+            contador.textContent = data.total;
+            contador.style.display = 'inline-block';
+          } else {
+            contador.style.display = 'none';
+          }
         });
-}
-actualizarContadorNotificaciones();
-setInterval(actualizarContadorNotificaciones, 30000);
+    }
+    actualizarContadorNotificaciones();
+    setInterval(actualizarContadorNotificaciones, 30000);
 
-// Reportes: abrir/cerrar modal
-document.getElementById('btnReportes').onclick = function() {
-  document.getElementById('modalReportes').style.display = 'flex';
-};
-document.getElementById('cerrarModalReportes').onclick = function() {
-  document.getElementById('modalReportes').style.display = 'none';
-};
-document.getElementById('modalReportes').onclick = function(e) {
-  if (e.target === this) this.style.display = 'none';
-};
-</script>
-<!-- Modal Reportes -->
-<div id="modalReportes" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.4); z-index:9999; align-items:center; justify-content:center;">
-  <div style="background:#fff; padding:30px; border-radius:10px; min-width:300px; position:relative;">
-    <h2>Generar Reporte PDF</h2>
+    // Reportes: abrir/cerrar modal
+    document.getElementById('btnReportes').onclick = function() {
+      document.getElementById('modalReportes').style.display = 'flex';
+    };
+    document.getElementById('cerrarModalReportes').onclick = function() {
+      document.getElementById('modalReportes').style.display = 'none';
+    };
+    document.getElementById('modalReportes').onclick = function(e) {
+      if (e.target === this) this.style.display = 'none';
+    };
+  </script>
+  <!-- Modal Reportes -->
+  <div id="modalReportes" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.4); z-index:9999; align-items:center; justify-content:center;">
+    <div style="background:#fff; padding:30px; border-radius:10px; min-width:300px; position:relative;">
+      <h2>Generar Reporte PDF</h2>
       <form id="formReporte" method="POST" action="generar_reporte.php" target="_blank" style="display: flex; flex-direction: column; gap: 16px; min-width: 260px;">
         <label for="fecha_inicio" style="font-weight: 500;">Fecha inicio:</label>
         <input type="date" name="fecha_inicio" id="fecha_inicio" required style="padding: 6px; border-radius: 5px; border: 1px solid #ccc;">
@@ -305,10 +321,10 @@ document.getElementById('modalReportes').onclick = function(e) {
 
         <label for="tabla_afectada" style="font-weight: 500;">Módulo:</label>
         <select name="tabla_afectada" id="tabla_afectada" style="padding: 6px; border-radius: 5px; border: 1px solid #ccc;">
-            <option value=""> Modulo </option>
-            <option value="usuario">Usuarios</option>
-            <option value="vehiculos">Vehículos</option>
-            <option value="objetos">Objetos</option>
+          <option value=""> Modulo </option>
+          <option value="usuario">Usuarios</option>
+          <option value="vehiculos">Vehículos</option>
+          <option value="objetos">Objetos</option>
         </select>
 
         <div style="display: flex; gap: 12px; margin-top: 10px; justify-content: flex-end;">
@@ -316,21 +332,21 @@ document.getElementById('modalReportes').onclick = function(e) {
           <button type="button" id="cerrarModalReportes" style="background:#007bff; color:#fff; border:none; padding:8px 16px; border-radius:5px;">Cancelar</button>
         </div>
       </form>
+    </div>
   </div>
-</div>
-<script>
-document.addEventListener("DOMContentLoaded", function() {
-  document.getElementById('btnReportes').onclick = function() {
-    document.getElementById('modalReportes').style.display = 'flex';
-  };
-  document.getElementById('cerrarModalReportes').onclick = function() {
-    document.getElementById('modalReportes').style.display = 'none';
-  };
-  document.getElementById('modalReportes').onclick = function(e) {
-    if (e.target === this) this.style.display = 'none';
-  };
-});
-</script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      document.getElementById('btnReportes').onclick = function() {
+        document.getElementById('modalReportes').style.display = 'flex';
+      };
+      document.getElementById('cerrarModalReportes').onclick = function() {
+        document.getElementById('modalReportes').style.display = 'none';
+      };
+      document.getElementById('modalReportes').onclick = function(e) {
+        if (e.target === this) this.style.display = 'none';
+      };
+    });
+  </script>
 </body>
 
 </html>

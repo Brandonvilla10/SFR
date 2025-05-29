@@ -2,7 +2,7 @@
 
 class database{
 
-    private $host ="localhost";
+    private $host ="localhost:3307";
     private $database = "databasesft";
     private $user = "root";
     private $password = "";

@@ -183,7 +183,7 @@ $usuario_foto_path = !empty($resultado['foto']) ? $mostrar : $usu;
                         </div>
 
                         <div class="form-inputs">
-                            <form action="" method="POST" class="grid-form">
+                            <form action="" method="POST" class="grid-form" id="grid-form">
                                 <div class="form-group">
                                     <label for="placa" class="form-label">Placa</label>
                                     <input type="text" class="form-input" id="placa" name="placa" value="<?php echo ($vehiculo['id_placa']); ?>" readonly>
@@ -198,7 +198,7 @@ $usuario_foto_path = !empty($resultado['foto']) ? $mostrar : $usu;
 
                                 <div class="form-group">
                                     <label for="id_estado" class="form-label">Estado</label>
-                                    <select class="form-input" id="id_estado" name="id_estado" required>
+                                    <select class="form-input" id="id_estado" name="id_estado" >
                                         <option value="">Seleccione Estado</option>
                                         <?php
                                         $consulta_estados = $con->prepare("SELECT * FROM estado  WHERE id_estado != 3 and id_estado != 4 ORDER BY estado");
@@ -247,5 +247,14 @@ $usuario_foto_path = !empty($resultado['foto']) ? $mostrar : $usu;
         const caracteristicas = document.getElementById("caracteristicas")
         limitar(caracteristicas, 100) 
         
+        const estado = document.getElementById('id_estado').value;
+
+        document.getElementById('grid-form').addEventListener('submit', function(event) {
+
+            event.preventDefault(); 
+            if (!estado.value || !caracteristicas.value) {
+                mostrarModal('mistake', 'Hay campos del formulario vacios', '');
+            }
+        });
 </script>
 </html>

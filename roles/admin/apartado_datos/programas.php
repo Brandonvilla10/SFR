@@ -15,7 +15,7 @@ $limite_registros = 6;
 // Aca esta el limite de los objetos
 $start_record = ($page - 1) * $limite_registros;
 
-$consulta_total = $con->prepare("SELECT COUNT(*) FROM programa");
+$consulta_total = $con->prepare("SELECT COUNT(*) FROM programa WHERE id_estado != 4");
 $consulta_total->execute();
 $total_filas = $consulta_total->fetchColumn();
 $paginas = ceil($total_filas / $limite_registros);

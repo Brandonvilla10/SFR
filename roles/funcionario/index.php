@@ -17,7 +17,7 @@ $rol = isset($_SESSION['rol_name']) ? $_SESSION['rol_name'] : '';
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="icon" href="../../assets/img/LogoFR.png"> <!-- Icono de la página -->
+  <link rel="icon" href="../../assets/img/LogoFR.webp"> <!-- Icono de la página -->
   <title>Home</title>
   <link rel="stylesheet" href="css/home.css"> <!-- Estilo principal de la página -->
   <link rel="stylesheet" href="asideBar/asidebar.css"> <!-- Estilo de la barra lateral -->

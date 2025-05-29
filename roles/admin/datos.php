@@ -41,7 +41,7 @@ $codigo = isset($_SESSION['documento']) ? $_SESSION['documento'] : '';
             <div class="object-card" onclick="window.location.href='apartado_datos/fichas.php'">
                 <div class="object-header">
                     <div class="object-icon">
-                        <img src="../../assets/img/datos/datos.png">
+                        <img src="../../assets/img/datos/datos.webp">
                     </div>
                     <div class="object-title">
                         <div class="object-name">Fichas</div>
@@ -57,7 +57,7 @@ $codigo = isset($_SESSION['documento']) ? $_SESSION['documento'] : '';
             <div class="object-card" onclick="window.location.href='apartado_datos/programas.php'">
                 <div class="object-header">
                     <div class="object-icon">
-                        <img src="../../assets/img/datos/datos.png">
+                        <img src="../../assets/img/datos/datos.webp">
                     </div>
                     <div class="object-title">
                         <div class="object-name">Programas de Formacion</div>
@@ -73,7 +73,7 @@ $codigo = isset($_SESSION['documento']) ? $_SESSION['documento'] : '';
             <div class="object-card" onclick="window.location.href='apartado_datos/nivel.php'">
                 <div class="object-header">
                     <div class="object-icon">
-                        <img src="../../assets/img/datos/datos.png">
+                        <img src="../../assets/img/datos/datos.webp">
                     </div>
                     <div class="object-title">
                         <div class="object-name">Niveles de Formacion</div>
@@ -89,7 +89,7 @@ $codigo = isset($_SESSION['documento']) ? $_SESSION['documento'] : '';
             <div class="object-card" onclick="window.location.href='apartado_datos/marcas.php'">
                 <div class="object-header">
                     <div class="object-icon">
-                        <img src="../../assets/img/datos/datos.png">
+                        <img src="../../assets/img/datos/datos.webp">
                     </div>
                     <div class="object-title">
                         <div class="object-name">Marcas</div>
@@ -105,7 +105,7 @@ $codigo = isset($_SESSION['documento']) ? $_SESSION['documento'] : '';
             <div class="object-card" onclick="window.location.href='apartado_datos/modelo.php'">
                 <div class="object-header">
                     <div class="object-icon">
-                        <img src="../../assets/img/datos/datos.png">
+                        <img src="../../assets/img/datos/datos.webp">
                     </div>
                     <div class="object-title">
                         <div class="object-name">Modelos de Vehiculos</div>
@@ -121,7 +121,7 @@ $codigo = isset($_SESSION['documento']) ? $_SESSION['documento'] : '';
             <div class="object-card" onclick="window.location.href='apartado_datos/tipoVeh.php'">
                 <div class="object-header">
                     <div class="object-icon">
-                        <img src="../../assets/img/datos/datos.png">
+                        <img src="../../assets/img/datos/datos.webp">
                     </div>
                     <div class="object-title">
                         <div class="object-name">Tipos de Vehiculos</div>
@@ -137,7 +137,7 @@ $codigo = isset($_SESSION['documento']) ? $_SESSION['documento'] : '';
             <div class="object-card" onclick="window.location.href='apartado_datos/tipoObj.php'">
                 <div class="object-header">
                     <div class="object-icon">
-                        <img src="../../assets/img/datos/datos.png">
+                        <img src="../../assets/img/datos/datos.webp">
                     </div>
                     <div class="object-title">
                         <div class="object-name">Tipos de Objetos</div>
@@ -153,7 +153,7 @@ $codigo = isset($_SESSION['documento']) ? $_SESSION['documento'] : '';
             <div class="object-card" onclick="window.location.href='apartado_datos/estado.php'">
                 <div class="object-header">
                     <div class="object-icon">
-                        <img src="../../assets/img/datos/datos.png">
+                        <img src="../../assets/img/datos/datos.webp">
                     </div>
                     <div class="object-title">
                         <div class="object-name">Estados</div>
@@ -169,7 +169,7 @@ $codigo = isset($_SESSION['documento']) ? $_SESSION['documento'] : '';
             <div class="object-card" onclick="window.location.href='apartado_datos/codigoQR.php'">
                 <div class="object-header">
                     <div class="object-icon">
-                        <img src="../../assets/img/datos/datos.png">
+                        <img src="../../assets/img/datos/datos.webp">
                     </div>
                     <div class="object-title">
                         <div class="object-name">Generar  QR</div>

@@ -122,7 +122,7 @@ if(isset($_POST["botoncito"])){
 
 
     <section class="columnaDerecha">
-        <img src="assets/img/imgRegistro/Image_RG.png" height="550px" width="515px" class="imgPersonitas" alt="">
+        <img src="assets/img/imgRegistro/Image_RG.webp" height="550px" width="515px" class="imgPersonitas" alt="">
     </section>
 
     </section>

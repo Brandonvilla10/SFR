@@ -153,7 +153,11 @@
 
     <div>
         <img src="assets/img/Nosotrosimg/seguridad.webp" alt="" class="iconosImagenes">
+<<<<<<< HEAD
         <h3 class="subtitulosh3">Seguridad</h3>
+=======
+        <h3 class="subtitulosh3">Seguridad</h3>        
+>>>>>>> 899dea45c770abbcc3265b616ebacdd9c95411ee
         <p class="subtitulosh3V2">Prioridad en la proteccion de datos y la  seguridad <br> de nuestros usuarios</p>
     </div>
 

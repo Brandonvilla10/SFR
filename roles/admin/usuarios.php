@@ -27,6 +27,7 @@ $paginas = ceil($total_filas / $limite_registros);
 $consulta = $con->prepare("SELECT u.id_documento, u.nombre_completo, u.correo, u.foto, estado.estado, rol.nombre_rol  FROM usuario u
     INNER JOIN rol ON u.id_rol = rol.id_rol
     INNER JOIN estado ON estado.id_estado = u.id_estado
+    WHERE u.id_estado!= 4
     LIMIT :start, :limit");
 $consulta->bindParam(':start', $start_record, PDO::PARAM_INT);
 $consulta->bindParam(':limit', $limite_registros, PDO::PARAM_INT);
@@ -203,11 +204,11 @@ if (isset($_POST["agregarSubmit"])) {
                             </div>
                             <div class="campo-formulario">
                                 <label for="nombre_completo">Nombre Completo</label>
-                                <input type="text" id="nombre_completo" name="nombre_completo" placeholder="Ingrese el nombre completo" required>
+                                <input type="text" id="nombre_completo" name="nombre_completo" placeholder="Ingrese el nombre completo"  maxlength="50" required>
                             </div>
                             <div class="campo-formulario">
                                 <label for="correo">Correo Electrónico</label>
-                                <input type="email" id="correo" name="correo" placeholder="Ingrese el correo electrónico" required>
+                                <input type="email" id="correo" name="correo" placeholder="Ingrese el correo electrónico" maxlength="65" required>
                             </div>
                             <div class="campo-formulario">
                                 <label for="contraseña">Contraseña</label>

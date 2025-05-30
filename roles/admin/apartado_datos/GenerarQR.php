@@ -92,6 +92,6 @@ if (isset($_POST['documento'])) {
 
 
     // Mostrar PDF
-    $pdf->Output('QR_PRUEBA.pdf','D');
+    $pdf->Output('QR' . $nombre . '.pdf','D');
     exit();
 }

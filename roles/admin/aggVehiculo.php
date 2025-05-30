@@ -347,21 +347,16 @@ $usuario_foto_path = !empty($usuario['foto']) ? '../../uploads/' . $usuario['fot
             placas.addEventListener('input', function() {
                 let value = this.value.toUpperCase();
 
-                // Elimina todo lo que no sea letra o número
                 value = value.replace(/[^A-Z0-9]/g, '');
 
-                // Si empieza con número, limpiar el campo
                 if (value.length > 0 && /^[0-9]/.test(value)) {
                     this.value = '';
                     return;
                 }
 
-                // Extraer letras y números (sin importar el orden)
-                const letras = value.replace(/[^A-Z]/g, '').slice(0, 3);
-                const numeros = value.replace(/[^0-9]/g, '').slice(0, 3);
+                value = value.slice(0, 6);
 
-                // Construir el valor final sin guion
-                this.value = letras + numeros;
+                this.value = value;
             });
         }
 

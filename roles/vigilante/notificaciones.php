@@ -30,7 +30,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['marcar_leidas'])) {
     <title>Notificaciones</title>
 
     <link rel="stylesheet" href="asideBar/asidebar.css">
-    <link rel="stylesheet" href="../../css/home.css">
     <link rel="stylesheet" href="css/notificaciones.css">
 </head>
 <body>
@@ -68,9 +67,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['marcar_leidas'])) {
                 <!-- Selector para filtrar por módulo -->
                 <select id="tablaAfectada">
                     <option value=""> Modulo </option>
-                    <option value="vehiculos">Vehículos</option>
-                    <option value="objetos">Objetos</option>
-                    <option value="usuarios">Usuarios</option>
+                    <option value="registroentradavehiculos">Vehiculos</option>
+                    <option value="registroentradaobjetos">Objetos</option>
+                    <option value="registroentradapersona">Usuarios</option>
                 </select>
 
                 <!-- Selector de fecha para filtrar notificaciones -->
@@ -131,6 +130,7 @@ function cargarNotificaciones(pagina = 1) {
     // Obtiene los valores de los campos de filtro
     const documento = document.getElementById('buscarDocumento').value;
     const tabla = document.getElementById('tablaAfectada').value;
+    console.log(tabla);     
     const fecha = document.getElementById('fechaFiltro').value;
 
     // Construye los parámetros de la solicitud
@@ -187,42 +187,7 @@ window.addEventListener('DOMContentLoaded', function() {
     }
 });
 
-function actualizarContadorNotificaciones() {
-    fetch('fetch/contar_notificaciones.php')
-        .then(response => response.json())
-        .then(data => {
-            const contador = document.getElementById('contadorNotificaciones');
-            if (data.total > 0) {
-                contador.textContent = data.total;
-                contador.style.display = 'inline-block';
-            } else {
-                contador.style.display = 'none';
-            }
-        });
-}
 
-// Llama a esta función cuando se se de el clic en la campana esa 
-function marcarNotificacionesComoLeidas() {
-    fetch('notificaciones.php', {
-        method: 'POST',
-        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-        body: 'marcar_leidas=1'
-    })
-    .then(res => res.json())
-    .then(data => {
-        if (data.success) {
-            actualizarContadorNotificaciones();
-        }
-    });
-}
-
-// Llama a la función al cargar la página de notificaciones
-window.addEventListener('DOMContentLoaded', function() {
-    marcarNotificacionesComoLeidas();
-    actualizarContadorNotificaciones();
-});
-
-setInterval(actualizarContadorNotificaciones, 10000); // cada 10 segundos
 </script>
 
 </body>

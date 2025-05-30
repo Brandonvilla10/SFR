@@ -366,18 +366,22 @@ $usuario_foto_path = !empty($usuario['foto']) ? '../../uploads/' . $usuario['fot
         }
 
         
-        const modelo = document.getElementById('modelo').value;
-        const marca = document.getElementById('marca').value;
-        const caracte = document.getElementById('caracteristicas').value;
-        const tipoVehiculo =  document.getElementById('tipoVehiculo').value;
-
+        
         document.getElementById('grid-form').addEventListener('submit', function(event) {
-
-            event.preventDefault(); 
-            if (!placa.value || !tipoVehiculo.value || !marca.value || !modelo.value || !caracte.value) {
+            
+            const placa = document.getElementById('placa').value;
+            const modelo = document.getElementById('modelo').value;
+            const marca = document.getElementById('marca').value;
+            const caracte = document.getElementById('caracteristicas').value;
+            const tipoVehiculo =  document.getElementById('tipoVehiculo').value;
+            
+            if (!placa || !tipoVehiculo || !marca || !modelo || !caracte) {
+                event.preventDefault(); 
                 mostrarModal('mistake', 'Hay campos del formulario vacios', '');
             }
         });
+     
+
 
         
     </script>

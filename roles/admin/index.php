@@ -3,7 +3,6 @@ session_start();
 include('components/alert.php');
 require_once('../../database/database.php');
 include('../../includes/sesion_validar.php');
-include('components/loading.php');
 $conexion = new database;
 $con = $conexion->conectar();
 
@@ -196,27 +195,7 @@ $rol = isset($_SESSION['rol_name']) ? $_SESSION['rol_name'] : '';
   <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 
   <script>
-    window.addEventListener('load', function() {
-            cosas = document.getElementById('ocultar_contenido');
-            cosas.style.opacity="0";
-            fondo = document.getElementById('fondo');
-            
-            setTimeout(function() {
-              fondo.classList.add('fade-out');
-            }, 1000); 
-            setTimeout(function() {
-              
-              fondo.style.display='none';
-              cosas.style.opacity="1";
-        
-              
-            }, 1000); 
-
-            
-            ; // Cambia el valor a 1000 si deseas que se muestre durante 1 segundo
-            
-
-        });
+   
 
     // Gráfico de barras
     const barras = document.getElementById('barras');

@@ -1,8 +1,9 @@
 <?php 
+session_start();
 require_once("database/database.php");
 $conexion = new database;
 $con = $conexion->conectar();
-session_start();
+include('roles/admin/components/alert.php');
 
 $correo = $_SESSION['correo'];
 

@@ -75,7 +75,7 @@ if (!isset($correo)) {
 
         </section>
 
-        <img src="assets/img/recuperarContraseña/Image_RC.png" class="imgPersonitas" alt="Imagen de recuperación de contraseña">
+        <img src="assets/img/recuperarContraseña/Image_RC.webp" class="imgPersonitas" alt="Imagen de recuperación de contraseña">
 
 
 

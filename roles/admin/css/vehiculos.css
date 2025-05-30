@@ -92,7 +92,7 @@
 }
 
 .img_fondo {
-  background-image: url(../../../assets/img/Base_White.png);
+  background-image: url(../../../assets/img/Base_White.webp);
   width: 80%;
   height: 80%;
   background-repeat: no-repeat;
@@ -351,7 +351,7 @@
     font-size: 0.9em;
   }
   .img_fondo {
-    background-image: url(../../../assets/img/Base_White.png);
+    background-image: url(../../../assets/img/Base_White.webp);
     width: 80%;
     height: 80%;
     background-repeat: no-repeat;

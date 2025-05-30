@@ -24,17 +24,17 @@ session_start();
     <main class="division">
 
         <section class="form_place">
+            <div class="card">
+                <section class="env_correo">
 
-            <section class="env_correo">
+                    <button class="botonVolverInicial botonVolver" id="botonVolver" onclick="window.location='index.php'">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="flecha">
+                            <path d="M9 18l6-6-6-6" />
+                        </svg>
+                        <p class="volverTexto">Volver</p>
+                    </button>
 
-                <button class="botonVolverInicial botonVolver" id="botonVolver" onclick="window.location='index.php'">
-
-                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="flecha">
-                        <path d="M9 18l6-6-6-6" />
-                    </svg>
-                    <p class="volverTexto">Volver</p>
-                </button>
-
+                    <form action="config\env_mailer.php" class="datos_form" method="post">
                 <form action="config\env_mailer.php" class="datos_form" method="post">
 
 
@@ -50,7 +50,7 @@ session_start();
 
         </section>
 
-        <img src="assets/img/recuperarContraseña/Image_RC.png" class="imgPersonitas" alt="Imagen de recuperación de contraseña">
+        <img src="assets/img/recuperarContraseña/Image_RC.webp" class="imgPersonitas" alt="Imagen de recuperación de contraseña">
     </main>
 
     <?php include("template/footer.html") ?>

@@ -72,7 +72,7 @@ body, html {
         justify-items: center; /* Centramos todo en la tarjeta */
         align-items: center;
         background-color: white;
-        background: url("../assets/img/Base_White.png"); /* Fondo blanco */
+        background: url("../assets/img/Base_White.webp"); /* Fondo blanco */
         background-repeat: no-repeat; /* Evita que la imagen se repita */
         background-position: center;
         border-radius: 20px; /* Bordes redondeados */;

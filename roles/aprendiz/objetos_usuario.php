@@ -109,6 +109,18 @@ if (isset($_POST["eliminarSubmir"])) {
     }
 }
 
+if(isset($_POST['editarBoton'])){
+    $array = explode("," , $_POST['editarBoton']);
+
+    $id_serial = $array[0];
+    $redireccion = $array[1];
+    
+    $_SESSION['id_serial'] = $id_serial;
+    $_SESSION['redireccion'] = $redireccion;
+
+    echo "<script>window.location = './editar_objetos_usu.php'</script> ";
+    exit();
+}
 
 ?>
 
@@ -195,8 +207,13 @@ if (isset($_POST["eliminarSubmir"])) {
 
                     //<-------------------------------  CARTA DE LOS OBJETOS--------------------->
 
-                    foreach ($consulta_2 as $objeto) { ?>
-
+                    foreach ($consulta_2 as $objeto) {
+                        $array = array(
+                            "id_serial"=> $objeto["id_serial"],
+                            "redireccion" => './objetos_usuario.php'
+                        )
+                        ?>
+                        
                         <div class="object-card">
 
                             <div class="object-title">
@@ -229,9 +246,13 @@ if (isset($_POST["eliminarSubmir"])) {
                                     <button type="submit" name="borrar" value="<?php echo $objeto['id_serial'] ?>" class="action-button delete-button modalConfirmacionButton" onclick="mostrarConfirmacion(this.value,'Estas seguro de eliminar este objeto')"> <i class="bi bi-trash-fill"></i></button>
 
 
+                                    <form action="" method="post">
 
-                                    <button class="action-button edit-button" onclick="window.location.href='editar_objetos_usu.php?id=<?php echo $objeto['id_serial'] ?>&owner=<?php echo $primera_parte['id_documento'] ?>&route=objetos_usuario.php'"><i class="bi bi-pencil-square"></i> </button>
-
+                                        <button class="action-button edit-button" name="editarBoton" type="submit"
+                                        value="<?php echo implode("," , $array ) ?>">
+                                        <i class="bi bi-pencil-square"></i> </button>
+                                        
+                                    </form>
                                 </div>
 
                             </div>
@@ -250,7 +271,7 @@ if (isset($_POST["eliminarSubmir"])) {
 
         <div id="agregar" class="modal">
 
-            <form action="../../uploads/upload_crear_objeto.php" id="formCrearObjeto" method="POST" enctype="multipart/form-data" class="datos_basicos">
+            <form action="../../uploadsGlobal/upload_crear_objeto.php" id="formCrearObjeto" method="POST" enctype="multipart/form-data" class="datos_basicos">
 
                 <label for="serial" class="label_titulo">Serial</label>
                 <input type="text" id="serial" name="serial" class="data_input" placeholder="Serial">

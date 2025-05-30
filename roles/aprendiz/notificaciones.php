@@ -55,9 +55,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['marcar_leidas'])) {
 
         <div class="contenedor-notificaciones">
             <!-- Campo de búsqueda por documento -->
-            <input type="text" class="buscar_documento_con_icono" id="buscarDocumento"
-                   placeholder="Buscar por documento..." 
-                   value="<?php htmlspecialchars($documentoBuscado); ?>">
+          
                                    
 
             <!-- Botón para mostrar/ocultar los filtros adicionales -->
@@ -70,7 +68,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['marcar_leidas'])) {
                     <option value=""> Modulo </option>
                     <option value="vehiculos">Vehículos</option>
                     <option value="objetos">Objetos</option>
-                    <option value="usuarios">Usuarios</option>
                 </select>
 
                 <!-- Selector de fecha para filtrar notificaciones -->
@@ -106,8 +103,8 @@ document.getElementById('toggleFiltros').addEventListener('click', () => {
     }
 });
 
-// Llama a cargarNotificaciones cuando se escribe en el input de documento
-document.getElementById('buscarDocumento').addEventListener('input', () => cargarNotificaciones());
+
+
 
 // Llama a cargarNotificaciones cuando se selecciona un módulo
 document.getElementById('tablaAfectada').addEventListener('change', () => cargarNotificaciones());
@@ -117,7 +114,6 @@ document.getElementById('fechaFiltro').addEventListener('change', () => cargarNo
 
 // Si tienes botón de limpiar filtros, puedes dejarlo así:
 document.getElementById('limpiarFiltrosBtn').addEventListener('click', () => {
-    document.getElementById('buscarDocumento').value = '';
     document.getElementById('tablaAfectada').value = '';
     document.getElementById('fechaFiltro').value = '';
     cargarNotificaciones();
@@ -129,13 +125,13 @@ window.addEventListener('DOMContentLoaded', () => cargarNotificaciones());
 // Función para cargar notificaciones con filtros y paginación
 function cargarNotificaciones(pagina = 1) {
     // Obtiene los valores de los campos de filtro
-    const documento = document.getElementById('buscarDocumento').value;
+
     const tabla = document.getElementById('tablaAfectada').value;
     const fecha = document.getElementById('fechaFiltro').value;
-
+console.log($documentoBuscado);
     // Construye los parámetros de la solicitud
     const params = new URLSearchParams({
-        documento: documento,
+        documento: $documentoBuscado ,
         tabla: tabla,
         fecha: fecha,
         pagina: pagina // Número de página para la paginación
@@ -165,7 +161,7 @@ function cargarNotificaciones(pagina = 1) {
 // Evento para el botón "Limpiar filtros"
 document.getElementById('limpiarFiltrosBtn').addEventListener('click', () => {
     // Restablece los valores de los campos de filtro
-    document.getElementById('buscarDocumento').value = '';
+
     document.getElementById('tablaAfectada').value = '';
     document.getElementById('fechaFiltro').value = '';
 
@@ -181,11 +177,7 @@ document.getElementById('buscarDocumento').addEventListener('keypress', function
 });
 
 // Si hay un documento inicial en la sesión, carga las notificaciones automáticamente
-window.addEventListener('DOMContentLoaded', function() {
-    if (document.getElementById('buscarDocumento').value) { // Si el campo de documento no está vacío...
-        cargarNotificaciones(1); // Carga las notificaciones
-    }
-});
+
 
 function actualizarContadorNotificaciones() {
     fetch('fetch/contar_notificaciones.php')

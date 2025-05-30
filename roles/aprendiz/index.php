@@ -83,7 +83,7 @@ $rol = isset($_SESSION['rol_name']) ? $_SESSION['rol_name'] : '';
             INNER JOIN objetos ON objetos.id_serial = registroentradaobjetos.id_serial
             INNER JOIN usuario on usuario.id_documento = objetos.id_documento
             INNER JOIN rol ON rol.id_rol = usuario.id_rol
-            where usuario.id_documento = 1106227450
+            where usuario.id_documento = $codigo
             
             ORDER BY id_documento DESC LIMIT 5");
             $ultimosRegistros->execute();

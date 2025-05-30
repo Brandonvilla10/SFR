@@ -271,7 +271,7 @@ if(isset($_POST['editarBoton'])){
 
         <div id="agregar" class="modal">
 
-            <form action="../../uploads/upload_crear_objeto.php" id="formCrearObjeto" method="POST" enctype="multipart/form-data" class="datos_basicos">
+            <form action="../../uploadsGlobal/upload_crear_objeto.php" id="formCrearObjeto" method="POST" enctype="multipart/form-data" class="datos_basicos">
 
                 <label for="serial" class="label_titulo">Serial</label>
                 <input type="text" id="serial" name="serial" class="data_input" placeholder="Serial">

@@ -80,21 +80,45 @@ if (isset($_POST['eliminarSubmir'])) {
 
 if (isset($_POST["agregarSubmit"])) {
 
-    $id_documento = $_POST['id_documento'];
-    $nombre_completo = $_POST['nombre_completo'];
-    $correo = $_POST['correo'];
-    $contraseña = $_POST['contraseña'];
-    $id_rol = $_POST['id_rol'];
+    try {
+        $id_documento = $_POST['id_documento'];
+        $nombre_completo = $_POST['nombre_completo'];
+        $correo = $_POST['correo'];
+        $contraseña = $_POST['contraseña'];
+        $id_rol = $_POST['id_rol'];
 
-    $hasPassword = password_hash($contraseña, PASSWORD_DEFAULT);
+        if(empty($id_documento) || empty($nombre_completo) || empty($correo) || empty($contraseña) || empty($id_rol)) {
+            echo "
+            <script>
+               document.addEventListener('DOMContentLoaded', function () {
+                   mostrarModal('mistake', 'No se puede realizar esta accion', 'usuarios.php');
+               });
+            </script>";
+        }
 
-    $nuevoUser = $con->prepare("INSERT INTO usuario (id_documento, nombre_completo, correo, contraseña, id_estado,id_rol) VALUES (:id_documento, :nombre_completo, :correo, :contrasena,1, :id_rol)");
-    $nuevoUser->bindParam(':id_documento', $id_documento);
-    $nuevoUser->bindParam(':nombre_completo', $nombre_completo);
-    $nuevoUser->bindParam(':correo', $correo);
-    $nuevoUser->bindParam(':contrasena', $hasPassword);
-    $nuevoUser->bindParam(':id_rol', $id_rol);
-    $nuevoUser->execute();
+        $hasPassword = password_hash($contraseña, PASSWORD_DEFAULT);
+
+        $nuevoUser = $con->prepare("INSERT INTO usuario (id_documento, nombre_completo, correo, contraseña, id_estado,id_rol) VALUES (:id_documento, :nombre_completo, :correo, :contrasena,1, :id_rol)");
+        $nuevoUser->bindParam(':id_documento', $id_documento);
+        $nuevoUser->bindParam(':nombre_completo', $nombre_completo);
+        $nuevoUser->bindParam(':correo', $correo);
+        $nuevoUser->bindParam(':contrasena', $hasPassword);
+        $nuevoUser->bindParam(':id_rol', $id_rol);
+        $nuevoUser->execute();
+        echo "
+        <script>
+           document.addEventListener('DOMContentLoaded', function () {
+               mostrarModal('success', 'Usuario registrado con exito', 'usuarios.php');
+           });
+       </script>";
+    } catch (PDOException $e) {
+        echo "
+        <script>
+           document.addEventListener('DOMContentLoaded', function () {
+               mostrarModal('mistake', 'No se puede realizar esta accion', 'usuarios.php');
+           });
+       </script>";
+    }
 }
 
 ?>
@@ -204,7 +228,7 @@ if (isset($_POST["agregarSubmit"])) {
                             </div>
                             <div class="campo-formulario">
                                 <label for="nombre_completo">Nombre Completo</label>
-                                <input type="text" id="nombre_completo" name="nombre_completo" placeholder="Ingrese el nombre completo"  maxlength="50" required>
+                                <input type="text" id="nombre_completo" name="nombre_completo" placeholder="Ingrese el nombre completo" maxlength="50" required>
                             </div>
                             <div class="campo-formulario">
                                 <label for="correo">Correo Electrónico</label>
@@ -326,8 +350,8 @@ if (isset($_POST["agregarSubmit"])) {
 
             const filtro = document.getElementById('filtro')
 
-            filtro.addEventListener("input", () =>{
-                if(filtro.value.length > 10){
+            filtro.addEventListener("input", () => {
+                if (filtro.value.length > 10) {
                     filtro.value = filtro.value.substring(0, 10)
                 }
             })
@@ -349,7 +373,7 @@ if (isset($_POST["agregarSubmit"])) {
                 .then((response) => response.json())
                 .then(data => {
 
-               
+
                     if (data.error) {
                         const objetos = document.querySelectorAll('.objetos');
                         objetos.forEach(objetos => {

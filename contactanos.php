@@ -41,10 +41,7 @@
 
         <div style="display: flex;flex-direction:row;margin-top: 10px;justify-content: center;">
           <img style="object-fit: cover;" height="30px" width="30px" src="assets/img/iconosRedesSociales/correo-electronico.webp" alt="">
-<<<<<<< HEAD
           
-=======
->>>>>>> 2b91f9930a33a895db8c0f81bf78f1abd1127b97
           <p style="font-weight: 600;">senafastregister@gmail.com</p>
         </div>
       </div>

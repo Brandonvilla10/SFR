@@ -1,9 +1,118 @@
 <?php
-session_start();
-include('components/alert.php');
 require_once('../../database/database.php');
 $conexion = new database;
 $con = $conexion->conectar();
+session_start();
+
+// apartir de aqui viene la logica para poder crear el excel ---------------------------------------
+// recomendacion, dejar este scrip arriba, para eviar errores ya que chilla si hay espacios de mas 
+include("../../excelComponente/generarExcel.php");
+
+// Función que consulta datos desde la base de datos según los filtros que vienen en el array
+function consultaDatosExcel($con, $consulta, $array)
+{
+    // Si el filtro 'id_estado' es 10 (caso especial)
+    if (isset($array['id_estado']) && $array['id_estado'] == 10) {
+
+        // Si también se proporciona un documento específico
+        if (!empty($array['id_documento'])) {
+            // Consulta con filtro por documento
+            $consulta = "SELECT * FROM objetos 
+            INNER JOIN usuario ON objetos.id_documento = usuario.id_documento 
+            INNER JOIN estado ON objetos.id_estado = estado.id_estado
+            INNER JOIN marca ON objetos.id_marca = marca.id_marca
+            WHERE objetos.id_documento = :id_documento";
+            $datos = $con->prepare($consulta);
+            $datos->bindParam(':id_documento', $array['id_documento']);
+            $datos->execute();
+        } else {
+            // Consulta todos los objetos con estado 10 (sin filtro por documento)
+            $datos = $con->prepare("SELECT * FROM objetos 
+            INNER JOIN usuario ON objetos.id_documento = usuario.id_documento
+            INNER JOIN estado ON objetos.id_estado = estado.id_estado
+            INNER JOIN marca ON objetos.id_marca = marca.id_marca");
+            $datos->execute();
+        }
+
+    } else if (!empty($array)) {
+        // Si hay otros filtros personalizados
+        $campos = [];
+        foreach ($array as $key => $value) {
+            // Genera condiciones dinámicas tipo: objetos.campo = :campo
+            $campos[] = "objetos.$key = :$key";
+        }
+        // Arma la consulta con INNER JOIN y condiciones dinámicas
+        $consulta = "SELECT * FROM objetos 
+        INNER JOIN usuario ON objetos.id_documento = usuario.id_documento 
+        INNER JOIN estado ON objetos.id_estado = estado.id_estado
+        INNER JOIN marca ON objetos.id_marca = marca.id_marca
+        WHERE " . implode(" AND ", $campos);
+        $datos = $con->prepare($consulta);
+        // Ejecuta pasando todos los valores del array como parámetros
+        $datos->execute($array);
+    } else {
+        // Si no se pasa ningún filtro, consulta todos los objetos con sus respectivos usuarios
+        $datos = $con->prepare("SELECT * FROM objetos 
+        INNER JOIN usuario ON objetos.id_documento = usuario.id_documento
+        INNER JOIN estado ON objetos.id_estado = estado.id_estado
+        INNER JOIN marca ON objetos.id_marca = marca.id_marca");
+        $datos->execute();
+    }
+
+    // Retorna todos los resultados como array 
+    return $datos->fetchAll(PDO::FETCH_ASSOC);
+}
+
+
+if (isset($_POST["crearExcel"])) {
+    $array = []; // Array de filtros
+    $tipoReporte = $_POST["tipoReporte"];
+    $documentoUsuario = $_POST["documentoUsuario"];
+
+    // Si se proporciona un documento de usuario, se añade como filtro
+    if (!empty($documentoUsuario)) {
+        $array['id_documento'] = $documentoUsuario;
+    }
+
+    // Si el tipo de reporte es 10, se interpreta como un filtro específico
+    if ($tipoReporte == 10) {
+        $array['id_estado'] = 10;
+    } else if (!empty($tipoReporte)) {
+        // Si se proporciona otro tipo de estado, también se añade como filtro
+        $array['id_estado'] = $tipoReporte;
+    }
+
+    // Se llama a la función para obtener los datos según los filtros aplicados
+    $valorConsulta = consultaDatosExcel($con, "SELECT * FROM objetos", $array);
+
+    // Si se obtienen resultados, se preparan para exportarlos a un archivo CSV
+    if (!empty($valorConsulta)) {
+        // Columnas que tendrá el archivo CSV
+        $columns = ['Serial_Del_Objeto', 'Nombre_Objeto', 'Caracteristica', 'Documento Del Propietario', 'Nombre Del Propietario', 'Estado Del Objeto', 'Marca'];
+        $data = [];
+
+        // Recorre cada fila del resultado y prepara los datos con nombres más legibles
+        foreach ($valorConsulta as $fila) {
+            $data[] = [
+                'Serial_Del_Objeto' => $fila['id_serial'],
+                'Nombre_Objeto' => $fila['nombre'],
+                'Caracteristica' => $fila['caracteristica'],
+                'Documento Del Propietario' => $fila['id_documento'],
+                'Nombre Del Propietario' => $fila['nombre_completo'],
+                'Estado Del Objeto' => $fila['estado'],
+                'Marca' => $fila['nombre_marca'],
+            ];
+        }
+
+        // Llama a la función que genera el archivo CSV con los datos y columnas
+        crearCSV($columns, $data, 'usuarios.csv');
+    }
+}
+
+
+// -------------------------------------------------------------------------------------------------
+
+include('components/alert.php');
 include('../../includes/sesion_validar.php');
 
 $codigo = isset($_SESSION['documento']) ? $_SESSION['documento'] : '';
@@ -98,6 +207,9 @@ $consulta->bindParam(':start', $start_record, PDO::PARAM_INT);
 $consulta->bindParam(':limit', $limite_registros, PDO::PARAM_INT);
 $consulta->execute();
 
+
+
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -128,9 +240,37 @@ $consulta->execute();
 
 
 
+                <button class="exportarExcel" id="modalExcel">Exportar Excel</button>
+
                 <button class="buscar_objeto_titulo" id="abrirBuscar">Buscar Objetos</button>
             </div>
             <hr class="separador">
+
+
+            <!-- -----------------------------------modal para exportarExcel------------------------->
+
+            <div id="modal-generarexel" class="modal-generarexel">
+                <div class="modal-generarexel-content">
+                    <button class="modal-generarexel-close cerrarModalBuscar" id="cerrarModalExcel">&times;</button>
+                    <h2 class="modal-generarexel-title">Generar archivo Excel</h2>
+                    <form method="post" class="form-generarexel">
+                        <label for="fechaFin-generarexel" class="label-generarexel">Documento(No obligatorio):</label>
+                        <input type="number" id="fechaFin-generarexel" name="documentoUsuario" placeholder="Documento..." class="input-generarexel">
+                        <label for="tipoReporte-generarexel" class="label-generarexel">Tipo de reporte:</label>
+                        <select id="tipoReporte-generarexel" name="tipoReporte" class="select-generarexel" required>
+                            <option value="">Elija Un Tipo De Reporte...</option>
+                            <option value="10">Todos</option>
+                            <option value="4">Objetos eliminados</option>
+                            <option value="1">Objetos fuera</option>
+                            <option value="2">Objetos inactivos</option>
+                        </select>
+
+                        <button type="submit" name="crearExcel" class="btn-generarexel-submit">Generar Excel</button>
+                    </form>
+                </div>
+            </div>
+
+
             <!-------------------------------- TABLA DE OBJETOS ------------------------------------->
 
             <div class="contenido_tabla" id="contenido_tabla">
@@ -151,7 +291,7 @@ $consulta->execute();
                     </div>
                     <?php foreach ($consulta as $generales) { ?>
                         <div class="objetos">
-                            <h4><img src="../../uploads/<?php echo isset($generales['ob_pic']) && $generales['ob_pic'] !== '' ? $generales['ob_pic'] : 'default_iconos.png'; ?>" alt="img" height="60px" width="60px" onerror="this.src='../../uploads/default_iconos.png'"></h4>   
+                            <h4><img src="../../uploads/<?php echo isset($generales['ob_pic']) && $generales['ob_pic'] !== '' ? $generales['ob_pic'] : 'default_iconos.png'; ?>" alt="img" height="60px" width="60px" onerror="this.src='../../uploads/default_iconos.png'"></h4>
                             <h4><?php echo $generales['id_serial']; ?></h4>
                             <h4><?php echo $generales['nombre']; ?></h4>
                             <h4><?php echo $generales['id_documento']; ?></h4>
@@ -225,6 +365,26 @@ $consulta->execute();
 
 
     <script>
+        // Modal de Excel
+        const modalExcel = document.getElementById('modal-generarexel');
+        const modalExcelBtn = document.getElementById('modalExcel');
+
+        modalExcelBtn.addEventListener('click', () => {
+            modalExcel.style.visibility = 'visible';
+            modalExcel.style.opacity = '1';
+
+        });
+        modalExcel.addEventListener('click', (event) => {
+            if (event.target === modalExcel) {
+                modalExcel.style.visibility = 'hidden';
+                modalExcel.style.opacity = '0';
+            }
+        });
+
+        const cerrarModalExcel = document.getElementById('cerrarModalExcel').addEventListener('click', () => {
+            modalExcel.style.visibility = 'hidden';
+            modalExcel.style.opacity = '0';
+        });
         // Modal de Búsqueda
         const modalBuscar = document.getElementById('modalBuscar');
         const abrirBuscar = document.getElementById('abrirBuscar');
@@ -253,7 +413,7 @@ $consulta->execute();
         const user_id = document.getElementById("user_id");
 
         user_id.addEventListener('input', () => {
-            if(user_id.value.length > 10){
+            if (user_id.value.length > 10) {
                 user_id.value = user_id.value.substring(0, 10)
             }
         })
@@ -280,7 +440,7 @@ $consulta->execute();
         const Filtro = document.getElementById('Filtro');
 
         Filtro.addEventListener('input', () => {
-            if(Filtro.value.length > 10){
+            if (Filtro.value.length > 10) {
                 Filtro.value = Filtro.value.substring(0, 10)
             }
         })
@@ -296,8 +456,12 @@ $consulta->execute();
 
             fetch('fetch/BusquedaBarra.php', {
                     method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({consulta: consulta})
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        consulta: consulta
+                    })
                 })
                 .then((response) => response.json())
                 .then(data => {
@@ -306,9 +470,9 @@ $consulta->execute();
                     if (data.error) {
                         const objetos = document.querySelectorAll('.objetos');
                         objetos.forEach(objetos => {
-                                objetos.remove();
+                            objetos.remove();
                         });
-                        
+
                     } else {
                         const objetos = document.querySelectorAll('.objetos');
                         objetos.forEach(objetos => {
@@ -330,9 +494,9 @@ $consulta->execute();
                             
                                 `;
 
-                                
-                                const paginacion = document.getElementById('paginacion');
-                                contenido.insertBefore(cartas, paginacion);
+
+                            const paginacion = document.getElementById('paginacion');
+                            contenido.insertBefore(cartas, paginacion);
                         })
 
                     }

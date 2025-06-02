@@ -20,27 +20,29 @@ $offset = ($pagina - 1) * $por_pagina;
 
 // Arreglos para construir la consulta dinámica
 $where = "WHERE 1=1";
+$params = []; // Inicialización de $params que faltaba
 
 // Filtro por documento
 if ($documento) {
     $where .= " AND id_afectado = :documento";
+    $params[':documento'] = $documento;
 }
 
 // Filtro por módulo
 if ($tabla) {
     $where .= " AND tabla_afectada = :tabla";
+    $params[':tabla'] = $tabla;
 }
 
 // Filtro por fecha
 if ($fecha) {
     $where .= " AND DATE(fecha) = :fecha";
+    $params[':fecha'] = $fecha;
 }
 
-// SOLO INGRESOS
-$where .= " AND tipo_evento = 'ingreso'";
+$where .= " AND descripcion LIKE '%Ingreso%'";
 
 $query = "SELECT * FROM notificaciones $where ORDER BY fecha DESC LIMIT :limit OFFSET :offset";
-
 // Para contar el total de resultados (para la paginación)
 $count_query = "SELECT COUNT(*) FROM notificaciones $where";
 
@@ -68,21 +70,6 @@ try {
         echo '<div class="grid-notificaciones">';
         foreach ($notificaciones as $notif) {
             echo '<div class="notificacion">';
-            $tipoEvento = $notif['tipo_evento'];
-            switch ($tipoEvento) {
-                case 'INSERT':
-                    $tipoEventoMostrar = 'Agregado';
-                    break;
-                case 'UPDATE':
-                    $tipoEventoMostrar = 'Actualizado';
-                    break;
-                case 'DELETE':
-                    $tipoEventoMostrar = 'Eliminado';
-                    break;
-                default:
-                    $tipoEventoMostrar = $tipoEvento;
-            }
-            echo "<b>{$tipoEventoMostrar} en {$notif['tabla_afectada']}</b>";
             echo '<p>' . htmlspecialchars($notif['descripcion']) . '</p>';
             echo '<small>Realizado por: ' . htmlspecialchars(isset($notif['documento_generador']) ? $notif['documento_generador'] : 'Usuario Del Sistema') . '</small>';
             echo '<time>' . date("d/m/Y H:i", strtotime($notif['fecha'])) . '</time>';

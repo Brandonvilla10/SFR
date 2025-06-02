@@ -1,9 +1,9 @@
-
 <?php 
+session_start();
 require_once("database/database.php");
 $conexion = new database;
 $con = $conexion->conectar();
-session_start();
+include('roles/admin/components/alert.php');
 
 $correo = $_SESSION['correo'];
 
@@ -71,7 +71,7 @@ if(!isset($correo)){
 
     </section>
 
-     <img src="assets/img/recuperarContraseña/Image_RC.png" class="imgPersonitas" alt="Imagen de recuperación de contraseña">
+     <img src="assets/img/recuperarContraseña/Image_RC.webp" class="imgPersonitas" alt="Imagen de recuperación de contraseña">
 
 
 

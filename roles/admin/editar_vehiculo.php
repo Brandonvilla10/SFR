@@ -245,16 +245,17 @@ $usuario_foto_path = !empty($resultado['foto']) ? $mostrar : $usu;
         }
 
         const caracteristicas = document.getElementById("caracteristicas")
-        limitar(caracteristicas, 100) 
+        limitar(caracteristicas, 50); 
         
-        const estado = document.getElementById('id_estado').value;
-
         document.getElementById('grid-form').addEventListener('submit', function(event) {
 
-            event.preventDefault(); 
-            if (!estado.value || !caracteristicas.value) {
+            const caracteristicas = document.getElementById('caracteristicas').value;
+            const estado = document.getElementById('id_estado').value;
+            
+            if (!estado || !caracteristicas) {
+                event.preventDefault(); 
                 mostrarModal('mistake', 'Hay campos del formulario vacios', '');
-            }
+            } 
         });
 </script>
 </html>

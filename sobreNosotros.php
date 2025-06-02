@@ -74,8 +74,8 @@
                 <div class ="derecha-2">
                     <img src="assets/img/Nosotrosimg/binoculares.webp" alt="Imagen de unos binoculares">
                 </div>
-                    
-                
+
+
             </div>
 
             <div class="nosotros_3">
@@ -150,7 +150,7 @@
         <h3 class="subtitulosh3">Calidad</h3>
         <p class="subtitulosh3V2">Garantizamos la excelencia en cada aspeto <br> de nuestro software y servicio.</p>
     </div>
-    
+
     <div>
         <img src="assets/img/Nosotrosimg/seguridad.webp" alt="" class="iconosImagenes">
         <h3 class="subtitulosh3">Seguridad</h3>        

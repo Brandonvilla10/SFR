@@ -8,7 +8,8 @@ $con = $conexion->conectar();
 
 
 if (isset($_POST['submit']) || isset($_FILES['foto'])) {
-
+    
+    
     $uploadDir = '../uploads/';
     $fileName = basename($_FILES['foto']['name']);
     $fileTmpName = $_FILES['foto']['tmp_name'];

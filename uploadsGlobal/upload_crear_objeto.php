@@ -32,6 +32,7 @@ if(isset($_FILES['foto'])){
             $estado = 1;
             $tipoObjeto = $_POST['tipoObjeto'] ?? '';
             $user_id = $_POST['user_id'] ?? '';
+            $ruta = $_POST['direccion']?? '';
     
             $insert = $con->prepare("INSERT INTO objetos (id_serial, nombre, caracteristica, id_marca, id_estado, id_tipoObjeto, id_documento, foto) 
                                         VALUES (:serial, :nombre, :caracteristica, :marca, :estado, :tipo, :documento, :foto)");
@@ -47,8 +48,12 @@ if(isset($_FILES['foto'])){
                 ':foto' => $newFileName
             ]);
     
-            header("Location: ../roles/aprendiz/objetos_usuario.php");
+            header("Location: $ruta");
+        }else{
+            echo "Error al cargar la imagen";
         }
     
+    }else{
+        echo "Error al cargar la imagen 2";
     }
 }

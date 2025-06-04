@@ -160,7 +160,7 @@ $usuario_foto_path = !empty($resultado['foto']) ? $mostrar : $usu;
                                         <span>Subir foto</span>
                                     </div>
                                     <form action="../../uploadsGlobal/uploadVehiculos.php" method="POST" enctype="multipart/form-data" id="form-vehicle-photo">
-                                        <input type="hidden" name="direccion" value="../roles/aprendiz/editar_vehiculo.php">
+                                        <input type="hidden" name="direccion" value="../roles/vigilante/editar_vehiculo.php">
                                         <input type="hidden" name="tipo_foto" value="vehiculo">
                                         <input type="hidden" name="ruta" value="<?php echo $origen ?>">
                                         <input type="hidden" name="user_id" value="<?php echo $user_id ?>">
@@ -179,7 +179,7 @@ $usuario_foto_path = !empty($resultado['foto']) ? $mostrar : $usu;
                                         <span>Subir foto</span>
                                     </div>
                                     <form action="../../uploadsGlobal/uploadVehiculos.php" method="POST" enctype="multipart/form-data" id="form-card-photo">
-                                        <input type="hidden" name="direccion" value="../roles/aprendiz/editar_vehiculo.php">
+                                        <input type="hidden" name="direccion" value="../roles/vigilante/editar_vehiculo.php">
                                         <input type="hidden" name="tipo_foto" value="tarjeta">
                                         <input type="hidden" name="ruta" value="editar_vehiculo.php">
                                         <input type="file" name="foto" onchange="document.getElementById('form-card-photo').submit()">

@@ -6,6 +6,7 @@ $conexion = new database;
 $con = $conexion->conectar();
 
 
+$ruta = $_POST['direccion'];
 
 if (isset($_POST['submit']) || isset($_FILES['foto'])) {
     
@@ -22,7 +23,6 @@ if (isset($_POST['submit']) || isset($_FILES['foto'])) {
     
     $documento = $_SESSION['documento'];
     $serial = $_POST['serial'];
-    $ruta = $_POST['direccion'];
  
     if (in_array($fileExt, $allowedExtensions)) {
         if ($fileError === 0) {

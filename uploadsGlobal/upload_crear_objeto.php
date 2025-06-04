@@ -4,6 +4,7 @@ $conexion = new database;
 $con = $conexion->conectar();
 session_start();
 
+$ruta = $_POST['direccion']?? '';
 
 if(isset($_FILES['foto'])){
 
@@ -32,7 +33,6 @@ if(isset($_FILES['foto'])){
             $estado = 1;
             $tipoObjeto = $_POST['tipoObjeto'] ?? '';
             $user_id = $_POST['user_id'] ?? '';
-            $ruta = $_POST['direccion']?? '';
     
             $insert = $con->prepare("INSERT INTO objetos (id_serial, nombre, caracteristica, id_marca, id_estado, id_tipoObjeto, id_documento, foto) 
                                         VALUES (:serial, :nombre, :caracteristica, :marca, :estado, :tipo, :documento, :foto)");

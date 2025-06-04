@@ -109,7 +109,7 @@ if (isset($_POST["crearExcel"])) {
             }
 
             // Llama a la función que genera el archivo CSV con los datos y columnas
-            crearCSV($columns, $data, 'usuarios.csv');
+            crearCSV($columns, $data, 'Objetos.csv');
         }
     }else if(isset($_POST["opcionDeDescarga"]) && $_POST["opcionDeDescarga"] == 2){
         

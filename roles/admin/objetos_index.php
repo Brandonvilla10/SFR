@@ -267,7 +267,7 @@ $consulta->execute();
                         <label for="tipoReporte-generarexel" class="label-generarexel">Tipo de reporte:</label>
                         <select id="tipoReporte-generarexel" name="tipoReporte" class="select-generarexel" required>
                             <option value="">Elija Un Tipo De Reporte...</option>
-                            <option value="10">Todos</option>
+                            <option value="10">Todos Los Objetos</option>
                             <option value="4">Objetos eliminados</option>
                             <option value="1">Objetos fuera</option>
                             <option value="2">Objetos inactivos</option>

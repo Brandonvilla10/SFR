@@ -32,22 +32,64 @@ $stmt->execute();
 $datos = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 // Crear PDF
-$pdf = new TCPDF();
-$pdf->AddPage('L');
-$pdf->SetFont('helvetica', '', 12);
+class CustomPDF extends TCPDF {
+    public function Header() {
+        $originalMargins = [
+            'l' => $this->lMargin,
+            'r' => $this->rMargin,
+            't' => $this->tMargin,
+            'b' => $this->bMargin
+        ];
+        
+        // Establecer márgenes a cero solo para la imagen
+        $this->SetMargins(0, 0, 0);
+        $this->SetAutoPageBreak(false, 0);
+        
+        // Obtener dimensiones exactas de la página
+        $pageWidth = $this->getPageWidth();
+        $pageHeight = $this->getPageHeight();
+        
+        // Insertar imagen de fondo (sin considerar márgenes)
+        $this->Image('imgAdmin/Reporte_plantilla.png', 
+                    0,  // X: desde el borde izquierdo
+                    0,  // Y: desde el borde superior
+                    $pageWidth, 
+                    $pageHeight, 
+                    'PNG', '', '', false, 300, '', false, false, 0, false, false, true);
+        
+        // Restaurar márgenes originales
+        $this->SetMargins($originalMargins['l'], $originalMargins['t'], $originalMargins['r']);
+        $this->SetAutoPageBreak(true, $originalMargins['b']);
+        
+        if ($this->getPage() == 1) {
+            $this->SetY(17);
+            $this->SetFont('helvetica', 'B', 12);
+            $this->Cell(0, 10, 'Reporte de ingresos', 0, 1, 'C');
+        }
 
-$pdf->setAlpha(0.1); //Opacidad 
-$pdf->Image(__DIR__ . '/../../assets/img/LogoconFONDO.png', 60, 40, 180, 100, '', '', '', false, 300, '', false, false, 0);
-$pdf->setAlpha(1); //Restablecer opacidad
-$pdf->Cell(0, 10, 'Reporte de Notificaciones', 0, 1, 'C');
+        // Encabezado de tabla (se repite en todas las páginas)
+        $this->SetY(30); // Posición fija para el encabezado de tabla
+        $this->SetFont('helvetica', 'B', 10); // Misma fuente que los datos pero en negrita
+        $this->SetTextColor(0);
+        $this->SetDrawColor(0);
 
-$html = '<table border="1" cellpadding="4">
-<tr>
-    <th>Fecha y Hora</th>
-    <th>Identificador</th>
-    <th>Descripción</th>
-    <th>Nombre Administrador</th>
-</tr>';
+        $this->Cell(50, 8, 'Fecha y Hora', 1, 0, 'C');
+        $this->Cell(60, 8, 'Identificador', 1, 0, 'C');
+        $this->Cell(100, 8, 'Descripción', 1, 0, 'C');
+        $this->Cell(60, 8, 'Nombre Administrador', 1, 1, 'C');
+    }
+}
+
+$pdf = new CustomPDF('L', 'mm', 'A4');
+$pdf->SetMargins(15, 40, 10); // Margen superior más grande para el encabezado
+$pdf->SetAutoPageBreak(true, 30); // Margen inferior para el pie de página
+
+// Primera página
+$pdf->AddPage();
+$pdf->SetFont('helvetica', '', 10); // Fuente para los datos
+
+// Contenido de la tabla
+$pdf->SetY(40); // Posición inicial del contenido
 foreach ($datos as $fila) {
     // Determinar el tipo
     switch ($fila['tabla_afectada']) {
@@ -63,16 +105,20 @@ foreach ($datos as $fila) {
         default:
             $tipo = 'Otro';
     }
+    
     // Concatenar tipo con identificador
     $identificador = strtolower($tipo) . ':' . $fila['id_afectado'];
-    $html .= '<tr>
-        <td>' . $fila['fecha'] . '</td>
-        <td>' . $identificador . '</td>
-        <td>' . $fila['descripcion'] . '</td>
-        <td>' . $fila['documento_generador'] . '</td>
-    </tr>';
+    
+    // Verificar si necesita nueva página
+    if ($pdf->GetY() > $pdf->getPageHeight() - 30) {
+        $pdf->AddPage();
+        $pdf->SetY(40);
+    }
+    
+    $pdf->Cell(50, 8, $fila['fecha'], 1, 0, 'L');
+    $pdf->Cell(60, 8, $identificador, 1, 0, 'L');
+    $pdf->Cell(100, 8, $fila['descripcion'], 1, 0, 'L');
+    $pdf->Cell(60, 8, $fila['documento_generador'], 1, 1, 'L');
 }
-$html .= '</table>';
 
-$pdf->writeHTML($html, true, false, true, false, '');
 $pdf->Output('reporte.pdf', 'I');

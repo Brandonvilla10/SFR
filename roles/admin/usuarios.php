@@ -16,7 +16,7 @@ function consultaDatosExcel($con, $consulta, $array)
             $consulta = "SELECT * FROM usuario 
             INNER JOIN estado ON usuario.id_estado = estado.id_estado
             INNER JOIN rol ON usuario.id_rol = rol.id_rol
-            WHERE usuario.id_documento = :id_documento";
+            WHERE id_documento = :id_documento";
             $datos = $con->prepare($consulta);
             $datos->bindParam(':id_documento', $array['id_documento']);
             $datos->execute();
@@ -24,7 +24,7 @@ function consultaDatosExcel($con, $consulta, $array)
             // Consulta todos los usuario con estado 10 (sin filtro por documento)
             $datos = $con->prepare("SELECT * FROM usuario 
              INNER JOIN estado ON usuario.id_estado = estado.id_estado
-            INNER JOIN rol ON usuario.id_rol = rol.id_rol");
+            INNER JOIN rol ON id_rol = rol.id_rol");
             $datos->execute();
         }
     } else if (!empty($array)) {
@@ -32,7 +32,7 @@ function consultaDatosExcel($con, $consulta, $array)
         $campos = [];
         foreach ($array as $key => $value) {
             // Genera condiciones dinámicas tipo: vehiculos.campo = :campo
-            $campos[] = "vehiculos.$key = :$key";
+            $campos[] = "usuario.$key = :$key";
         }
         // Arma la consulta con INNER JOIN y condiciones dinámicas
         $consulta = "SELECT * FROM usuario 
@@ -45,8 +45,8 @@ function consultaDatosExcel($con, $consulta, $array)
     } else {
         // Si no se pasa ningún filtro, consulta todos los usuario con sus respectivos usuarios
         $datos = $con->prepare("SELECT * FROM usuario 
-         INNER JOIN estado ON usuario.id_estado = estado.id_estado
-            INNER JOIN rol ON usuario.id_rol = rol.id_rol
+        INNER JOIN estado ON usuario.id_estado = estado.id_estado
+        INNER JOIN rol ON usuario.id_rol = rol.id_rol
         ");
         $datos->execute();
     }
@@ -257,7 +257,7 @@ if (isset($_POST["agregarSubmit"])) {
                     <p style="color:#858585">Administra los usuarios segun tu necesidad</p>
                 </div>
 
-                <button class="buscar_objeto_titulo" id="modalExcel">Exportar Excel</button>
+                <button class="buscar_objeto_titulo" id="modalExcel">Generar Registros</button>
 
                 <div class="EliminarUsuarioDiv">
                     <button class="buscar_objeto_titulo" id="botonEliminar" type="button">
@@ -278,7 +278,7 @@ if (isset($_POST["agregarSubmit"])) {
             <div id="modal-generarexel" class="modal-generarexel">
                 <div class="modal-generarexel-content">
                     <button class="modal-generarexel-close cerrarModalBuscar" id="cerrarModalExcel">&times;</button>
-                    <h2 class="modal-generarexel-title">Generar archivo Excel</h2>
+                    <h2 class="modal-generarexel-title">Generar archivos</h2>
                     <form method="post" class="form-generarexel">
                         <label for="fechaFin-generarexel" class="label-generarexel">Documento del Propietario (No obligatorio):</label>
                         <input type="number" id="fechaFin-generarexel" name="documentoUsuario" placeholder="Documento..." class="input-generarexel">
@@ -298,7 +298,7 @@ if (isset($_POST["agregarSubmit"])) {
                             <option value="2">Generar Archivo PDF</option>
                         </select>
 
-                        <button type="submit" name="crearExcel" class="btn-generarexel-submit">Generar Excel</button>
+                        <button type="submit" name="crearExcel" class="btn-generarexel-submit">Generar Archivo</button>
                     </form>
                 </div>
             </div>

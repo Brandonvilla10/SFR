@@ -248,7 +248,7 @@ $consulta->execute();
 
 
 
-                <button class="buscar_objeto_titulo" id="modalExcel">Exportar Excel</button>
+                <button class="buscar_objeto_titulo" id="modalExcel">Generar Registros</button>
 
                 <button class="buscar_objeto_titulo" id="abrirBuscar">Buscar Objetos</button>
             </div>
@@ -260,7 +260,7 @@ $consulta->execute();
             <div id="modal-generarexel" class="modal-generarexel">
                 <div class="modal-generarexel-content">
                     <button class="modal-generarexel-close cerrarModalBuscar" id="cerrarModalExcel">&times;</button>
-                    <h2 class="modal-generarexel-title">Generar archivo Excel</h2>
+                    <h2 class="modal-generarexel-title">Generar archivos</h2>
                     <form method="post" class="form-generarexel">
                         <label for="fechaFin-generarexel" class="label-generarexel">Documento del Propietario (No obligatorio):</label>
                         <input type="number" id="fechaFin-generarexel" name="documentoUsuario" placeholder="Documento..." class="input-generarexel">
@@ -280,7 +280,7 @@ $consulta->execute();
                             <option value="2">Generar Archivo PDF</option>
                         </select>
 
-                        <button type="submit" name="crearExcel" class="btn-generarexel-submit">Generar Excel</button>
+                        <button type="submit" name="crearExcel" class="btn-generarexel-submit">Generar Archivo</button>
                     </form>
                 </div>
             </div>

@@ -9,7 +9,7 @@ include('../../includes/sesion_validar.php');
 $codigo = $_SESSION['documento'];
 
 $sql = $con->prepare("SELECT * FROM usuario INNER JOIN rol ON rol.id_rol = usuario.id_rol WHERE id_documento = :documento");
-$sql->bindParam(':documento', $codigo);
+$sql->bindParam(':documento', $_SESSION['documento'], PDO::PARAM_INT);
 $sql->execute();
 
 $fila = $sql->fetch(PDO::FETCH_ASSOC);
@@ -77,9 +77,8 @@ if (isset($_POST['submit'])) {
                 <div class="configuracion">
 
                     <form action="" method="POST" class="formConfig">
-                        <input name="nombre_completo" class="inpustConfig" id="nombre" placeholder="<?php echo $fila['nombre_completo']; ?> " type="text">
-
-                        <input name="id_documento" id="documento" class="inpustConfig" placeholder="<?php echo 'Documento: ' . $fila['id_documento']; ?>" type="Number">
+                        <input name="nombre_completo" type="text" class="inpustConfig" id="nombre" placeholder="<?php echo $fila['nombre_completo']; ?>" readonly>
+                        <input name="id_documento" id="documento" class="inpustConfig" placeholder="<?php echo 'Documento: ' . $fila['id_documento']; ?>" type="Number" readonly>
 
                         <select name="id_rol" class="inpustConfig" id="rol">
                             <option value="">Rol actual: <?php echo $fila['nombre_rol']; ?></option>
@@ -98,7 +97,7 @@ if (isset($_POST['submit'])) {
                             ?>
                         </select>
 
-                        <input name="correo" id="correo" class="inpustConfig" placeholder="<?php echo "Email: " . $fila['correo'];  ?>" type="Email">
+                        <input name="correo" id="correo" class="inpustConfig" value="<?php echo $fila['correo'];  ?>" type="Email">
                         <input type="submit" name="submit" class="enviarConfig" value="Confirmar">
                     </form>
 
@@ -129,6 +128,7 @@ if (isset($_POST['submit'])) {
                                     <label class="custom-file-upload">
                                         <input type="file" name="foto" id="fileInput" onchange="previewFoto(event);" />
                                         Subir Foto
+                                        <input type="text" name="direccion" value="../roles/aprendiz/configuracion.php" hidden>
                                     </label>
                                     <button type="submit" class="guardar" id="botonGuardar" name="actualizarFoto">Guardar</button>
                                 </form>
@@ -167,7 +167,7 @@ if (isset($_POST['submit'])) {
 
 
         const nombre = document.getElementById('nombre');
-        nombre.disabled = true;
+        nombre.readOnly = true;
         limitar(nombre, 50);
         const correo = document.getElementById("correo")
         limitar(correo, 50);

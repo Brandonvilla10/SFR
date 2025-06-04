@@ -6,7 +6,7 @@ $conexion = new database;
 $con = $conexion->conectar();
 
 
-$direccion = $_SESSION['direccion'];
+$direccion = $_POST['direccion'] ;
 
 if (isset($_FILES['foto'])) {
 

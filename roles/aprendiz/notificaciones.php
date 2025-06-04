@@ -2,12 +2,17 @@
 session_start();
 require_once('../../database/database.php');
 include('components/alert.php');
+
 $conexion = new database;
 $con = $conexion->conectar();
 
-$documentoBuscado = $_SESSION['documento'] ?? '';
+$documento = $_SESSION['documento'] ?? '';
 
-$documento = isset($_SESSION['documento']) ? $_SESSION['documento'] : '';// o el dato del usuario logueado
+if (!$documento) {
+    echo "Documento no definido en la sesión.";
+    exit;
+}
+
 $stmt = $con->prepare("SET @documento_generador = :doc");
 $stmt->bindValue(':doc', $documento);
 $stmt->execute();
@@ -19,8 +24,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['marcar_leidas'])) {
     echo json_encode(['success' => true]);
     exit;
 }
-
-
 ?>
 
 <!DOCTYPE html>
@@ -28,23 +31,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['marcar_leidas'])) {
 <head>
     <meta charset="UTF-8">
     <title>Notificaciones</title>
-
     <link rel="stylesheet" href="asideBar/asidebar.css">
     <link rel="stylesheet" href="../../css/home.css">
     <link rel="stylesheet" href="css/notificaciones.css">
 </head>
-<body>
+<body data-documento="<?= htmlspecialchars($documento) ?>">
 
 <div class="container_grid">
-    <!-- Menú lateral -->
     <aside class="aside_barra">
-        <!-- Incluye el archivo PHP que contiene el diseño del menú lateral -->
         <?php include('asideBar/asideBar.php'); ?>
     </aside>
 
-    <!-- Contenido principal -->
     <main class="grid_contenido_plantilla">
-        <!-- Título y descripción de la página -->
         <div class="titulo">
             <div>
                 <h1>Notificaciones</h1>
@@ -54,30 +52,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['marcar_leidas'])) {
         <hr class="separador">
 
         <div class="contenedor-notificaciones">
-            <!-- Campo de búsqueda por documento -->
-          
-                                   
+            <button id="toggleFiltros" hidden>Mostrar filtros</button>
 
-            <!-- Botón para mostrar/ocultar los filtros adicionales -->
-            <button id="toggleFiltros">Mostrar filtros</button>
-
-            <!-- Filtros adicionales (inicialmente ocultos) -->
             <div id="filtrosOpcionales" style="display:none; margin-top: 10px;">
-                <!-- Selector para filtrar por módulo -->
                 <select id="tablaAfectada">
-                    <option value=""> Modulo </option>
-                    <option value="vehiculos">Vehículos</option>
-                    <option value="objetos">Objetos</option>
+                    <option value=""> Módulo </option>
+                   
                 </select>
-
-                <!-- Selector de fecha para filtrar notificaciones -->
                 <input type="date" id="fechaFiltro">
-
-                <!-- Botones para aplicar o limpiar filtros -->
                 <button id="limpiarFiltrosBtn">Limpiar filtros</button>
             </div>
 
-            <!-- Contenedor donde se muestran los resultados de las notificaciones -->
             <div id="resultadoNotificaciones">
                 <p>Usa los filtros para buscar notificaciones</p>
             </div>
@@ -85,69 +70,42 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['marcar_leidas'])) {
     </main>
 </div>
 
-<script type="module" src="https://unpkg.com/ionicons @7.1.0/dist/ionicons/ionicons.esm.js"></script>
-<script nomodule src="https://unpkg.com/ionicons @7.1.0/dist/ionicons/ionicons.js"></script>
-
 <script>
-// Función para alternar la visibilidad de los filtros adicionales
 document.getElementById('toggleFiltros').addEventListener('click', () => {
-    const filtros = document.getElementById('filtrosOpcionales'); // Obtiene el contenedor de filtros
-    const boton = document.getElementById('toggleFiltros'); // Obtiene el botón "Mostrar/Ocultar filtros"
-
-    if (filtros.style.display === 'none') { // Si los filtros están ocultos
-        filtros.style.display = 'block'; // Muestra los filtros
-        boton.textContent = 'Ocultar filtros'; // Cambia el texto del botón
-    } else { // Si los filtros están visibles...
-        filtros.style.display = 'none'; // Oculta los filtros
-        boton.textContent = 'Mostrar filtros'; // Cambia el texto del botón
-    }
+    const filtros = document.getElementById('filtrosOpcionales');
+    const boton = document.getElementById('toggleFiltros');
+    filtros.style.display = filtros.style.display === 'none' ? 'block' : 'none';
+    boton.textContent = filtros.style.display === 'block' ? 'Ocultar filtros' : 'Mostrar filtros';
 });
 
-
-
-
-// Llama a cargarNotificaciones cuando se selecciona un módulo
 document.getElementById('tablaAfectada').addEventListener('change', () => cargarNotificaciones());
-
-// Llama a cargarNotificaciones cuando se selecciona una fecha
 document.getElementById('fechaFiltro').addEventListener('change', () => cargarNotificaciones());
-
-// Si tienes botón de limpiar filtros, puedes dejarlo así:
 document.getElementById('limpiarFiltrosBtn').addEventListener('click', () => {
     document.getElementById('tablaAfectada').value = '';
     document.getElementById('fechaFiltro').value = '';
     cargarNotificaciones();
 });
 
-// Llama a cargarNotificaciones al cargar la página para mostrar resultados iniciales
-window.addEventListener('DOMContentLoaded', () => cargarNotificaciones());
-
-// Función para cargar notificaciones con filtros y paginación
 function cargarNotificaciones(pagina = 1) {
-    // Obtiene los valores de los campos de filtro
-
     const tabla = document.getElementById('tablaAfectada').value;
     const fecha = document.getElementById('fechaFiltro').value;
-console.log($documentoBuscado);
-    // Construye los parámetros de la solicitud
+    const documento = document.body.getAttribute('data-documento');
+
     const params = new URLSearchParams({
-        documento: $documentoBuscado ,
+        documento: documento,
         tabla: tabla,
         fecha: fecha,
-        pagina: pagina // Número de página para la paginación
+        pagina: pagina
     });
 
-    // Muestra un mensaje de carga mientras se obtienen los datos
     document.getElementById('resultadoNotificaciones').innerHTML = '<p>Cargando notificaciones...</p>';
 
-    // Aquí va el bloque que mencionas:
     fetch(`fetch/buscar_notificaciones.php?${params.toString()}`)
         .then(res => res.text())
         .then(data => {
             document.getElementById('resultadoNotificaciones').innerHTML = data;
-            // Eventos para los botones de paginación
             document.querySelectorAll('.pagina-btn').forEach(btn => {
-                btn.addEventListener('click', function() {
+                btn.addEventListener('click', function () {
                     cargarNotificaciones(this.getAttribute('data-pagina'));
                 });
             });
@@ -156,28 +114,6 @@ console.log($documentoBuscado);
             document.getElementById('resultadoNotificaciones').innerHTML = '<p>Error al cargar notificaciones: ' + error + '</p>';
         });
 }
-
-
-// Evento para el botón "Limpiar filtros"
-document.getElementById('limpiarFiltrosBtn').addEventListener('click', () => {
-    // Restablece los valores de los campos de filtro
-
-    document.getElementById('tablaAfectada').value = '';
-    document.getElementById('fechaFiltro').value = '';
-
-    // Muestra un mensaje indicando que se deben usar los filtros
-    document.getElementById('resultadoNotificaciones').innerHTML = '<p>Usa los filtros para buscar notificaciones</p>';
-});
-
-// Evento para buscar al presionar Enter en el campo de documento
-document.getElementById('buscarDocumento').addEventListener('keypress', function(e) {
-    if (e.key === 'Enter') { // Si se presiona la tecla "Enter"...
-        cargarNotificaciones(1); // Carga las notificaciones filtradas
-    }
-});
-
-// Si hay un documento inicial en la sesión, carga las notificaciones automáticamente
-
 
 function actualizarContadorNotificaciones() {
     fetch('fetch/contar_notificaciones.php')
@@ -193,7 +129,6 @@ function actualizarContadorNotificaciones() {
         });
 }
 
-// Llama a esta función cuando se se de el clic en la campana esa 
 function marcarNotificacionesComoLeidas() {
     fetch('notificaciones.php', {
         method: 'POST',
@@ -202,14 +137,12 @@ function marcarNotificacionesComoLeidas() {
     })
     .then(res => res.json())
     .then(data => {
-        if (data.success) {
-            actualizarContadorNotificaciones();
-        }
+        if (data.success) actualizarContadorNotificaciones();
     });
 }
 
-// Llama a la función al cargar la página de notificaciones
-window.addEventListener('DOMContentLoaded', function() {
+window.addEventListener('DOMContentLoaded', () => {
+    cargarNotificaciones();
     marcarNotificacionesComoLeidas();
     actualizarContadorNotificaciones();
 });

@@ -36,7 +36,7 @@ if (isset($_POST['documento'])) {
 
     // Imagen de fondo - ajustada a toda la página carta
     $pdf->Image(
-        '../imgAdmin/QR_plantilla.png',
+        '../imgAdmin/Reporte_plantilla.png',
         0,      // x = 0 (borde izquierdo)
         0,      // y = 0 (borde superior)
         216,    // ancho = ancho de página carta (216mm)

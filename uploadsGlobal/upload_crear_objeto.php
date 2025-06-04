@@ -4,6 +4,7 @@ $conexion = new database;
 $con = $conexion->conectar();
 session_start();
 
+$ruta = $_POST['direccion']?? '';
 
 if(isset($_FILES['foto'])){
 
@@ -47,8 +48,12 @@ if(isset($_FILES['foto'])){
                 ':foto' => $newFileName
             ]);
     
-            header("Location: ../roles/aprendiz/objetos_usuario.php");
+            header("Location: $ruta");
+        }else{
+            echo "Error al cargar la imagen";
         }
     
+    }else{
+        echo "Error al cargar la imagen 2";
     }
 }

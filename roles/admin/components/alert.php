@@ -1,4 +1,3 @@
-<!-- modal.php -->
 <div id="modalAlerta" class="modal-global" style="display: none">
     <h2 id="tituloModal">Success!</h2>
     <div class="line"></div>

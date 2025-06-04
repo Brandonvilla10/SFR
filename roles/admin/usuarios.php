@@ -23,8 +23,8 @@ function consultaDatosExcel($con, $consulta, $array)
         } else {
             // Consulta todos los usuario con estado 10 (sin filtro por documento)
             $datos = $con->prepare("SELECT * FROM usuario 
-             INNER JOIN estado ON usuario.id_estado = estado.id_estado
-            INNER JOIN rol ON id_rol = rol.id_rol");
+            INNER JOIN estado ON estado.id_estado = usuario.id_estado
+            INNER JOIN rol ON usuario.id_rol = rol.id_rol");
             $datos->execute();
         }
     } else if (!empty($array)) {

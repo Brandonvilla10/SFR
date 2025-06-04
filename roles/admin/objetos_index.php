@@ -33,7 +33,6 @@ function consultaDatosExcel($con, $consulta, $array)
             INNER JOIN marca ON objetos.id_marca = marca.id_marca");
             $datos->execute();
         }
-
     } else if (!empty($array)) {
         // Si hay otros filtros personalizados
         $campos = [];
@@ -64,48 +63,57 @@ function consultaDatosExcel($con, $consulta, $array)
 }
 
 
+
 if (isset($_POST["crearExcel"])) {
-    $array = []; // Array de filtros
-    $tipoReporte = $_POST["tipoReporte"];
-    $documentoUsuario = $_POST["documentoUsuario"];
 
-    // Si se proporciona un documento de usuario, se añade como filtro
-    if (!empty($documentoUsuario)) {
-        $array['id_documento'] = $documentoUsuario;
-    }
 
-    // Si el tipo de reporte es 10, se interpreta como un filtro específico
-    if ($tipoReporte == 10) {
-        $array['id_estado'] = 10;
-    } else if (!empty($tipoReporte)) {
-        // Si se proporciona otro tipo de estado, también se añade como filtro
-        $array['id_estado'] = $tipoReporte;
-    }
+    if (isset($_POST["opcionDeDescarga"]) && $_POST["opcionDeDescarga"] == 1) {
 
-    // Se llama a la función para obtener los datos según los filtros aplicados
-    $valorConsulta = consultaDatosExcel($con, "SELECT * FROM objetos", $array);
+        $array = []; // Array de filtros
+        $tipoReporte = $_POST["tipoReporte"];
+        $documentoUsuario = $_POST["documentoUsuario"];
 
-    // Si se obtienen resultados, se preparan para exportarlos a un archivo CSV
-    if (!empty($valorConsulta)) {
-        // Columnas que tendrá el archivo CSV
-        $columns = ['Serial_Del_Objeto', 'Nombre_Objeto', 'Caracteristica', 'Documento Del Propietario', 'Nombre Del Propietario', 'Estado Del Objeto', 'Marca'];
-        $data = [];
-
-        // Recorre cada fila del resultado y prepara los datos con nombres más legibles
-        foreach ($valorConsulta as $fila) {
-            $data[] = [
-                'Serial_Del_Objeto' => $fila['id_serial'],
-                'Nombre_Objeto' => $fila['nombre'],
-                'Caracteristica' => $fila['caracteristica'],
-                'Documento Del Propietario' => $fila['id_documento'],
-                'Nombre Del Propietario' => $fila['nombre_completo'],
-                'Estado Del Objeto' => $fila['estado'],
-                'Marca' => $fila['nombre_marca'],
-            ];
+        // Si se proporciona un documento de usuario, se añade como filtro
+        if (!empty($documentoUsuario)) {
+            $array['id_documento'] = $documentoUsuario;
         }
 
-        // Llama a la función que genera el archivo CSV con los datos y columnas
-        crearCSV($columns, $data, 'usuarios.csv');
+        // Si el tipo de reporte es 10, se interpreta como un filtro específico
+        if ($tipoReporte == 10) {
+            $array['id_estado'] = 10;
+        } else if (!empty($tipoReporte)) {
+            // Si se proporciona otro tipo de estado, también se añade como filtro
+            $array['id_estado'] = $tipoReporte;
+        }
+
+        // Se llama a la función para obtener los datos según los filtros aplicados
+        $valorConsulta = consultaDatosExcel($con, "SELECT * FROM objetos", $array);
+
+        // Si se obtienen resultados, se preparan para exportarlos a un archivo CSV
+        if (!empty($valorConsulta)) {
+            // Columnas que tendrá el archivo CSV
+            $columns = ['Serial_Del_Objeto', 'Nombre_Objeto', 'Caracteristica', 'Documento Del Propietario', 'Nombre Del Propietario', 'Estado Del Objeto', 'Marca'];
+            $data = [];
+
+            // Recorre cada fila del resultado y prepara los datos con nombres más legibles
+            foreach ($valorConsulta as $fila) {
+                $data[] = [
+                    'Serial_Del_Objeto' => $fila['id_serial'],
+                    'Nombre_Objeto' => $fila['nombre'],
+                    'Caracteristica' => $fila['caracteristica'],
+                    'Documento Del Propietario' => $fila['id_documento'],
+                    'Nombre Del Propietario' => $fila['nombre_completo'],
+                    'Estado Del Objeto' => $fila['estado'],
+                    'Marca' => $fila['nombre_marca'],
+                ];
+            }
+
+            // Llama a la función que genera el archivo CSV con los datos y columnas
+            crearCSV($columns, $data, 'usuarios.csv');
+        }
+    }else if(isset($_POST["opcionDeDescarga"]) && $_POST["opcionDeDescarga"] == 2){
+        
+        
     }
 }
 
@@ -240,7 +248,7 @@ $consulta->execute();
 
 
 
-                <button class="exportarExcel" id="modalExcel">Exportar Excel</button>
+                <button class="buscar_objeto_titulo" id="modalExcel">Exportar Excel</button>
 
                 <button class="buscar_objeto_titulo" id="abrirBuscar">Buscar Objetos</button>
             </div>
@@ -254,15 +262,22 @@ $consulta->execute();
                     <button class="modal-generarexel-close cerrarModalBuscar" id="cerrarModalExcel">&times;</button>
                     <h2 class="modal-generarexel-title">Generar archivo Excel</h2>
                     <form method="post" class="form-generarexel">
-                        <label for="fechaFin-generarexel" class="label-generarexel">Documento(No obligatorio):</label>
+                        <label for="fechaFin-generarexel" class="label-generarexel">Documento del Propietario (No obligatorio):</label>
                         <input type="number" id="fechaFin-generarexel" name="documentoUsuario" placeholder="Documento..." class="input-generarexel">
                         <label for="tipoReporte-generarexel" class="label-generarexel">Tipo de reporte:</label>
                         <select id="tipoReporte-generarexel" name="tipoReporte" class="select-generarexel" required>
                             <option value="">Elija Un Tipo De Reporte...</option>
-                            <option value="10">Todos</option>
+                            <option value="10">Todos Los Objetos</option>
                             <option value="4">Objetos eliminados</option>
                             <option value="1">Objetos fuera</option>
                             <option value="2">Objetos inactivos</option>
+                        </select>
+
+                        <label for="opcionDeDescarga" class="label-generarexel">Tipo De Archivo</label>
+                        <select name="opcionDeDescarga" id="opcionDeDescarga" class="select-generarexel">
+                            <option value="3">Tipo De Archivo</option>
+                            <option value="1">Generar Archivo Excel</option>
+                            <option value="2">Generar Archivo PDF</option>
                         </select>
 
                         <button type="submit" name="crearExcel" class="btn-generarexel-submit">Generar Excel</button>

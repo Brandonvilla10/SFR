@@ -5,12 +5,12 @@ include('../roles/admin/components/alert.php');
 $conexion = new database;
 $con = $conexion->conectar();
 
+
 $direccion = $_POST['direccion'];
 
 if (isset($_FILES['foto'])) {
-
+    
     $placa = isset($_SESSION['placa']) ? $_SESSION['placa'] : '';
-
     $uploadDir = '../uploads/';
     $fileName = basename($_FILES['foto']['name']);
     $fileTmpName = $_FILES['foto']['tmp_name'];

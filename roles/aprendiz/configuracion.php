@@ -129,6 +129,7 @@ if (isset($_POST['submit'])) {
                                     <label class="custom-file-upload">
                                         <input type="file" name="foto" id="fileInput" onchange="previewFoto(event);" />
                                         Subir Foto
+                                        <input type="text" name="direccion" value="../roles/aprendiz/configuracion.php" hidden>
                                     </label>
                                     <button type="submit" class="guardar" id="botonGuardar" name="actualizarFoto">Guardar</button>
                                 </form>

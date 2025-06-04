@@ -1,7 +1,5 @@
 
 <?php
-
-
 require_once('../../database/database.php');
 include('../../includes/sesion_validar.php');
 $conexion = new database;
@@ -38,12 +36,12 @@ $rol =$_SESSION['rol_name'];
             <p class="seccionTexto">Inicio</p>
         </div></a>
 
-        <a href="./objetos_index.php"> <div class="seccion">
+        <a href="./objetos_usuario.php"> <div class="seccion">
             <img class="icono" src="asidebar/icons/objetos.png" alt="">
             <p class="seccionTexto">Objetos</p>
         </div></a>
 
-        <a href="./vehiculos.php"> <div class="seccion">
+        <a href="./vehiculos_usuarios.php"> <div class="seccion">
             <img class="icono" src="asidebar/icons/carroBlanco.png" alt="">
             <p class="seccionTexto">Vehiculos</p>
         </div></a>

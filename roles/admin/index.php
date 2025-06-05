@@ -240,15 +240,18 @@ $rol = isset($_SESSION['rol_name']) ? $_SESSION['rol_name'] : '';
     actualizarContadorNotificaciones();
     setInterval(actualizarContadorNotificaciones, 30000);
 
-    document.getElementById('btnReportes').onclick = function() {
-      document.getElementById('modalReportes').style.display = 'flex';
-    };
-    document.getElementById('cerrarModalReportes').onclick = function() {
-      document.getElementById('modalReportes').style.display = 'none';
-    };
-    document.getElementById('modalReportes').onclick = function(e) {
-      if (e.target === this) this.style.display = 'none';
-    };
+    document.addEventListener('DOMContentLoaded', function() {
+      
+      document.getElementById('btnReportes').onclick = function() {
+        document.getElementById('modalReportes').style.display = 'flex';
+      };
+      document.getElementById('cerrarModalReportes').onclick = function() {
+        document.getElementById('modalReportes').style.display = 'none';
+      };
+      document.getElementById('modalReportes').onclick = function(e) {
+        if (e.target === this) this.style.display = 'none';
+      };
+    })
   </script>
 
   <!-- Modal Reportes -->

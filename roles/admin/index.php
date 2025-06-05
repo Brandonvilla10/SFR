@@ -243,7 +243,7 @@ $rol = isset($_SESSION['rol_name']) ? $_SESSION['rol_name'] : '';
     document.getElementById('btnReportes').onclick = function() {
       document.getElementById('modalReportes').style.display = 'flex';
     };
-    document.getElementById('btnCancelarModalReportes').onclick = function() {
+    document.getElementById('cerrarModalReportes').onclick = function() {
       document.getElementById('modalReportes').style.display = 'none';
     };
     document.getElementById('modalReportes').onclick = function(e) {

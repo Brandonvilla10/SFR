@@ -89,7 +89,7 @@ class CustomPDF extends TCPDF {
         $this->SetAutoPageBreak(false, 0);
         $pageWidth = $this->getPageWidth();
         $pageHeight = $this->getPageHeight();
-        $this->Image('imgAdmin/Reporte_plantilla.jpg', 
+        $this->Image('imgAdmin/Reporte_plantilla.png', 
                   0,  // X: desde el borde izquierdo
                   0,  // Y: desde el borde superior
                   $pageWidth, 
@@ -104,6 +104,7 @@ class CustomPDF extends TCPDF {
         }
         // Encabezado de tabla
         $this->SetY(30);
+        $this->SetX(20);
         $this->SetFont('helvetica', 'B', 10);
         $this->SetTextColor(0);
         $this->SetDrawColor(0);
@@ -120,13 +121,36 @@ $pdf->SetAutoPageBreak(true, 30);
 $pdf->AddPage();
 $pdf->SetFont('helvetica', '', 10);
 $pdf->SetY(40);
+$startY = $pdf->GetY(); // Guardar posición Y inicial
 
-// Contenido de la tabla
 foreach ($datos as $fila) {
-    foreach ($fila as $valor) {
-        $pdf->Cell(50, 8, $valor, 1, 0, 'L');
+    // Verificar si necesitamos nueva página (dejar al menos 30mm para el margen inferior)
+    if ($pdf->GetY() + 30 > $pdf->getPageHeight() - $pdf->getBreakMargin()) {
+        $pdf->AddPage();
+        $startY = $pdf->GetY();
     }
-    $pdf->Ln();
+    
+    $pdf->SetX(20);
+    $maxHeight = 0;
+    
+    // Primera pasada: calcular altura máxima necesaria para la fila
+    foreach ($fila as $valor) {
+        $cellHeight = $pdf->getStringHeight(50, $valor, false, true, 0, 'L');
+        if ($cellHeight > $maxHeight) {
+            $maxHeight = $cellHeight;
+        }
+    }
+    $rowHeight = $maxHeight + 2; // Pequeño margen adicional
+    
+    // Segunda pasada: dibujar celdas manteniendo la alineación
+    $currentX = 20;
+    foreach ($fila as $valor) {
+        $pdf->SetXY($currentX, $startY);
+        $pdf->MultiCell(50, $rowHeight, $valor, 1, 'L');
+        $currentX += 50; // Mover a la siguiente columna
+    }
+    
+    $startY += $rowHeight; // Mover a la siguiente fila
+    $pdf->SetY($startY); // Actualizar posición Y
 }
-
 $pdf->Output('reporte.pdf', 'I');

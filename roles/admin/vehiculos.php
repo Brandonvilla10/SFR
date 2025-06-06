@@ -11,41 +11,57 @@ include("../../excelComponente/generarExcel.php");
 // Función que consulta datos desde la base de datos según los filtros que vienen en el array
 function consultaDatosExcel($con, $consulta, $array)
 {
+
+    $fechaInicio = $array['fecha_inicio'];
+    $fechaFin = $array['fecha_fin'];   
     // Si el filtro 'id_estado' es 10 (caso especial)
     if (isset($array['id_estado']) && $array['id_estado'] == 10) {
 
         // Si también se proporciona un documento específico
         if (!empty($array['id_documento'])) {
             // Consulta con filtro por documento
-            $consulta = "SELECT * FROM vehiculos 
+            
+            $consulta = "SELECT * FROM notificaciones
+            INNER JOIN vehiculos ON notificaciones.id_afectado = vehiculos.id_placa 
             INNER JOIN usuario ON vehiculos.id_documento = usuario.id_documento 
             INNER JOIN estado ON vehiculos.id_estado = estado.id_estado
             INNER JOIN marca ON vehiculos.id_marca = marca.id_marca
             INNER JOIN modelo ON vehiculos.id_modelo = modelo.id_modelo
             INNER JOIN tipovehiculo ON vehiculos.id_tipoVehiculo = tipovehiculo.id_tipoVehiculo
-            WHERE vehiculos.id_documento = :id_documento";
+            WHERE fecha BETWEEN '$fechaInicio' AND '$fechaFin' AND tabla_afectada = 'objetos' vehiculos.id_documento = :id_documento";
             $datos = $con->prepare($consulta);
             $datos->bindParam(':id_documento', $array['id_documento']);
             $datos->execute();
         } else {
             // Consulta todos los vehiculos con estado 10 (sin filtro por documento)
-            $datos = $con->prepare("SELECT * FROM vehiculos 
+            $datos = $con->prepare("SELECT * FROM notificaciones 
+            INNER JOIN vehiculos ON notificaciones.id_afectado = vehiculos.id_placa 
             INNER JOIN usuario ON vehiculos.id_documento = usuario.id_documento
             INNER JOIN estado ON vehiculos.id_estado = estado.id_estado
             INNER JOIN modelo ON vehiculos.id_modelo = modelo.id_modelo
             INNER JOIN marca ON vehiculos.id_marca = marca.id_marca
-            INNER JOIN tipovehiculo ON vehiculos.id_tipoVehiculo = tipovehiculo.id_tipoVehiculo");
+            INNER JOIN tipovehiculo ON vehiculos.id_tipoVehiculo = tipovehiculo.id_tipoVehiculo
+            WHERE fecha BETWEEN '$fechaInicio' AND '$fechaFin'");
             $datos->execute();
         }
     } else if (!empty($array)) {
         // Si hay otros filtros personalizados
         $campos = [];
         foreach ($array as $key => $value) {
-            // Genera condiciones dinámicas tipo: vehiculos.campo = :campo
-            $campos[] = "vehiculos.$key = :$key";
+            
+            if ($key !== 'fecha_inicio' && $key !== 'fecha_fin') {
+                $campos[] = "vehiculos.$key = :$key";
+            }
+        }    
+
+        $condicion = ["fecha BETWEEN :fecha_inicio AND :fecha_fin"];
+        if (!empty($campos)) {
+            $condicion = array_merge($condicion, $campos);
         }
+
         // Arma la consulta con INNER JOIN y condiciones dinámicas
-        $consulta = "SELECT * FROM vehiculos 
+        $consulta = "SELECT * FROM notificaciones 
+        INNER JOIN vehiculos ON notificaciones.id_afectado = vehiculos.id_placa 
         INNER JOIN usuario ON vehiculos.id_documento = usuario.id_documento 
         INNER JOIN estado ON vehiculos.id_estado = estado.id_estado
         INNER JOIN marca ON vehiculos.id_marca = marca.id_marca
@@ -53,17 +69,26 @@ function consultaDatosExcel($con, $consulta, $array)
         INNER JOIN tipovehiculo ON vehiculos.id_tipoVehiculo = tipovehiculo.id_tipoVehiculo
         WHERE " . implode(" AND ", $campos);
         $datos = $con->prepare($consulta);
+
+        $datos->bindParam(':fecha_inicio', $fechaInicio);
+        $datos->bindParam(':fecha_fin', $fechaFin);  
+        foreach ($array as $key => $value) {
+            if ($key !== 'fecha_inicio' && $key !== 'fecha_fin') {
+                $datos->bindValue(":$key", $value);
+            }
+        }
         // Ejecuta pasando todos los valores del array como parámetros
-        $datos->execute($array);
+        $datos->execute();
     } else {
         // Si no se pasa ningún filtro, consulta todos los vehiculos con sus respectivos usuarios
-        $datos = $con->prepare("SELECT * FROM vehiculos 
+        $datos = $con->prepare("SELECT * FROM notificaciones 
+        INNER JOIN vehiculos ON notificaciones.id_afectado = vehiculos.id_placa 
         INNER JOIN usuario ON vehiculos.id_documento = usuario.id_documento
         INNER JOIN estado ON vehiculos.id_estado = estado.id_estado
         INNER JOIN marca ON vehiculos.id_marca = marca.id_marca
         INNER JOIN modelo ON vehiculos.id_modelo = modelo.id_modelo
         INNER JOIN tipovehiculo ON vehiculos.id_tipoVehiculo = tipovehiculo.id_tipoVehiculo
-        ");
+        WHERE fecha BETWEEN '$fechaInicio' AND '$fechaFin'");
         $datos->execute();
     }
 
@@ -81,6 +106,12 @@ if (isset($_POST["crearExcel"])) {
         $array = []; // Array de filtros
         $tipoReporte = $_POST["tipoReporte"];
         $documentoUsuario = $_POST["documentoUsuario"];
+        $fechaInicio = $_POST["fechaInicio"];
+        $fechaFin = $_POST["fechaFin"];       // Si se proporciona un documento de usuario, se añade como filtro
+        
+
+        $array['fecha_inicio'] = $fechaInicio;
+        $array['fecha_fin'] = $fechaFin;
 
         // Si se proporciona un documento de usuario, se añade como filtro
         if (!empty($documentoUsuario)) {
@@ -101,7 +132,7 @@ if (isset($_POST["crearExcel"])) {
         // Si se obtienen resultados, se preparan para exportarlos a un archivo CSV
         if (!empty($valorConsulta)) {
             // Columnas que tendrá el archivo CSV
-            $columns = ['Placa Del Vehiculo', 'Caracteristica', 'Documento Del Propietario', 'Nombre Del Propietario', 'Estado Del Vehiculo', 'Marca', 'Modelo', 'Tipo de Vehiculo'];
+            $columns = ['Placa Del Vehiculo', 'Caracteristica', 'Documento Del Propietario', 'Nombre Del Propietario', 'Estado Del Vehiculo', 'Marca', 'Modelo', 'Tipo de Vehiculo', 'Fecha', 'Descripcion'];
             $data = [];
 
             // Recorre cada fila del resultado y prepara los datos con nombres más legibles
@@ -115,6 +146,8 @@ if (isset($_POST["crearExcel"])) {
                     'Marca' => $fila['nombre_marca'],
                     'Modelo' => $fila['fecha_modelo'],
                     'Tipo de Vehiculo' => $fila['tipoVehiculo'],
+                    'Fecha' => $fila['fecha'],
+                    'Descripcion' => $fila['descripcion'],
                 ];
             }
 
@@ -228,6 +261,12 @@ if (isset($_POST["objetos_submit"])) {
                             <option value="1">Generar Archivo Excel</option>
                             <option value="2">Generar Archivo PDF</option>
                         </select>
+
+                        <label for="fechaInicio" class="label-generarexel">Fecha Inicio</label>
+                        <input type="date" name="fechaInicio" id="fechaInicio" style="padding: 6px; border-radius: 5px; border: 1px solid #ccc;" required>
+
+                        <label for="fechaFin" class="label-generarexel">Fecha Fin</label>
+                        <input type="date" name="fechaFin" id="fechaFin" style="padding: 6px; border-radius: 5px; border: 1px solid #ccc;" required>
 
                         <button type="submit" name="crearExcel" class="btn-generarexel-submit">Generar Archivo</button>
                     </form>

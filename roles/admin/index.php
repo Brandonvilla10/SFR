@@ -161,24 +161,24 @@ if (isset($_POST['crearExcel'])) {
         INNER JOIN estado ON estado.id_estado = usuario.id_estado
         WHERE fechaEntrada BETWEEN '$fechaInicio' AND '$fechaFin' AND (vehiculos.id_documento = $filtroDeQueBuscar ) ORDER BY fechaEntrada DESC";
     }
-    $consulta = $con->prepare($sentencia);
-    $consulta->execute();
-    $resultado = $consulta->fetchAll(PDO::FETCH_ASSOC);
-    $columnas = ['fecha de entrada', 'fecha salida', 'placa del vehiculo', 'caracteristicas', 'documento', 'nombre', 'rol', 'correo', 'estado'];
-    $data = [];
-    foreach ($resultado as $row) {
-      $data[] = [
-        'fecha de entrada' => $row['fechaEntrada'],
-        'fecha salida' => $row['fechaSalida'],
-        'placa del vehiculo' => $row['id_placa']?? '',
-        'caracteristicas' => $row['caracteristicas']?? '',
-        'documento' => $row['id_documento'],
-        'nombre' => $row['nombre_completo'],
-        'rol' => $row['nombre_rol'],
-        'correo' => $row['correo'],
-        'estado' => $row['estado'], 
-      ];
-    }
+  }
+  $consulta = $con->prepare($sentencia);
+  $consulta->execute();
+  $resultado = $consulta->fetchAll(PDO::FETCH_ASSOC);
+  $columnas = ['fecha de entrada', 'fecha salida', 'placa del vehiculo', 'caracteristicas', 'documento', 'nombre', 'rol', 'correo', 'estado'];
+  $data = [];
+  foreach ($resultado as $row) {
+    $data[] = [
+      'fecha de entrada' => $row['fechaEntrada'],
+      'fecha salida' => $row['fechaSalida'],
+      'placa del vehiculo' => $row['id_placa']?? '',
+      'caracteristicas' => $row['caracteristicas']?? '',
+      'documento' => $row['id_documento'],
+      'nombre' => $row['nombre_completo'],
+      'rol' => $row['nombre_rol'],
+      'correo' => $row['correo'],
+      'estado' => $row['estado'], 
+    ];
   }
 
 

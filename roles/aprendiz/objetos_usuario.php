@@ -275,6 +275,7 @@ if(isset($_POST['editarBoton'])){
 
                 <label for="serial" class="label_titulo">Serial</label>
                 <input type="text" id="serial" name="serial" class="data_input" placeholder="Serial">
+                
 
                 <label for="" class="label_titulo">Nombre</label>
                 <input type="text" id="nombre" name="nombre" class="data_input">
@@ -314,6 +315,8 @@ if(isset($_POST['editarBoton'])){
                     <?php } ?>
                 </select>
 
+
+                <input type="text" value="../roles/aprendiz/objetos_usuario.php" name="direccion" hidden readonly>
                 <input type="hidden" name="user_id" value="<?php echo $buscar_usu ?>">
                 <button type="submit" id="CrearObjeto" name="CrearObjeto" class="CrearObjeto"> Crear Objeto </button>
                 <button type="button" class="regresar" onclick="cerrarModalObjetos()"> CERRAR</button>

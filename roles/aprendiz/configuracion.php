@@ -50,7 +50,7 @@ if (isset($_POST['submit'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Configuracion</title>
     <link rel="stylesheet" href="css/configuracion.css">
-    <link rel="stylesheet" href="asidebar/asidebar.css">
+    <link rel="stylesheet" href="asideBar/asidebar.css">
 
 </head>
 
@@ -148,10 +148,9 @@ if (isset($_POST['submit'])) {
 
 
 
-    <script src="pruebas/script.js"></script>
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
-    <script src="../../js/js.js"></script>
+
 
 
     <script>

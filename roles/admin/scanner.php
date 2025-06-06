@@ -17,7 +17,7 @@ include('../../includes/sesion_validar.php');
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lector de QR</title>
     <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js"></script>
-    <link rel="stylesheet" href="asidebar/asidebar.css">
+    <link rel="stylesheet" href="asideBar/asidebar.css">
     <link rel="stylesheet" href="css/home.css">
     <link rel="stylesheet" href="/css/output.css">
     <link rel="stylesheet" href="./css/scanner.css">
@@ -52,14 +52,9 @@ include('../../includes/sesion_validar.php');
         </div>
 
         <aside class="aside_barra">
-            <?php include('asidebar/asideBar.php') ?>
+            <?php include('asideBar/asideBar.php') ?>
         </aside>
-
-
-
-
-
-
+            
         <main class="grid_contenido_plantilla">
 
             <div class="container">

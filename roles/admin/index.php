@@ -21,63 +21,137 @@ if (isset($_POST['crearExcel'])) {
   $fechaFin = $_POST['fechaFin'];
   $filtroDeQueBuscar = isset($_POST['filtroDeQueBuscar']) ? $_POST['filtroDeQueBuscar'] : '';
 
-
-  if ($tipoReporte == 0) {
-
+if ($tipoReporte == 0) {
     if (empty($filtroDeQueBuscar)) {
+        
+        $sentencia = "SELECT * FROM registroentradapersona
+            INNER JOIN usuario ON usuario.id_documento = registroentradapersona.id_documento
+            INNER JOIN rol ON rol.id_rol = usuario.id_rol
+            INNER JOIN estado ON estado.id_estado = usuario.id_estado 
+            ORDER BY fechaEntrada DESC";
 
-      $sentencia = "SELECT * FROM registroentradapersona
-        INNER JOIN usuario ON usuario.id_documento = registroentradapersona.id_documento
-        INNER JOIN rol ON rol.id_rol = usuario.id_rol
-        INNER JOIN estado ON estado.id_estado = usuario.id_estado ORDER BY fechaEntrada DESC";
+        $consulta = $con->prepare($sentencia);
+        $consulta->execute();
+        $resultado = $consulta->fetchAll(PDO::FETCH_ASSOC);
 
-      $consulta = $con->prepare($sentencia);
-      $consulta->execute();
-      $resultado = $consulta->fetchAll(PDO::FETCH_ASSOC);
+     
+        $sentencia = "SELECT * FROM registroentradaobjetos
+            INNER JOIN objetos ON objetos.id_serial = registroentradaobjetos.id_serial
+            INNER JOIN usuario on usuario.id_documento = objetos.id_documento
+            INNER JOIN rol ON rol.id_rol = usuario.id_rol 
+            ORDER BY fechaEntrada DESC";
 
-      $sentencia = "SELECT * FROM registroentradaobjetos
-        INNER JOIN objetos ON objetos.id_serial = registroentradaobjetos.id_serial
-        INNER JOIN usuario on usuario.id_documento = objetos.id_documento
-        INNER JOIN rol ON rol.id_rol = usuario.id_rol ORDER BY fechaEntrada DESC";
+        $consulta = $con->prepare($sentencia);
+        $consulta->execute();
+        $resultadoObjetos = $consulta->fetchAll(PDO::FETCH_ASSOC);
 
-      $consulta = $con->prepare($sentencia);
-      $consulta->execute();
-      $resultadoObjetos = $consulta->fetchAll(PDO::FETCH_ASSOC);
+      
+        $sentencia = "SELECT * FROM registroentradavehiculos
+            INNER JOIN vehiculos ON vehiculos.id_placa = registroentradavehiculos.id_placa
+            INNER JOIN usuario ON usuario.id_documento = vehiculos.id_documento
+            INNER JOIN rol ON rol.id_rol = usuario.id_rol
+            INNER JOIN estado ON estado.id_estado = usuario.id_estado 
+            ORDER BY fechaEntrada DESC";
 
-      $resultado = array_merge($resultado, $resultadoObjetos);
+        $consulta = $con->prepare($sentencia);
+        $consulta->execute();
+        $resultadoVehiculos = $consulta->fetchAll(PDO::FETCH_ASSOC);
 
-      $sentencia = "SELECT * FROM registroentradavehiculos
-        INNER JOIN vehiculos ON vehiculos.id_placa = registroentradavehiculos.id_placa
-        INNER JOIN usuario ON usuario.id_documento = vehiculos.id_documento
-        INNER JOIN rol ON rol.id_rol = usuario.id_rol
-        INNER JOIN estado ON estado.id_estado = usuario.id_estado ORDER BY fechaEntrada DESC";
-      $consulta = $con->prepare($sentencia);
-      $consulta->execute();
-      $resultadoVehiculos = $consulta->fetchAll(PDO::FETCH_ASSOC);
-      $resultado = array_merge($resultado, $resultadoVehiculos);
+     
+        $resultado = array_merge($resultado, $resultadoObjetos, $resultadoVehiculos);
 
-      $columnas = ['fecha de entrada', 'fecha salida', 'documento', 'nombre', 'rol', 'correo',  'placa del vehiculo', 'caracteristicas', 'objeto', 'serial'];
+        $columnas = ['fecha de entrada', 'fecha salida', 'documento', 'nombre', 'rol', 'correo', 'placa del vehiculo', 'caracteristicas', 'objeto', 'serial'];
 
-      $data = [];
-      foreach ($resultado as $row) {
-        $data[] = [
-          'fecha de entrada' => $row['fechaEntrada'],
-          'fecha salida' => $row['fechaSalida'],
-          'documento' => $row['id_documento'],
-          'nombre' => $row['nombre_completo'],
-          'rol' => $row['nombre_rol'],
-          'correo' => $row['correo'],
-          'placa del vehiculo' => $row['id_placa'] ?? '',
-          'caracteristicas' => $row['caracteristicas'] ?? '',
-          'objeto' => $row['nombre'] ?? '',
-          'serial' => $row['id_serial'] ?? '',
+        $data = [];
+        foreach ($resultado as $row) {
+            $data[] = [
+                'fecha de entrada' => $row['fechaEntrada'],
+                'fecha salida' => $row['fechaSalida'],
+                'documento' => $row['id_documento'],
+                'nombre' => $row['nombre_completo'],
+                'rol' => $row['nombre_rol'],
+                'correo' => $row['correo'],
+                'placa del vehiculo' => $row['id_placa'] ?? '',
+                'caracteristicas' => $row['caracteristicas'] ?? '',
+                'objeto' => $row['nombre'] ?? '',
+                'serial' => $row['id_serial'] ?? ''
+            ];
+        }
+    }else {
 
+        
+        $sentencia = "SELECT * FROM registroentradapersona
+            INNER JOIN usuario ON usuario.id_documento = registroentradapersona.id_documento
+            INNER JOIN rol ON rol.id_rol = usuario.id_rol
+            INNER JOIN estado ON estado.id_estado = usuario.id_estado
+            WHERE fechaEntrada BETWEEN :fechaInicio AND :fechaFin 
+            AND registroentradapersona.id_documento = :filtro 
+            ORDER BY fechaEntrada DESC";
+        $consulta = $con->prepare($sentencia);
+        $consulta->bindParam(':fechaInicio', $fechaInicio);
+        $consulta->bindParam(':fechaFin', $fechaFin); 
+        $consulta->bindParam(':filtro', $filtroDeQueBuscar);
+        $consulta->execute();
+        $resultado = $consulta->fetchAll(PDO::FETCH_ASSOC);
 
+        
+        $sentencia = "SELECT * FROM registroentradaobjetos
+            INNER JOIN objetos ON objetos.id_serial = registroentradaobjetos.id_serial
+            INNER JOIN usuario on usuario.id_documento = objetos.id_documento
+            INNER JOIN rol ON rol.id_rol = usuario.id_rol
+            WHERE fechaEntrada BETWEEN :fechaInicio AND :fechaFin 
+            AND objetos.id_documento = :filtro
+            ORDER BY fechaEntrada DESC";
+        $consulta = $con->prepare($sentencia);
+        $consulta->bindParam(':fechaInicio', $fechaInicio);
+        $consulta->bindParam(':fechaFin', $fechaFin);
+        $consulta->bindParam(':filtro', $filtroDeQueBuscar);
+        $consulta->execute();
+        $resultadoObjetos = $consulta->fetchAll(PDO::FETCH_ASSOC);
+        
+        
+        $sentencia = "SELECT * FROM registroentradavehiculos
+            INNER JOIN vehiculos ON vehiculos.id_placa = registroentradavehiculos.id_placa
+            INNER JOIN usuario ON usuario.id_documento = vehiculos.id_documento
+            INNER JOIN rol ON rol.id_rol = usuario.id_rol
+            INNER JOIN estado ON estado.id_estado = usuario.id_estado
+            WHERE fechaEntrada BETWEEN :fechaInicio AND :fechaFin 
+            AND vehiculos.id_documento = :filtro
+            ORDER BY fechaEntrada DESC";
+        $consulta = $con->prepare($sentencia);
+        $consulta->bindParam(':fechaInicio', $fechaInicio);
+        $consulta->bindParam(':fechaFin', $fechaFin);
+        $consulta->bindParam(':filtro', $filtroDeQueBuscar);
+        $consulta->execute();
+        $resultadoVehiculos = $consulta->fetchAll(PDO::FETCH_ASSOC);
 
-        ];
-      }
+        
+        $resultado = array_merge($resultado, $resultadoObjetos, $resultadoVehiculos);
+
+        
+        $columnas = ['fecha de entrada', 'fecha salida', 'documento', 'nombre', 'rol', 'correo', 'placa del vehiculo', 'caracteristicas', 'objeto','serial'];
+        $data = [];
+        
+        // Format data for export
+        foreach ($resultado as $row) {
+            $data[] = [
+                'fecha de entrada' => $row['fechaEntrada'],
+                'fecha salida' => $row['fechaSalida'],
+                'documento' => $row['id_documento'],  
+                'nombre' => $row['nombre_completo'],
+                'rol' => $row['nombre_rol'],
+                'correo' => $row['correo'],
+                'placa del vehiculo' => $row['id_placa'] ?? '',
+                'caracteristicas' => $row['caracteristicas'] ?? '',
+                'objeto' => $row['nombre'] ?? '',
+                'serial' => $row['id_serial'] ?? ''
+            ];
+        }
     }
-  } else if ($tipoReporte == 1) {
+
+
+  } 
+  else if ($tipoReporte == 1) {
     if (empty($filtroDeQueBuscar)) {
 
       $sentencia = "SELECT * FROM registroentradapersona
@@ -90,7 +164,7 @@ if (isset($_POST['crearExcel'])) {
         INNER JOIN usuario ON usuario.id_documento = registroentradapersona.id_documento
         INNER JOIN rol ON rol.id_rol = usuario.id_rol
         INNER JOIN estado ON estado.id_estado = usuario.id_estado
-        WHERE fechaEntrada BETWEEN '$fechaInicio' AND '$fechaFin' AND (id_documento = $filtroDeQueBuscar ) ORDER BY fechaEntrada DESC";
+        WHERE fechaEntrada BETWEEN '$fechaInicio' AND '$fechaFin' AND (registroentradapersona.id_documento = $filtroDeQueBuscar ) ORDER BY fechaEntrada DESC";
     }
     $consulta = $con->prepare($sentencia);
     $consulta->execute();
@@ -161,24 +235,24 @@ if (isset($_POST['crearExcel'])) {
         INNER JOIN estado ON estado.id_estado = usuario.id_estado
         WHERE fechaEntrada BETWEEN '$fechaInicio' AND '$fechaFin' AND (vehiculos.id_documento = $filtroDeQueBuscar ) ORDER BY fechaEntrada DESC";
     }
-  }
-  $consulta = $con->prepare($sentencia);
-  $consulta->execute();
-  $resultado = $consulta->fetchAll(PDO::FETCH_ASSOC);
-  $columnas = ['fecha de entrada', 'fecha salida', 'placa del vehiculo', 'caracteristicas', 'documento', 'nombre', 'rol', 'correo', 'estado'];
-  $data = [];
-  foreach ($resultado as $row) {
-    $data[] = [
-      'fecha de entrada' => $row['fechaEntrada'],
-      'fecha salida' => $row['fechaSalida'],
-      'placa del vehiculo' => $row['id_placa']?? '',
-      'caracteristicas' => $row['caracteristicas']?? '',
-      'documento' => $row['id_documento'],
-      'nombre' => $row['nombre_completo'],
-      'rol' => $row['nombre_rol'],
-      'correo' => $row['correo'],
-      'estado' => $row['estado'], 
-    ];
+    $consulta = $con->prepare($sentencia);
+    $consulta->execute();
+    $resultado = $consulta->fetchAll(PDO::FETCH_ASSOC);
+    $columnas = ['fecha de entrada', 'fecha salida', 'placa del vehiculo', 'caracteristicas', 'documento', 'nombre', 'rol', 'correo', 'estado'];
+    $data = [];
+    foreach ($resultado as $row) {
+      $data[] = [
+        'fecha de entrada' => $row['fechaEntrada'],
+        'fecha salida' => $row['fechaSalida'],
+        'placa del vehiculo' => $row['id_placa']?? '',
+        'caracteristicas' => $row['caracteristicas']?? '',
+        'documento' => $row['id_documento'],
+        'nombre' => $row['nombre_completo'],
+        'rol' => $row['nombre_rol'],
+        'correo' => $row['correo'],
+        'estado' => $row['estado'], 
+      ];
+    }
   }
 
 

@@ -79,7 +79,7 @@ if (isset($_POST["objetos_submit"])) {
                     <p>Administra los vehiculos segun tu necesidad</p>
                 </div>
 
-                <button class="buscar_objeto_titulo" id="modalExcel">Generar Registros</button>
+                
                 <button class="buscar_objeto_titulo" onclick="plantilla2()">Agregar</button>
 
                 <button class="buscar_objeto_titulo" id="abrirBuscar">Buscar Vehiculos</button>

@@ -173,35 +173,7 @@ if (isset($_POST["agregarSubmit"])) {
                 <!-- el modal empieza a partid de aca -->
             </div>
 
-            <!-- -----------------------------------modal para exportarExcel------------------------->
-
-            <div id="modal-generarexel" class="modal-generarexel">
-                <div class="modal-generarexel-content">
-                    <button class="modal-generarexel-close cerrarModalBuscar" id="cerrarModalExcel">&times;</button>
-                    <h2 class="modal-generarexel-title">Generar archivos</h2>
-                    <form method="post" class="form-generarexel">
-                        <label for="fechaFin-generarexel" class="label-generarexel">Documento del Propietario (No obligatorio):</label>
-                        <input type="number" id="fechaFin-generarexel" name="documentoUsuario" placeholder="Documento..." class="input-generarexel">
-                        <label for="tipoReporte-generarexel" class="label-generarexel">Tipo de reporte:</label>
-                        <select id="tipoReporte-generarexel" name="tipoReporte" class="select-generarexel" required>
-                            <option value="">Elija Un Tipo De Reporte...</option>
-                            <option value="10">Todos Los Usuarios</option>
-                            <option value="4">Usuarios eliminados</option>
-                            <option value="1">Usuarios fuera</option>
-                            <option value="2">Usuarios inactivos</option>
-                        </select>
-
-                        <label for="opcionDeDescarga" class="label-generarexel">Tipo De Archivo</label>
-                        <select name="opcionDeDescarga" id="opcionDeDescarga" class="select-generarexel">
-                            <option value="3">Tipo De Archivo</option>
-                            <option value="1">Generar Archivo Excel</option>
-                            <option value="2">Generar Archivo PDF</option>
-                        </select>
-
-                        <button type="submit" name="crearExcel" class="btn-generarexel-submit">Generar Archivo</button>
-                    </form>
-                </div>
-            </div>
+            
 
 
             <!-- Modal para Eliminar Usuario -->
@@ -375,25 +347,7 @@ if (isset($_POST["agregarSubmit"])) {
     </div>
 
     <script>
-        const modalExcel = document.getElementById('modal-generarexel');
-        const modalExcelBtn = document.getElementById('modalExcel');
-
-        modalExcelBtn.addEventListener('click', () => {
-            modalExcel.style.visibility = 'visible';
-            modalExcel.style.opacity = '1';
-
-        });
-        modalExcel.addEventListener('click', (event) => {
-            if (event.target === modalExcel) {
-                modalExcel.style.visibility = 'hidden';
-                modalExcel.style.opacity = '0';
-            }
-        });
-
-        const cerrarModalExcel = document.getElementById('cerrarModalExcel').addEventListener('click', () => {
-            modalExcel.style.visibility = 'hidden';
-            modalExcel.style.opacity = '0';
-        });
+       
 
 
         //<----------------------------- FILTRO PARA BUSCAR POR EL DOCUMENTO DE LA PERSONA ---------------------------> 

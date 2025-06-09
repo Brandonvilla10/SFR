@@ -150,43 +150,7 @@ $consulta->execute();
             <hr class="separador">
 
 
-            <!-- -----------------------------------modal para exportarExcel------------------------->
-
-            <div id="modal-generarexel" class="modal-generarexel">
-                <div class="modal-generarexel-content">
-                    <button class="modal-generarexel-close cerrarModalBuscar" id="cerrarModalExcel">&times;</button>
-                    <h2 class="modal-generarexel-title">Generar archivos</h2>
-                    <form method="post" class="form-generarexel">
-                        <label for="fechaFin-generarexel" class="label-generarexel">Documento del Propietario (No obligatorio):</label>
-                        <input type="number" id="fechaFin-generarexel" name="documentoUsuario" placeholder="Documento..." class="input-generarexel">
-                        <label for="tipoReporte-generarexel" class="label-generarexel">Tipo de reporte:</label>
-                        <select id="tipoReporte-generarexel" name="tipoReporte" class="select-generarexel" required>
-                            <option value="">Elija Un Tipo De Reporte...</option>
-                            <option value="10">Todos Los Objetos</option>
-                            <option value="4">Objetos eliminados</option>
-                            <option value="1">Objetos fuera</option>
-                            <option value="2">Objetos inactivos</option>
-                        </select>
-
-                        <label for="opcionDeDescarga" class="label-generarexel">Tipo De Archivo</label>
-                        <select name="opcionDeDescarga" id="opcionDeDescarga" class="select-generarexel">
-                            <option value="3">Tipo De Archivo</option>
-                            <option value="1">Generar Archivo Excel</option>
-                            <option value="2">Generar Archivo PDF</option>
-                        </select>
-
-                        <label for="fechaInicio" class="label-generarexel">Fecha Inicio</label>
-                        <input type="date" name="fechaInicio" id="fechaInicio" style="padding: 6px; border-radius: 5px; border: 1px solid #ccc;" required>
-
-                        <label for="fechaFin" class="label-generarexel">Fecha Fin</label>
-                        <input type="date" name="fechaFin" id="fechaFin" style="padding: 6px; border-radius: 5px; border: 1px solid #ccc;" required>
-
-                        
-
-                        <button type="submit" name="crearExcel" class="btn-generarexel-submit">Generar Archivo</button>
-                    </form>
-                </div>
-            </div>
+            
 
 
             <!-------------------------------- TABLA DE OBJETOS ------------------------------------->
@@ -283,26 +247,7 @@ $consulta->execute();
 
 
     <script>
-        // Modal de Excel
-        const modalExcel = document.getElementById('modal-generarexel');
-        const modalExcelBtn = document.getElementById('modalExcel');
-
-        modalExcelBtn.addEventListener('click', () => {
-            modalExcel.style.visibility = 'visible';
-            modalExcel.style.opacity = '1';
-
-        });
-        modalExcel.addEventListener('click', (event) => {
-            if (event.target === modalExcel) {
-                modalExcel.style.visibility = 'hidden';
-                modalExcel.style.opacity = '0';
-            }
-        });
-
-        const cerrarModalExcel = document.getElementById('cerrarModalExcel').addEventListener('click', () => {
-            modalExcel.style.visibility = 'hidden';
-            modalExcel.style.opacity = '0';
-        });
+  
         // Modal de Búsqueda
         const modalBuscar = document.getElementById('modalBuscar');
         const abrirBuscar = document.getElementById('abrirBuscar');

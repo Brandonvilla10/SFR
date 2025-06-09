@@ -1,10 +1,12 @@
 <?php
 session_start();
-include('../admin/components/alert.php');
 include('../../database/database.php');
+include('../admin/components/alert.php');
+include('../../includes/sesion_validar.php');
+
+
 $conexion = new database;
 $con = $conexion->conectar();
-include('../../includes/sesion_validar.php');
 
 $codigo = $_SESSION['documento'];
 
@@ -128,7 +130,7 @@ if (isset($_POST['submit'])) {
                                     <label class="custom-file-upload">
                                         <input type="file" name="foto" id="fileInput" onchange="previewFoto(event);" />
                                         Subir Foto
-                                        <input type="text" name="direccion" value="../roles/aprendiz/configuracion.php" hidden>
+                                        <input type="text" name="direccion" value="../roles/coordinador/configuracion.php" hidden>
                                     </label>
                                     <button type="submit" class="guardar" id="botonGuardar" name="actualizarFoto">Guardar</button>
                                 </form>
@@ -148,10 +150,10 @@ if (isset($_POST['submit'])) {
 
 
 
-    <script src="pruebas/script.js"></script>
+    
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
-    <script src="../../js/js.js"></script>
+    
 
 
     <script>

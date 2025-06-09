@@ -1,10 +1,12 @@
 <?php
 session_start();
 require_once('../../database/database.php');
+include('../../includes/sesion_validar.php');
 require_once('../../js/TCPDF/tcpdf.php');
+
+
 $conexion = new database;
 $con = $conexion->conectar();
-include('../../includes/sesion_validar_datos.php');
 
 if (isset($_POST['documento'])) {
     $documento = $_POST['documento'];

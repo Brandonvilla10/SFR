@@ -20,7 +20,6 @@ $con = $conexion->conectar();
 
    <?php include('template/header.php')?>
 
-
 <section class="container">
 
 <!-- en la columna izquierda tuve que usar una propiedad de z index en el div con clase "card", ya que la imagen(El fondo blanco) no estaba poniendose de manera adecuada asi que lo resolvi usando una posicion absoluta y colocando los elementos dentro de card encima de la imagen los elementos me refiero a los inputs-->

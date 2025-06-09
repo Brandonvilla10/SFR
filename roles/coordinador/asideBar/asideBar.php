@@ -1,9 +1,7 @@
 
 <?php
-
-
 require_once('../../database/database.php');
-include('../../includes/sesion_validar.php');
+validarSesionRol($_SESSION['rol'],6);
 $conexion = new database;
 $con = $conexion->conectar();
 
@@ -17,7 +15,7 @@ $rol =$_SESSION['rol_name'];
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="asideBar/asideBar.css">
+    <link rel="stylesheet" href="asideBar/asidebar.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
 </head>
@@ -28,7 +26,7 @@ $rol =$_SESSION['rol_name'];
     <aside id="barraLateral" class="fuera">
         <div class="Logo">
             <img src="../../assets/img/LogoFR.webp" class="logoSenaFast" alt="Logo">
-            <h3 style="color: white;" >SenaFast</h3>
+            <h3 style="color: white;" class="senaP" >SenaFast</h3>
         </div>
 
         <hr class="white">

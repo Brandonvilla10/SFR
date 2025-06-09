@@ -1,8 +1,14 @@
 
 <?php
-
-
-
+function validarSesionRol($tipo, $rol) {
+    if($tipo != $rol){
+        echo "<script>
+                alert('Rol no permitido');
+                window.location.href = '../../../includes/sesion_destroy.php';
+            </script>";
+        exit();
+    }
+}
 if(!isset($_SESSION['documento'])){
 
     unset($_SESSION['documento']);

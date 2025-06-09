@@ -3,6 +3,7 @@
 session_start();
 include('../../excelComponente/generarExcel.php');
 require_once('../../database/database.php');
+include('components/alert.php');
 require_once('../../includes/sesion_validar.php');
 
 // ---------------------------------------------
@@ -270,7 +271,6 @@ if ($tipoReporte == 0) {
   generarExcelDinamico($columnas, $data, "Registros", 'excel');
 }
 
-include('components/alert.php');
 
 ?>
 
@@ -299,7 +299,7 @@ include('components/alert.php');
     <header class="home_header">
       <div class="home_titulo">
         Bienvenido, <?php echo $nombre ?> 🎉
-        <p>Rol: administrador</p>
+        <p>Rol: Administrador</p>
       </div>
       <div class="home_iconos">
         <div id="notificacion-wrapper" style="position: relative; display: inline-block; cursor:pointer;">
@@ -420,53 +420,39 @@ include('components/alert.php');
 
   </div>
 
-  <?php
+<?php
+$vehiculosAcivos = $con->prepare("SELECT COUNT(*) as total FROM vehiculos WHERE id_estado = 3");
+$vehiculosAcivos->execute();
+$resultado = $vehiculosAcivos->fetch(PDO::FETCH_ASSOC);
+$vehiculosInactivos = $con->prepare("SELECT COUNT(*) as innactivos FROM vehiculos WHERE id_estado = 1");
+$vehiculosInactivos->execute();
+$resultadoInnactivo = $vehiculosInactivos->fetch(PDO::FETCH_ASSOC);
 
+  // Consulta para obtener los registros de personas ingresadas hoy
+$personasHoy = $con->prepare("
+SELECT COUNT(*) as total 
+FROM registroentradapersona 
+WHERE DATE(fechaEntrada) = CURDATE()");
+$personasHoy->execute();
+$resultadoPersonasHoy = $personasHoy->fetch(PDO::FETCH_ASSOC);
 
-  $vehiculosAcivos = $con->prepare("SELECT COUNT(*) as total FROM vehiculos WHERE id_estado = 1");
-  $vehiculosAcivos->execute();
-  $resultado = $vehiculosAcivos->fetch(PDO::FETCH_ASSOC);
+// Consulta para obtener los registros de objetos ingresados hoy
+$objetosHoy = $con->prepare("
+SELECT COUNT(*) as total 
+FROM registroentradaobjetos 
+WHERE DATE(fechaEntrada) = CURDATE()");
+$objetosHoy->execute();
+$resultadoObjetosHoy = $objetosHoy->fetch(PDO::FETCH_ASSOC);
 
-  $vehiculosInactivos = $con->prepare("SELECT COUNT(*) as innactivos FROM vehiculos WHERE id_estado = 2");
-  $vehiculosInactivos->execute();
-  $resultadoInnactivo = $vehiculosInactivos->fetch(PDO::FETCH_ASSOC);
+// Consulta para obtener los registros de vehículos ingresados hoy
+$vehiculosHoy = $con->prepare("
+SELECT COUNT(*) as total 
+FROM registroentradavehiculos 
+WHERE DATE(fechaEntrada) = CURDATE()");
+$vehiculosHoy->execute();
+$resultadoVehiculosHoy = $vehiculosHoy->fetch(PDO::FETCH_ASSOC);
 
-  // Consulta para obtener los registros de los últimos 5 días
-  $ultimosCincoDias = $con->prepare("
-    SELECT 
-        DATE(fechaEntrada) as fecha, 
-        COUNT(*) as total 
-    FROM registroentradapersona 
-    WHERE fechaEntrada >= DATE_SUB(CURDATE(), INTERVAL 4 DAY)
-    GROUP BY DATE(fechaEntrada) 
-    ORDER BY fecha ASC
-  ");
-  $ultimosCincoDias->execute();
-  $registrosPorDia = $ultimosCincoDias->fetchAll(PDO::FETCH_ASSOC);
-
-  $etiquetas = [];
-  $datos = [];
-  $fechaActual = new DateTime();
-  for ($i = 4; $i >= 0; $i--) {
-    $fecha = clone $fechaActual;
-    $fecha->modify("-$i day");
-    $fechaFormateada = $fecha->format('Y-m-d');
-    $etiquetas[] = $fecha->format('D');
-    $encontrado = false;
-    foreach ($registrosPorDia as $registro) {
-      if ($registro['fecha'] == $fechaFormateada) {
-        $datos[] = $registro['total'];
-        $encontrado = true;
-        break;
-      }
-    }
-    if (!$encontrado) {
-      $datos[] = 0;
-    }
-  }
-  $etiquetasJSON = json_encode($etiquetas);
-  $datosJSON = json_encode($datos);
-  ?>
+?>
 
   <!-- Importación de iconos -->
   <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
@@ -523,16 +509,26 @@ include('components/alert.php');
     const datas = new Chart(barras, {
       type: "bar",
       data: {
-        labels: <?php echo $etiquetasJSON; ?>,
+        labels: ['Personas', 'Objetos', 'Vehiculos'],
         datasets: [{
-          label: "Registros de personas por día",
-          data: <?php echo $datosJSON; ?>,
-          backgroundColor: 'blue',
-          borderWidth: 3
+          data: [<?php echo $resultadoPersonasHoy['total']; ?>,<?php echo $resultadoObjetosHoy['total']; ?>,<?php echo $resultadoVehiculosHoy['total']; ?>],
+          backgroundColor: ['#6a9fdc','#498ad4','#3a7ab9'],
+          borderWidth: 1,
+          barThickness: 30
         }]
       },
       options: {
+        indexAxis: 'y',
         responsive: true,
+        plugins: {
+          legend: {
+            display: false,
+          },
+          title:{
+            display: true,
+            text: 'Registros de entrada el dia de hoy'
+          }
+        },
         scales: {
           yAxes: [{
             ticks: {
@@ -548,9 +544,8 @@ include('components/alert.php');
     const datos_donut = new Chart(donita, {
       type: "doughnut",
       data: {
-        labels: ['vehículos activos', 'vehículos Inactivos'],
+        labels: ['Vehiculos Dentro', 'Vehiculos Fuera'],
         datasets: [{
-          label: 'Vehículos Activos',
           data: [<?php echo $resultado['total'] ?>, <?php echo $resultadoInnactivo['innactivos'] ?>],
           backgroundColor: ['blue', 'red'],
           borderWidth: 2

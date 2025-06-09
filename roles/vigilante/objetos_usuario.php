@@ -421,9 +421,8 @@ if(isset($_POST['editarBoton'])){
                     }
 
                     // Confirmación final
-                    if (confirm('¿Deseas crear este objeto?')) {
-                        form.submit(); // Todo OK, se envía
-                    }
+                    form.submit(); // Todo OK, se envía
+                    
                     
 
                 });

@@ -53,7 +53,7 @@ if (empty($id_documento)) {
 }
 
 
-$consulta_usuario = $con->prepare("SELECT nombre_completo FROM usuario WHERE id_documento = :id_documento");
+$consulta_usuario = $con->prepare("SELECT id_documento, nombre_completo FROM usuario WHERE id_documento = :id_documento");
 $consulta_usuario->bindParam(':id_documento', $id_documento);
 $consulta_usuario->execute();
 $usuario = $consulta_usuario->fetch(PDO::FETCH_ASSOC);
@@ -151,7 +151,7 @@ if (isset($_POST['editarBoton'])) {
             <div class="container">
                 <div class="header">
                     <h2>SECCION VEHICULOS<br>
-                        Todos los vehiculos de <?php echo $usuario['nombre_completo']; ?></h2>
+                    Todos los vehiculos de <?php echo $usuario['nombre_completo']; ?> numero de identificacion <?php echo $usuario['id_documento'];?> </h2>
                     <button class="add-button" onclick="window.location.href='aggVehiculo.php?origen=usuarios&user_id=<?php echo $id_documento; ?>'">+</button>
                 </div>
 

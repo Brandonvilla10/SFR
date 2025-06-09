@@ -1,11 +1,11 @@
 <?php
-// Validaciones-------------------------------------------
+// Validaciones e includes------------------
 session_start();
 include('../../excelComponente/generarExcel.php');
 require_once('../../database/database.php');
-require_once('../../includes/sesion_validar.php');
+include('../../includes/sesion_validar.php');
+// ------------------------------------------
 
-// ---------------------------------------------
 
 $conexion = new database;
 $con = $conexion->conectar();

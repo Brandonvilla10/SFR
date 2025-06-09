@@ -4,7 +4,7 @@ require_once('../../database/database.php');
 include('../admin/components/alert.php');
 $conexion = new database;
 $con = $conexion->conectar();
-include('../../includes/sesion_validar_datos.php');
+include('../../includes/sesion_validar.php');
 
 $codigo = isset($_SESSION['documento']) ? $_SESSION['documento'] : '';
 

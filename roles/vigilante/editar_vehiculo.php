@@ -8,7 +8,7 @@ include('../../includes/sesion_validar.php');
 
 // Establecer la variable @documento_generador en MySQL desde la sesión
 try {
-    $sql = $con->prepare("SELECT nombre_completo FROM usuario WHERE id_documento = $_SESSION[documento]");
+    $sql = $con->prepare("SELECT id_documento,nombre_completo FROM usuario WHERE id_documento = $_SESSION[documento]");
     $sql->execute();
     $nombre = $sql->fetch(PDO::FETCH_ASSOC);
     $con->exec("SET @documento_generador = '$nombre[nombre_completo]'");

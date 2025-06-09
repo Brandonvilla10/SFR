@@ -1,14 +1,20 @@
 <?php
+// Validaciones-------------------------------------------
 session_start();
 include('../../excelComponente/generarExcel.php');
 require_once('../../database/database.php');
-include('../../includes/sesion_validar.php');
+require_once('../../includes/sesion_validar.php');
+
+// ---------------------------------------------
+
 $conexion = new database;
 $con = $conexion->conectar();
 
 $codigo = isset($_SESSION['documento']) ? $_SESSION['documento'] : '';
 $nombre = isset($_SESSION['nombre']) ? explode(" ", $_SESSION['nombre'])[0] : '';
 $rol = isset($_SESSION['rol_name']) ? $_SESSION['rol_name'] : '';
+
+
 
 if (isset($_POST['crearExcel'])) {
 
@@ -124,7 +130,7 @@ if ($tipoReporte == 0) {
         $consulta->bindParam(':filtro', $filtroDeQueBuscar);
         $consulta->execute();
         $resultadoVehiculos = $consulta->fetchAll(PDO::FETCH_ASSOC);
-
+        
         
         $resultado = array_merge($resultado, $resultadoObjetos, $resultadoVehiculos);
 
@@ -134,7 +140,7 @@ if ($tipoReporte == 0) {
         
         // Format data for export
         foreach ($resultado as $row) {
-            $data[] = [
+          $data[] = [
                 'fecha de entrada' => $row['fechaEntrada'],
                 'fecha salida' => $row['fechaSalida'],
                 'documento' => $row['id_documento'],  
@@ -258,13 +264,14 @@ if ($tipoReporte == 0) {
 
 
 
-
+  
 
 
   generarExcelDinamico($columnas, $data, "Registros", 'excel');
 }
 
 include('components/alert.php');
+
 ?>
 
 <!DOCTYPE html>
@@ -292,7 +299,7 @@ include('components/alert.php');
     <header class="home_header">
       <div class="home_titulo">
         Bienvenido, <?php echo $nombre ?> 🎉
-        <p>Rol: Coordinador</p>
+        <p>Rol: administrador</p>
       </div>
       <div class="home_iconos">
         <div id="notificacion-wrapper" style="position: relative; display: inline-block; cursor:pointer;">
@@ -309,10 +316,14 @@ include('components/alert.php');
             display: none;
           ">0</span>
         </div>
-        <button id="btnReportes" style="margin-left: 15px; padding: 8px 16px; border-radius: 5px; border: none; background: #007bff; color: #fff; cursor: pointer;">
-          Reportes
+        <button id="btnReportes" class="pdfBoton"> 
+          <!-- reportes para pdf -->
+          <img class="imgReportes" src="../../assets/pdf.png"  alt="">
         </button>
-        <button style="margin-left: 15px; padding: 8px 16px; border-radius: 5px; border: none; background: #007bff; color: #fff; cursor: pointer;" id="modalExcel">Generar Registros Excel</button>
+        <button id="modalExcel" class="excelBoton">
+          <!-- reportes para excel -->
+          <img src="../../assets/excel.png" class="imgReportes"  alt=" ">
+      </button>
       </div>
 
 
@@ -462,8 +473,23 @@ include('components/alert.php');
   <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 
   <script>
+
+    
+  
+
+
     const modalExcel = document.getElementById('modal-generarexel');
     const modalExcelBtn = document.getElementById('modalExcel');
+
+    modalExcelBtn.addEventListener("mouseenter", () => {
+      modalExcelBtn.classList.add("afterParaBoton"); 
+    });
+
+    modalExcelBtn.addEventListener("mouseleave", () => {
+      modalExcelBtn.classList.remove("afterParaBoton");
+    });
+
+
 
     modalExcelBtn.addEventListener('click', () => {
       modalExcel.style.visibility = 'visible';
@@ -476,6 +502,16 @@ include('components/alert.php');
         modalExcel.style.opacity = '0';
       }
     });
+
+    const botonpdf = document.getElementById("btnReportes");
+
+    botonpdf.addEventListener("mouseenter", () => {
+      botonpdf.classList.add("afterParaPdf");
+    });
+
+    botonpdf.addEventListener("mouseleave", () =>{
+      botonpdf.classList.remove("afterParaPdf")
+    })
 
     const cerrarModalExcel = document.getElementById('cerrarModalExcel').addEventListener('click', () => {
       modalExcel.style.visibility = 'hidden';

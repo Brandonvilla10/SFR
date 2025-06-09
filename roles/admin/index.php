@@ -316,10 +316,14 @@ include('components/alert.php');
             display: none;
           ">0</span>
         </div>
-        <button id="btnReportes" style="margin-left: 15px; padding: 8px 16px; border-radius: 5px; border: none; background: #007bff; color: #fff; cursor: pointer;">
-          Reportes
+        <button id="btnReportes" class="pdfBoton"> 
+          <!-- reportes para pdf -->
+          <img class="imgReportes" src="../../assets/pdf.png"  alt="">
         </button>
-        <button style="margin-left: 15px; padding: 8px 16px; border-radius: 5px; border: none; background: #007bff; color: #fff; cursor: pointer;" id="modalExcel">Generar Registros Excel</button>
+        <button id="modalExcel" class="excelBoton">
+          <!-- reportes para excel -->
+          <img src="../../assets/excel.png" class="imgReportes"  alt=" ">
+      </button>
       </div>
 
 
@@ -469,8 +473,23 @@ include('components/alert.php');
   <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 
   <script>
+
+    
+  
+
+
     const modalExcel = document.getElementById('modal-generarexel');
     const modalExcelBtn = document.getElementById('modalExcel');
+
+    modalExcelBtn.addEventListener("mouseenter", () => {
+      modalExcelBtn.classList.add("afterParaBoton"); 
+    });
+
+    modalExcelBtn.addEventListener("mouseleave", () => {
+      modalExcelBtn.classList.remove("afterParaBoton");
+    });
+
+
 
     modalExcelBtn.addEventListener('click', () => {
       modalExcel.style.visibility = 'visible';
@@ -483,6 +502,16 @@ include('components/alert.php');
         modalExcel.style.opacity = '0';
       }
     });
+
+    const botonpdf = document.getElementById("btnReportes");
+
+    botonpdf.addEventListener("mouseenter", () => {
+      botonpdf.classList.add("afterParaPdf");
+    });
+
+    botonpdf.addEventListener("mouseleave", () =>{
+      botonpdf.classList.remove("afterParaPdf")
+    })
 
     const cerrarModalExcel = document.getElementById('cerrarModalExcel').addEventListener('click', () => {
       modalExcel.style.visibility = 'hidden';

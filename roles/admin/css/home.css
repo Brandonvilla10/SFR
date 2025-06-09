@@ -87,7 +87,8 @@ html,body{
         font-size: 30px;
         margin: 10px;
         gap: 15px;
-        color: #4F4F4F;   /* Íconos en gris oscuro */
+        color: #4F4F4F;
+        align-items: center;  /* Íconos en gris oscuro */
     }
 
     /* asignar el area para la barra lateral */
@@ -635,4 +636,61 @@ html,body{
         height: 50%;
     }
     
+}
+
+.excelBoton, .pdfBoton{
+    background-color: transparent;
+    border: none;
+    border-radius: 10px;
+    width: 60px;
+    height: 60px;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.excelBoton:hover, .pdfBoton:hover{
+    transform: scale(1.1);
+}
+
+
+
+.afterParaBoton{
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.afterParaBoton::after{
+    content: "Generar Excel";
+    position: absolute;
+    width: 100%;
+    color: white;
+    height: 40px;
+    border-radius: 10px;
+    background-color: gray;
+    bottom: -45;
+    left: 0;
+    font-weight: 500;
+}
+.afterParaPdf{
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.afterParaPdf::after{
+    content: "Generar PDF";
+    position: absolute;
+    width: 100%;
+    color: white;
+    height: 40px;
+    border-radius: 10px;
+    background-color: gray;
+    bottom: -45;
+    left: 0;
+    font-weight: 500;
+}
+
+.imgReportes{
+    width: 35px;
+    height: 35px;
+    object-fit: cover;
 }

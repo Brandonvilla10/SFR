@@ -27,12 +27,12 @@
       <h3 style="color:cornflowerblue ;">Chat Virtual</h3>
         <div class="whatsapp">
           <img style="object-fit: cover;" height="30px" width="30px" src="assets/img/iconosRedesSociales/whatsapp (1).webp" alt="Whatassp">
-          <p class="telefono">3228023705</p>
+          <p style="font-weight: 600; margin-left: 10px;">3228023705</p>
         </div>
 
         <div class="whatsapp">
           <img style="object-fit: cover;" height="30px" width="30px" src="assets/img/iconosRedesSociales/whatsapp (1).webp" alt="Whatassp">
-          <p class="telefono">3228023705</p>
+          <p style="font-weight: 600; margin-left: 10px;">3228023705</p>
         </div>
       </div>
       
@@ -41,8 +41,7 @@
 
         <div style="display: flex;flex-direction:row;margin-top: 10px;justify-content: center;">
           <img style="object-fit: cover;" height="30px" width="30px" src="assets/img/iconosRedesSociales/correo-electronico.webp" alt="">
-          
-          <p style="font-weight: 600;">senafastregister@gmail.com</p>
+          <p style="font-weight: 600; margin-left: 10px;">senafastregister@gmail.com</p>
         </div>
       </div>
 
@@ -98,7 +97,7 @@
 
     <p class="parrafoUbicacion"style="color: rgb(53, 75, 118); text-align:center;">Sena Centro De Industria y La Construccion</p>
     <p class="parrafoUbicacion"style="color: rgb(53, 75, 118);text-align:center;">141-sector cra.45 sur #1255, Ibague Tolima</p>
-    <p class="parrafoUbicacion"style="color: rgb(52, 189, 56);text-align:center;">Te esperamos!</p>
+    <p class="parrafoUbicacion"style="color:  rgba(58, 170, 53, 255);text-align:center;">Te esperamos!</p>
   </div>
   </section>
 

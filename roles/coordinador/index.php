@@ -3,7 +3,6 @@
 session_start();
 include('../../excelComponente/generarExcel.php');
 require_once('../../database/database.php');
-include('components/alert.php');
 require_once('../../includes/sesion_validar.php');
 
 // ---------------------------------------------
@@ -19,16 +18,13 @@ $rol = isset($_SESSION['rol_name']) ? $_SESSION['rol_name'] : '';
 
 if (isset($_POST['crearExcel'])) {
 
-
-
   $array = [];
-
   $tipoReporte = $_POST['tipoReporte'];
   $fechaInicio = $_POST['fechaInicio'];
   $fechaFin = $_POST['fechaFin'];
   $filtroDeQueBuscar = isset($_POST['filtroDeQueBuscar']) ? $_POST['filtroDeQueBuscar'] : '';
 
-if ($tipoReporte == 0) {
+  if ($tipoReporte == 0) {
     if (empty($filtroDeQueBuscar)) {
         
         $sentencia = "SELECT * FROM registroentradapersona
@@ -41,7 +37,6 @@ if ($tipoReporte == 0) {
         $consulta->execute();
         $resultado = $consulta->fetchAll(PDO::FETCH_ASSOC);
 
-     
         $sentencia = "SELECT * FROM registroentradaobjetos
             INNER JOIN objetos ON objetos.id_serial = registroentradaobjetos.id_serial
             INNER JOIN usuario on usuario.id_documento = objetos.id_documento
@@ -52,7 +47,6 @@ if ($tipoReporte == 0) {
         $consulta->execute();
         $resultadoObjetos = $consulta->fetchAll(PDO::FETCH_ASSOC);
 
-      
         $sentencia = "SELECT * FROM registroentradavehiculos
             INNER JOIN vehiculos ON vehiculos.id_placa = registroentradavehiculos.id_placa
             INNER JOIN usuario ON usuario.id_documento = vehiculos.id_documento
@@ -64,29 +58,41 @@ if ($tipoReporte == 0) {
         $consulta->execute();
         $resultadoVehiculos = $consulta->fetchAll(PDO::FETCH_ASSOC);
 
-     
         $resultado = array_merge($resultado, $resultadoObjetos, $resultadoVehiculos);
 
         $columnas = ['fecha de entrada', 'fecha salida', 'documento', 'nombre', 'rol', 'correo', 'placa del vehiculo', 'caracteristicas', 'objeto', 'serial'];
 
         $data = [];
-        foreach ($resultado as $row) {
+        if(empty($resultado)) {
             $data[] = [
-                'fecha de entrada' => $row['fechaEntrada'],
-                'fecha salida' => isset($row['fechaSalida']) && !empty($row['fechaSalida']) ? $row['fechaSalida'] : 'Dentro Del SENA',
-                'documento' => $row['id_documento'],
-                'nombre' => $row['nombre_completo'],
-                'rol' => $row['nombre_rol'],
-                'correo' => $row['correo'],
-                'placa del vehiculo' => $row['id_placa'] ?? '',
-                'caracteristicas' => $row['caracteristicas'] ?? '',
-                'objeto' => $row['nombre'] ?? '',
-                'serial' => $row['id_serial'] ?? ''
+                'fecha de entrada' => 'Sin registro',
+                'fecha salida' => 'Sin registro',
+                'documento' => 'Sin registro',
+                'nombre' => 'Sin registro', 
+                'rol' => 'Sin registro',
+                'correo' => 'Sin registro',
+                'placa del vehiculo' => 'Sin registro',
+                'caracteristicas' => 'Sin registro',
+                'objeto' => 'Sin registro',
+                'serial' => 'Sin registro'
             ];
+        } else {
+            foreach ($resultado as $row) {
+                $data[] = [
+                    'fecha de entrada' => $row['fechaEntrada'] ?? 'Sin registro',
+                    'fecha salida' => $row['fechaSalida'] ?? 'Sin registro',
+                    'documento' => $row['id_documento'] ?? 'Sin registro',
+                    'nombre' => $row['nombre_completo'] ?? 'Sin registro',
+                    'rol' => $row['nombre_rol'] ?? 'Sin registro',
+                    'correo' => $row['correo'] ?? 'Sin registro',
+                    'placa del vehiculo' => $row['id_placa'] ?? 'Sin registro',
+                    'caracteristicas' => $row['caracteristicas'] ?? 'Sin registro',
+                    'objeto' => $row['nombre'] ?? 'Sin registro',
+                    'serial' => $row['id_serial'] ?? 'Sin registro'
+                ];
+            }
         }
-    }else {
-
-        
+    } else {
         $sentencia = "SELECT * FROM registroentradapersona
             INNER JOIN usuario ON usuario.id_documento = registroentradapersona.id_documento
             INNER JOIN rol ON rol.id_rol = usuario.id_rol
@@ -96,12 +102,11 @@ if ($tipoReporte == 0) {
             ORDER BY fechaEntrada DESC";
         $consulta = $con->prepare($sentencia);
         $consulta->bindParam(':fechaInicio', $fechaInicio);
-        $consulta->bindParam(':fechaFin', $fechaFin); 
+        $consulta->bindParam(':fechaFin', $fechaFin);
         $consulta->bindParam(':filtro', $filtroDeQueBuscar);
         $consulta->execute();
         $resultado = $consulta->fetchAll(PDO::FETCH_ASSOC);
 
-        
         $sentencia = "SELECT * FROM registroentradaobjetos
             INNER JOIN objetos ON objetos.id_serial = registroentradaobjetos.id_serial
             INNER JOIN usuario on usuario.id_documento = objetos.id_documento
@@ -115,8 +120,7 @@ if ($tipoReporte == 0) {
         $consulta->bindParam(':filtro', $filtroDeQueBuscar);
         $consulta->execute();
         $resultadoObjetos = $consulta->fetchAll(PDO::FETCH_ASSOC);
-        
-        
+
         $sentencia = "SELECT * FROM registroentradavehiculos
             INNER JOIN vehiculos ON vehiculos.id_placa = registroentradavehiculos.id_placa
             INNER JOIN usuario ON usuario.id_documento = vehiculos.id_documento
@@ -131,36 +135,44 @@ if ($tipoReporte == 0) {
         $consulta->bindParam(':filtro', $filtroDeQueBuscar);
         $consulta->execute();
         $resultadoVehiculos = $consulta->fetchAll(PDO::FETCH_ASSOC);
-        
-        
+
         $resultado = array_merge($resultado, $resultadoObjetos, $resultadoVehiculos);
 
-        
         $columnas = ['fecha de entrada', 'fecha salida', 'documento', 'nombre', 'rol', 'correo', 'placa del vehiculo', 'caracteristicas', 'objeto','serial'];
         $data = [];
         
-        // Format data for export
-        foreach ($resultado as $row) {
-          $data[] = [
-                'fecha de entrada' => $row['fechaEntrada'],
-                'fecha salida' => isset($row['fechaSalida']) && !empty($row['fechaSalida']) ? $row['fechaSalida'] : 'Dentro Del SENA',
-                'documento' => $row['id_documento'],  
-                'nombre' => $row['nombre_completo'],
-                'rol' => $row['nombre_rol'],
-                'correo' => $row['correo'],
-                'placa del vehiculo' => $row['id_placa'] ?? '',
-                'caracteristicas' => $row['caracteristicas'] ?? '',
-                'objeto' => $row['nombre'] ?? '',
-                'serial' => $row['id_serial'] ?? ''
+        if(empty($resultado)) {
+            $data[] = [
+                'fecha de entrada' => 'Sin registro',
+                'fecha salida' => 'Sin registro',
+                'documento' => 'Sin registro',
+                'nombre' => 'Sin registro',
+                'rol' => 'Sin registro',
+                'correo' => 'Sin registro',
+                'placa del vehiculo' => 'Sin registro',
+                'caracteristicas' => 'Sin registro',
+                'objeto' => 'Sin registro',
+                'serial' => 'Sin registro'
             ];
+        } else {
+            foreach ($resultado as $row) {
+                $data[] = [
+                    'fecha de entrada' => $row['fechaEntrada'] ?? 'Sin registro',
+                    'fecha salida' => $row['fechaSalida'] ?? 'Sin registro',
+                    'documento' => $row['id_documento'] ?? 'Sin registro',
+                    'nombre' => $row['nombre_completo'] ?? 'Sin registro',
+                    'rol' => $row['nombre_rol'] ?? 'Sin registro',
+                    'correo' => $row['correo'] ?? 'Sin registro',
+                    'placa del vehiculo' => $row['id_placa'] ?? 'Sin registro',
+                    'caracteristicas' => $row['caracteristicas'] ?? 'Sin registro',
+                    'objeto' => $row['nombre'] ?? 'Sin registro',
+                    'serial' => $row['id_serial'] ?? 'Sin registro'
+                ];
+            }
         }
     }
-
-
-  } 
-  else if ($tipoReporte == 1) {
+  } else if ($tipoReporte == 1) {
     if (empty($filtroDeQueBuscar)) {
-
       $sentencia = "SELECT * FROM registroentradapersona
         INNER JOIN usuario ON usuario.id_documento = registroentradapersona.id_documento
         INNER JOIN rol ON rol.id_rol = usuario.id_rol
@@ -176,21 +188,31 @@ if ($tipoReporte == 0) {
     $consulta = $con->prepare($sentencia);
     $consulta->execute();
     $resultado = $consulta->fetchAll(PDO::FETCH_ASSOC);
-    $columnas = ['fecha de entrada', 'fecha salida', 'documento', 'nombre', 'rol', 'correo', 'estado',];
+    $columnas = ['fecha de entrada', 'fecha salida', 'documento', 'nombre', 'rol', 'correo', 'estado'];
 
     $data = [];
-    foreach ($resultado as $row) {
-      $data[] = [
-        'fecha de entrada' => $row['fechaEntrada'],
-        'fecha salida' => isset($row['fechaSalida']) && !empty($row['fechaSalida']) ? $row['fechaSalida'] : 'Dentro Del SENA',
-        'documento' => $row['id_documento'],
-        'nombre' => $row['nombre_completo'],
-        'rol' => $row['nombre_rol'],
-        'correo' => $row['correo'],
-        'estado' => $row['estado'],
-
-
-      ];
+    if(empty($resultado)) {
+        $data[] = [
+            'fecha de entrada' => 'Sin registro',
+            'fecha salida' => 'Sin registro',
+            'documento' => 'Sin registro',
+            'nombre' => 'Sin registro',
+            'rol' => 'Sin registro',
+            'correo' => 'Sin registro',
+            'estado' => 'Sin registro'
+        ];
+    } else {
+        foreach ($resultado as $row) {
+            $data[] = [
+                'fecha de entrada' => $row['fechaEntrada'] ?? 'Sin registro',
+                'fecha salida' => $row['fechaSalida'] ?? 'Sin registro',
+                'documento' => $row['id_documento'] ?? 'Sin registro',
+                'nombre' => $row['nombre_completo'] ?? 'Sin registro',
+                'rol' => $row['nombre_rol'] ?? 'Sin registro',
+                'correo' => $row['correo'] ?? 'Sin registro',
+                'estado' => $row['estado'] ?? 'Sin registro'
+            ];
+        }
     }
   } else if ($tipoReporte == 2) {
     if (empty($filtroDeQueBuscar)) {
@@ -210,23 +232,35 @@ if ($tipoReporte == 0) {
     $consulta = $con->prepare($sentencia);
     $consulta->execute();
     $resultado = $consulta->fetchAll(PDO::FETCH_ASSOC);
-    $columnas = ['fecha de entrada', 'fecha salida','objeto','serial' , 'documento', 'nombre', 'rol', 'correo', ];
+    $columnas = ['fecha de entrada', 'fecha salida','objeto','serial' , 'documento', 'nombre', 'rol', 'correo'];
 
     $data = [];
-    foreach ($resultado as $row) {
-      $data[] = [
-        'fecha de entrada' => $row['fechaEntrada'],
-        'fecha salida' => isset($row['fechaSalida']) && !empty($row['fechaSalida']) ? $row['fechaSalida'] : 'Dentro Del SENA',
-        'objeto' => $row['nombre'] ?? '',
-        'serial' => $row['id_serial'] ?? '',
-        'documento' => $row['id_documento'],
-        'nombre' => $row['nombre_completo'],
-        'rol' => $row['nombre_rol'],
-        'correo' => $row['correo'],
-        
-      ];
+    if(empty($resultado)) {
+        $data[] = [
+            'fecha de entrada' => 'Sin registro',
+            'fecha salida' => 'Sin registro',
+            'objeto' => 'Sin registro',
+            'serial' => 'Sin registro',
+            'documento' => 'Sin registro',
+            'nombre' => 'Sin registro',
+            'rol' => 'Sin registro',
+            'correo' => 'Sin registro'
+        ];
+    } else {
+        foreach ($resultado as $row) {
+            $data[] = [
+                'fecha de entrada' => $row['fechaEntrada'] ?? 'Sin registro',
+                'fecha salida' => $row['fechaSalida'] ?? 'Sin registro',
+                'objeto' => $row['nombre'] ?? 'Sin registro',
+                'serial' => $row['id_serial'] ?? 'Sin registro',
+                'documento' => $row['id_documento'] ?? 'Sin registro',
+                'nombre' => $row['nombre_completo'] ?? 'Sin registro',
+                'rol' => $row['nombre_rol'] ?? 'Sin registro',
+                'correo' => $row['correo'] ?? 'Sin registro'
+            ];
+        }
     }
-  }else if ($tipoReporte == 3) {
+  } else if ($tipoReporte == 3) {
     if (empty($filtroDeQueBuscar)) {
       $sentencia = "SELECT * FROM registroentradavehiculos
         INNER JOIN vehiculos ON vehiculos.id_placa = registroentradavehiculos.id_placa
@@ -246,31 +280,41 @@ if ($tipoReporte == 0) {
     $consulta->execute();
     $resultado = $consulta->fetchAll(PDO::FETCH_ASSOC);
     $columnas = ['fecha de entrada', 'fecha salida', 'placa del vehiculo', 'caracteristicas', 'documento', 'nombre', 'rol', 'correo', 'estado'];
+    
     $data = [];
-    foreach ($resultado as $row) {
-      $data[] = [
-        'fecha de entrada' => $row['fechaEntrada'],
-        'fecha salida' => isset($row['fechaSalida']) && !empty($row['fechaSalida']) ? $row['fechaSalida'] : 'Dentro Del SENA',
-        'placa del vehiculo' => $row['id_placa']?? '',
-        'caracteristicas' => $row['caracteristicas']?? '',
-        'documento' => $row['id_documento'],
-        'nombre' => $row['nombre_completo'],
-        'rol' => $row['nombre_rol'],
-        'correo' => $row['correo'],
-        'estado' => $row['estado'], 
-      ];
+    if(empty($resultado)) {
+        $data[] = [
+            'fecha de entrada' => 'Sin registro',
+            'fecha salida' => 'Sin registro',
+            'placa del vehiculo' => 'Sin registro',
+            'caracteristicas' => 'Sin registro',
+            'documento' => 'Sin registro',
+            'nombre' => 'Sin registro',
+            'rol' => 'Sin registro',
+            'correo' => 'Sin registro',
+            'estado' => 'Sin registro'
+        ];
+    } else {
+        foreach ($resultado as $row) {
+            $data[] = [
+                'fecha de entrada' => $row['fechaEntrada'] ?? 'Sin registro',
+                'fecha salida' => $row['fechaSalida'] ?? 'Sin registro',
+                'placa del vehiculo' => $row['id_placa'] ?? 'Sin registro',
+                'caracteristicas' => $row['caracteristicas'] ?? 'Sin registro',
+                'documento' => $row['id_documento'] ?? 'Sin registro',
+                'nombre' => $row['nombre_completo'] ?? 'Sin registro',
+                'rol' => $row['nombre_rol'] ?? 'Sin registro',
+                'correo' => $row['correo'] ?? 'Sin registro',
+                'estado' => $row['estado'] ?? 'Sin registro'
+            ];
+        }
     }
   }
-
-
-
-
-  
-
 
   generarExcelDinamico($columnas, $data, "Registros", 'excel');
 }
 
+include('components/alert.php');
 
 ?>
 
@@ -420,7 +464,7 @@ if ($tipoReporte == 0) {
 
   </div>
 
-<?php
+  <?php
 $vehiculosAcivos = $con->prepare("SELECT COUNT(*) as total FROM vehiculos WHERE id_estado = 3");
 $vehiculosAcivos->execute();
 $resultado = $vehiculosAcivos->fetch(PDO::FETCH_ASSOC);
@@ -604,28 +648,34 @@ $resultadoVehiculosHoy = $vehiculosHoy->fetch(PDO::FETCH_ASSOC);
         if (e.target === this) this.style.display = 'none';
       };
     })
+
   </script>
 
-  <!-- Modal Reportes -->
-  <div id="modalReportes" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.4); z-index:9999; align-items:center; justify-content:center;">
-    <div style="background:#fff; padding:30px; border-radius:10px; min-width:300px; position:relative;">
-      <h2>Generar Reporte PDF</h2>
-      <form id="formReporte" method="POST" action="generar_reporte.php" target="_blank" style="display: flex; flex-direction: column; gap: 16px; min-width: 260px;">
-        <label for="fecha_inicio" style="font-weight: 500;">Fecha inicio:</label>
-        <input type="date" name="fecha_inicio" id="fecha_inicio" required style="padding: 6px; border-radius: 5px; border: 1px solid #ccc;">
-        <label for="fecha_fin" style="font-weight: 500;">Fecha fin:</label>
-        <input type="date" name="fecha_fin" id="fecha_fin" required style="padding: 6px; border-radius: 5px; border: 1px solid #ccc;">
-        <label for="tabla_afectada" style="font-weight: 500;">Módulo:</label>
-        <select name="tabla_afectada" id="tabla_afectada" style="padding: 6px; border-radius: 5px; border: 1px solid #ccc;">
-          <option value=""> Modulo </option>
-          <option value="usuario">Usuarios</option>
-          <option value="vehiculos">Vehículos</option>
+ <!-- Modal Reportes PDF -->
+ <div id="modalReportes" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.4); z-index:9999; align-items:center; justify-content:center;">
+    <div style="background:#fff; padding:32px 32px 24px 32px; border-radius:16px; min-width:400px; position:relative; box-shadow:0 4px 24px rgba(0,0,0,0.15);">
+      <button type="button" id="cerrarModalReportes" style="position:absolute; top:18px; right:18px; background:none; border:none; font-size:2rem; color:#333; cursor:pointer;">&times;</button>
+      <h2 style="text-align:center; font-size:2rem; font-weight:700; margin-bottom:18px;">Generar archivos</h2>
+      <form id="formReporte" method="POST" action="generar_reporte.php" target="_blank" style="display: flex; flex-direction: column; gap: 18px; min-width: 260px;">
+        <label for="filtro_pdf" style="font-weight: 700;">Buscar Por Documento, placa, serial o similares...</label>
+        <input type="text" name="filtro_pdf" id="filtro_pdf" placeholder="Digite Aqui..." style="padding: 10px; border-radius: 7px; border: 1px solid #ccc; font-size:1rem;">
+        
+        <label for="tipo_reporte_pdf" style="font-weight: 700;">Tipo de reporte:*</label>
+        <select id="tipo_reporte_pdf" name="tipo_reporte_pdf" required style="padding: 10px; border-radius: 7px; border: 1px solid #ccc; font-size:1rem;">
+          <option value="">Elija Un Tipo De Reporte...</option>
+          <option value="todos">Todos Los Datos</option>
+          <option value="personas">Usuarios</option>
           <option value="objetos">Objetos</option>
+          <option value="vehiculos">Vehículos</option>
         </select>
-        <div style="display: flex; gap: 12px; margin-top: 10px; justify-content: flex-end;">
-          <button type="submit" style="background:#007bff; color:#fff; border:none; padding:8px 16px; border-radius:5px;">Descargar PDF</button>
-          <button type="button" id="cerrarModalReportes" style="background:#007bff; color:#fff; border:none; padding:8px 16px; border-radius:5px;">Cancelar</button>
-        </div>
+
+        <label for="fecha_inicio" style="font-weight: 700;">Fecha Inicio*</label>
+        <input type="date" name="fecha_inicio" id="fecha_inicio" required style="padding: 10px; border-radius: 7px; border: 1px solid #ccc; font-size:1rem;">
+
+        <label for="fecha_fin" style="font-weight: 700;">Fecha Fin*</label>
+        <input type="date" name="fecha_fin" id="fecha_fin" required style="padding: 10px; border-radius: 7px; border: 1px solid #ccc; font-size:1rem;">
+
+        <button type="submit" style="background:#007bff; color:#fff; border:none; padding:13px 0; border-radius:7px; font-size:1.1rem; font-weight:600; margin-top:10px; transition:background 0.2s;">Generar Archivo</button>
       </form>
     </div>
   </div>

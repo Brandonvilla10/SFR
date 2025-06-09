@@ -72,7 +72,7 @@ if ($tipoReporte == 0) {
         foreach ($resultado as $row) {
             $data[] = [
                 'fecha de entrada' => $row['fechaEntrada'],
-                'fecha salida' => $row['fechaSalida'],
+                'fecha salida' => isset($row['fechaSalida']) && !empty($row['fechaSalida']) ? $row['fechaSalida'] : 'Dentro Del SENA',
                 'documento' => $row['id_documento'],
                 'nombre' => $row['nombre_completo'],
                 'rol' => $row['nombre_rol'],
@@ -142,7 +142,7 @@ if ($tipoReporte == 0) {
         foreach ($resultado as $row) {
           $data[] = [
                 'fecha de entrada' => $row['fechaEntrada'],
-                'fecha salida' => $row['fechaSalida'],
+                'fecha salida' => isset($row['fechaSalida']) && !empty($row['fechaSalida']) ? $row['fechaSalida'] : 'Dentro Del SENA',
                 'documento' => $row['id_documento'],  
                 'nombre' => $row['nombre_completo'],
                 'rol' => $row['nombre_rol'],
@@ -181,7 +181,7 @@ if ($tipoReporte == 0) {
     foreach ($resultado as $row) {
       $data[] = [
         'fecha de entrada' => $row['fechaEntrada'],
-        'fecha salida' => $row['fechaSalida'],
+        'fecha salida' => isset($row['fechaSalida']) && !empty($row['fechaSalida']) ? $row['fechaSalida'] : 'Dentro Del SENA',
         'documento' => $row['id_documento'],
         'nombre' => $row['nombre_completo'],
         'rol' => $row['nombre_rol'],
@@ -215,7 +215,7 @@ if ($tipoReporte == 0) {
     foreach ($resultado as $row) {
       $data[] = [
         'fecha de entrada' => $row['fechaEntrada'],
-        'fecha salida' => $row['fechaSalida'],
+        'fecha salida' => isset($row['fechaSalida']) && !empty($row['fechaSalida']) ? $row['fechaSalida'] : 'Dentro Del SENA',
         'objeto' => $row['nombre'] ?? '',
         'serial' => $row['id_serial'] ?? '',
         'documento' => $row['id_documento'],
@@ -249,7 +249,7 @@ if ($tipoReporte == 0) {
     foreach ($resultado as $row) {
       $data[] = [
         'fecha de entrada' => $row['fechaEntrada'],
-        'fecha salida' => $row['fechaSalida'],
+        'fecha salida' => isset($row['fechaSalida']) && !empty($row['fechaSalida']) ? $row['fechaSalida'] : 'Dentro Del SENA',
         'placa del vehiculo' => $row['id_placa']?? '',
         'caracteristicas' => $row['caracteristicas']?? '',
         'documento' => $row['id_documento'],

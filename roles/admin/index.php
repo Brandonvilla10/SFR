@@ -1,10 +1,9 @@
 <?php
 // Validaciones-------------------------------------------
 session_start();
-require_once('../../database/database.php');
-include('components/alert.php');
-require_once('../../includes/sesion_validar.php');
 include('../../excelComponente/generarExcel.php');
+require_once('../../database/database.php');
+require_once('../../includes/sesion_validar.php');
 
 // ---------------------------------------------
 
@@ -131,7 +130,7 @@ if ($tipoReporte == 0) {
         $consulta->bindParam(':filtro', $filtroDeQueBuscar);
         $consulta->execute();
         $resultadoVehiculos = $consulta->fetchAll(PDO::FETCH_ASSOC);
-
+        
         
         $resultado = array_merge($resultado, $resultadoObjetos, $resultadoVehiculos);
 
@@ -141,7 +140,7 @@ if ($tipoReporte == 0) {
         
         // Format data for export
         foreach ($resultado as $row) {
-            $data[] = [
+          $data[] = [
                 'fecha de entrada' => $row['fechaEntrada'],
                 'fecha salida' => $row['fechaSalida'],
                 'documento' => $row['id_documento'],  
@@ -265,12 +264,13 @@ if ($tipoReporte == 0) {
 
 
 
-
+  
 
 
   generarExcelDinamico($columnas, $data, "Registros", 'excel');
 }
 
+include('components/alert.php');
 
 ?>
 

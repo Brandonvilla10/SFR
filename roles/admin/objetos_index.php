@@ -11,152 +11,7 @@ $conexion = new database;
 $con = $conexion->conectar();
 
 
-// apartir de aqui viene la logica para poder crear el excel ---------------------------------------
-// recomendacion, dejar este scrip arriba, para eviar errores ya que chilla si hay espacios de mas 
-include("../../excelComponente/generarExcel.php");
 
-// Función que consulta datos desde la base de datos según los filtros que vienen en el array
-function consultaDatosExcel($con, $consulta, $array)
-{
-
-    $fechaInicio = $array['fecha_inicio'];
-    $fechaFin = $array['fecha_fin'];    
-
-    
-    // Si el filtro 'id_estado' es 10 (caso especial)
-    if (isset($array['id_estado']) && $array['id_estado'] == 10) {
-
-        // Si también se proporciona un documento específico
-        if (!empty($array['id_documento'])) {
-            // Consulta con filtro por documento
-            $consulta = "SELECT * FROM `notificaciones` 
-			INNER JOIN objetos on objetos.id_serial = notificaciones.id_afectado
-            INNER JOIN usuario ON objetos.id_documento = usuario.id_documento 
-            INNER JOIN estado ON objetos.id_estado = estado.id_estado
-            INNER JOIN marca ON objetos.id_marca = marca.id_marca
-            WHERE fecha BETWEEN '$fechaInicio' AND '$fechaFin' AND objetos.id_documento = :id_documento AND tabla_afectada = 'objetos'";
-            $datos = $con->prepare($consulta);
-            $datos->bindParam(':id_documento', $array['id_documento']);
-            $datos->execute();
-        } else {
-            // Consulta todos los objetos con estado 10 (sin filtro por documento)
-            $datos = $con->prepare("SELECT * FROM `notificaciones` 
-			INNER JOIN objetos on objetos.id_serial = notificaciones.id_afectado
-            INNER JOIN usuario ON objetos.id_documento = usuario.id_documento 
-            INNER JOIN estado ON objetos.id_estado = estado.id_estado
-            INNER JOIN marca ON objetos.id_marca = marca.id_marca
-            WHERE fecha BETWEEN '$fechaInicio' AND '$fechaFin'");
-            $datos->execute();
-        }
-    } else if (!empty($array)) {
-        // Si hay otros filtros personalizados
-        $campos = [];
-        foreach ($array as $key => $value) {
-            
-            if ($key !== 'fecha_inicio' && $key !== 'fecha_fin') {
-                $campos[] = "objetos.$key = :$key";
-            }
-        }        
-        
-        $condicion = ["fecha BETWEEN :fecha_inicio AND :fecha_fin"];
-        if (!empty($campos)) {
-            $condicion = array_merge($condicion, $campos);
-        }
-        
-        $consulta = "SELECT * FROM `notificaciones` 
-            INNER JOIN objetos on objetos.id_serial = notificaciones.id_afectado
-            INNER JOIN usuario ON objetos.id_documento = usuario.id_documento 
-            INNER JOIN estado ON objetos.id_estado = estado.id_estado
-            INNER JOIN marca ON objetos.id_marca = marca.id_marca
-            WHERE " . implode(" AND ", $condicion);
-
-        $datos = $con->prepare($consulta);
-
-        $datos->bindParam(':fecha_inicio', $fechaInicio);
-        $datos->bindParam(':fecha_fin', $fechaFin);  
-        foreach ($array as $key => $value) {
-            if ($key !== 'fecha_inicio' && $key !== 'fecha_fin') {
-                $datos->bindValue(":$key", $value);
-            }
-        }
-        $datos->execute();
-
-    } else {
-        // Si no se pasa ningún filtro, consulta todos los objetos con sus respectivos usuarios
-        $datos = $con->prepare("SELECT * FROM `notificaciones` 
-			INNER JOIN objetos on objetos.id_serial = notificaciones.id_afectado
-            INNER JOIN usuario ON objetos.id_documento = usuario.id_documento 
-            INNER JOIN estado ON objetos.id_estado = estado.id_estado
-            INNER JOIN marca ON objetos.id_marca = marca.id_marca
-            WHERE fecha BETWEEN '$fechaInicio' AND '$fechaFin'");
-        $datos->execute();
-    }
-
-    // Retorna todos los resultados como array 
-    return $datos->fetchAll(PDO::FETCH_ASSOC);
-}
-
-
-
-if (isset($_POST["crearExcel"])) {
-
-
-    if (isset($_POST["opcionDeDescarga"]) && $_POST["opcionDeDescarga"] == 1) {
-
-        $array = []; // Array de filtros
-        $tipoReporte = $_POST["tipoReporte"];
-        $documentoUsuario = $_POST["documentoUsuario"];
-        $fechaInicio = $_POST["fechaInicio"];
-        $fechaFin = $_POST["fechaFin"];       // Si se proporciona un documento de usuario, se añade como filtro
-        
-
-        $array['fecha_inicio'] = $fechaInicio;
-        $array['fecha_fin'] = $fechaFin;
-
-
-        if (!empty($documentoUsuario)) {
-            $array['id_documento'] = $documentoUsuario;
-        }
-
-        // Si el tipo de reporte es 10, se interpreta como un filtro específico
-        if ($tipoReporte == 10) {
-            $array['id_estado'] = 10;
-        } else if (!empty($tipoReporte)) {
-            // Si se proporciona otro tipo de estado, también se añade como filtro
-            $array['id_estado'] = $tipoReporte;
-        }
-        
-        // Se llama a la función para obtener los datos según los filtros aplicados
-        $valorConsulta = consultaDatosExcel($con, "SELECT * FROM notificaciones", $array);
-
-        // Si se obtienen resultados, se preparan para exportarlos a un archivo CSV
-        if (!empty($valorConsulta)) {
-            // Columnas que tendrá el archivo CSV
-            $columns = ['Serial_Del_Objeto', 'Nombre_Objeto', 'Caracteristica', 'Documento Del Propietario', 'Nombre Del Propietario', 'Estado Del Objeto', 'Marca', 'Fecha', 'Descripcion'];
-            $data = [];
-
-            // Recorre cada fila del resultado y prepara los datos con nombres más legibles
-            foreach ($valorConsulta as $fila) {
-                $data[] = [
-                    'Serial_Del_Objeto' => $fila['id_serial'],
-                    'Nombre_Objeto' => $fila['nombre'],
-                    'Caracteristica' => $fila['caracteristica'],
-                    'Documento Del Propietario' => $fila['id_documento'],
-                    'Nombre Del Propietario' => $fila['nombre_completo'],
-                    'Estado Del Objeto' => $fila['estado'],
-                    'Marca' => $fila['nombre_marca'],
-                    'Fecha' => $fila['fecha'],
-                    'Descripcion' => $fila['descripcion'],
-                ];
-            }
-
-            // Llama a la función que genera el archivo CSV con los datos y columnas
-            crearCSV($columns, $data, 'Objetos.csv');
-        }
-    } else if (isset($_POST["opcionDeDescarga"]) && $_POST["opcionDeDescarga"] == 2) {
-        //
-    }
-}
 
 
 // -------------------------------------------------------------------------------------------------
@@ -288,50 +143,14 @@ $consulta->execute();
 
 
 
-                <button class="buscar_objeto_titulo" id="modalExcel">Generar Registros</button>
+                
 
                 <button class="buscar_objeto_titulo" id="abrirBuscar">Buscar Objetos</button>
             </div>
             <hr class="separador">
 
 
-            <!-- -----------------------------------modal para exportarExcel------------------------->
-
-            <div id="modal-generarexel" class="modal-generarexel">
-                <div class="modal-generarexel-content">
-                    <button class="modal-generarexel-close cerrarModalBuscar" id="cerrarModalExcel">&times;</button>
-                    <h2 class="modal-generarexel-title">Generar archivos</h2>
-                    <form method="post" class="form-generarexel">
-                        <label for="fechaFin-generarexel" class="label-generarexel">Documento del Propietario (No obligatorio):</label>
-                        <input type="number" id="fechaFin-generarexel" name="documentoUsuario" placeholder="Documento..." class="input-generarexel">
-                        <label for="tipoReporte-generarexel" class="label-generarexel">Tipo de reporte:</label>
-                        <select id="tipoReporte-generarexel" name="tipoReporte" class="select-generarexel" required>
-                            <option value="">Elija Un Tipo De Reporte...</option>
-                            <option value="10">Todos Los Objetos</option>
-                            <option value="4">Objetos eliminados</option>
-                            <option value="1">Objetos fuera</option>
-                            <option value="2">Objetos inactivos</option>
-                        </select>
-
-                        <label for="opcionDeDescarga" class="label-generarexel">Tipo De Archivo</label>
-                        <select name="opcionDeDescarga" id="opcionDeDescarga" class="select-generarexel">
-                            <option value="3">Tipo De Archivo</option>
-                            <option value="1">Generar Archivo Excel</option>
-                            <option value="2">Generar Archivo PDF</option>
-                        </select>
-
-                        <label for="fechaInicio" class="label-generarexel">Fecha Inicio</label>
-                        <input type="date" name="fechaInicio" id="fechaInicio" style="padding: 6px; border-radius: 5px; border: 1px solid #ccc;" required>
-
-                        <label for="fechaFin" class="label-generarexel">Fecha Fin</label>
-                        <input type="date" name="fechaFin" id="fechaFin" style="padding: 6px; border-radius: 5px; border: 1px solid #ccc;" required>
-
-                        
-
-                        <button type="submit" name="crearExcel" class="btn-generarexel-submit">Generar Archivo</button>
-                    </form>
-                </div>
-            </div>
+            
 
 
             <!-------------------------------- TABLA DE OBJETOS ------------------------------------->
@@ -428,26 +247,7 @@ $consulta->execute();
 
 
     <script>
-        // Modal de Excel
-        const modalExcel = document.getElementById('modal-generarexel');
-        const modalExcelBtn = document.getElementById('modalExcel');
-
-        modalExcelBtn.addEventListener('click', () => {
-            modalExcel.style.visibility = 'visible';
-            modalExcel.style.opacity = '1';
-
-        });
-        modalExcel.addEventListener('click', (event) => {
-            if (event.target === modalExcel) {
-                modalExcel.style.visibility = 'hidden';
-                modalExcel.style.opacity = '0';
-            }
-        });
-
-        const cerrarModalExcel = document.getElementById('cerrarModalExcel').addEventListener('click', () => {
-            modalExcel.style.visibility = 'hidden';
-            modalExcel.style.opacity = '0';
-        });
+  
         // Modal de Búsqueda
         const modalBuscar = document.getElementById('modalBuscar');
         const abrirBuscar = document.getElementById('abrirBuscar');

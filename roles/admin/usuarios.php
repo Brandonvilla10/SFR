@@ -4,116 +4,9 @@ session_start();
 require_once('../../database/database.php');
 include("components/alert.php");
 include('../../includes/sesion_validar.php');
-include("../../excelComponente/generarExcel.php");
-// -----------------------------------------------------
-
 
 $conexion = new database;
 $con = $conexion->conectar();
-
-
-function consultaDatosExcel($con, $consulta, $array)
-{
-    // Si el filtro 'id_estado' es 10 (caso especial)
-    if (isset($array['id_estado']) && $array['id_estado'] == 10) {
-
-        // Si también se proporciona un documento específico
-        if (!empty($array['id_documento'])) {
-            // Consulta con filtro por documento
-            $consulta = "SELECT * FROM usuario 
-            INNER JOIN estado ON usuario.id_estado = estado.id_estado
-            INNER JOIN rol ON usuario.id_rol = rol.id_rol
-            WHERE id_documento = :id_documento";
-            $datos = $con->prepare($consulta);
-            $datos->bindParam(':id_documento', $array['id_documento']);
-            $datos->execute();
-        } else {
-            // Consulta todos los usuario con estado 10 (sin filtro por documento)
-            $datos = $con->prepare("SELECT * FROM usuario 
-            INNER JOIN estado ON estado.id_estado = usuario.id_estado
-            INNER JOIN rol ON usuario.id_rol = rol.id_rol");
-            $datos->execute();
-        }
-    } else if (!empty($array)) {
-        // Si hay otros filtros personalizados
-        $campos = [];
-        foreach ($array as $key => $value) {
-            // Genera condiciones dinámicas tipo: vehiculos.campo = :campo
-            $campos[] = "usuario.$key = :$key";
-        }
-        // Arma la consulta con INNER JOIN y condiciones dinámicas
-        $consulta = "SELECT * FROM usuario 
-        INNER JOIN estado ON usuario.id_estado = estado.id_estado
-        INNER JOIN rol ON usuario.id_rol = rol.id_rol
-        WHERE " . implode(" AND ", $campos);
-        $datos = $con->prepare($consulta);
-        // Ejecuta pasando todos los valores del array como parámetros
-        $datos->execute($array);
-    } else {
-        // Si no se pasa ningún filtro, consulta todos los usuario con sus respectivos usuarios
-        $datos = $con->prepare("SELECT * FROM usuario 
-        INNER JOIN estado ON usuario.id_estado = estado.id_estado
-        INNER JOIN rol ON usuario.id_rol = rol.id_rol
-        ");
-        $datos->execute();
-    }
-
-    // Retorna todos los resultados como array 
-    return $datos->fetchAll(PDO::FETCH_ASSOC);
-}
-
-
-
-if (isset($_POST["crearExcel"])) {
-
-
-    if (isset($_POST["opcionDeDescarga"]) && $_POST["opcionDeDescarga"] == 1) {
-
-        $array = []; // Array de filtros
-        $tipoReporte = $_POST["tipoReporte"];
-        $documentoUsuario = $_POST["documentoUsuario"];
-
-        // Si se proporciona un documento de usuario, se añade como filtro
-        if (!empty($documentoUsuario)) {
-            $array['id_documento'] = $documentoUsuario;
-        }
-
-        // Si el tipo de reporte es 10, se interpreta como un filtro específico
-        if ($tipoReporte == 10) {
-            $array['id_estado'] = 10;
-        } else if (!empty($tipoReporte)) {
-            // Si se proporciona otro tipo de estado, también se añade como filtro
-            $array['id_estado'] = $tipoReporte;
-        }
-
-        // Se llama a la función para obtener los datos según los filtros aplicados
-        $valorConsulta = consultaDatosExcel($con, "SELECT * FROM usuario", $array);
-
-        // Si se obtienen resultados, se preparan para exportarlos a un archivo CSV
-        if (!empty($valorConsulta)) {
-            // Columnas que tendrá el archivo CSV
-            $columns = ['Documento Del Usuario', 'Nombre Completo', 'Correo Electronico', 'Estado Del Usuario', 'Rol Del Usuario'];
-            $data = [];
-
-            // Recorre cada fila del resultado y prepara los datos con nombres más legibles
-            foreach ($valorConsulta as $fila) {
-                $data[] = [
-                    'Documento Del Usuario' => $fila['id_documento'],
-                    'Nombre Completo' => $fila['nombre_completo'],
-                    'Correo Electronico' => $fila['correo'],
-                    'Estado Del Usuario' => $fila['estado'],
-                    'Rol Del Usuario' => $fila['nombre_rol'],
-
-                ];
-            }
-
-            // Llama a la función que genera el archivo CSV con los datos y columnas
-            crearCSV($columns, $data, 'Usuarios.csv');
-        }
-    } else if (isset($_POST["opcionDeDescarga"]) && $_POST["opcionDeDescarga"] == 2) {
-
-    }
-}
 
 
 
@@ -264,7 +157,7 @@ if (isset($_POST["agregarSubmit"])) {
                     <p style="color:#858585">Administra los usuarios segun tu necesidad</p>
                 </div>
 
-                <button class="buscar_objeto_titulo" id="modalExcel">Generar Registros</button>
+               
 
                 <div class="EliminarUsuarioDiv">
                     <button class="buscar_objeto_titulo" id="botonEliminar" type="button">
@@ -280,35 +173,7 @@ if (isset($_POST["agregarSubmit"])) {
                 <!-- el modal empieza a partid de aca -->
             </div>
 
-            <!-- -----------------------------------modal para exportarExcel------------------------->
-
-            <div id="modal-generarexel" class="modal-generarexel">
-                <div class="modal-generarexel-content">
-                    <button class="modal-generarexel-close cerrarModalBuscar" id="cerrarModalExcel">&times;</button>
-                    <h2 class="modal-generarexel-title">Generar archivos</h2>
-                    <form method="post" class="form-generarexel">
-                        <label for="fechaFin-generarexel" class="label-generarexel">Documento del Propietario (No obligatorio):</label>
-                        <input type="number" id="fechaFin-generarexel" name="documentoUsuario" placeholder="Documento..." class="input-generarexel">
-                        <label for="tipoReporte-generarexel" class="label-generarexel">Tipo de reporte:</label>
-                        <select id="tipoReporte-generarexel" name="tipoReporte" class="select-generarexel" required>
-                            <option value="">Elija Un Tipo De Reporte...</option>
-                            <option value="10">Todos Los Usuarios</option>
-                            <option value="4">Usuarios eliminados</option>
-                            <option value="1">Usuarios fuera</option>
-                            <option value="2">Usuarios inactivos</option>
-                        </select>
-
-                        <label for="opcionDeDescarga" class="label-generarexel">Tipo De Archivo</label>
-                        <select name="opcionDeDescarga" id="opcionDeDescarga" class="select-generarexel">
-                            <option value="3">Tipo De Archivo</option>
-                            <option value="1">Generar Archivo Excel</option>
-                            <option value="2">Generar Archivo PDF</option>
-                        </select>
-
-                        <button type="submit" name="crearExcel" class="btn-generarexel-submit">Generar Archivo</button>
-                    </form>
-                </div>
-            </div>
+            
 
 
             <!-- Modal para Eliminar Usuario -->
@@ -482,25 +347,7 @@ if (isset($_POST["agregarSubmit"])) {
     </div>
 
     <script>
-        const modalExcel = document.getElementById('modal-generarexel');
-        const modalExcelBtn = document.getElementById('modalExcel');
-
-        modalExcelBtn.addEventListener('click', () => {
-            modalExcel.style.visibility = 'visible';
-            modalExcel.style.opacity = '1';
-
-        });
-        modalExcel.addEventListener('click', (event) => {
-            if (event.target === modalExcel) {
-                modalExcel.style.visibility = 'hidden';
-                modalExcel.style.opacity = '0';
-            }
-        });
-
-        const cerrarModalExcel = document.getElementById('cerrarModalExcel').addEventListener('click', () => {
-            modalExcel.style.visibility = 'hidden';
-            modalExcel.style.opacity = '0';
-        });
+       
 
 
         //<----------------------------- FILTRO PARA BUSCAR POR EL DOCUMENTO DE LA PERSONA ---------------------------> 

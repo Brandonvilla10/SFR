@@ -268,10 +268,9 @@
 }
 
 .object-name {
-    font-size: 22px;
+    font-size: 18px;
     font-weight: 700;
     margin: 0 0 8px 0;
-    color: var(--text-color);
     transition: var(--transition);
 }
 
@@ -723,12 +722,21 @@ form.datos_basicos {
     }
     .object-name {
         font-size: 18px;
+
     }
     .object-description {
         font-size: 14px;
     }
     .footer-button {
         width: 90%;
+    }
+
+    .object-title{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        color: #63AEE8;
     }
 }
 

@@ -3,6 +3,7 @@
 session_start();
 include('../../excelComponente/generarExcel.php');
 require_once('../../database/database.php');
+include('components/alert.php');
 require_once('../../includes/sesion_validar.php');
 
 // ---------------------------------------------
@@ -270,7 +271,6 @@ if ($tipoReporte == 0) {
   generarExcelDinamico($columnas, $data, "Registros", 'excel');
 }
 
-include('components/alert.php');
 
 ?>
 
@@ -299,7 +299,7 @@ include('components/alert.php');
     <header class="home_header">
       <div class="home_titulo">
         Bienvenido, <?php echo $nombre ?> 🎉
-        <p>Rol: administrador</p>
+        <p>Rol: Administrador</p>
       </div>
       <div class="home_iconos">
         <div id="notificacion-wrapper" style="position: relative; display: inline-block; cursor:pointer;">
@@ -420,53 +420,39 @@ include('components/alert.php');
 
   </div>
 
-  <?php
+<?php
+$vehiculosAcivos = $con->prepare("SELECT COUNT(*) as total FROM vehiculos WHERE id_estado = 3");
+$vehiculosAcivos->execute();
+$resultado = $vehiculosAcivos->fetch(PDO::FETCH_ASSOC);
+$vehiculosInactivos = $con->prepare("SELECT COUNT(*) as innactivos FROM vehiculos WHERE id_estado = 1");
+$vehiculosInactivos->execute();
+$resultadoInnactivo = $vehiculosInactivos->fetch(PDO::FETCH_ASSOC);
 
+  // Consulta para obtener los registros de personas ingresadas hoy
+$personasHoy = $con->prepare("
+SELECT COUNT(*) as total 
+FROM registroentradapersona 
+WHERE DATE(fechaEntrada) = CURDATE()");
+$personasHoy->execute();
+$resultadoPersonasHoy = $personasHoy->fetch(PDO::FETCH_ASSOC);
 
-  $vehiculosAcivos = $con->prepare("SELECT COUNT(*) as total FROM vehiculos WHERE id_estado = 1");
-  $vehiculosAcivos->execute();
-  $resultado = $vehiculosAcivos->fetch(PDO::FETCH_ASSOC);
+// Consulta para obtener los registros de objetos ingresados hoy
+$objetosHoy = $con->prepare("
+SELECT COUNT(*) as total 
+FROM registroentradaobjetos 
+WHERE DATE(fechaEntrada) = CURDATE()");
+$objetosHoy->execute();
+$resultadoObjetosHoy = $objetosHoy->fetch(PDO::FETCH_ASSOC);
 
-  $vehiculosInactivos = $con->prepare("SELECT COUNT(*) as innactivos FROM vehiculos WHERE id_estado = 2");
-  $vehiculosInactivos->execute();
-  $resultadoInnactivo = $vehiculosInactivos->fetch(PDO::FETCH_ASSOC);
+// Consulta para obtener los registros de vehículos ingresados hoy
+$vehiculosHoy = $con->prepare("
+SELECT COUNT(*) as total 
+FROM registroentradavehiculos 
+WHERE DATE(fechaEntrada) = CURDATE()");
+$vehiculosHoy->execute();
+$resultadoVehiculosHoy = $vehiculosHoy->fetch(PDO::FETCH_ASSOC);
 
-  // Consulta para obtener los registros de los últimos 5 días
-  $ultimosCincoDias = $con->prepare("
-    SELECT 
-        DATE(fechaEntrada) as fecha, 
-        COUNT(*) as total 
-    FROM registroentradapersona 
-    WHERE fechaEntrada >= DATE_SUB(CURDATE(), INTERVAL 4 DAY)
-    GROUP BY DATE(fechaEntrada) 
-    ORDER BY fecha ASC
-  ");
-  $ultimosCincoDias->execute();
-  $registrosPorDia = $ultimosCincoDias->fetchAll(PDO::FETCH_ASSOC);
-
-  $etiquetas = [];
-  $datos = [];
-  $fechaActual = new DateTime();
-  for ($i = 4; $i >= 0; $i--) {
-    $fecha = clone $fechaActual;
-    $fecha->modify("-$i day");
-    $fechaFormateada = $fecha->format('Y-m-d');
-    $etiquetas[] = $fecha->format('D');
-    $encontrado = false;
-    foreach ($registrosPorDia as $registro) {
-      if ($registro['fecha'] == $fechaFormateada) {
-        $datos[] = $registro['total'];
-        $encontrado = true;
-        break;
-      }
-    }
-    if (!$encontrado) {
-      $datos[] = 0;
-    }
-  }
-  $etiquetasJSON = json_encode($etiquetas);
-  $datosJSON = json_encode($datos);
-  ?>
+?>
 
   <!-- Importación de iconos -->
   <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
@@ -523,16 +509,26 @@ include('components/alert.php');
     const datas = new Chart(barras, {
       type: "bar",
       data: {
-        labels: <?php echo $etiquetasJSON; ?>,
+        labels: ['Personas', 'Objetos', 'Vehiculos'],
         datasets: [{
-          label: "Registros de personas por día",
-          data: <?php echo $datosJSON; ?>,
-          backgroundColor: 'blue',
-          borderWidth: 3
+          data: [<?php echo $resultadoPersonasHoy['total']; ?>,<?php echo $resultadoObjetosHoy['total']; ?>,<?php echo $resultadoVehiculosHoy['total']; ?>],
+          backgroundColor: ['#6a9fdc','#498ad4','#3a7ab9'],
+          borderWidth: 1,
+          barThickness: 30
         }]
       },
       options: {
+        indexAxis: 'y',
         responsive: true,
+        plugins: {
+          legend: {
+            display: false,
+          },
+          title:{
+            display: true,
+            text: 'Registros de entrada el dia de hoy'
+          }
+        },
         scales: {
           yAxes: [{
             ticks: {
@@ -548,9 +544,8 @@ include('components/alert.php');
     const datos_donut = new Chart(donita, {
       type: "doughnut",
       data: {
-        labels: ['vehículos activos', 'vehículos Inactivos'],
+        labels: ['Vehiculos Dentro', 'Vehiculos Fuera'],
         datasets: [{
-          label: 'Vehículos Activos',
           data: [<?php echo $resultado['total'] ?>, <?php echo $resultadoInnactivo['innactivos'] ?>],
           backgroundColor: ['blue', 'red'],
           borderWidth: 2
@@ -611,26 +606,31 @@ include('components/alert.php');
     })
   </script>
 
-  <!-- Modal Reportes -->
+  <!-- Modal Reportes PDF -->
   <div id="modalReportes" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.4); z-index:9999; align-items:center; justify-content:center;">
-    <div style="background:#fff; padding:30px; border-radius:10px; min-width:300px; position:relative;">
-      <h2>Generar Reporte PDF</h2>
-      <form id="formReporte" method="POST" action="generar_reporte.php" target="_blank" style="display: flex; flex-direction: column; gap: 16px; min-width: 260px;">
-        <label for="fecha_inicio" style="font-weight: 500;">Fecha inicio:</label>
-        <input type="date" name="fecha_inicio" id="fecha_inicio" required style="padding: 6px; border-radius: 5px; border: 1px solid #ccc;">
-        <label for="fecha_fin" style="font-weight: 500;">Fecha fin:</label>
-        <input type="date" name="fecha_fin" id="fecha_fin" required style="padding: 6px; border-radius: 5px; border: 1px solid #ccc;">
-        <label for="tabla_afectada" style="font-weight: 500;">Módulo:</label>
-        <select name="tabla_afectada" id="tabla_afectada" style="padding: 6px; border-radius: 5px; border: 1px solid #ccc;">
-          <option value=""> Modulo </option>
-          <option value="usuario">Usuarios</option>
-          <option value="vehiculos">Vehículos</option>
+    <div style="background:#fff; padding:32px 32px 24px 32px; border-radius:16px; min-width:400px; position:relative; box-shadow:0 4px 24px rgba(0,0,0,0.15);">
+      <button type="button" id="cerrarModalReportes" style="position:absolute; top:18px; right:18px; background:none; border:none; font-size:2rem; color:#333; cursor:pointer;">&times;</button>
+      <h2 style="text-align:center; font-size:2rem; font-weight:700; margin-bottom:18px;">Generar archivos</h2>
+      <form id="formReporte" method="POST" action="generar_reporte.php" target="_blank" style="display: flex; flex-direction: column; gap: 18px; min-width: 260px;">
+        <label for="filtro_pdf" style="font-weight: 700;">Buscar Por Documento, placa, serial o similares...</label>
+        <input type="text" name="filtro_pdf" id="filtro_pdf" placeholder="Digite Aqui..." style="padding: 10px; border-radius: 7px; border: 1px solid #ccc; font-size:1rem;">
+        
+        <label for="tipo_reporte_pdf" style="font-weight: 700;">Tipo de reporte:*</label>
+        <select id="tipo_reporte_pdf" name="tipo_reporte_pdf" required style="padding: 10px; border-radius: 7px; border: 1px solid #ccc; font-size:1rem;">
+          <option value="">Elija Un Tipo De Reporte...</option>
+          <option value="todos">Todos Los Datos</option>
+          <option value="personas">Usuarios</option>
           <option value="objetos">Objetos</option>
+          <option value="vehiculos">Vehículos</option>
         </select>
-        <div style="display: flex; gap: 12px; margin-top: 10px; justify-content: flex-end;">
-          <button type="submit" style="background:#007bff; color:#fff; border:none; padding:8px 16px; border-radius:5px;">Descargar PDF</button>
-          <button type="button" id="cerrarModalReportes" style="background:#007bff; color:#fff; border:none; padding:8px 16px; border-radius:5px;">Cancelar</button>
-        </div>
+
+        <label for="fecha_inicio" style="font-weight: 700;">Fecha Inicio*</label>
+        <input type="date" name="fecha_inicio" id="fecha_inicio" required style="padding: 10px; border-radius: 7px; border: 1px solid #ccc; font-size:1rem;">
+
+        <label for="fecha_fin" style="font-weight: 700;">Fecha Fin*</label>
+        <input type="date" name="fecha_fin" id="fecha_fin" required style="padding: 10px; border-radius: 7px; border: 1px solid #ccc; font-size:1rem;">
+
+        <button type="submit" style="background:#007bff; color:#fff; border:none; padding:13px 0; border-radius:7px; font-size:1.1rem; font-weight:600; margin-top:10px; transition:background 0.2s;">Generar Archivo</button>
       </form>
     </div>
   </div>

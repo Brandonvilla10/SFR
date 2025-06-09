@@ -194,7 +194,7 @@ class CustomPDF extends TCPDF {
         $this->SetAutoPageBreak(false, 0);
         $pageWidth = $this->getPageWidth();
         $pageHeight = $this->getPageHeight();
-        $this->Image('imgAdmin/Reporte_plantilla.jpg', 
+        $this->Image('imgAdmin/Reporte_plantilla.png', 
                   0,  // X: desde el borde izquierdo
                   0,  // Y: desde el borde superior
                   $pageWidth, 

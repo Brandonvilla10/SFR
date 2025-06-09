@@ -136,7 +136,7 @@
     <div>
         <img src="assets/img/Nosotrosimg/reloj_mano.webp" alt="" class="iconosImagenes">
         <h3 class="subtitulosh3">Puntualidad</h3>
-        <p class="subtitulosh3V2">Valoramos y promevemos el respeto por el <br> tiempo de todos los usuarios y colaboradoreas.</p>
+        <p class="subtitulosh3V2">Valoramos y promevemos el respeto por el <br> tiempo de todos los usuarios y colaboradores.</p>
     </div>
     <div>
         <img src="assets/img/Nosotrosimg/tuerquita.webp" class="iconosImagenes">
@@ -158,23 +158,7 @@
     </div>
 
 </div>   
+    <?php include('template/footer.html')?>
 
-    
-        <?php include('template/footer.html')?>
-    
-   
-
-
-
-
-
-
-
-    
-
-
-
-
-  
 </body>
 </html>

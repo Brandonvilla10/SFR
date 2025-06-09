@@ -1,8 +1,12 @@
 <?php
+// Validaciones e includes----------------------------
 session_start();
 require_once('../../database/database.php');
-include('../../includes/sesion_validar.php');
 include 'components/alert.php';
+include('../../includes/sesion_validar.php');
+// ----------------------------------------------------
+
+
 $conexion = new database;
 $con = $conexion->conectar();
 
@@ -141,7 +145,8 @@ $usuario_foto_path = !empty($usuario['foto']) ? '../../uploads/' . $usuario['fot
 
                 <?php if (!$usuario): ?>
 
-                    <!-- form usuario -->
+            <!----------------------------------- Seccion derecha informacion del usuario ------------------------------->
+
                     <div class="search-user-container" style="width: 100%; max-width: 500px; margin: 70px auto; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); background-color: #5DADE2;">
                         <h2 style="color: white; text-align: center; margin-bottom: 20px;">Buscar Usuario</h2>
 
@@ -167,6 +172,10 @@ $usuario_foto_path = !empty($usuario['foto']) ? '../../uploads/' . $usuario['fot
                                 <p><strong>Documento:</strong> <?php echo $usuario['id_documento']; ?></p>
                             </div>
                         </div>
+
+        <!---------------------------------------Fin Seccion usuario ---------------------------------------->
+
+        <!---------------------------------------CONTENIDO DEL VEHICUlO ---------------------------------------->
 
                         <div class="form-container">
                             <div class="image-preview">
@@ -233,7 +242,7 @@ $usuario_foto_path = !empty($usuario['foto']) ? '../../uploads/' . $usuario['fot
                                         <select class="form-input" name="id_marca" id="marca" >
                                             <option value="">Seleccione Marca</option>
                                             <?php
-                                            $consulta_marcas = $con->prepare("SELECT * FROM marca ORDER BY nombre_marca");
+                                            $consulta_marcas = $con->prepare("SELECT * FROM marca where id_tipo_marca = 1 ORDER BY nombre_marca");
                                             $consulta_marcas->execute();
                                             $marcas = $consulta_marcas->fetchAll(PDO::FETCH_ASSOC);
                                             foreach ($marcas as $marca): ?>
@@ -267,6 +276,8 @@ $usuario_foto_path = !empty($usuario['foto']) ? '../../uploads/' . $usuario['fot
                                 </form>
                             </div>
                         </div>
+
+                         <!--------------------------------------- FIN DEL CONTENIDO DEL VEHICUlO ---------------------------------------->
                     </div>
                 <?php endif; ?>
             </div>
@@ -375,10 +386,7 @@ $usuario_foto_path = !empty($usuario['foto']) ? '../../uploads/' . $usuario['fot
                 mostrarModal('mistake', 'Hay campos del formulario vacios', '');
             }
         });
-     
-
-
-        
+    
     </script>
 </body>
 

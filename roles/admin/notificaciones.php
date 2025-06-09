@@ -1,8 +1,12 @@
 <?php
+// Validaciones-------------------------------
 session_start();
 require_once('../../database/database.php');
 include('components/alert.php');
 include('components/loading.php');
+include('../../includes/sesion_validar.php');
+
+// -----------------------------------
 $conexion = new database;
 $con = $conexion->conectar();
 

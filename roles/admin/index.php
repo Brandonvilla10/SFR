@@ -1,14 +1,21 @@
 <?php
+// Validaciones-------------------------------------------
 session_start();
-include('../../excelComponente/generarExcel.php');
 require_once('../../database/database.php');
-include('../../includes/sesion_validar.php');
+include('components/alert.php');
+require_once('../../includes/sesion_validar.php');
+include('../../excelComponente/generarExcel.php');
+
+// ---------------------------------------------
+
 $conexion = new database;
 $con = $conexion->conectar();
 
 $codigo = isset($_SESSION['documento']) ? $_SESSION['documento'] : '';
 $nombre = isset($_SESSION['nombre']) ? explode(" ", $_SESSION['nombre'])[0] : '';
 $rol = isset($_SESSION['rol_name']) ? $_SESSION['rol_name'] : '';
+
+
 
 if (isset($_POST['crearExcel'])) {
 
@@ -264,7 +271,7 @@ if ($tipoReporte == 0) {
   generarExcelDinamico($columnas, $data, "Registros", 'excel');
 }
 
-include('components/alert.php');
+
 ?>
 
 <!DOCTYPE html>

@@ -1,10 +1,13 @@
 <?php
+// Validaciones e includes--------------------
 session_start();
 require_once('../../database/database.php');
 include 'components/alert.php';
+include('../../includes/sesion_validar.php');
+
+// --------------------------------------------
 $conexion = new database;
 $con = $conexion->conectar();
-include('../../includes/sesion_validar.php');
 
 $codigo = isset($_SESSION['documento']) ? $_SESSION['documento'] : '';
 $nombre = isset($_SESSION['nombre']) ? explode(" ", $_SESSION['nombre'])[0] : '';
@@ -290,7 +293,7 @@ if (isset($_POST["eliminarSubmir"])) {
                 <label for="" class="label_titulo">Marca</label>
                 <select name="marca" id="marca" class="selectos">
 
-                    <?php $sql = $con->prepare("SELECT * FROM marca WHERE id_tipo_marca = 2");
+                    <?php $sql = $con->prepare("SELECT * FROM marca WHERE id_tipo_marca = 2 ORDER BY nombre_marca ASC");
                     $sql->execute();
                     $consulta_2 = $sql->fetchAll();
 

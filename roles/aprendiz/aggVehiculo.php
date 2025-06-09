@@ -1,8 +1,8 @@
 <?php
 session_start();
 require_once('../../database/database.php');
-include('../../includes/sesion_validar.php');
 include 'components/alert.php';
+include('../../includes/sesion_validar.php');
 $conexion = new database;
 $con = $conexion->conectar();
 
@@ -233,7 +233,7 @@ $usuario_foto_path = !empty($usuario['foto']) ? '../../uploads/' . $usuario['fot
                                         <select class="form-input" id="id_marca" name="id_marca" required>
                                             <option value="">Seleccione Marca</option>
                                             <?php
-                                            $consulta_marcas = $con->prepare("SELECT * FROM marca ORDER BY nombre_marca");
+                                            $consulta_marcas = $con->prepare("SELECT * FROM marca WHERE id_tipo_marca = 1 ORDER BY nombre_marca");
                                             $consulta_marcas->execute();
                                             $marcas = $consulta_marcas->fetchAll(PDO::FETCH_ASSOC);
                                             foreach ($marcas as $marca): ?>

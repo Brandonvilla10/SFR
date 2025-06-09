@@ -1,9 +1,6 @@
-
 <?php
-
-
 require_once('../../database/database.php');
-include('../../includes/sesion_validar.php');
+validarSesionRol($_SESSION['rol'],2);
 $conexion = new database;
 $con = $conexion->conectar();
 

@@ -1,10 +1,14 @@
 <?php
+// Validaciones-------------------------------------------
 session_start();
-include('components/alert.php');
 include('../../database/database.php');
+include('components/alert.php');
+include('../../includes/sesion_validar.php');
+
+// ---------------------------------
+
 $conexion = new database;
 $con = $conexion->conectar();
-include('../../includes/sesion_validar.php');
 
 $codigo = $_SESSION['documento'];
 
@@ -34,6 +38,7 @@ if (isset($_POST['submit'])) {
 
         if (!empty($_POST['id_rol'])) {
             $updates[] = 'id_rol = :id_rol';
+            $_SESSION['rol'] = $_POST['id_rol'];
             $params['id_rol'] = $_POST['id_rol'];
         }
 

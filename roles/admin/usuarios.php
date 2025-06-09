@@ -1,10 +1,17 @@
 <?php
+// Validacion e includes--------------------------------
 session_start();
 require_once('../../database/database.php');
-$conexion = new database;
-$con = $conexion->conectar();
+include("components/alert.php");
 include('../../includes/sesion_validar.php');
 include("../../excelComponente/generarExcel.php");
+// -----------------------------------------------------
+
+
+$conexion = new database;
+$con = $conexion->conectar();
+
+
 function consultaDatosExcel($con, $consulta, $array)
 {
     // Si el filtro 'id_estado' es 10 (caso especial)
@@ -108,7 +115,7 @@ if (isset($_POST["crearExcel"])) {
     }
 }
 
-include("components/alert.php");
+
 
 $codigo = isset($_SESSION['documento']) ? $_SESSION['documento'] : '';
 $nombre = isset($_SESSION['nombre']) ? explode(" ", $_SESSION['nombre'])[0] : '';

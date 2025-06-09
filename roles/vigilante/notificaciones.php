@@ -1,7 +1,12 @@
 <?php
+// VALIDACIONES E INCLUDES-------------------------------
 session_start();
 require_once('../../database/database.php');
+require_once('../../includes/sesion_validar.php');
 include('components/alert.php');
+// --------------------------------------------------------
+
+
 $conexion = new database;
 $con = $conexion->conectar();
 

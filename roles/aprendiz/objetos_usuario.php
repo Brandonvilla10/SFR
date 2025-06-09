@@ -1,10 +1,13 @@
 <?php
+// Validaciones e includes----------------------------------
 session_start();
 require_once('../../database/database.php');
 include '../admin/components/alert.php';
+include('../../includes/sesion_validar.php');
+// ------------------------------------------------------------
+
 $conexion = new database;
 $con = $conexion->conectar();
-include('../../includes/sesion_validar.php');
 
 $codigo = isset($_SESSION['documento']) ? $_SESSION['documento'] : '';
 $nombre = isset($_SESSION['nombre']) ? explode(" ", $_SESSION['nombre'])[0] : '';
@@ -290,7 +293,7 @@ if(isset($_POST['editarBoton'])){
                 <label for="" class="label_titulo">Marca</label>
                 <select name="marca" id="marca" class="selectos">
 
-                    <?php $sql = $con->prepare("SELECT * FROM marca WHERE id_tipo_marca = 2");
+                    <?php $sql = $con->prepare("SELECT * FROM marca WHERE id_tipo_marca = 2 ORDER BY nombre_marca ASC");
                     $sql->execute();
                     $consulta_2 = $sql->fetchAll();
 
@@ -303,7 +306,7 @@ if(isset($_POST['editarBoton'])){
                 <label for="tipo">Tipo de Objeto</label>
                 <select name="tipoObjeto" id="tipo" class="selectos">
 
-                    <?php $sql_3 = $con->prepare('SELECT * FROM tipoobjeto');
+                    <?php $sql_3 = $con->prepare('SELECT * FROM tipoobjeto ORDER BY tipoObjeto ASC');
                     $sql_3->execute();
                     $consulta_4 = $sql_3->fetchAll();
 

@@ -1,11 +1,13 @@
 <?php
+// Validacion en includes--------------------------------------
 session_start();
 include('components/alert.php');
 include('../../database/database.php');
+include('../../includes/sesion_validar.php');
+// ------------------------------------------
+
 $conexion = new database;
 $con = $conexion->conectar();
-include('../../includes/sesion_validar.php');
-
 
 ?>
 

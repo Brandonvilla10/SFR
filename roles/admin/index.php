@@ -611,25 +611,31 @@ include('components/alert.php');
     })
   </script>
 
-  <!-- Modal Reportes -->
+  <!-- Modal Reportes PDF -->
   <div id="modalReportes" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.4); z-index:9999; align-items:center; justify-content:center;">
-    <div style="background:#fff; padding:30px; border-radius:10px; min-width:300px; position:relative;">
-      <h2>Generar Reporte PDF</h2>
-      <form id="formReporte" method="POST" action="generar_reporte.php" target="_blank" style="display: flex; flex-direction: column; gap: 16px; min-width: 260px;">
-        <label for="fecha_inicio" style="font-weight: 500;">Fecha inicio:</label>
-        <input type="date" name="fecha_inicio" id="fecha_inicio" required style="padding: 6px; border-radius: 5px; border: 1px solid #ccc;">
-        <label for="fecha_fin" style="font-weight: 500;">Fecha fin:</label>
-        <input type="date" name="fecha_fin" id="fecha_fin" required style="padding: 6px; border-radius: 5px; border: 1px solid #ccc;">
-        <label for="tabla_afectada" style="font-weight: 500;">Módulo:</label>
-        <select name="tabla_afectada" id="tabla_afectada" style="padding: 6px; border-radius: 5px; border: 1px solid #ccc;">
-          <option value=""> Modulo </option>
-          <option value="usuario">Usuarios</option>
+    <div style="background:#fff; padding:32px 32px 24px 32px; border-radius:16px; min-width:400px; position:relative; box-shadow:0 4px 24px rgba(0,0,0,0.15);">
+      <button type="button" id="cerrarModalReportes" style="position:absolute; top:18px; right:18px; background:none; border:none; font-size:2rem; color:#333; cursor:pointer;">&times;</button>
+      <h2 style="text-align:center; font-size:2rem; font-weight:700; margin-bottom:18px;">Generar archivos</h2>
+      <form id="formReporte" method="POST" action="generar_reporte.php" target="_blank" style="display: flex; flex-direction: column; gap: 18px; min-width: 260px;">
+        <label for="filtro_pdf" style="font-weight: 700;">Buscar Por Documento, placa, serial o similares...</label>
+        <input type="text" name="filtro_pdf" id="filtro_pdf" placeholder="Digite Aqui..." style="padding: 10px; border-radius: 7px; border: 1px solid #ccc; font-size:1rem;">
+        
+        <label for="tipo_reporte_pdf" style="font-weight: 700;">Tipo de reporte:*</label>
+        <select id="tipo_reporte_pdf" name="tipo_reporte_pdf" required style="padding: 10px; border-radius: 7px; border: 1px solid #ccc; font-size:1rem;">
+          <option value="">Elija Un Tipo De Reporte...</option>
+          <option value="todos">Todos Los Datos</option>
+          <option value="personas">Usuarios</option>
+          <option value="objetos">Objetos</option>
           <option value="vehiculos">Vehículos</option>
         </select>
-        <div style="display: flex; gap: 12px; margin-top: 10px; justify-content: flex-end;">
-          <button type="submit" style="background:#007bff; color:#fff; border:none; padding:8px 16px; border-radius:5px;">Descargar PDF</button>
-          <button type="button" id="cerrarModalReportes" style="background:#007bff; color:#fff; border:none; padding:8px 16px; border-radius:5px;">Cancelar</button>
-        </div>
+
+        <label for="fecha_inicio" style="font-weight: 700;">Fecha Inicio*</label>
+        <input type="date" name="fecha_inicio" id="fecha_inicio" required style="padding: 10px; border-radius: 7px; border: 1px solid #ccc; font-size:1rem;">
+
+        <label for="fecha_fin" style="font-weight: 700;">Fecha Fin*</label>
+        <input type="date" name="fecha_fin" id="fecha_fin" required style="padding: 10px; border-radius: 7px; border: 1px solid #ccc; font-size:1rem;">
+
+        <button type="submit" style="background:#007bff; color:#fff; border:none; padding:13px 0; border-radius:7px; font-size:1.1rem; font-weight:600; margin-top:10px; transition:background 0.2s;">Generar Archivo</button>
       </form>
     </div>
   </div>

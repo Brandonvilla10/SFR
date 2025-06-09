@@ -158,23 +158,7 @@
     </div>
 
 </div>   
+    <?php include('template/footer.html')?>
 
-    
-        <?php include('template/footer.html')?>
-    
-   
-
-
-
-
-
-
-
-    
-
-
-
-
-  
 </body>
 </html>

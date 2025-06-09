@@ -150,8 +150,8 @@ if (isset($_POST['editarBoton'])) {
         <main class="grid_contenido_plantilla">
             <div class="container">
                 <div class="header">
-                    <h2>SECCION VEHICULOS<br>
-                    Todos los vehiculos de <?php echo $usuario['nombre_completo']; ?> numero de identificacion <?php echo $usuario['id_documento'];?> </h2>
+                    <span><strong> SECCION VEHICULOS</strong><br>
+                    Todos los vehiculos de <?php echo $usuario['nombre_completo']; ?> numero de identificacion <?php echo $usuario['id_documento'];?> </span>
                     <button class="add-button" onclick="window.location.href='aggVehiculo.php?origen=usuarios&user_id=<?php echo $id_documento; ?>'">+</button>
                 </div>
 

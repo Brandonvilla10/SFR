@@ -1,14 +1,321 @@
 <?php
+// Validaciones-------------------------------------------
 session_start();
-include('components/alert.php');
+include('../../excelComponente/generarExcel.php');
 require_once('../../database/database.php');
-include('../../includes/sesion_validar.php');
+require_once('../../includes/sesion_validar.php');
+
+// ---------------------------------------------
+
 $conexion = new database;
 $con = $conexion->conectar();
 
 $codigo = isset($_SESSION['documento']) ? $_SESSION['documento'] : '';
 $nombre = isset($_SESSION['nombre']) ? explode(" ", $_SESSION['nombre'])[0] : '';
 $rol = isset($_SESSION['rol_name']) ? $_SESSION['rol_name'] : '';
+
+
+
+if (isset($_POST['crearExcel'])) {
+
+  $array = [];
+  $tipoReporte = $_POST['tipoReporte'];
+  $fechaInicio = $_POST['fechaInicio'];
+  $fechaFin = $_POST['fechaFin'];
+  $filtroDeQueBuscar = isset($_POST['filtroDeQueBuscar']) ? $_POST['filtroDeQueBuscar'] : '';
+
+  if ($tipoReporte == 0) {
+    if (empty($filtroDeQueBuscar)) {
+
+      $sentencia = "SELECT * FROM registroentradapersona
+            INNER JOIN usuario ON usuario.id_documento = registroentradapersona.id_documento
+            INNER JOIN rol ON rol.id_rol = usuario.id_rol
+            INNER JOIN estado ON estado.id_estado = usuario.id_estado 
+            ORDER BY fechaEntrada DESC";
+
+      $consulta = $con->prepare($sentencia);
+      $consulta->execute();
+      $resultado = $consulta->fetchAll(PDO::FETCH_ASSOC);
+
+      $sentencia = "SELECT * FROM registroentradaobjetos
+            INNER JOIN objetos ON objetos.id_serial = registroentradaobjetos.id_serial
+            INNER JOIN usuario on usuario.id_documento = objetos.id_documento
+            INNER JOIN rol ON rol.id_rol = usuario.id_rol 
+            ORDER BY fechaEntrada DESC";
+
+      $consulta = $con->prepare($sentencia);
+      $consulta->execute();
+      $resultadoObjetos = $consulta->fetchAll(PDO::FETCH_ASSOC);
+
+      $sentencia = "SELECT * FROM registroentradavehiculos
+            INNER JOIN vehiculos ON vehiculos.id_placa = registroentradavehiculos.id_placa
+            INNER JOIN usuario ON usuario.id_documento = vehiculos.id_documento
+            INNER JOIN rol ON rol.id_rol = usuario.id_rol
+            INNER JOIN estado ON estado.id_estado = usuario.id_estado 
+            ORDER BY fechaEntrada DESC";
+
+      $consulta = $con->prepare($sentencia);
+      $consulta->execute();
+      $resultadoVehiculos = $consulta->fetchAll(PDO::FETCH_ASSOC);
+
+      $resultado = array_merge($resultado, $resultadoObjetos, $resultadoVehiculos);
+
+      $columnas = ['fecha de entrada', 'fecha salida', 'documento', 'nombre', 'rol', 'correo', 'placa del vehiculo', 'caracteristicas', 'objeto', 'serial'];
+
+      $data = [];
+      if (empty($resultado)) {
+        $data[] = [
+          'fecha de entrada' => 'Sin registro',
+          'fecha salida' => 'Sin registro',
+          'documento' => 'Sin registro',
+          'nombre' => 'Sin registro',
+          'rol' => 'Sin registro',
+          'correo' => 'Sin registro',
+          'placa del vehiculo' => 'Sin registro',
+          'caracteristicas' => 'Sin registro',
+          'objeto' => 'Sin registro',
+          'serial' => 'Sin registro'
+        ];
+      } else {
+        foreach ($resultado as $row) {
+          $data[] = [
+            'fecha de entrada' => $row['fechaEntrada'] ?? 'Sin registro',
+            'fecha salida' => $row['fechaSalida'] ?? 'Sin registro',
+            'documento' => $row['id_documento'] ?? 'Sin registro',
+            'nombre' => $row['nombre_completo'] ?? 'Sin registro',
+            'rol' => $row['nombre_rol'] ?? 'Sin registro',
+            'correo' => $row['correo'] ?? 'Sin registro',
+            'placa del vehiculo' => $row['id_placa'] ?? 'Sin registro',
+            'caracteristicas' => $row['caracteristicas'] ?? 'Sin registro',
+            'objeto' => $row['nombre'] ?? 'Sin registro',
+            'serial' => $row['id_serial'] ?? 'Sin registro'
+          ];
+        }
+      }
+    } else {
+      $sentencia = "SELECT * FROM registroentradapersona
+            INNER JOIN usuario ON usuario.id_documento = registroentradapersona.id_documento
+            INNER JOIN rol ON rol.id_rol = usuario.id_rol
+            INNER JOIN estado ON estado.id_estado = usuario.id_estado
+            WHERE fechaEntrada BETWEEN :fechaInicio AND :fechaFin 
+            AND registroentradapersona.id_documento = :filtro 
+            ORDER BY fechaEntrada DESC";
+      $consulta = $con->prepare($sentencia);
+      $consulta->bindParam(':fechaInicio', $fechaInicio);
+      $consulta->bindParam(':fechaFin', $fechaFin);
+      $consulta->bindParam(':filtro', $filtroDeQueBuscar);
+      $consulta->execute();
+      $resultado = $consulta->fetchAll(PDO::FETCH_ASSOC);
+
+      $sentencia = "SELECT * FROM registroentradaobjetos
+            INNER JOIN objetos ON objetos.id_serial = registroentradaobjetos.id_serial
+            INNER JOIN usuario on usuario.id_documento = objetos.id_documento
+            INNER JOIN rol ON rol.id_rol = usuario.id_rol
+            WHERE fechaEntrada BETWEEN :fechaInicio AND :fechaFin 
+            AND objetos.id_documento = :filtro
+            ORDER BY fechaEntrada DESC";
+      $consulta = $con->prepare($sentencia);
+      $consulta->bindParam(':fechaInicio', $fechaInicio);
+      $consulta->bindParam(':fechaFin', $fechaFin);
+      $consulta->bindParam(':filtro', $filtroDeQueBuscar);
+      $consulta->execute();
+      $resultadoObjetos = $consulta->fetchAll(PDO::FETCH_ASSOC);
+
+      $sentencia = "SELECT * FROM registroentradavehiculos
+            INNER JOIN vehiculos ON vehiculos.id_placa = registroentradavehiculos.id_placa
+            INNER JOIN usuario ON usuario.id_documento = vehiculos.id_documento
+            INNER JOIN rol ON rol.id_rol = usuario.id_rol
+            INNER JOIN estado ON estado.id_estado = usuario.id_estado
+            WHERE fechaEntrada BETWEEN :fechaInicio AND :fechaFin 
+            AND vehiculos.id_documento = :filtro
+            ORDER BY fechaEntrada DESC";
+      $consulta = $con->prepare($sentencia);
+      $consulta->bindParam(':fechaInicio', $fechaInicio);
+      $consulta->bindParam(':fechaFin', $fechaFin);
+      $consulta->bindParam(':filtro', $filtroDeQueBuscar);
+      $consulta->execute();
+      $resultadoVehiculos = $consulta->fetchAll(PDO::FETCH_ASSOC);
+
+      $resultado = array_merge($resultado, $resultadoObjetos, $resultadoVehiculos);
+
+      $columnas = ['fecha de entrada', 'fecha salida', 'documento', 'nombre', 'rol', 'correo', 'placa del vehiculo', 'caracteristicas', 'objeto', 'serial'];
+      $data = [];
+
+      if (empty($resultado)) {
+        $data[] = [
+          'fecha de entrada' => 'Sin registro',
+          'fecha salida' => 'Sin registro',
+          'documento' => 'Sin registro',
+          'nombre' => 'Sin registro',
+          'rol' => 'Sin registro',
+          'correo' => 'Sin registro',
+          'placa del vehiculo' => 'Sin registro',
+          'caracteristicas' => 'Sin registro',
+          'objeto' => 'Sin registro',
+          'serial' => 'Sin registro'
+        ];
+      } else {
+        foreach ($resultado as $row) {
+          $data[] = [
+            'fecha de entrada' => $row['fechaEntrada'] ?? 'Sin registro',
+            'fecha salida' => $row['fechaSalida'] ?? 'Sin registro',
+            'documento' => $row['id_documento'] ?? 'Sin registro',
+            'nombre' => $row['nombre_completo'] ?? 'Sin registro',
+            'rol' => $row['nombre_rol'] ?? 'Sin registro',
+            'correo' => $row['correo'] ?? 'Sin registro',
+            'placa del vehiculo' => $row['id_placa'] ?? 'Sin registro',
+            'caracteristicas' => $row['caracteristicas'] ?? 'Sin registro',
+            'objeto' => $row['nombre'] ?? 'Sin registro',
+            'serial' => $row['id_serial'] ?? 'Sin registro'
+          ];
+        }
+      }
+    }
+  } else if ($tipoReporte == 1) {
+    if (empty($filtroDeQueBuscar)) {
+      $sentencia = "SELECT * FROM registroentradapersona
+        INNER JOIN usuario ON usuario.id_documento = registroentradapersona.id_documento
+        INNER JOIN rol ON rol.id_rol = usuario.id_rol
+        INNER JOIN estado ON estado.id_estado = usuario.id_estado
+        WHERE fechaEntrada BETWEEN '$fechaInicio' AND '$fechaFin' ORDER BY fechaEntrada DESC";
+    } else {
+      $sentencia = "SELECT * FROM registroentradapersona
+        INNER JOIN usuario ON usuario.id_documento = registroentradapersona.id_documento
+        INNER JOIN rol ON rol.id_rol = usuario.id_rol
+        INNER JOIN estado ON estado.id_estado = usuario.id_estado
+        WHERE fechaEntrada BETWEEN '$fechaInicio' AND '$fechaFin' AND (registroentradapersona.id_documento = $filtroDeQueBuscar ) ORDER BY fechaEntrada DESC";
+    }
+    $consulta = $con->prepare($sentencia);
+    $consulta->execute();
+    $resultado = $consulta->fetchAll(PDO::FETCH_ASSOC);
+    $columnas = ['fecha de entrada', 'fecha salida', 'documento', 'nombre', 'rol', 'correo', 'estado'];
+
+    $data = [];
+    if (empty($resultado)) {
+      $data[] = [
+        'fecha de entrada' => 'Sin registro',
+        'fecha salida' => 'Sin registro',
+        'documento' => 'Sin registro',
+        'nombre' => 'Sin registro',
+        'rol' => 'Sin registro',
+        'correo' => 'Sin registro',
+        'estado' => 'Sin registro'
+      ];
+    } else {
+      foreach ($resultado as $row) {
+        $data[] = [
+          'fecha de entrada' => $row['fechaEntrada'] ?? 'Sin registro',
+          'fecha salida' => $row['fechaSalida'] ?? 'Sin registro',
+          'documento' => $row['id_documento'] ?? 'Sin registro',
+          'nombre' => $row['nombre_completo'] ?? 'Sin registro',
+          'rol' => $row['nombre_rol'] ?? 'Sin registro',
+          'correo' => $row['correo'] ?? 'Sin registro',
+          'estado' => $row['estado'] ?? 'Sin registro'
+        ];
+      }
+    }
+  } else if ($tipoReporte == 2) {
+    if (empty($filtroDeQueBuscar)) {
+      $sentencia = "SELECT * FROM registroentradaobjetos
+        INNER JOIN objetos ON objetos.id_serial = registroentradaobjetos.id_serial
+        INNER JOIN usuario on usuario.id_documento = objetos.id_documento
+        INNER JOIN rol ON rol.id_rol = usuario.id_rol
+        WHERE fechaEntrada BETWEEN '$fechaInicio' AND '$fechaFin' ORDER BY fechaEntrada DESC";
+    } else {
+      $sentencia = "SELECT * FROM registroentradaobjetos
+        INNER JOIN objetos ON objetos.id_serial = registroentradaobjetos.id_serial
+        INNER JOIN usuario on usuario.id_documento = objetos.id_documento
+        INNER JOIN rol ON rol.id_rol = usuario.id_rol
+        WHERE fechaEntrada BETWEEN '$fechaInicio' AND '$fechaFin' AND (objetos.id_documento = $filtroDeQueBuscar ) ORDER BY fechaEntrada DESC";
+    }
+
+    $consulta = $con->prepare($sentencia);
+    $consulta->execute();
+    $resultado = $consulta->fetchAll(PDO::FETCH_ASSOC);
+    $columnas = ['fecha de entrada', 'fecha salida', 'objeto', 'serial', 'documento', 'nombre', 'rol', 'correo'];
+
+    $data = [];
+    if (empty($resultado)) {
+      $data[] = [
+        'fecha de entrada' => 'Sin registro',
+        'fecha salida' => 'Sin registro',
+        'objeto' => 'Sin registro',
+        'serial' => 'Sin registro',
+        'documento' => 'Sin registro',
+        'nombre' => 'Sin registro',
+        'rol' => 'Sin registro',
+        'correo' => 'Sin registro'
+      ];
+    } else {
+      foreach ($resultado as $row) {
+        $data[] = [
+          'fecha de entrada' => $row['fechaEntrada'] ?? 'Sin registro',
+          'fecha salida' => $row['fechaSalida'] ?? 'Sin registro',
+          'objeto' => $row['nombre'] ?? 'Sin registro',
+          'serial' => $row['id_serial'] ?? 'Sin registro',
+          'documento' => $row['id_documento'] ?? 'Sin registro',
+          'nombre' => $row['nombre_completo'] ?? 'Sin registro',
+          'rol' => $row['nombre_rol'] ?? 'Sin registro',
+          'correo' => $row['correo'] ?? 'Sin registro'
+        ];
+      }
+    }
+  } else if ($tipoReporte == 3) {
+    if (empty($filtroDeQueBuscar)) {
+      $sentencia = "SELECT * FROM registroentradavehiculos
+        INNER JOIN vehiculos ON vehiculos.id_placa = registroentradavehiculos.id_placa
+        INNER JOIN usuario ON usuario.id_documento = vehiculos.id_documento
+        INNER JOIN rol ON rol.id_rol = usuario.id_rol
+        INNER JOIN estado ON estado.id_estado = usuario.id_estado
+        WHERE fechaEntrada BETWEEN '$fechaInicio' AND '$fechaFin' ORDER BY fechaEntrada DESC";
+    } else {
+      $sentencia = "SELECT * FROM registroentradavehiculos
+        INNER JOIN vehiculos ON vehiculos.id_placa = registroentradavehiculos.id_placa
+        INNER JOIN usuario ON usuario.id_documento = vehiculos.id_documento
+        INNER JOIN rol ON rol.id_rol = usuario.id_rol
+        INNER JOIN estado ON estado.id_estado = usuario.id_estado
+        WHERE fechaEntrada BETWEEN '$fechaInicio' AND '$fechaFin' AND (vehiculos.id_documento = $filtroDeQueBuscar ) ORDER BY fechaEntrada DESC";
+    }
+    $consulta = $con->prepare($sentencia);
+    $consulta->execute();
+    $resultado = $consulta->fetchAll(PDO::FETCH_ASSOC);
+    $columnas = ['fecha de entrada', 'fecha salida', 'placa del vehiculo', 'caracteristicas', 'documento', 'nombre', 'rol', 'correo', 'estado'];
+
+    $data = [];
+    if (empty($resultado)) {
+      $data[] = [
+        'fecha de entrada' => 'Sin registro',
+        'fecha salida' => 'Sin registro',
+        'placa del vehiculo' => 'Sin registro',
+        'caracteristicas' => 'Sin registro',
+        'documento' => 'Sin registro',
+        'nombre' => 'Sin registro',
+        'rol' => 'Sin registro',
+        'correo' => 'Sin registro',
+        'estado' => 'Sin registro'
+      ];
+    } else {
+      foreach ($resultado as $row) {
+        $data[] = [
+          'fecha de entrada' => $row['fechaEntrada'] ?? 'Sin registro',
+          'fecha salida' => $row['fechaSalida'] ?? 'Sin registro',
+          'placa del vehiculo' => $row['id_placa'] ?? 'Sin registro',
+          'caracteristicas' => $row['caracteristicas'] ?? 'Sin registro',
+          'documento' => $row['id_documento'] ?? 'Sin registro',
+          'nombre' => $row['nombre_completo'] ?? 'Sin registro',
+          'rol' => $row['nombre_rol'] ?? 'Sin registro',
+          'correo' => $row['correo'] ?? 'Sin registro',
+          'estado' => $row['estado'] ?? 'Sin registro'
+        ];
+      }
+    }
+  }
+
+  generarExcelDinamico($columnas, $data, "Registros", 'excel');
+}
+
+include('components/alert.php');
+
 ?>
 
 <!DOCTYPE html>
@@ -25,6 +332,45 @@ $rol = isset($_SESSION['rol_name']) ? $_SESSION['rol_name'] : '';
 </head>
 
 <body>
+
+
+  <div id="modal-generarexel" class="modal-generarexel">
+    <div class="modal-generarexel-content">
+      <button class="modal-generarexel-close cerrarModalBuscar" id="cerrarModalExcel">&times;</button>
+      <h2 class="modal-generarexel-title">Generar archivos</h2>
+      <form method="post" class="form-generarexel">
+        <label for="fechaFin-generarexel" class="label-generarexel">Buscar Por Documento, placa, serial o similares...</label>
+        <input type="number" id="fechaFin-generarexel" name="filtroDeQueBuscar" placeholder="Digite Aqui..." class="input-generarexel">
+        <label for="tipoReporte-generarexel" class="label-generarexel">Tipo de reporte:*</label>
+        <select id="tipoReporte-generarexel" name="tipoReporte" class="select-generarexel" required>
+          <option value="">Elija Un Tipo De Reporte...</option>
+          <option value="0">Todos Los Datos</option>
+          <option value="1">Usuarios</option>
+          <option value="2">Objetos</option>
+          <option value="3">Vehiculos</option>
+        </select>
+
+        <!-- <label for="opcionDeDescarga" class="label-generarexel">Tipo De Archivo</label>
+          <select name="opcionDeDescarga" id="opcionDeDescarga" class="select-generarexel">
+            <option value="3">Tipo De Archivo</option>
+            <option value="1">Generar Archivo Excel</option>
+            <option value="2">Generar Archivo PDF</option>
+          </select>
+          -->
+        <label for="fechaInicio" class="label-generarexel">Fecha Inicio*</label>
+        <input type="date" name="fechaInicio" id="fechaInicio" style="padding: 6px; border-radius: 5px; border: 1px solid #ccc;" required>
+
+        <label for="fechaFin" class="label-generarexel">Fecha Fin*</label>
+        <input type="date" name="fechaFin" id="fechaFin" style="padding: 6px; border-radius: 5px; border: 1px solid #ccc;" required>
+
+
+
+        <button type="submit" name="crearExcel" class="btn-generarexel-submit">Generar Archivo</button>
+      </form>
+    </div>
+  </div>
+
+
   <div class="container_grid">
 
     <!-- Barra lateral -->
@@ -53,10 +399,16 @@ $rol = isset($_SESSION['rol_name']) ? $_SESSION['rol_name'] : '';
             display: none;
           ">0</span>
         </div>
-        <button id="btnReportes" style="margin-left: 15px; padding: 8px 16px; border-radius: 5px; border: none; background: #007bff; color: #fff; cursor: pointer;">
-          Reportes
+        <button id="btnReportes" class="pdfBoton">
+          <!-- reportes para pdf -->
+          <img class="imgReportes" src="../../assets/pdf.png" alt="">
+        </button>
+        <button id="modalExcel" class="excelBoton">
+          <!-- reportes para excel -->
+          <img src="../../assets/excel.png" class="imgReportes" alt=" ">
         </button>
       </div>
+
     </header>
 
     <!-- Contenido principal -->
@@ -135,76 +487,112 @@ $rol = isset($_SESSION['rol_name']) ? $_SESSION['rol_name'] : '';
   <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
   <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
   <script>
-  document.getElementById('iconoNotificaciones').addEventListener('click', function() {
+
+
+const modalExcel = document.getElementById('modal-generarexel');
+    const modalExcelBtn = document.getElementById('modalExcel');
+
+    modalExcelBtn.addEventListener("mouseenter", () => {
+      modalExcelBtn.classList.add("afterParaBoton"); 
+    });
+
+    modalExcelBtn.addEventListener("mouseleave", () => {
+      modalExcelBtn.classList.remove("afterParaBoton");
+    });
+
+
+
+    modalExcelBtn.addEventListener('click', () => {
+      modalExcel.style.visibility = 'visible';
+      modalExcel.style.opacity = '1';
+
+    });
+    modalExcel.addEventListener('click', (event) => {
+      if (event.target === modalExcel) {
+        modalExcel.style.visibility = 'hidden';
+        modalExcel.style.opacity = '0';
+      }
+    });
+
+    const botonpdf = document.getElementById("btnReportes");
+
+    botonpdf.addEventListener("mouseenter", () => {
+      botonpdf.classList.add("afterParaPdf");
+    });
+
+    botonpdf.addEventListener("mouseleave", () =>{
+      botonpdf.classList.remove("afterParaPdf")
+    })
+
+    const cerrarModalExcel = document.getElementById('cerrarModalExcel').addEventListener('click', () => {
+      modalExcel.style.visibility = 'hidden';
+      modalExcel.style.opacity = '0';
+    });
+
+
+    document.getElementById('iconoNotificaciones').addEventListener('click', function() {
       window.location.href = 'notificaciones.php';
-  });
+    });
 
-  function actualizarContadorNotificaciones() {
+    function actualizarContadorNotificaciones() {
       fetch('fetch/contar_notificaciones.php')
-          .then(response => response.json())
-          .then(data => {
-              const contador = document.getElementById('contadorNotificaciones');
-              if (data.total > 0) {
-                  contador.textContent = data.total;
-                  contador.style.display = 'inline-block';
-              } else {
-                  contador.style.display = 'none';
-              }
-          });
-  }
-  actualizarContadorNotificaciones();
-  setInterval(actualizarContadorNotificaciones, 30000);
+        .then(response => response.json())
+        .then(data => {
+          const contador = document.getElementById('contadorNotificaciones');
+          if (data.total > 0) {
+            contador.textContent = data.total;
+            contador.style.display = 'inline-block';
+          } else {
+            contador.style.display = 'none';
+          }
+        });
+    }
+    actualizarContadorNotificaciones();
+    setInterval(actualizarContadorNotificaciones, 30000);
 
-  // Reportes: abrir/cerrar modal
-  document.getElementById('btnReportes').onclick = function() {
-    document.getElementById('modalReportes').style.display = 'flex';
-  };
-  document.getElementById('cerrarModalReportes').onclick = function() {
-    document.getElementById('modalReportes').style.display = 'none';
-  };
-  document.getElementById('modalReportes').onclick = function(e) {
-    if (e.target === this) this.style.display = 'none';
-  };
+ 
+ 
+    document.addEventListener('DOMContentLoaded', function() {
+
+      document.getElementById('btnReportes').onclick = function() {
+        document.getElementById('modalReportes').style.display = 'flex';
+      };
+      document.getElementById('cerrarModalReportes').onclick = function() {
+        document.getElementById('modalReportes').style.display = 'none';
+      };
+      document.getElementById('modalReportes').onclick = function(e) {
+        if (e.target === this) this.style.display = 'none';
+      };
+    })
   </script>
-  <!-- Modal Reportes -->
-  <div id="modalReportes" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.4); z-index:9999; align-items:center; justify-content:center;">
-    <div style="background:#fff; padding:30px; border-radius:10px; min-width:300px; position:relative;">
-      <h2>Generar Reporte PDF</h2>
-        <form id="formReporte" method="POST" action="generar_reporte.php" target="_blank" style="display: flex; flex-direction: column; gap: 16px; min-width: 260px;">
-          <label for="fecha_inicio" style="font-weight: 500;">Fecha inicio:</label>
-          <input type="date" name="fecha_inicio" id="fecha_inicio" required style="padding: 6px; border-radius: 5px; border: 1px solid #ccc;">
 
-          <label for="fecha_fin" style="font-weight: 500;">Fecha fin:</label>
-          <input type="date" name="fecha_fin" id="fecha_fin" required style="padding: 6px; border-radius: 5px; border: 1px solid #ccc;">
+<div id="modalReportes" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.4); z-index:9999; align-items:center; justify-content:center;">
+    <div style="background:#fff; padding:32px 32px 24px 32px; border-radius:16px; min-width:400px; position:relative; box-shadow:0 4px 24px rgba(0,0,0,0.15);">
+      <button type="button" id="cerrarModalReportes" style="position:absolute; top:18px; right:18px; background:none; border:none; font-size:2rem; color:#333; cursor:pointer;">&times;</button>
+      <h2 style="text-align:center; font-size:2rem; font-weight:700; margin-bottom:18px;">Generar archivos</h2>
+      <form id="formReporte" method="POST" action="generar_reporte.php" target="_blank" style="display: flex; flex-direction: column; gap: 18px; min-width: 260px;">
+        <label for="filtro_pdf" style="font-weight: 700;">Buscar Por Documento, placa, serial o similares...</label>
+        <input type="text" name="filtro_pdf" id="filtro_pdf" placeholder="Digite Aqui..." style="padding: 10px; border-radius: 7px; border: 1px solid #ccc; font-size:1rem;">
+        
+        <label for="tipo_reporte_pdf" style="font-weight: 700;">Tipo de reporte:*</label>
+        <select id="tipo_reporte_pdf" name="tipo_reporte_pdf" required style="padding: 10px; border-radius: 7px; border: 1px solid #ccc; font-size:1rem;">
+          <option value="">Elija Un Tipo De Reporte...</option>
+          <option value="todos">Todos Los Datos</option>
+          <option value="personas">Usuarios</option>
+          <option value="objetos">Objetos</option>
+          <option value="vehiculos">Vehículos</option>
+        </select>
 
-          <label for="tabla_afectada" style="font-weight: 500;">Módulo:</label>
-          <select name="tabla_afectada" id="tabla_afectada" style="padding: 6px; border-radius: 5px; border: 1px solid #ccc;">
-              <option value=""> Modulo </option>
-              <option value="usuario">Usuarios</option>
-              <option value="vehiculos">Vehículos</option>
-              <option value="objetos">Objetos</option>
-          </select>
+        <label for="fecha_inicio" style="font-weight: 700;">Fecha Inicio*</label>
+        <input type="date" name="fecha_inicio" id="fecha_inicio" required style="padding: 10px; border-radius: 7px; border: 1px solid #ccc; font-size:1rem;">
 
-          <div style="display: flex; gap: 12px; margin-top: 10px; justify-content: flex-end;">
-            <button type="submit" style="background:#007bff; color:#fff; border:none; padding:8px 16px; border-radius:5px;">Descargar PDF</button>
-            <button type="button" id="cerrarModalReportes" style="background:#007bff; color:#fff; border:none; padding:8px 16px; border-radius:5px;">Cancelar</button>
-          </div>
-        </form>
+        <label for="fecha_fin" style="font-weight: 700;">Fecha Fin*</label>
+        <input type="date" name="fecha_fin" id="fecha_fin" required style="padding: 10px; border-radius: 7px; border: 1px solid #ccc; font-size:1rem;">
+
+        <button type="submit" style="background:#007bff; color:#fff; border:none; padding:13px 0; border-radius:7px; font-size:1.1rem; font-weight:600; margin-top:10px; transition:background 0.2s;">Generar Archivo</button>
+      </form>
     </div>
   </div>
-  <script>
-  document.addEventListener("DOMContentLoaded", function() {
-    document.getElementById('btnReportes').onclick = function() {
-      document.getElementById('modalReportes').style.display = 'flex';
-    };
-    document.getElementById('cerrarModalReportes').onclick = function() {
-      document.getElementById('modalReportes').style.display = 'none';
-    };
-    document.getElementById('modalReportes').onclick = function(e) {
-      if (e.target === this) this.style.display = 'none';
-    };
-  });
-</script>
 </body>
 
 </html>

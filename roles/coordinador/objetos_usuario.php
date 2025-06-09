@@ -289,7 +289,7 @@ if(isset($_POST['editarBoton'])){
                 <label for="" class="label_titulo">Marca</label>
                 <select name="marca" id="marca" class="selectos">
 
-                    <?php $sql = $con->prepare("SELECT * FROM marca WHERE id_tipo_marca = 2");
+                    <?php $sql = $con->prepare("SELECT * FROM marca WHERE id_tipo_marca = 2 ORDER BY nombre_marca ASC");
                     $sql->execute();
                     $consulta_2 = $sql->fetchAll();
 
@@ -302,7 +302,14 @@ if(isset($_POST['editarBoton'])){
                 <label for="tipo">Tipo de Objeto</label>
                 <select name="tipoObjeto" id="tipo" class="selectos">
 
-                    <?php $sql_3 = $con->prepare('SELECT * FROM tipoobjeto');
+                    <?php $sql_3 = $con->prepare('SELECT * FROM tipoobjeto ORDER BY tipoObjeto ASC');
+                    $sql_3->execute();
+                    $consulta_4 = $sql_3->fetchAll();
+
+
+                    foreach ($consulta_4 as $tipo) {?>
+
+                        <option value="<?php echo $tipo['id_tipoObjeto']?>"> <?php echo $tipo['tipoObjeto']?> </option>
                     $sql_3->execute();
                     $consulta_4 = $sql_3->fetchAll();
 

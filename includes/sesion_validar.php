@@ -1,6 +1,6 @@
 
 <?php
-// VALIDACIONES DE SESIONES
+// VALIDACIONES DE SESIONES---------------------------
 
 function validarSesionRol($tipo, $rol){
 
@@ -26,7 +26,7 @@ function validarSesionRol($tipo, $rol){
 
     }
 }
-
+// ------------------------------------------------
 if(!isset($_SESSION['documento'])){
 
     unset($_SESSION['documento']);

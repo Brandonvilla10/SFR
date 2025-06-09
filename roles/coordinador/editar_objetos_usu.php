@@ -119,7 +119,7 @@ try {
                                         <span>Subir Foto</span>
                                     </div>
                                     <form action="../../uploadsGlobal/upload_objetos.php"  method="POST" enctype="multipart/form-data" class="overlay" id="form-objetos">
-                                        <input type="hidden" name="direccion" value="../roles/aprendiz/editar_objetos_usu.php">
+                                        <input type="hidden" name="direccion" value="../roles/coordinador/editar_objetos_usu.php">
                                         <input type="hidden" name="serial" value="<?php echo $consulta_1['id_serial']; ?>">
                                         <input type="file" class="file_input" id="fileUpload" name="foto" onchange="document.getElementById('form-objetos').submit()">
 

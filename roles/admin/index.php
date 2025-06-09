@@ -625,7 +625,6 @@ include('components/alert.php');
           <option value=""> Modulo </option>
           <option value="usuario">Usuarios</option>
           <option value="vehiculos">Vehículos</option>
-          <option value="objetos">Objetos</option>
         </select>
         <div style="display: flex; gap: 12px; margin-top: 10px; justify-content: flex-end;">
           <button type="submit" style="background:#007bff; color:#fff; border:none; padding:8px 16px; border-radius:5px;">Descargar PDF</button>

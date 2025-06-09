@@ -1,7 +1,31 @@
 
 <?php
+// VALIDACIONES DE SESIONES
+
+function validarSesionRol($tipo, $rol){
+
+    if($rol == 2){
+
+        if(!in_array($tipo, [2,3,4])){
+            echo "<script>
+                    alert('Rol no permitido');
+                    window.location.href = '../../includes/sesion_destroy.php';
+                </script>";
+            exit();
+        }
 
 
+    }else{
+        if($tipo != $rol){
+            echo "<script>
+                    alert('Rol no permitido');
+                    window.location.href = '../../includes/sesion_destroy.php';
+                </script>";
+            exit();
+        }
+
+    }
+}
 
 if(!isset($_SESSION['documento'])){
 
@@ -20,4 +44,6 @@ if(!isset($_SESSION['documento'])){
         </script>";
     exit();
 }
+
+
 ?>

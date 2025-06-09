@@ -1,5 +1,6 @@
 <?php
 include ("../database/database.php");
+include('../roles/admin/components/alert.php');
 $conexion = new database;
 $con = $conexion->conectar();
 session_start();
@@ -47,8 +48,35 @@ if(isset($_FILES['foto'])){
                 ':foto' => $newFileName
             ]);
     
-            header("Location: ../roles/admin/objetos_usuario.php");
+            echo "
+   
+                    <script>
+                        document.addEventListener('DOMContentLoaded', function () {
+                        mostrarModal('success', 'Objeto creado correctamente', '../roles/admin/objetos_usuario.php'); 
+                        });
+                    
+                    </script>";
+                    exit();
         }
     
+    }else{
+        echo "
+
+        <script>
+                document.addEventListener('DOMContentLoaded', function () {
+                mostrarModal('mistake', 'Imagen muy pesada o extensiones no permitidas, solo jpg, jpeg, png y gif','../roles/admin/objetos_usuario.php');
+                });
+
+            </script>";
+        
     }
+}else{
+    echo "
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+            mostrarModal('mistake', 'imagen no encontrada, intenta de nuevo', '../roles/admin/objetos_usuario.php'); 
+            });
+        
+        </script>";
+        exit();
 }

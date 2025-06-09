@@ -1,10 +1,13 @@
 <?php
+// Validacion e includes----------------------------------
 session_start();
 include('../../database/database.php');
 include('./components/alert.php');
+include('../../includes/sesion_validar.php');
+
+// ----------------------------------------
 $conexion = new database;
 $con = $conexion->conectar();
-include('../../includes/sesion_validar.php');
 
 $codigo = $_SESSION['documento'];
 $id_documento =  $_SESSION['user_id'];

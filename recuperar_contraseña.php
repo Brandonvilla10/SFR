@@ -61,7 +61,7 @@ session_start();
 
             if (botonVolver) {
 
-                botonVolver.addEventListener("mouseover", function(e) {
+                botonVolver.addEventListener("click", function(e) {
 
                     window.location.href = "index.php";
                 });

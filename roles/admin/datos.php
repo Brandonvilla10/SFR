@@ -1,10 +1,12 @@
 <?php
 session_start();
-include('components/alert.php');
 require_once('../../database/database.php');
+include('components/alert.php');
+include('../../includes/sesion_validar.php');
+
+
 $conexion = new database;
 $con = $conexion->conectar();
-include('../../includes/sesion_validar.php');
 
 $codigo = isset($_SESSION['documento']) ? $_SESSION['documento'] : '';
 

@@ -88,12 +88,6 @@ $con = $conexion->conectar();
 
 
     <?php require_once("template/footer.html") ?>
-
-
-
-<script src="js/js.js"></script>
-
-
 </body>
 
 

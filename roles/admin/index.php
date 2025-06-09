@@ -3,7 +3,6 @@
 session_start();
 include('../../excelComponente/generarExcel.php');
 require_once('../../database/database.php');
-include('components/alert.php');
 require_once('../../includes/sesion_validar.php');
 
 // ---------------------------------------------
@@ -73,7 +72,7 @@ if ($tipoReporte == 0) {
         foreach ($resultado as $row) {
             $data[] = [
                 'fecha de entrada' => $row['fechaEntrada'],
-                'fecha salida' => isset($row['fechaSalida']) && !empty($row['fechaSalida']) ? $row['fechaSalida'] : 'Dentro Del SENA',
+                'fecha salida' => $row['fechaSalida'],
                 'documento' => $row['id_documento'],
                 'nombre' => $row['nombre_completo'],
                 'rol' => $row['nombre_rol'],
@@ -143,7 +142,7 @@ if ($tipoReporte == 0) {
         foreach ($resultado as $row) {
           $data[] = [
                 'fecha de entrada' => $row['fechaEntrada'],
-                'fecha salida' => isset($row['fechaSalida']) && !empty($row['fechaSalida']) ? $row['fechaSalida'] : 'Dentro Del SENA',
+                'fecha salida' => $row['fechaSalida'],
                 'documento' => $row['id_documento'],  
                 'nombre' => $row['nombre_completo'],
                 'rol' => $row['nombre_rol'],
@@ -182,7 +181,7 @@ if ($tipoReporte == 0) {
     foreach ($resultado as $row) {
       $data[] = [
         'fecha de entrada' => $row['fechaEntrada'],
-        'fecha salida' => isset($row['fechaSalida']) && !empty($row['fechaSalida']) ? $row['fechaSalida'] : 'Dentro Del SENA',
+        'fecha salida' => $row['fechaSalida'],
         'documento' => $row['id_documento'],
         'nombre' => $row['nombre_completo'],
         'rol' => $row['nombre_rol'],
@@ -216,7 +215,7 @@ if ($tipoReporte == 0) {
     foreach ($resultado as $row) {
       $data[] = [
         'fecha de entrada' => $row['fechaEntrada'],
-        'fecha salida' => isset($row['fechaSalida']) && !empty($row['fechaSalida']) ? $row['fechaSalida'] : 'Dentro Del SENA',
+        'fecha salida' => $row['fechaSalida'],
         'objeto' => $row['nombre'] ?? '',
         'serial' => $row['id_serial'] ?? '',
         'documento' => $row['id_documento'],
@@ -250,7 +249,7 @@ if ($tipoReporte == 0) {
     foreach ($resultado as $row) {
       $data[] = [
         'fecha de entrada' => $row['fechaEntrada'],
-        'fecha salida' => isset($row['fechaSalida']) && !empty($row['fechaSalida']) ? $row['fechaSalida'] : 'Dentro Del SENA',
+        'fecha salida' => $row['fechaSalida'],
         'placa del vehiculo' => $row['id_placa']?? '',
         'caracteristicas' => $row['caracteristicas']?? '',
         'documento' => $row['id_documento'],
@@ -271,6 +270,7 @@ if ($tipoReporte == 0) {
   generarExcelDinamico($columnas, $data, "Registros", 'excel');
 }
 
+include('components/alert.php');
 
 ?>
 
@@ -299,7 +299,7 @@ if ($tipoReporte == 0) {
     <header class="home_header">
       <div class="home_titulo">
         Bienvenido, <?php echo $nombre ?> 🎉
-        <p>Rol: Administrador</p>
+        <p>Rol: administrador</p>
       </div>
       <div class="home_iconos">
         <div id="notificacion-wrapper" style="position: relative; display: inline-block; cursor:pointer;">
@@ -420,39 +420,53 @@ if ($tipoReporte == 0) {
 
   </div>
 
-<?php
-$vehiculosAcivos = $con->prepare("SELECT COUNT(*) as total FROM vehiculos WHERE id_estado = 3");
-$vehiculosAcivos->execute();
-$resultado = $vehiculosAcivos->fetch(PDO::FETCH_ASSOC);
-$vehiculosInactivos = $con->prepare("SELECT COUNT(*) as innactivos FROM vehiculos WHERE id_estado = 1");
-$vehiculosInactivos->execute();
-$resultadoInnactivo = $vehiculosInactivos->fetch(PDO::FETCH_ASSOC);
+  <?php
 
-  // Consulta para obtener los registros de personas ingresadas hoy
-$personasHoy = $con->prepare("
-SELECT COUNT(*) as total 
-FROM registroentradapersona 
-WHERE DATE(fechaEntrada) = CURDATE()");
-$personasHoy->execute();
-$resultadoPersonasHoy = $personasHoy->fetch(PDO::FETCH_ASSOC);
 
-// Consulta para obtener los registros de objetos ingresados hoy
-$objetosHoy = $con->prepare("
-SELECT COUNT(*) as total 
-FROM registroentradaobjetos 
-WHERE DATE(fechaEntrada) = CURDATE()");
-$objetosHoy->execute();
-$resultadoObjetosHoy = $objetosHoy->fetch(PDO::FETCH_ASSOC);
+  $vehiculosAcivos = $con->prepare("SELECT COUNT(*) as total FROM vehiculos WHERE id_estado = 1");
+  $vehiculosAcivos->execute();
+  $resultado = $vehiculosAcivos->fetch(PDO::FETCH_ASSOC);
 
-// Consulta para obtener los registros de vehículos ingresados hoy
-$vehiculosHoy = $con->prepare("
-SELECT COUNT(*) as total 
-FROM registroentradavehiculos 
-WHERE DATE(fechaEntrada) = CURDATE()");
-$vehiculosHoy->execute();
-$resultadoVehiculosHoy = $vehiculosHoy->fetch(PDO::FETCH_ASSOC);
+  $vehiculosInactivos = $con->prepare("SELECT COUNT(*) as innactivos FROM vehiculos WHERE id_estado = 2");
+  $vehiculosInactivos->execute();
+  $resultadoInnactivo = $vehiculosInactivos->fetch(PDO::FETCH_ASSOC);
 
-?>
+  // Consulta para obtener los registros de los últimos 5 días
+  $ultimosCincoDias = $con->prepare("
+    SELECT 
+        DATE(fechaEntrada) as fecha, 
+        COUNT(*) as total 
+    FROM registroentradapersona 
+    WHERE fechaEntrada >= DATE_SUB(CURDATE(), INTERVAL 4 DAY)
+    GROUP BY DATE(fechaEntrada) 
+    ORDER BY fecha ASC
+  ");
+  $ultimosCincoDias->execute();
+  $registrosPorDia = $ultimosCincoDias->fetchAll(PDO::FETCH_ASSOC);
+
+  $etiquetas = [];
+  $datos = [];
+  $fechaActual = new DateTime();
+  for ($i = 4; $i >= 0; $i--) {
+    $fecha = clone $fechaActual;
+    $fecha->modify("-$i day");
+    $fechaFormateada = $fecha->format('Y-m-d');
+    $etiquetas[] = $fecha->format('D');
+    $encontrado = false;
+    foreach ($registrosPorDia as $registro) {
+      if ($registro['fecha'] == $fechaFormateada) {
+        $datos[] = $registro['total'];
+        $encontrado = true;
+        break;
+      }
+    }
+    if (!$encontrado) {
+      $datos[] = 0;
+    }
+  }
+  $etiquetasJSON = json_encode($etiquetas);
+  $datosJSON = json_encode($datos);
+  ?>
 
   <!-- Importación de iconos -->
   <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
@@ -509,26 +523,16 @@ $resultadoVehiculosHoy = $vehiculosHoy->fetch(PDO::FETCH_ASSOC);
     const datas = new Chart(barras, {
       type: "bar",
       data: {
-        labels: ['Personas', 'Objetos', 'Vehiculos'],
+        labels: <?php echo $etiquetasJSON; ?>,
         datasets: [{
-          data: [<?php echo $resultadoPersonasHoy['total']; ?>,<?php echo $resultadoObjetosHoy['total']; ?>,<?php echo $resultadoVehiculosHoy['total']; ?>],
-          backgroundColor: ['#6a9fdc','#498ad4','#3a7ab9'],
-          borderWidth: 1,
-          barThickness: 30
+          label: "Registros de personas por día",
+          data: <?php echo $datosJSON; ?>,
+          backgroundColor: 'blue',
+          borderWidth: 3
         }]
       },
       options: {
-        indexAxis: 'y',
         responsive: true,
-        plugins: {
-          legend: {
-            display: false,
-          },
-          title:{
-            display: true,
-            text: 'Registros de entrada el dia de hoy'
-          }
-        },
         scales: {
           yAxes: [{
             ticks: {
@@ -544,8 +548,9 @@ $resultadoVehiculosHoy = $vehiculosHoy->fetch(PDO::FETCH_ASSOC);
     const datos_donut = new Chart(donita, {
       type: "doughnut",
       data: {
-        labels: ['Vehiculos Dentro', 'Vehiculos Fuera'],
+        labels: ['vehículos activos', 'vehículos Inactivos'],
         datasets: [{
+          label: 'Vehículos Activos',
           data: [<?php echo $resultado['total'] ?>, <?php echo $resultadoInnactivo['innactivos'] ?>],
           backgroundColor: ['blue', 'red'],
           borderWidth: 2
@@ -606,8 +611,8 @@ $resultadoVehiculosHoy = $vehiculosHoy->fetch(PDO::FETCH_ASSOC);
     })
   </script>
 
-  <!-- Modal Reportes PDF -->
-  <div id="modalReportes" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.4); z-index:9999; align-items:center; justify-content:center;">
+ <!-- Modal Reportes PDF -->
+ <div id="modalReportes" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.4); z-index:9999; align-items:center; justify-content:center;">
     <div style="background:#fff; padding:32px 32px 24px 32px; border-radius:16px; min-width:400px; position:relative; box-shadow:0 4px 24px rgba(0,0,0,0.15);">
       <button type="button" id="cerrarModalReportes" style="position:absolute; top:18px; right:18px; background:none; border:none; font-size:2rem; color:#333; cursor:pointer;">&times;</button>
       <h2 style="text-align:center; font-size:2rem; font-weight:700; margin-bottom:18px;">Generar archivos</h2>

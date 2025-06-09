@@ -24,6 +24,10 @@ switch ($modulo) {
             ORDER BY r.fechaEntrada DESC
         ";
         $columnas = ['Fecha Ingreso', 'Persona', 'Objeto', 'Fecha Salida', 'Administrador'];
+        $params = [
+            ':inicio' => $fecha_inicio . ' 00:00:00',
+            ':fin' => $fecha_fin . ' 23:59:59'
+        ];
         break;
     case 'vehiculos':
         $query = "
@@ -37,8 +41,12 @@ switch ($modulo) {
             ORDER BY r.fechaEntrada DESC
         ";
         $columnas = ['Fecha Ingreso', 'Persona', 'Placa', 'Fecha Salida', 'Administrador'];
+        $params = [
+            ':inicio' => $fecha_inicio . ' 00:00:00',
+            ':fin' => $fecha_fin . ' 23:59:59'
+        ];
         break;
-    default: // personas
+    case 'personas':
         $query = "
             SELECT r.fechaEntrada, u.nombre_completo, n.descripcion, r.fechaSalida, n.documento_generador
             FROM notificaciones n
@@ -49,13 +57,51 @@ switch ($modulo) {
             ORDER BY r.fechaEntrada DESC
         ";
         $columnas = ['Fecha Ingreso', 'Persona', 'Descripción', 'Fecha Salida', 'Administrador'];
+        $params = [
+            ':inicio' => $fecha_inicio . ' 00:00:00',
+            ':fin' => $fecha_fin . ' 23:59:59'
+        ];
         break;
+    default: // todos
+        $query = "
+        SELECT r.fechaEntrada, u.nombre_completo, o.nombre AS descripcion, r.fechaSalida, n.documento_generador 
+        FROM notificaciones n
+        INNER JOIN registroentradaobjetos r ON n.id_afectado = r.id_registroObjeto
+        INNER JOIN objetos o ON r.id_serial = o.id_serial
+        INNER JOIN usuario u ON o.id_documento = u.id_documento
+        WHERE r.fechaEntrada BETWEEN :inicio1 AND :fin1
+
+        UNION ALL
+
+        SELECT r.fechaEntrada, u.nombre_completo, v.id_placa AS descripcion, r.fechaSalida, n.documento_generador 
+        FROM notificaciones n
+        INNER JOIN registroentradavehiculos r ON n.id_afectado = r.id_registroVehiculo
+        INNER JOIN vehiculos v ON r.id_placa = v.id_placa
+        INNER JOIN usuario u ON v.id_documento = u.id_documento
+        WHERE r.fechaEntrada BETWEEN :inicio2 AND :fin2
+
+        UNION ALL
+
+        SELECT r.fechaEntrada, u.nombre_completo, n.descripcion, r.fechaSalida, n.documento_generador
+        FROM notificaciones n
+        INNER JOIN registroentradapersona r ON n.id_afectado = r.id_registro
+        INNER JOIN usuario u ON r.id_documento = u.id_documento
+        WHERE r.fechaEntrada BETWEEN :inicio3 AND :fin3
+
+        ORDER BY fechaEntrada DESC
+    ";
+    $columnas = ['Fecha Ingreso', 'Persona', 'Descripción', 'Fecha Salida', 'Administrador'];
+    $params = [
+        ':inicio1' => $fecha_inicio . ' 00:00:00',
+        ':fin1' => $fecha_fin . ' 23:59:59',
+        ':inicio2' => $fecha_inicio . ' 00:00:00',
+        ':fin2' => $fecha_fin . ' 23:59:59',
+        ':inicio3' => $fecha_inicio . ' 00:00:00',
+        ':fin3' => $fecha_fin . ' 23:59:59'
+    ];
+    break;
 }
 
-$params = [
-    ':inicio' => $fecha_inicio . ' 00:00:00',
-    ':fin' => $fecha_fin . ' 23:59:59'
-];
 $stmt = $con->prepare($query);
 foreach ($params as $key => $value) {
     $stmt->bindValue($key, $value);
@@ -89,7 +135,7 @@ class CustomPDF extends TCPDF {
         $this->SetAutoPageBreak(false, 0);
         $pageWidth = $this->getPageWidth();
         $pageHeight = $this->getPageHeight();
-        $this->Image('imgAdmin/Reporte_plantilla.png', 
+        $this->Image('imgAdmin/Reporte_plantilla.jpg', 
                   0,  // X: desde el borde izquierdo
                   0,  // Y: desde el borde superior
                   $pageWidth, 

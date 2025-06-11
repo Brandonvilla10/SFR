@@ -31,7 +31,7 @@ if (isset($_POST['crearExcel'])) {
             INNER JOIN usuario ON usuario.id_documento = registroentradapersona.id_documento
             INNER JOIN rol ON rol.id_rol = usuario.id_rol
             INNER JOIN estado ON estado.id_estado = usuario.id_estado 
-            ORDER BY fechaEntrada DESC";
+            WHERE fechaEntrada BETWEEN '$fechaInicio' AND '$fechaFin' ORDER BY fechaEntrada DESC";
 
         $consulta = $con->prepare($sentencia);
         $consulta->execute();
@@ -41,7 +41,7 @@ if (isset($_POST['crearExcel'])) {
             INNER JOIN objetos ON objetos.id_serial = registroentradaobjetos.id_serial
             INNER JOIN usuario on usuario.id_documento = objetos.id_documento
             INNER JOIN rol ON rol.id_rol = usuario.id_rol 
-            ORDER BY fechaEntrada DESC";
+            WHERE fechaEntrada BETWEEN '$fechaInicio' AND '$fechaFin' ORDER BY fechaEntrada DESC";
 
         $consulta = $con->prepare($sentencia);
         $consulta->execute();
@@ -52,7 +52,7 @@ if (isset($_POST['crearExcel'])) {
             INNER JOIN usuario ON usuario.id_documento = vehiculos.id_documento
             INNER JOIN rol ON rol.id_rol = usuario.id_rol
             INNER JOIN estado ON estado.id_estado = usuario.id_estado 
-            ORDER BY fechaEntrada DESC";
+            WHERE fechaEntrada BETWEEN '$fechaInicio' AND '$fechaFin' ORDER BY fechaEntrada DESC";
 
         $consulta = $con->prepare($sentencia);
         $consulta->execute();

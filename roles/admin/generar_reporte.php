@@ -98,7 +98,6 @@ switch ($modulo) {
         break;
 
     default: // todos
-        $whereFiltro1 = $whereFiltro2 = $whereFiltro3 = '';
         $params = [
             ':inicio1' => $fecha_inicio . ' 00:00:00',
             ':fin1' => $fecha_fin . ' 23:59:59',
@@ -107,17 +106,30 @@ switch ($modulo) {
             ':inicio3' => $fecha_inicio . ' 00:00:00',
             ':fin3' => $fecha_fin . ' 23:59:59'
         ];
+        
+        $whereFiltro1 = '';
+        $whereFiltro2 = '';
+        $whereFiltro3 = '';
+        
         if ($filtro !== '') {
-            $whereFiltro1 = " AND (o.id_serial = :filtro1 OR o.nombre LIKE :filtroLike1 OR u.nombre_completo LIKE :filtroLike1 OR o.id_documento = :filtro1)";
-            $whereFiltro2 = " AND (v.id_placa = :filtro2 OR u.nombre_completo LIKE :filtroLike2 OR v.id_documento = :filtro2)";
-            $whereFiltro3 = " AND (r.id_documento = :filtro3 OR u.nombre_completo LIKE :filtroLike3)";
+            $whereFiltro1 = " AND (o.id_serial = :filtro1 OR o.nombre LIKE :filtroLike1 OR u.nombre_completo LIKE :filtroLikeU1 OR o.id_documento = :filtroDoc1)";
+            $whereFiltro2 = " AND (v.id_placa = :filtro2 OR u.nombre_completo LIKE :filtroLikeU2 OR v.id_documento = :filtroDoc2)";
+            $whereFiltro3 = " AND (r.id_documento = :filtro3 OR u.nombre_completo LIKE :filtroLikeU3)";
+            
+            // Asignar parámetros únicos para cada subconsulta
             $params[':filtro1'] = $filtro;
             $params[':filtroLike1'] = "%$filtro%";
+            $params[':filtroLikeU1'] = "%$filtro%";
+            $params[':filtroDoc1'] = $filtro;
+            
             $params[':filtro2'] = $filtro;
-            $params[':filtroLike2'] = "%$filtro%";
+            $params[':filtroLikeU2'] = "%$filtro%";
+            $params[':filtroDoc2'] = $filtro;
+            
             $params[':filtro3'] = $filtro;
-            $params[':filtroLike3'] = "%$filtro%";
+            $params[':filtroLikeU3'] = "%$filtro%";
         }
+        
         $query = "
         SELECT r.fechaEntrada, u.nombre_completo, o.nombre AS descripcion, r.fechaSalida, n.documento_generador 
         FROM notificaciones n
@@ -152,21 +164,26 @@ switch ($modulo) {
         break;
 }
 
-// Debug: Imprimir la consulta y parámetros (quitar en producción)
-// echo "<pre>";
-// echo "Módulo: " . $modulo . "\n";
-// echo "Filtro: '" . $filtro . "'\n";
+$stmt = $con->prepare($query);
+
+// Debug: Uncomment these lines if you need to debug the query and parameters
 // echo "Query: " . $query . "\n";
 // echo "Params: " . print_r($params, true) . "\n";
-// echo "</pre>";
-// die(); // Detener ejecución para ver el debug
 
-$stmt = $con->prepare($query);
 foreach ($params as $key => $value) {
     $stmt->bindValue($key, $value);
 }
-$stmt->execute();
-$datos = $stmt->fetchAll(PDO::FETCH_NUM);
+
+try {
+    $stmt->execute();
+    $datos = $stmt->fetchAll(PDO::FETCH_NUM);
+} catch (PDOException $e) {
+    // Manejo de errores más detallado
+    echo "Error en la consulta: " . $e->getMessage();
+    echo "<br>Query: " . $query;
+    echo "<br>Params: " . print_r($params, true);
+    exit;
+}
 
 // Reemplazar valores nulos o vacíos en la columna de salida por "Dentro del SENA"
 foreach ($datos as &$fila) {
@@ -194,7 +211,7 @@ class CustomPDF extends TCPDF {
         $this->SetAutoPageBreak(false, 0);
         $pageWidth = $this->getPageWidth();
         $pageHeight = $this->getPageHeight();
-        $this->Image('imgAdmin/Reporte_plantilla.png', 
+        $this->Image('imgAdmin/Reporte_plantilla.jpg', 
                   0,  // X: desde el borde izquierdo
                   0,  // Y: desde el borde superior
                   $pageWidth, 

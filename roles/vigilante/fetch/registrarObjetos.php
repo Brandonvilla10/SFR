@@ -72,8 +72,8 @@ try {
                 
                 $id_registro = $con->lastInsertId();
 
-                // con esto actualizo el estado del objeto a 2, inactivo para decir que esta dentro y no se puede modificar
-                updateObjetos($con, 2, $id_serial);
+                // con esto actualizo el estado del objeto a 3, inactivo para decir que esta dentro y no se puede modificar
+                updateObjetos($con, 3, $id_serial);
 
                 // Registrar observaciones de entrada
                 foreach ($arrayObservaciones as $observaciones) {
@@ -94,8 +94,8 @@ try {
             
             $id_registro = $con->lastInsertId();
 
-            // con esto actualizo el estado del objeto a 2, inactivo para decir que esta dentro y no se puede modificar
-            updateObjetos($con, 2, $id_serial);
+            // con esto actualizo el estado del objeto a 3, inactivo para decir que esta dentro y no se puede modificar
+            updateObjetos($con, 3, $id_serial);
 
             // Registrar observaciones de entrada para un nuevo registro
             foreach ($arrayObservaciones as $observaciones) {

@@ -8,7 +8,19 @@ include('../../includes/sesion_validar.php');
 $conexion = new database;
 $con = $conexion->conectar();
 
-
+// Establecer la variable @documento_generador en MySQL desde la sesión
+try {
+    $nombre = $_SESSION['nombre'];
+    $con->exec("SET @documento_generador = '$nombre'");
+    
+    if (empty($nombre)) {
+        // Si sigue vacía, establecer un valor predeterminado
+        $con->exec("SET @documento_generador = 'Usuario Sistema'");
+    }
+} catch (Exception $e) {
+echo '<p>Error al definir el documento generador: ' . htmlspecialchars($e->getMessage()) . '</p>';
+exit;
+}
 
 $codigo = isset($_SESSION['documento']) ? $_SESSION['documento'] : '';
 $nombre = isset($_SESSION['nombre']) ? explode(" ", $_SESSION['nombre'])[0] : '';

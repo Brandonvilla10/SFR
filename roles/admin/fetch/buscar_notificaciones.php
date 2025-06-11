@@ -86,9 +86,6 @@ try {
                 case 'UPDATE':
                     $tipoEventoMostrar = 'Actualizado';
                     break;
-                case 'DELETE':
-                    $tipoEventoMostrar = 'Eliminado';
-                    break;
                 default:
                     $tipoEventoMostrar = $tipoEvento;
             }

@@ -3,6 +3,18 @@ include('../../../database/database.php');
 $conexion = new database;
 $con = $conexion->conectar();
 session_start();
+try {
+    $nombre = $_SESSION['nombre'];
+    $con->exec("SET @documento_generador = '$nombre'");
+    
+    if (empty($nombre)) {
+        // Si sigue vacía, establecer un valor predeterminado
+        $con->exec("SET @documento_generador = 'Usuario Sistema'");
+    }
+} catch (Exception $e) {
+echo '<p>Error al definir el documento generador: ' . htmlspecialchars($e->getMessage()) . '</p>';
+exit;
+}
 
 header('Content-Type: application/json');
 
@@ -72,7 +84,7 @@ try {
                 $registrar->bindParam(':id_placa', $id_placa);
                 $registrar->execute();
 
-                updateVehiculo($con, 2, $id_placa);
+                updateVehiculo($con, 3, $id_placa);
 
                 foreach ($arrayObservaciones as $observaciones) {
 
@@ -99,7 +111,7 @@ try {
             $registrar->bindParam(':id_placa', $id_placa);
             $registrar->execute();
 
-            updateVehiculo($con, 2, $id_placa);
+            updateVehiculo($con, 3, $id_placa);
 
             foreach ($arrayObservaciones as $observaciones) {
 

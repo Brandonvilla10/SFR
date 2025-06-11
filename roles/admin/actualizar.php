@@ -9,6 +9,19 @@ $con = $conexion->conectar();
 
 $documentoVentana = $_GET['documento'];
 
+// Establecer la variable @documento_generador en MySQL desde la sesión
+try {
+    $nombre = $_SESSION['nombre'];
+    $con->exec("SET @documento_generador = '$nombre'");
+    
+    if (empty($nombre)) {
+        // Si sigue vacía, establecer un valor predeterminado
+        $con->exec("SET @documento_generador = 'Usuario Sistema'");
+    }
+} catch (Exception $e) {
+echo '<p>Error al definir el documento generador: ' . htmlspecialchars($e->getMessage()) . '</p>';
+exit;
+}
 
 //<-----------------------------AQUI ESTA LA RUTA ------------------------------------>
 $ruta = $_GET['route'] ?? 'usuarios.php';

@@ -8,58 +8,31 @@ include('../../includes/sesion_validar.php');
 $conexion = new database;
 $con = $conexion->conectar();
 
+//EXTRAIGO LOS DATOS DE LA PERSONA
+$id_documento = $_GET['owner'];
+$id_serial = $_GET['id'];
+$ruta = $_GET['route'];
+
+$user = $con->prepare("SELECT nombre_completo, foto, correo, id_documento FROM usuario WHERE id_documento = :doc");
+$user->bindParam(":doc", $id_documento, PDO::PARAM_INT);
+$user->execute();
+
+$usuario = $user->fetch(PDO::FETCH_ASSOC);
+
+// CONSULTO LA RUTA
+
+$_SESSION['objeto_buscado'] = $id_serial;
+$_SESSION['objetos_usu'] = $id_documento;
 
 
-// !-- AQUI  ESTA LA CONSULTA A LA BASE DE DATOS ACERCA DEL OBJETO -->
+$objetos_1 = $con->prepare("SELECT * FROM objetos 
+ INNER JOIN marca ON objetos.id_marca = marca.id_marca
+ INNER JOIN estado ON objetos.id_estado = estado.id_estado
+ WHERE id_serial = '$_SESSION[objeto_buscado]'");
+$objetos_1->execute();
 
-try {
+$consulta_1 = $objetos_1->fetch();
 
-    // Establecer la variable @documento_generador en MySQL desde la sesión
-    try {
-        $sql = $con->prepare("SELECT nombre_completo FROM usuario WHERE id_documento = $_SESSION[documento]");
-        $sql->execute();
-        $nombre = $sql->fetch(PDO::FETCH_ASSOC);
-        $con->exec("SET @documento_generador = '$nombre[nombre_completo]'");
-
-        // Verificar que la variable se haya establecido correctamente
-        $check = $con->query("SELECT @documento_generador as nombre");
-        $result = $check->fetch(PDO::FETCH_ASSOC);
-        if (empty($result['nombre'])) {
-            // Si sigue vacía, establecer un valor predeterminado
-            $con->exec("SET @documento_generador = 'Usuario Sistema'");
-        }
-    } catch (Exception $e) {
-        echo '<p>Error al definir el documento generador: ' . htmlspecialchars($e->getMessage()) . '</p>';
-        exit;
-    }
-    //EXTRAIGO LOS DATOS DE LA PERSONA
-    $id_documento = $_GET['owner'];
-    $id_serial = $_GET['id'];
-    $ruta = $_GET['route'];
-
-    $user = $con->prepare("SELECT nombre_completo, foto, correo, id_documento FROM usuario WHERE id_documento = :doc");
-    $user->bindParam(":doc", $id_documento, PDO::PARAM_INT);
-    $user->execute();
-
-    $usuario = $user->fetch(PDO::FETCH_ASSOC);
-
-    // CONSULTO LA RUTA
-
-    $_SESSION['objeto_buscado'] = $id_serial;
-    $_SESSION['objetos_usu'] = $id_documento;
-
-
-    $objetos_1 = $con->prepare("SELECT * FROM objetos 
-     INNER JOIN marca ON objetos.id_marca = marca.id_marca
-     INNER JOIN estado ON objetos.id_estado = estado.id_estado
-     WHERE id_serial = '$_SESSION[objeto_buscado]'");
-    $objetos_1->execute();
-
-    $consulta_1 = $objetos_1->fetch();
-} catch (PDOException) {
-
-    //
-}
 
 ?>
 <!DOCTYPE html>
@@ -220,6 +193,20 @@ try {
     <?php
     //  ENVIO DE LOS DATOS MEDIANTE PHP 
     if (isset($_POST['enviar'])) {
+
+        
+        try {
+            $nombre = $_SESSION['nombre'];
+            $con->exec("SET @documento_generador = '$nombre'");
+            
+            if (empty($nombre)) {
+                // Si sigue vacía, establecer un valor predeterminado
+                $con->exec("SET @documento_generador = 'Usuario Sistema'");
+            }
+        } catch (Exception $e) {
+        echo '<p>Error al definir el documento generador: ' . htmlspecialchars($e->getMessage()) . '</p>';
+        exit;
+        }
 
         $ruta = $_GET['route'];
         $serial = $_POST['serial'];

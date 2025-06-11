@@ -3,6 +3,18 @@ include('../../../database/database.php');
 $conexion = new database;
 $con = $conexion->conectar();
 session_start();
+try {
+    $nombre = $_SESSION['nombre'];
+    $con->exec("SET @documento_generador = '$nombre'");
+    
+    if (empty($nombre)) {
+        // Si sigue vacía, establecer un valor predeterminado
+        $con->exec("SET @documento_generador = 'Usuario Sistema'");
+    }
+} catch (Exception $e) {
+echo '<p>Error al definir el documento generador: ' . htmlspecialchars($e->getMessage()) . '</p>';
+exit;
+}
 header('Content-Type: application/json');
 // esta es la forma de recibir un array de objetos en php
 $datos = file_get_contents('php://input');
@@ -82,8 +94,8 @@ try {
                     }
                 }
 
-                // con esto actualizo el estado del objeto a 2, inactivo para decir que esta dentro y no se puede modificar
-                updateObjetos($con, 2, $id_serial);
+                // con esto actualizo el estado del objeto a 3, inactivo para decir que esta dentro y no se puede modificar
+                updateObjetos($con, 3, $id_serial);
             }
         } else {
             $registrar = $con->prepare("INSERT INTO registroentradaobjetos (fechaEntrada, id_serial) VALUES (NOW(), :id_serial)");
@@ -105,8 +117,8 @@ try {
                 }
             }
 
-            // con esto actualizo el estado del objeto a 2, inactivo para decir que esta dentro y no se puede modificar
-            updateObjetos($con, 2, $id_serial);
+            // con esto actualizo el estado del objeto a 3, inactivo para decir que esta dentro y no se puede modificar
+            updateObjetos($con, 3, $id_serial);
         }
     }
     echo json_encode(['success' => true, 'message' => 'Registro completado con observaciones']);

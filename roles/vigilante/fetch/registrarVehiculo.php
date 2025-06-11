@@ -72,7 +72,7 @@ try {
                 $registrar->bindParam(':id_placa', $id_placa);
                 $registrar->execute();
 
-                updateVehiculo($con, 2, $id_placa);
+                updateVehiculo($con, 3, $id_placa);
 
                 foreach ($arrayObservaciones as $observaciones) {
 
@@ -99,7 +99,7 @@ try {
             $registrar->bindParam(':id_placa', $id_placa);
             $registrar->execute();
 
-            updateVehiculo($con, 2, $id_placa);
+            updateVehiculo($con, 3, $id_placa);
 
             foreach ($arrayObservaciones as $observaciones) {
 

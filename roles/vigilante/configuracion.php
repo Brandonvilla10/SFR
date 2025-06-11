@@ -2,9 +2,23 @@
 session_start();
 include('../admin/components/alert.php');
 include('../../database/database.php');
+include('../../includes/sesion_validar.php');
 $conexion = new database;
 $con = $conexion->conectar();
-include('../../includes/sesion_validar.php');
+
+try {
+    $nombre = $_SESSION['nombre'];
+    $con->exec("SET @documento_generador = '$nombre'");
+    
+    if (empty($nombre)) {
+        // Si sigue vacía, establecer un valor predeterminado
+        $con->exec("SET @documento_generador = 'Usuario Sistema'");
+    }
+} catch (Exception $e) {
+echo '<p>Error al definir el documento generador: ' . htmlspecialchars($e->getMessage()) . '</p>';
+exit;
+}
+
 
 $codigo = $_SESSION['documento'];
 

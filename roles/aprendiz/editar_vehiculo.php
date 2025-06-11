@@ -9,24 +9,19 @@ include('../../includes/sesion_validar.php');
 $conexion = new database;
 $con = $conexion->conectar();
 
-// Establecer la variable @documento_generador en MySQL desde la sesión
 try {
-    $sql = $con->prepare("SELECT nombre_completo FROM usuario WHERE id_documento = $_SESSION[documento]");
-    $sql->execute();
-    $nombre = $sql->fetch(PDO::FETCH_ASSOC);
-    $con->exec("SET @documento_generador = '$nombre[nombre_completo]'");
-
-    // Verificar que la variable se haya establecido correctamente
-    $check = $con->query("SELECT @documento_generador as nombre");
-    $result = $check->fetch(PDO::FETCH_ASSOC);
-    if (empty($result['nombre'])) {
+    $nombre = $_SESSION['nombre'];
+    $con->exec("SET @documento_generador = '$nombre'");
+    
+    if (empty($nombre)) {
         // Si sigue vacía, establecer un valor predeterminado
         $con->exec("SET @documento_generador = 'Usuario Sistema'");
     }
 } catch (Exception $e) {
-    echo '<p>Error al definir el documento generador: ' . htmlspecialchars($e->getMessage()) . '</p>';
-    exit;
+echo '<p>Error al definir el documento generador: ' . htmlspecialchars($e->getMessage()) . '</p>';
+exit;
 }
+
 
 $placa = isset($_SESSION['placa']) ? trim($_SESSION['placa']) : '';
 $origen = isset($_SESSION['redireccion']) ? $_SESSION['redireccion'] : 'vehiculos';

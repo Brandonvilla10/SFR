@@ -314,6 +314,7 @@ h1 {
         flex-direction: column;
         align-items: center;
     }
+    
 
         .container_grid{
             grid-template: "main" auto / auto;

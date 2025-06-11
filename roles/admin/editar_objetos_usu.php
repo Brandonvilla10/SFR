@@ -126,7 +126,7 @@ $consulta_1 = $objetos_1->fetch();
                                         </option>
 
                                         <?php
-                                        $sql = $con->prepare("SELECT * FROM marca WHERE id_tipo_marca = 2 and id_marca != '$consulta_1[id_marca]'");
+                                        $sql = $con->prepare("SELECT * FROM marca WHERE id_tipo_marca = 2 and id_marca != '$consulta_1[id_marca]' ORDER BY nombre_marca ASC");
                                         $sql->execute();
 
                                         $consulta_2 = $sql->fetchAll();

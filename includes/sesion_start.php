@@ -31,10 +31,23 @@ if (isset($_POST['submit'])) {
             $_SESSION['rol_name'] = "Administrador";
             echo " <script> window.location.href='../roles/admin/index.php' </script>";
             exit();
-        } elseif ($_SESSION['rol'] == 2) {
+        } elseif ($_SESSION['rol'] == 2 || $_SESSION['rol'] == 3  || $_SESSION['rol'] == 4) {
 
-            // APRENDIZ
-            $_SESSION['rol_name'] = "Aprendiz";
+            switch ($_SESSION['rol']) {
+                case 2:
+                    $_SESSION['rol_name'] = "Aprendiz";
+                    break;
+
+                case 3:
+                    $_SESSION['rol_name'] = "Funcionario";
+                    break;
+                case 4:
+                    $_SESSION['rol_name'] = "Instructor";
+                    break;
+                default:
+                    echo "<script>window.location = './sesion_destroy.php   '</script>";
+                    break;
+            }
             echo " <script> window.location.href='../roles/aprendiz/index.php'</script>";
             exit();
         } elseif ($_SESSION['rol'] == 6) {

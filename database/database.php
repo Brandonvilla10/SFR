@@ -3,9 +3,9 @@
 class database{
 
     private $host ="localhost";
-    private $database = "u721653865_databasesft";
-    private $user = "u721653865_senaUser";
-    private $password = "Z;O5y4&J4m*";
+    private $database = "databasesft";
+    private $user = "root";
+    private $password = "";
     private $charset = "utf8";
 
 

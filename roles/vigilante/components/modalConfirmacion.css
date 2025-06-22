@@ -1,0 +1,129 @@
+/* Estilos para el Modal de Confirmación */
+.modalConfirmacion {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1002;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.1s ease;
+}
+
+.contenedorModalConfirmacion {
+    width: 400px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+    transform: translateY(-20px);
+    transition: transform 0.3s ease;
+}
+
+.modalConfirmacion[style*="visibility: visible"] .contenedorModalConfirmacion {
+    transform: translateY(0);
+}
+
+.headerModalConfirmacion {
+    background-color: #dc3545;
+    color: white;
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.headerModalConfirmacion h3 {
+    margin: 0;
+    font-size: 1.2rem;
+}
+
+.cerrarModalConfirmacion {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 0;
+    line-height: 1;
+}
+
+.cuerpoModalConfirmacion {
+    padding: 20px;
+}
+
+.mensaje-confirmacion {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    padding: 15px;
+    background-color: #fff8e1;
+    border-radius: 5px;
+}
+
+.icono-alerta {
+    font-size: 24px;
+    color: #dc3545;
+    margin-right: 15px;
+}
+
+.mensaje-confirmacion p {
+    margin: 0;
+    font-size: 16px;
+    color: #333;
+}
+
+.botonesModalConfirmacion {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.confirmar-btn {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    font-size: 14px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.confirmar-btn:hover {
+    background-color: #c82333;
+}
+
+.cancelar-btn {
+    border-radius: 10px;
+    border: none;
+    background: #fff8e1;
+    color: #000000;
+    font-weight: 600;
+    width: 74px;
+}
+
+/* Estilos responsivos para el modal */
+@media (max-width: 500px) {
+    .contenedorModalConfirmacion {
+        width: 90%;
+        max-width: 350px;
+    }
+    
+    .headerModalConfirmacion {
+        padding: 12px;
+    }
+    
+    .cuerpoModalConfirmacion {
+        padding: 15px;
+    }
+    
+    .mensaje-confirmacion {
+        padding: 10px;
+    }
+}

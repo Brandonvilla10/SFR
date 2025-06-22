@@ -1,42 +1,10 @@
 
 <?php
 require_once("database/database.php");
+include('./roles/admin/components/alert.php');
 $conexion = new database;
 $con = $conexion->conectar();
-session_start();
-
-
-if (isset($_POST['submit'])){
-    $documento = $_POST['documento'];
-    $password = $_POST['password'];
-
-    $validacion = $con->prepare("SELECT * FROM usuario where id_documento = :documento");
-    $validacion->bindParam(":documento", $documento);
-    $validacion-> execute();
-    $fila = $validacion->fetch(PDO::FETCH_ASSOC);
-
-    if ($fila && password_verify($password, $fila['contraseña'])) {
- 
-        switch($fila['id_rol']){
-            case 1:
-                echo "<script>alert('Usuario válido. Bienvenido " . $fila['nombre_completo'] . "');</script>";
-                echo "<script>window.location.href = 'roles/admin/home.php';</script>";
-                break;
-            case 2:
-                echo "<script>alert('Usuario válido. Bienvenido " . $fila['nombre_completo'] . "');</script>";
-                echo "<script>window.location.href = 'roles/aprendiz/home.php';</script>";
-                break;
-        }
-       
-    } else {
-        echo "<script>alert('Documento o contraseña incorrectos.');</script>";
-    }
-
-}
-
 ?>
-
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -44,15 +12,14 @@ if (isset($_POST['submit'])){
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SFR</title>
+    <link rel="icon" type="image/png" href="Logo.png" >
     <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/footer.css">
-    <link rel="stylesheet" href="./css/output.css">
+    <link rel="stylesheet" href="css/footer.css">   
 </head>
 <body>
 
 
    <?php include('template/header.php')?>
-
 
 <section class="container">
 
@@ -70,7 +37,7 @@ if (isset($_POST['submit'])){
             <form action="includes/sesion_start.php" id="formulario" method="POST" >
 
                 <div class="datos">
-                    <input type="number" class="datosLogin" name="documento" id="documento" placeholder="Documento">
+                    <input type="number" class="datosLogin"  name="documento" id="documento" placeholder="Documento">
                     <p class="error" id="errorDocumento"></p>
 
                     <input type="password" class="datosLogin" name="password" id="contraseña" placeholder="Contraseña">
@@ -95,7 +62,7 @@ if (isset($_POST['submit'])){
 
     <!-- aqui va la imagen que esta a la derecha del index -->
     <section class="columnaDerecha">
-        <img src="assets/img/indeximg/Image_Index.png" height="500px" width="679px" class="imgPersonitas" alt="">
+        <img src="assets/img/indeximg/Image_Index.webp" height="500px" width="679px" class="imgPersonitas" alt="">
     </section>
 
 <!-- ------------------------------------------------------------------------------------------------------------------------     -->
@@ -104,14 +71,14 @@ if (isset($_POST['submit'])){
 
 
     <div class="social-bar">
+        <a href="https://www.tiktok.com" target="_blank" class="social-icon">
+            <img src="assets/img/iconosRedesSociales/tik-tok.webp" width="28px" height="28px alt="">
+        </a>
         <a href="https://www.facebook.com" target="_blank" class="social-icon">
-            <img src="assets/img/iconosRedesSociales/tik-tok.png" width="28px" height="28px alt="">
+            <img src="assets/img/iconosRedesSociales/facebook.webp" width="28px" height="28px alt="">
         </a>
-        <a href="https://www.instagram.com" target="_blank" class="social-icon">
-            <img src="assets/img/iconosRedesSociales/facebook.png" width="28px" height="28px alt="">
-        </a>
-        <a href="https://www.tiktok.com" class="social-icon">
-            <img src="assets/img/iconosRedesSociales/logotipo-de-instagram.png"  width="28px" height="28px">
+        <a href="https://www.instagram.com" class="social-icon">
+            <img src="assets/img/iconosRedesSociales/logotipo-de-instagram.webp"  width="28px" height="28px">
         </a>
     </div>
 
@@ -121,12 +88,6 @@ if (isset($_POST['submit'])){
 
 
     <?php require_once("template/footer.html") ?>
-
-
-
-<script src="js/js.js"></script>
-
-
 </body>
 
 
@@ -138,7 +99,7 @@ if (isset($_POST['submit'])){
 <script>
     // expresiones regulares para validacion de documento y contraseña
 const docRegex = /^\d{6,10}$/;
-const passRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@#$!%*?&])[A-Za-z\d@#$!%*?&]{8,}$/;
+const passRegex = /^(?=.*[A-Z])(?=.*\d)[A-Za-z\d@#$!%?&]{6,12}$/;
 // ------------------------------------------------------------------------------------------------
 
     const documento = document.getElementById("documento");
@@ -170,7 +131,7 @@ documento.addEventListener("input",() => {
             dato.style.borderColor = "red"
             return false
         }else{
-            dato.style.borderColor = "blue"
+            dato.style.borderColor = "#7373c9"
             
             return validacion = true;
         }
@@ -199,5 +160,7 @@ function actualizarBoton(){
        validarContraseña = incorrecto(passRegex,contraseña,errorContraseña,"Contraseña Incorrecta",validarContraseña)   
        actualizarBoton()
     })
+
+
 
 </script>

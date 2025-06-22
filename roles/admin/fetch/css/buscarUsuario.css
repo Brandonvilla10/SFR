@@ -1,0 +1,510 @@
+:root{
+  --colorAzul : #63AEE8 
+}
+
+::-webkit-scrollbar {
+  width: 6px;   
+  height: 10px;  
+}
+
+
+::-webkit-scrollbar-thumb {
+  background-color: #63AEE8; 
+  border-radius: 10px;
+}
+
+
+::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+
+.verUsuarios{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.buscador{
+  width: 100%;
+  display: flex;
+}
+
+#boton{
+  margin-left: 100px;
+  width: 150px;
+  height: 30px;
+  border-radius: 6px;
+  border: none;
+  box-shadow: 1px 1px 7px black;
+  font-size: medium;
+  font-weight: 600;
+}
+
+#boton:hover{
+  transform: scale(0.9);
+  background-color: #63aee8;
+  color: white;
+}
+
+.tabla-container{
+  height: 450px;
+  margin-top: 10px;
+  border: 2px solid darkcyan;
+  overflow-y: auto;
+  width: 98%;
+}
+
+.checkBoX{
+  height: 15px;
+  width: 15px;
+}
+
+.menu{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-left : 50px;
+}
+
+.AgregarUsuarioDiv{
+    margin-right: 100px; ;
+}
+
+.botonFuncionales{
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+}
+
+.botonAgregar:hover{
+  transform: scale(1.1);
+  background-color: rgb(228, 252, 251);
+}
+
+.botonAgregar,.botonEliminar{
+  height: 40px;
+  width: 180px;
+  display: flex;
+  font-weight: 600;
+  border-radius: 7px;
+  border: 2px solid black;
+  font-size: medium;
+  cursor: pointer;
+  justify-content: center;
+  align-items: center;
+}
+
+.botonEliminar{
+  background-color: crimson;
+  color: white;
+}
+
+.botonEliminar:hover{
+  background-color: red;
+  transform: scale(1.1);
+}
+
+
+.EliminarUsuario{
+  opacity: 0;
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 65%;
+  transition: 1s;
+}
+
+.direccion{
+  display: flex;
+  gap: 30px;
+}
+
+.formEliminar{
+  background-color: rgb(0 13 32);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-width: 350px;
+  padding: 20px;
+  border: 1px solid black;
+  padding-right: 36px;
+  border-radius: 20px;
+}
+
+.EliminarTitulo{
+  font-size: 23px;
+  color:white;
+  font-weight: bold;
+}
+
+.messageelimnar{
+  font-size: small;
+  color: crimson;
+}
+.fichaUsuarioEliminar,.documentoUsuario,.contraseñaAdmin{
+    width: 100%;
+    height: 45px;
+    border-radius: 10px;
+    border: none;
+    background-color: rgb(7, 24, 51);;
+    color: white;
+}
+
+
+
+.EliminarUsuarioboton{
+  text-align: center;
+  color: white;
+  width: 100%;
+  height: 45px;
+  border-radius: 10px;
+  border: none;
+  background-color: crimson;
+}
+span{
+  color: rgb(255, 255, 255);
+}
+
+.spanRegistro{
+  color: black;
+  font-size: small;
+}
+
+#textoEliminar{
+  padding-right: 10px;
+}
+
+#textoAbrir{
+  padding-right: 10px;
+}
+
+.CrearUsuario{
+    display: none;
+    opacity: 0;
+    position: fixed;
+    left: 30%;
+    margin-top: 50px;
+    transition:  0.2s;
+}
+
+.CrearUsuario.mostrar{
+   display: flex;
+   position: fixed;
+   z-index: 10000;
+   opacity: 1;
+   left: 30%;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-width: 500px;
+  background-color: white;
+  padding: 20px;
+  border: 1px solid black;
+  padding-right: 36px;
+  border-radius: 20px;
+  position: relative;
+  }
+  
+  .title {
+    font-size: 28px;
+    color: #63aee8;
+    font-weight: 600;
+    letter-spacing: -1px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    padding-left: 30px;
+  }
+  
+  .title::before,.title::after {
+    position: absolute;
+    content: "";
+    height: 16px;
+    width: 16px;
+    border-radius: 50%;
+    left: 0px;
+    background-color: royalblue;
+  }
+  
+  .title::before {
+    width: 18px;
+    height: 18px;
+    background-color: royalblue;
+  }
+  
+  .title::after {
+    width: 18px;
+    height: 18px;
+    animation: pulse 1s linear infinite;
+  }
+  
+  .message, .signin {
+    color: rgba(88, 87, 87, 0.822);
+    font-size: 14px;
+  }
+  
+  .signin {
+    text-align: center;
+  }
+  
+  .signin a {
+    color: royalblue;
+  }
+  
+  .signin a:hover {
+    text-decoration: underline royalblue;
+  }
+  
+  
+
+  .submit {
+    border: none;
+    outline: none;
+    background-color: royalblue;
+    padding: 10px;
+    border-radius: 10px;
+    color: #fff;
+    font-size: 16px;
+    transform: 0.3s ease;
+  }
+  
+  .submit:hover {
+    background-color: rgb(56, 90, 194);
+  }
+  
+  .inputsNuevoRegistro,.SeleccionarRol{
+    background-color: #85c1ef;
+    width: 100%;
+    height: 45px;
+    border-radius: 7px;
+    border: 2px solid gray;
+  }
+
+  .SeleccionarRol{
+    color: black;
+    transition: 1s;
+    font-weight: 600;
+  }
+
+
+  
+
+  @keyframes pulse {
+    from {
+      transform: scale(0.9);
+      opacity: 1;
+    }
+  
+    to {
+      transform: scale(1.8);
+      opacity: 0;
+    }
+  }
+
+#buscarUsuario{
+  height: 30px;
+  padding-left: 10px;
+  margin-left: 70px;
+  width: 20%;
+  border-radius: 25px;
+  text-transform: capitalize;
+  border: none;
+  color: black;
+  box-shadow: 1px 2px 10px black;
+}
+
+#buscarUsuario::placeholder{
+  color: black;
+  border: none;
+}
+
+#buscarUsuario:focus{
+  border: none;
+  outline: none;
+  width: 23%;
+  background-color:#d7e7f8;
+}
+
+.tabla{
+  text-align: left;
+  width: clamp(500px,100%,100%);
+  border: 2px solid rgb(84, 84, 84);
+  border-top-right-radius: 8px;
+  border-top-left-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  font-family: Arial, sans-serif;
+  border-collapse: collapse;
+  
+}
+
+th{
+  border-top: 1px solid rgb(116, 115, 115);
+  padding-right: 10px;
+  padding-top: 10px;
+
+}
+
+.filaUsuario,.filaRol,.filaFicha,.filaPrograma,.filaFormacion,.filaJornada,.filaEstado{
+ border: unset;
+ text-overflow: ellipsis;
+ height: 40px;
+ background-color: #f8f9fa;
+ border-right: none;
+}
+
+.filaUsuario{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.datos{
+  height: 60px;
+  padding: 10px;
+  font-weight: 300;
+}
+
+.datosNombre{
+  display: flex;
+  align-items: center;
+}
+
+.inputEdicion{
+  background: none;
+  border: none;
+  width: 100%;
+  text-overflow: ellipsis;
+}
+
+
+.editarNombre::placeholder{
+  color: black;
+  
+}
+.editarNombre{
+  font-weight: 700;
+}
+
+
+
+
+
+.botonTresPuntos{
+  border: none;
+  background-color: transparent  ;
+}
+
+.imagenDeLostrespuntos:hover{
+  transform: scale(1.4);
+}
+
+.opcionesTresPuntos{
+  display: flex;
+  position: fixed;
+  right: 190px;
+  z-index: 1000;
+  box-shadow: 1px 3px 11px black;
+  background: slategray;
+  width: 200px;
+  height: 150px;
+  opacity: 0;
+  display: none;
+
+}
+
+.opcionesTresPuntos.mostrar{
+  display: flex;
+  position: fixed;
+  
+  opacity: 1;
+  
+
+}
+
+
+.paginacion {
+  text-align: center;
+  margin-top: 20px;
+  
+}
+
+.paginacion a {
+  display: inline-block;
+  padding: 8px 12px;
+  margin: 5px;
+  text-decoration: none;
+  background: #007bff;
+  color: white;
+  border-radius: 5px;
+}
+
+.paginacion a.activo {
+  background: #0056b3;
+  font-weight: bold;
+}
+
+.paginacionB:hover{
+  transform: scale(1.2);
+}
+
+
+
+@media (min-width:320px) and (max-width:768px) {
+    .tabla-container{
+      overflow-x: auto;
+      width: 100%;
+    }
+
+    .formEliminar{
+      position: fixed;
+      left: 1%;
+    }
+
+    .paginacion{
+      text-align: left;
+      margin-left: 100px;
+    }
+
+    .CrearUsuario.mostrar{
+      left: 0%;
+    }
+
+    .verUsuarios{
+      margin-left: 80px;
+    }
+
+    .filaUsuario{
+      width: 300px;
+    }
+}
+@media (min-width:767px) {
+    .datosNombre{
+      width: 175px;
+    }
+    
+    .formEliminar{
+      left: 65%;
+      position: fixed;
+    }
+
+    .CrearUsuario.mostrar{
+      left: 30%;
+    }
+    .verUsuarios{
+      margin-left: unset;
+    }
+}
+
+@media (min-width:1024px){
+  .datosNombre{
+    width: unset;
+  }
+  .form{
+    left: 65%;
+  }
+}

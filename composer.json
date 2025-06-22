@@ -1,5 +1,6 @@
 {
     "require": {
-        "resend/resend-php": "^0.15.1"
+        "resend/resend-php": "^0.15.1",
+        "phpoffice/phpspreadsheet": "^4.3"
     }
 }

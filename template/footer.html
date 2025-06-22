@@ -1,96 +1,41 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="stylesheet" href="../css/footer.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.5.0/font/bootstrap-icons.min.css">
 </head>
+
 <body>
-<footer>
-        <div class="informacion">
-            <p>Sena FastRegister -Dirreción General</p>
-            <p>141 -Sector, Cra. 45 Sur #1255, Ibague, Tolima</p>
-            <p>Contacto: 309 8768568</p>
-            <p>Atencion Al Cliente: Lunes A Viernes 8:00 am a 5:00 pm</p>
-            <p>Correo: senafastregister@gmail.com</p>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <footer style="background-color: rgba(101, 172, 223, 255); color: rgb(255, 255, 255); padding: 30px 40px; font-family: 'Lato', sans-serif;">
+        <div style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 20px;">
+            <div>
+                <h3 style="color: rgb(255, 255, 255);">Sena FastRegister</h3>
+                <p><i class="bi bi-geo-alt"></i> Cra. 45 Sur #1255, Ibagué, Tolima</p>
+                <p><i class="bi bi-building"></i> Sector: 141</p>
+            </div>
+
+            <div>
+                <h3 style="color:rgb(255, 255, 255);">Contacto</h3>
+                <p><i class="bi bi-telephone"></i> 309 8768568</p>
+                <p><i class="bi bi-envelope"></i> senafastregister@gmail.com</p>
+            </div>
+
+            <div>
+                <h3 style="color: rgb(255, 255, 255);">Horario</h3>
+                <p><i class="bi bi-clock"></i> Lunes a Viernes, 8:00 am - 5:00 pm</p>
+            </div>
         </div>
 
-        <div class="copyrigh">
-            <p>Copyright 2024 FastRegister</p>
+        <div style="text-align: center; padding-top: 20px; border-top: 1px solid rgba(255, 255, 255, 0.345); margin-top: 20px;">
+            <p style="color: rgb(255, 255, 255);">&copy; 2024 <strong>FastRegister</strong>. Todos los derechos reservados.</p>
         </div>
+    </footer>
 
-<style>
-    *{
-    margin: 0;
-    padding: 0;
-    transition: 1s;
-}
-
-@media (min-width:320px) {
-    footer{
-        background-color: rgba(101, 172, 223, 255);
-        width: 100%;
-        height: 20vh;
-        display: flex;
-        flex-direction: column;
-    }
-    .informacion,.copyrigh{
-        line-height: 17px;
-        font-size: small;
-        color: white ;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    }
-
-    .copyrigh{
-        font-weight: bold;
-    }
-}
-@media (min-width:768px) {
-    footer{
-        background-color: rgba(101, 172, 223, 255);
-        width: 100%;
-        height: 20vh;
-        display: flex;
-        flex-direction: row;
-        align-items: flex-end;
-        justify-content: space-around;
-    }
-}
-
-@media (min-width:1024px){
-    .copyrigh{
-        margin-left: 113px;
-    }
-}
-@media (min-width:1440px) {
-    footer{
-        background-color: rgba(101, 172, 223, 255);
-        width: 100%;
-        height: 20vh;
-        display: grid;
-        grid-template-columns:  repeat(2, 675px);
-        align-items: end;
-        align-content: space-around;
-        
-    }
-    
-    .informacion,.copyrigh{
-        font-size: medium;
-        line-height: normal;
-        color: white !important;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    }
-    
-    .informacion{
-        margin-left: 67px;
-    }    
-    .copyrigh{
-        margin-left:0 ;
-    }
-}
-
-        </style>
-</footer>
 </body>
+
 </html>

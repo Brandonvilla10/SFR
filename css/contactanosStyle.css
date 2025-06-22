@@ -1,190 +1,177 @@
-
-.contactanos{
+.contactanos {
     display: flex;
     flex-direction: column;
-    width:max(100px,100%);
-    box-sizing:border-box;
+    width: max(100px, 100%);
+    box-sizing: border-box;
     margin-top: 10vh;
 }
 
-.telefono{
-        font-weight: 500;
-}
-
 @media (min-width:320px) {
-    *{
-        text-align: center;
+    * {
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
-    .numeros{
+    .contactanos {
+        text-align: center;
+    }
+    .numeros {
         display: grid;
-        grid-template-columns:repeat(2,10%);
+        grid-template-columns: repeat(2, 10%);
         font-weight: 700;
         margin-top: 30px;
+        text-align: center;
     }
-
-    
-
-    .direccionCorreo{
+    .direccionCorreo {
         margin-top: 30px;
+        text-align: center;
     }
-
-    .informacionDatos{
-        margin-top: 20%;
+    .informacionDatos {
+        margin-top: 10%;
+        text-align: center;
     }
-
-    .horarios{
+    .horarios {
         margin-top: 9%;
         color: cornflowerblue;
         font-size: 30px;
+        text-align: center;
     }
-
-    .servicios{
+    .servicios {
         margin-top: 20px;
         font-size: large;
         color: rgb(53, 75, 118);
-        
+        text-align: center;
     }
-
-    .numeros{
+    .numeros {
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
+        text-align: center;
     }
-
-    .whatsapp{
-        margin-top: 9%;
+    .whatsapp {
+        margin-top: 5%;
         display: flex;
         flex-direction: row;
+        text-align: center;
     }
-
-    .hora{
+    .hora {
         margin-top: 30px;
+        text-align: center;
     }
-
-    .title{
+    .title {
         color: cornflowerblue;
         font-weight: 600;
+        text-align: center;
     }
-
-    .textoHorarios{
-        color: rgb(48, 227, 48);
+    .textoHorarios {
+        color: rgba(58, 170, 53, 255);
+        text-align: center;
     }
-
-    .ubicacion{
+    .ubicacion {
         margin-bottom: 100px;
+        text-align: center;
     }
-
-    iframe{
+    iframe {
         width: 100%;
         height: 300px;
         padding: 30px;
         border-radius: 42px;
+        text-align: center;
     }
-    
-    .h1Encuentranos{
+    .h1Encuentranos {
         font-size: 5vh;
+        text-align: center;
     }
 }
 
-@media (min-width:768px){
-    .main{
-        margin: 10%;
+@media (min-width:768px) {
+    .main {
+        margin: 7% 10%;
     }
-    *{
+   
+   .descrip{
+       text-align: left;
+   }
+    .tituloContactanos {
         text-align: left;
     }
-    .tituloContactanos{
-        text-align: left;
-    }
-
-    .seccionIzquierda{
+    .seccionIzquierda {
         display: flex;
         flex-direction: row;
         justify-content: space-between;
     }
-
-    .tituloCorreo{
+    .tituloCorreo {
         margin-left: 30px;
     }
-    .numeros{
+    .numeros {
         flex-direction: column;
     }
-
-    .servicioHora{
-    display: grid;
-    grid-template-columns: repeat(4,1fr);
-    align-items: center;
+    .servicioHora {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        align-items: center;
     }
-
-
-    .textoEncuentranos{
+    .textoEncuentranos {
         display: flex;
         flex-direction: column;
         align-items: center;
     }
-
-    .parrafoUbicacion{
+    .parrafoUbicacion {
         font-size: large;
     }
-
 }
 
-@media (min-width:1024px){
-
-    .informacionDatos{
+@media (min-width:1024px) {
+    .informacionDatos {
         margin-top: 5%;
     }
-
-    .ubicacion{
-    display: flex;
-    flex-direction: row;
-    align-items: center;
+    .ubicacion {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
     }
-
-    iframe{
+    iframe {
         margin-top: 100px;
         width: 100%;
         height: 401px;
         padding: 0px;
         border-radius: 42px;
     }
-
-    .servicioHora{
+    .servicioHora {
         display: grid;
         grid-template-columns: 3fr 2fr 2fr 2fr;
         align-items: center;
-        }
-
-
-    .title,.textoHorarios,.soporte{
+    }
+    .title,
+    .textoHorarios,
+    .soporte {
         font-size: large;
     }
-    
 }
 
 @media (min-width:1496px) {
-    .informacionDatos{
+    .informacionDatos {
         margin-top: 5%;
     }
-    .whatsapp{
+    .whatsapp {
         margin-top: 15%;
     }
-
-
-    .direccionCorreo{
+    .direccionCorreo {
         margin-right: 50px;
     }
-
-    .textoEncuentranos{
+    .textoEncuentranos {
         margin-left: 50px;
     }
-
 }
 
-@media (min-width: 2560px){
-    .descrip,.whatsapp,.telefono,.tituloCorreo,.direccionCorreo,.horarios,.title,.hora{
+@media (min-width: 2560px) {
+    .descrip,
+    .whatsapp,
+    .telefono,
+    .tituloCorreo,
+    .direccionCorreo,
+    .horarios,
+    .title,
+    .hora {
         font-size: larger;
     }
 }

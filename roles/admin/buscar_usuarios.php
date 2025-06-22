@@ -1,9 +1,14 @@
 <?php
+session_start();
 include('../../database/database.php');
+include('components/alert.php');
+include('../../includes/sesion_validar.php');
+
+
+
+
 $conexion = new database;
 $con = $conexion->conectar();
-
-
 
 $registrosPorPagina = 30;
 
@@ -93,7 +98,7 @@ foreach ($fila as $resu) {
         <th class='datos'>" . (!empty($resu['estado']) ? $resu['estado'] : "Vacio") . "</th>
         <th class='datos'>
             <input type='button' id='botonTresPuntos' class='botonTresPuntos'>
-            <img class='imagenDeLostrespuntos' src='./imgAdmin/tres puntos.png' width='30px' height='30px' onclick='abrirVentana(\"actualizar.php?documento={$resu['id_documento']}\")' alt=''>
+            <img class='imagenDeLostrespuntos' src='./imgAdmin/tres puntos.png' width='30px' onclick='window.location.href='actualizar.php?documento={$resu['id_documento']}\")' alt=''>
         </th>
     </tr>
     ";

@@ -79,10 +79,8 @@ if (isset($_POST["objetos_submit"])) {
                     <p>Administra los vehiculos segun tu necesidad</p>
                 </div>
 
-                
-                <button class="buscar_objeto_titulo" onclick="plantilla2()">Agregar</button>
 
-                <button class="buscar_objeto_titulo" id="abrirBuscar">Buscar Vehiculos</button>
+                <button class="buscar_objeto_titulo" id="abrirBuscar">Buscar Vehiculos por Documento</button>
 
 
 
@@ -205,21 +203,6 @@ if (isset($_POST["objetos_submit"])) {
                 </div>
             </div>
 
-            <div class="buscar_user estadoDevehiculos" id="estado-vehiculos2">
-                <button class="vehiculos_cerrar_button" id="close-vehiculos2" onclick="retirarPlantilla2()"><i class="bi bi-x-lg"></i></button>
-                <div class="img_fondo">
-                    <form class="inside_img_fondo" method="post">
-                        <h1>¿Que deseas agregar?</h1>
-
-                        <input type="button" value="Vehiculo" class="vehiculos_submit" onclick="window.location.href='aggVehiculo.php'">
-
-                        <input type="button" value="Marca" class="vehiculos_submit" onclick="window.location.href='apartado_datos/marcas.php'">
-
-                        <input type="button" value="Modelo" class="vehiculos_submit" onclick="window.location.href='apartado_datos/modelo.php'">
-                    </form>
-                </div>
-            </div>
-
             <!-- Formulario para agregar marca -->
             <div class="buscar_user estadoDevehiculos" id="formulario-marca">
                 <button class="vehiculos_cerrar_button" onclick="cerrarFormularioVehiculo()"><i class="bi bi-x-lg"></i></button>
@@ -315,14 +298,6 @@ if (isset($_POST["objetos_submit"])) {
 
                 function retirarPlantilla() {
                     plant.classList.add('estadoDevehiculos');
-                }
-
-                function plantilla2() {
-                    plant2.classList.remove('estadoDevehiculos');
-                }
-
-                function retirarPlantilla2() {
-                    plant2.classList.add('estadoDevehiculos');
                 }
 
                 function mostrarFormularioVehiculo() {

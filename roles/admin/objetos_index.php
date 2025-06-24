@@ -126,7 +126,7 @@ $consulta->execute();
 
                 
 
-                <button class="buscar_objeto_titulo" id="abrirBuscar">Buscar Objetos</button>
+                <button class="buscar_objeto_titulo" id="abrirBuscar">Buscar Objetos por Documento</button>
             </div>
             <hr class="separador">
 

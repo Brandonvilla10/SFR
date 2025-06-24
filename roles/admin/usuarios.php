@@ -322,7 +322,7 @@ if (isset($_POST["agregarSubmit"])) {
                                     </button>
                                     <div id="myDropdown_<?php echo $usuario['id_documento']; ?>" class="dropdown-content">
                                         <a href="actualizar.php?documento=<?php echo $usuario['id_documento'] ?>&route=usuarios.php">Editar Usuario</a>
-                                        <a href="#">Generar Qr</a>
+                                        <a href="apartado_datos/GenerarQR.php?documento=<?php echo $usuario['id_documento']; ?>">Generar QR</a>
                                         <a href="#">Crear Vehiculos</a>
                                         <a href="objetos_usuario.php?documento=<?php echo $usuario['id_documento'] ?>">Crear Objetos</a>
                                     </div>

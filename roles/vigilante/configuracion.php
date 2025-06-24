@@ -64,7 +64,41 @@ if (isset($_POST['submit'])) {
         echo "Error: " . $e->getMessage();
     }
 }
+if (isset($_POST['submitCambiar'])) {
 
+    $contraActual = $_POST['contra-anti'];
+    $contraNueva = $_POST['contra-nueva'];
+
+    $sql = $con->prepare("SELECT * FROM usuario WHERE id_documento = :documento");
+    $sql->bindParam(':documento', $codigo);
+    $sql->execute();
+    $fila = $sql->fetch();
+
+    if (password_verify($contraActual, $fila['contraseña'])) {
+        $nuevaContra = password_hash($contraNueva, PASSWORD_DEFAULT);
+
+        $actualizar = $con->prepare("UPDATE usuario SET contraseña = :nuevaContra WHERE id_documento = :documento");
+        $actualizar->bindParam(':nuevaContra', $nuevaContra);
+        $actualizar->bindParam(':documento', $codigo);
+        $actualizar->execute();
+
+        echo "
+                <script>
+                    document.addEventListener('DOMContentLoaded', function () {
+                        mostrarModal('success', 'Contraseña cambiada con exito', 'configuracion.php');
+                    });
+                </script>";
+        exit();
+    } else {
+        echo "
+                <script>
+                    document.addEventListener('DOMContentLoaded', function () {
+                        mostrarModal('mistake', 'La contraseña actual es incorrecta', 'configuracion.php');
+                    });
+                </script>";
+        exit();
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -106,6 +140,7 @@ if (isset($_POST['submit'])) {
                         <input name="id_documento" id="documento" class="inpustConfig" placeholder="<?php echo 'Documento: ' . $fila['id_documento']; ?>" type="Number">
                         <input name="id_rol" class="inpustConfig" id="rol" value="<?php echo $fila['nombre_rol']; ?>"readonly="">
                         <input name="correo" id="correo" class="inpustConfig" value="<?php echo $fila['correo'];  ?>" type="email">
+                        <h4 class="change" id="abrirCambiar">¿Deseas cambiar la contraseña?</h4>
                         <input type="submit" name="submit" class="enviarConfig" value="Confirmar">
                     </form>
 
@@ -148,6 +183,33 @@ if (isset($_POST['submit'])) {
                 <img class="imgConfig" src="../../assets/img/configuracion/imgconfi.webp" alt="Img configuraciones" width="400px" height="400px">
             </section>
 
+             <!------------------------------------------------ MODAL DE CAMBIAR CONTRA ----------------------------------->
+    
+             <div class="modalAgregar" id="modalAgregar">
+                <div class="contenedormodalAgregar">
+                    <div class="headermodalAgregar" style="background-color:#63AEE8;">
+                        <h3>Cambiar Contraseña</h3>
+                        <button class="cerrarmodalAgregar" id="cerrarmodalAgregar">&times;</button>
+                    </div>
+                    <div class="cuerpomodalAgregar">
+                        <form action="" method="post" id="formCambiar">
+                            <div class="campo-formulario">
+                                <label for="nom_marca" >Contraseña Actual</label>
+                                <input class="input-modal" type="password" id="contra-anti" name="contra-anti" placeholder="Digite su contraseña">
+                            </div>
+                            <div class="campo-formulario">
+                                <label for="tipomarca">Contraseña Nueva</label>
+                                <input class="input-modal" type="password" id="contra-nueva" name="contra-nueva" placeholder="Digite su nueva contraseña">
+                            </div>
+                        
+                            <div class="botonesmodalAgregar">
+                                <button type="button" class="cancelar-btn" id="cancelarBuscar">Cancelar</button>
+                                <button type="submit" name="submitCambiar" class="buscar-btn">Cambiar</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
         </main>
 
     </div>
@@ -162,7 +224,30 @@ if (isset($_POST['submit'])) {
 
 
     <script>
-        
+        const modalAgregar = document.getElementById('modalAgregar');
+        const abrirBuscar = document.getElementById('abrirCambiar');
+        const cerrarmodalAgregar = document.getElementById('cerrarmodalAgregar');
+        const cancelarBuscar = document.getElementById('cancelarBuscar');
+
+        function cerrarBuscar() {
+            modalAgregar.style.visibility = 'hidden';
+            modalAgregar.style.opacity = '0';
+        }
+
+        function abrirBuscarFunction() {
+            modalAgregar.style.visibility = 'visible';
+            modalAgregar.style.opacity = '1';
+        }
+
+        function cerrarBuscar(){
+            modalAgregar.style.visibility = 'hidden';
+            modalAgregar.style.opacity = '0';
+        }
+
+        abrirBuscar.addEventListener('click', abrirBuscarFunction);
+        cerrarmodalAgregar.addEventListener('click', cerrarBuscar);
+        cancelarBuscar.addEventListener('click', cerrarBuscar);
+
         function limitar(elemento, limite) {
             elemento.addEventListener("input", () => {
                 if (elemento.value.length > limite) {
@@ -186,10 +271,25 @@ if (isset($_POST['submit'])) {
         const correo = document.getElementById("correo")
         limitar(correo, 50);
 
-     
-           const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-           const formulario = document.getElementById('formConfig');
+        const formCambiar = document.getElementById('formCambiar');
+        const contraNueva= document.getElementById("contra-nueva");
+        const contraActual = document.getElementById("contra-anti");
+    
+        const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        const formulario = document.getElementById('formConfig');
+        const contra = /^(?=.*[A-Z])(?=.*\d)[A-Za-z\d@#$!%?&]{6,12}$/;
 
+        formCambiar.addEventListener("submit", function (e) {
+            if (contraActual.value.trim() === '' || contraNueva.value.trim() === '') {
+                e.preventDefault();
+                mostrarModal('mistake', 'Todos los campos de contraseña son obligatorios', '');
+            }
+            if (!contra.test(contraNueva.value)) {
+                e.preventDefault();
+                mostrarModal("mistake", "La contraseña debe tener mínimo 6 caracteres, una mayúscula y un número", '');
+                return;
+            }
+        })
        
         correo.addEventListener("blur", function () {
             

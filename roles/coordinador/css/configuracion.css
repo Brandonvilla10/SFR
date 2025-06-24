@@ -1,47 +1,43 @@
-*{
+* {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     padding: 0;
     margin: 0;
 }
-:root{
-    --colorAzul : #63AEE8 
+
+:root {
+    --colorAzul: #63AEE8
 }
 
 ::-webkit-scrollbar {
-    width: 6px;   
-    height: 10px;  
-  }
-  
-  
-  ::-webkit-scrollbar-thumb {
-    background-color: #63AEE8; 
-    border-radius: 10px;
-  }
-  
-  
-  ::-webkit-scrollbar-track {
-    background-color: transparent;
-  }
+    width: 6px;
+    height: 10px;
+}
 
-.tituloConfig{
+ ::-webkit-scrollbar-thumb {
+    background-color: #63AEE8;
+    border-radius: 10px;
+}
+
+ ::-webkit-scrollbar-track {
+    background-color: transparent;
+}
+
+.tituloConfig {
     display: flex;
     width: 100%;
     justify-content: center;
     font-weight: 800;
 }
 
-.container_grid{
+.container_grid {
     display: grid;
-    grid-template: "sidebar main" 130px
-        "sidebar main" auto 
-        /
-        auto 1fr;
+    grid-template: "sidebar main" 130px "sidebar main" auto / auto 1fr;
     width: 100%;
     height: 100%;
     min-height: 758px;
 }
 
-.grid_contenido_plantilla{
+.grid_contenido_plantilla {
     grid-area: main;
     display: flex;
     flex-direction: column;
@@ -49,12 +45,13 @@
     gap: 15px;
 }
 
-.aside_barra{
+.aside_barra {
     grid-area: sidebar;
 }
-.configuracion{
-    width: clamp(300px,40%,55%);
-    height: clamp(300px,100%,410px);
+
+.configuracion {
+    width: clamp(300px, 40%, 55%);
+    height: clamp(300px, 100%, 410px);
     background: #63AEE8;
     border-radius: 20px;
     display: flex;
@@ -62,18 +59,18 @@
     justify-content: space-around;
 }
 
-.formConfig{
+.formConfig {
     display: flex;
     flex-direction: column;
     margin-top: 70px;
     width: clamp(150px, 100%, 280px);
 }
 
-.inpustConfig{
-    height: 40px;
+.inpustConfig {
+    height: 43px;
     border: none;
     border-radius: 10px;
-    margin-bottom:  15px;
+    margin-bottom: 15px;
     padding-left: 20px;
     color: #003B28;
     font-size: medium;
@@ -81,7 +78,7 @@
     text-overflow: ellipsis;
 }
 
-.inpustConfig::placeholder{
+.inpustConfig::placeholder {
     color: #003B28;
     font-size: medium;
     font-weight: 200;
@@ -94,16 +91,27 @@
     box-shadow: -3px -3px 15px rgb(0, 255, 255);
     transition: .1s;
     transition-property: box-shadow;
-  }
+}
 
-.mainConfig{
+.change {
+    margin-bottom: 15px;
+    color: #ffffff;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.change:hover {
+    transform: scale(1.03);
+}
+
+.mainConfig {
     display: flex;
     justify-content: space-evenly;
     margin-top: 70px;
     height: clamp(200px, 100%, 410px);
 }
 
-.enviarConfig{
+.enviarConfig {
     background-color: rgb(18, 181, 12);
     color: white;
     width: 100px;
@@ -112,16 +120,14 @@
     border-radius: 10px;
 }
 
-.fotoPerfil{
+.fotoPerfil {
     display: flex;
     height: 200px;
-    width: clamp(100px,100%,210px);
+    width: clamp(100px, 100%, 210px);
     margin-top: 70px;
-    
 }
 
-
-.ContainerImagen{
+.ContainerImagen {
     background-color: white;
     height: clamp(100px, 100%, 170px);
     width: clamp(150px, 100%, 100%);
@@ -133,7 +139,7 @@
     margin-bottom: 2%;
 }
 
-.personaAzul{
+.personaAzul {
     width: clamp(60px, 100%, 120px);
     height: clamp(60px, 100%, 120px);
     border-radius: 10px;
@@ -141,25 +147,30 @@
     padding: 20px;
 }
 
-    .fotoUsuarioText {
-        display: block; /* Asegura que se muestre como bloque */
-        margin: 10px 0; /* Espaciado */
-        padding: 5px;
-        font-size: 14px; /* Tamaño de texto */
-        border: 1px solid #ccc; /* Borde */
-        border-radius: 5px; /* Bordes redondeados */
-        cursor: pointer; /* Icono de mano */
-      }
-      
+.fotoUsuarioText {
+    display: block;
+    /* Asegura que se muestre como bloque */
+    margin: 10px 0;
+    /* Espaciado */
+    padding: 5px;
+    font-size: 14px;
+    /* Tamaño de texto */
+    border: 1px solid #ccc;
+    /* Borde */
+    border-radius: 5px;
+    /* Bordes redondeados */
+    cursor: pointer;
+    /* Icono de mano */
+}
 
-.imgConfig{
+.imgConfig {
     width: clamp(150px, 100%, 500px);
     height: clamp(150px, 100%, 300px);
     align-self: center;
 }
 
 @media (min-width:320px) and (max-width: 767px) {
-    .mainConfig{
+    .mainConfig {
         flex-direction: column;
         margin-top: 30px;
         height: unset;
@@ -169,8 +180,7 @@
         width: clamp(150px, 100%, 542px);
         height: clamp(150px, 99%, 341px);
     }
-
-    .configuracion{
+    .configuracion {
         margin: 3%;
         height: auto;
         width: clamp(300px, 100%, 90%);
@@ -178,53 +188,44 @@
         align-items: center;
         padding-bottom: 20px;
     }
-    .formConfig{
+    .formConfig {
         margin-top: 30px;
     }
-
-    .tituloConfig{
+    .tituloConfig {
         padding-top: 10%;
     }
 }
 
-
 @media (min-width:768px) and (max-width: 1366px) {
-    
     .imgConfig {
         width: clamp(150px, 100%, 41%);
         height: clamp(135px, 100%, 238px);
     }
-
-    .configuracion{
+    .configuracion {
         align-items: center;
         padding: 10px 0 16px 0;
         flex-direction: column-reverse;
     }
-
-    .formConfig{
+    .formConfig {
         margin-top: 15px;
     }
-
-    .mainConfig{
+    .mainConfig {
         margin-top: 45px;
     }
-    .fotoPerfil{
+    .fotoPerfil {
         margin-top: unset;
     }
-    .ContainerImagen{
+    .ContainerImagen {
         padding: 5px 0 5px 0;
     }
 }
 
-
 @media (min-width:1500px) {
-    .mainConfig{
+    .mainConfig {
         margin-top: 50px;
     }
 }
 
-
- 
 .containerr {
     --transition: 350ms;
     --folder-W: 120px;
@@ -233,10 +234,9 @@
     flex-direction: column;
     align-items: center;
     position: relative;
-  }
- 
-  
-  .custom-file-upload {
+}
+
+.custom-file-upload {
     background: #63aee8;
     color: #ffffff;
     border: 1px solid #63AEE8;
@@ -244,21 +244,20 @@
     font-weight: 500;
     border-radius: 5px;
     margin-top: 10px;
-  }
+}
 
-
-  .custom-file-upload:hover{
-    background-color:  rgb(18, 181, 12) ;
+.custom-file-upload:hover {
+    background-color: rgb(18, 181, 12);
     transform: scale(1.1);
-  }
-  
-  .custom-file-upload input[type="file"] {
-    display: none;
-    color:#63AEE8;
-    font-size: medium;
-  }
+}
 
-.guardar{
+.custom-file-upload input[type="file"] {
+    display: none;
+    color: #63AEE8;
+    font-size: medium;
+}
+
+.guardar {
     background: #63aee8;
     color: #ffffff;
     font-size: medium;
@@ -268,17 +267,12 @@
     margin-left: 5px;
 }
 
-
-.botonGuardarActivo{
-    background-color:  #062e5e ;
+.botonGuardarActivo {
+    background-color: #062e5e;
     transform: scale(1.1);
 }
 
-.botonGuardarActivo:hover{
+.botonGuardarActivo:hover {
     transform: scale(0.9);
     transition: 0.5s;
 }
-
-
-
-

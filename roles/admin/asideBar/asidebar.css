@@ -110,10 +110,14 @@ hr{
 
     .fuera{
         opacity: 0%;
+        transform: translateX(-200px);
+        visibility: hidden;
     }
-
+    
     .dentro{
         opacity: 100%;
+        transform: translateX(0px);
+        visibility: visible;
     }
 
    

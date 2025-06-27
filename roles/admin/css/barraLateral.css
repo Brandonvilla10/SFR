@@ -4,6 +4,27 @@ padding: 0;
 transition: 1s;
 }
 
+:root{
+    --colorAzul : #63AEE8 
+}
+
+::-webkit-scrollbar {
+    width: 6px;   
+    height: 10px;  
+  }
+  
+  
+  ::-webkit-scrollbar-thumb {
+    background-color: #63AEE8; 
+    border-radius: 10px;
+  }
+  
+  
+  ::-webkit-scrollbar-track {
+    background-color: transparent;
+  }
+
+
 .container-lateral{
 
 position: fixed;

@@ -1,11 +1,12 @@
 <?php
-
+session_start();
 include ("../database/database.php");
+include('../roles/admin/components/alert.php');
 $conexion = new database;
 $con = $conexion->conectar();
-session_start();
 
-if (isset($_POST['submit']) && isset($_FILES['foto'])) {
+
+if (isset($_FILES['foto'])) {
 
     $uploadDir = '../uploads/';
 
@@ -20,7 +21,7 @@ if (isset($_POST['submit']) && isset($_FILES['foto'])) {
 
     if (in_array($fileExt, $allowedExtensions)) {
         if ($fileError === 0) {
-            if ($fileSize < 2 * 1024 * 1024) { 
+            if ($fileSize < 3 * 1024 * 1024) { 
                 
                 $documento = $_SESSION['documento'];
 
@@ -50,27 +51,70 @@ if (isset($_POST['submit']) && isset($_FILES['foto'])) {
                     $query->bindParam(':documento', $documento, PDO::PARAM_INT);
                     $query->execute();
 
-                    header("Location: ../roles/admin/configuracion.php");
+                    echo "
+   
+                    <script>
+                        document.addEventListener('DOMContentLoaded', function () {
+                        mostrarModal('success', 'imagen actualizada correctamente', '../roles/admin/configuracion.php'); 
+                        });
+                    
+                    </script>";
                     exit();
                 } else {
-                    header("Location: ../roles/admin/configuracion.php?mensaje=error_formato&mensaje2=Error al mover el archivo");
+                    echo "
+   
+                    <script>
+                        document.addEventListener('DOMContentLoaded', function () {
+                        mostrarModal('mistake', 'Ruta no encontrada intentalo de nuevo', '../roles/admin/configuracion.php'); 
+                        });
+                    
+                    </script>";
                     exit();
                 }
             } else {
-                header("Location: ../roles/admin/configuracion.php?mensaje=error_formato&mensaje2=Archivo demasiado grande");
-                exit();
+                echo "
+   
+                    <script>
+                        document.addEventListener('DOMContentLoaded', function () {
+
+                        mostrarModal('mistake', 'Imagen muy pesada, maximo 2MB', '../roles/admin/configuracion.php'); 
+                        });
+                    
+                    </script>";
+                    exit();
             }
         } else {
-            header("Location: ../roles/admin/configuracion.php?mensaje=error_formato&mensaje2=Hubo un error al subir el archivo");
-            exit();
+            echo "
+   
+                <script>
+                    document.addEventListener('DOMContentLoaded', function () {
+                    mostrarModal('mistake', 'Imagen Corrupta, prueba con otra', '../roles/admin/configuracion.php'); 
+                    });
+                
+                </script>";
+                exit();
         }
     } else {
-        header("Location: ../roles/admin/configuracion.php?mensaje=error_formato&mensaje2=Formato de archivo no permitido");
-        exit();
+       echo "
+
+            <script>
+                document.addEventListener('DOMContentLoaded', function () {
+                mostrarModal('mistake', 'Extension no permitida, solo jpeg,png,jpg y gif', '../roles/admin/configuracion.php'); 
+                });
+            
+            </script>";
+            exit();
     }
 } else {
-    header("Location: ../roles/admin/configuracion.php?mensaje=error_formato&mensaje2=Solicitud inválida");
-    exit();
+    echo "
+   
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+            mostrarModal('mistake', 'Imagen no encontrada', '../roles/admin/configuracion.php'); 
+            });
+        
+        </script>";
+        exit();  
 }
 
 ?>

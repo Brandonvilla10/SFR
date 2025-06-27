@@ -1,13 +1,11 @@
-
-
 <?php
 
 class database{
 
     private $host ="localhost";
-    private $database = "databasesft";
-    private $user = "root";
-    private $password = "";
+    private $database = "u721653865_databasesft";
+    private $user = "u721653865_senaUser";
+    private $password = "Z;O5y4&J4m*";
     private $charset = "utf8";
 
 
@@ -22,16 +20,19 @@ class database{
             ];
 
             $pdo = new PDO($cone,$this->user ,$this->password,$opcion);
+            
+            $pdo->exec("SET time_zone = '-05:00'");
+
 
             return $pdo;
-            
+
         }catch(PDOException $e){
 
             echo "Error de conexcion" . $e->getMessage();
             exit();
 
         }
-        
+
     }
 
 }

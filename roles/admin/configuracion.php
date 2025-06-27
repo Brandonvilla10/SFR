@@ -1,151 +1,210 @@
-    <?php
-    include ('../../database/database.php');
-    $conexion = new database;
-    $con = $conexion->conectar();
-    session_start();
+<?php
+// Validaciones-------------------------------------------
+session_start();
+include('../../database/database.php');
+include('components/alert.php');
+include('../../includes/sesion_validar.php');
+
+// ---------------------------------
+
+$conexion = new database;
+$con = $conexion->conectar();
+
+try {
+    $nombre = $_SESSION['nombre'];
+    $con->exec("SET @documento_generador = '$nombre'");
+    
+    if (empty($nombre)) {
+        // Si sigue vacía, establecer un valor predeterminado
+        $con->exec("SET @documento_generador = 'Usuario Sistema'");
+    }
+} catch (Exception $e) {
+echo '<p>Error al definir el documento generador: ' . htmlspecialchars($e->getMessage()) . '</p>';
+exit;
+}
+
+$codigo = $_SESSION['documento'];
+
+$sql = $con->prepare("SELECT * FROM usuario INNER JOIN rol ON rol.id_rol = usuario.id_rol WHERE id_documento = :documento");
+$sql->bindParam(':documento', $codigo);
+$sql->execute();
+
+$fila = $sql->fetch(PDO::FETCH_ASSOC);
 
 
-    $_SESSION['referer'] = $_SERVER['PHP_SELF'];
-    $codigo = $_SESSION['documento'];
-
-    $sql = $con->prepare("SELECT * FROM usuario INNER JOIN rol ON rol.id_rol = usuario.id_rol WHERE id_documento = :documento");
-    $sql->bindParam(':documento', $codigo);
-    $sql->execute();
-
-    $fila = $sql->fetch(PDO::FETCH_ASSOC);
 
 
-
-
-    if (isset($_POST['submit'])){
-    try{
+if (isset($_POST['submit'])) {
+    try {
         $updates = [];
         $params = [];
 
-        if(!empty($_POST['nombre_completo'])){
+        if (!empty($_POST['nombre_completo'])) {
             $updates[] = 'nombre_completo = :nombre_completo';
             $params['nombre_completo'] = $_POST['nombre_completo'];
         }
 
-        if(!empty($_POST['id_documento'])){
+        if (!empty($_POST['id_documento'])) {
             $updates[] = 'id_documento = :id_documento';
             $params['id_documento'] = $_POST['id_documento'];
         }
 
-        if(!empty($_POST['id_rol'])){
+        if (!empty($_POST['id_rol'])) {
             $updates[] = 'id_rol = :id_rol';
+            $_SESSION['rol'] = $_POST['id_rol'];
             $params['id_rol'] = $_POST['id_rol'];
         }
 
-        if(!empty($_POST['correo'])){
+        if (!empty($_POST['correo'])) {
             $updates[] = 'correo = :correo';
             $params['correo'] = $_POST['correo'];
         }
 
-        $actualizacion = $con->prepare("UPDATE usuario SET ". implode(', ', $updates) . " WHERE id_documento = :documento"); 
+        $actualizacion = $con->prepare("UPDATE usuario SET " . implode(', ', $updates) . " WHERE id_documento = :documento");
         $params[':documento'] = $codigo;
-        $actualizacion->execute($params);   
-
-    }catch(PDOException $e){
+        $actualizacion->execute($params);
+        
+         echo "
+                
+            <script>
+            
+             document.addEventListener('DOMContentLoaded', function () {
+                    mostrarModal('success', 'Usuario Actualizado con exito', 'configuracion.php');
+            });
+            </script>
+        ";
+    } catch (PDOException $e) {
+        
         echo "Error: " . $e->getMessage();
     }
+}
+if (isset($_POST['submitCambiar'])) {
+
+    $contraActual = $_POST['contra-anti'];
+    $contraNueva = $_POST['contra-nueva'];
+
+    $sql = $con->prepare("SELECT * FROM usuario WHERE id_documento = :documento");
+    $sql->bindParam(':documento', $codigo);
+    $sql->execute();
+    $fila = $sql->fetch();
+
+    if (password_verify($contraActual, $fila['contraseña'])) {
+        $nuevaContra = password_hash($contraNueva, PASSWORD_DEFAULT);
+
+        $actualizar = $con->prepare("UPDATE usuario SET contraseña = :nuevaContra WHERE id_documento = :documento");
+        $actualizar->bindParam(':nuevaContra', $nuevaContra);
+        $actualizar->bindParam(':documento', $codigo);
+        $actualizar->execute();
+
+        echo "
+                <script>
+                    document.addEventListener('DOMContentLoaded', function () {
+                        mostrarModal('success', 'Contraseña cambiada con exito', 'configuracion.php');
+                    });
+                </script>";
+        exit();
+    } else {
+        echo "
+                <script>
+                    document.addEventListener('DOMContentLoaded', function () {
+                        mostrarModal('mistake', 'La contraseña actual es incorrecta', 'configuracion.php');
+                    });
+                </script>";
+        exit();
     }
-
-    ?>
-
-
-
-<?php 
-
-    if(isset($_GET['mensaje'])){
-        echo "<script>alert('$_GET[mensaje2]')</script>";
-    }
+}
 
 ?>
-    <!DOCTYPE html>
-    <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Configuracion</title>
-        <link rel="stylesheet" href="css/home.css">
-        <link rel="stylesheet" href="asidebar/asidebar.css">
-        <link rel="stylesheet" href="css/configuracion.css">
-    </head>
-    <body>
-        
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Configuracion</title>
+    <link rel="stylesheet" href="css/configuracion.css">
+    <link rel="stylesheet" href="asidebar/asidebar.css">
+    <link rel="stylesheet" href="components/modalAgregar.css">
+
+</head>
+
+<body>
+
     <div class="container_grid">
-        
+
         <aside class="aside_barra">
-            <?php  include ('asidebar/asideBar.php')?>
+            <?php include('asideBar/asideBar.php') ?>
         </aside>
 
-        
 
-    
+
+
 
 
         <main class="grid_contenido_plantilla">
-            
-            <div class="tituloConfig"><h1 style="color: #63AEE8 ;">Configuracion</h1></div>
-            
+
+            <div class="tituloConfig">
+                <h1 style="color: #63AEE8 ;">Configuracion</h1>
+            </div>
+
             <section class="mainConfig">
                 <div class="configuracion">
 
-                    <form action="" method="POST" class="formConfig">
-                        <input name="nombre_completo" class="inpustConfig" placeholder="<?php echo $fila['nombre_completo']; ?> " type="text">
+                    <form action="" method="POST" class="formConfig" id="formConfig">
+                        <input name="nombre_completo" class="inpustConfig" id="nombre" value= "<?php echo $fila['nombre_completo']; ?>" type="text">
 
-                        <input name="id_documento" id="documento" class="inpustConfig" placeholder="<?php echo 'Documento: '. $fila['id_documento'] ;?>" type="Number">
+                        <input name="id_documento" id="documento" class="inpustConfig" placeholder="<?php echo 'Documento: ' . $fila['id_documento']; ?>" type="Number">
 
-                        <select name="id_rol" class="inpustConfig"  id="">
-                        <option value="">Rol actual:  <?php echo $fila['nombre_rol']; ?></option>
-                            <?php 
+                        <select name="id_rol" class="inpustConfig" id="rol">
+                            <option value="">Rol actual: <?php echo $fila['nombre_rol']; ?></option>
+                            <?php
                             $sqlrol = $con->prepare("SELECT * FROM rol WHERE id_rol != :id_rol");
                             $sqlrol->bindParam(':id_rol', $fila['id_rol']);
                             $sqlrol->execute();
                             $sqlrol = $sqlrol->fetchAll(PDO::FETCH_ASSOC);
 
-                            foreach($sqlrol as $resu){
+                            foreach ($sqlrol as $resu) {
                             ?>
-                                <option value="<?php echo $resu['id_rol']; ?> " ><?php echo $resu['nombre_rol']; ?> </option>
+                                <option value="<?php echo $resu['id_rol']; ?> "><?php echo $resu['nombre_rol']; ?> </option>
 
-                            <?php 
+                            <?php
                             }
                             ?>
                         </select>
 
-                        <input name="correo" class="inpustConfig" placeholder="<?php echo "Email: " . $fila['correo'];  ?>" type="Email">
+                        <input name="correo" type="email"  id="correo" class="inpustConfig" value="<?php echo  $fila['correo'];  ?>" >
+                        <h4 class="change" id="abrirCambiar">¿Deseas cambiar la contraseña?</h4>
                         <input type="submit" name="submit" class="enviarConfig" value="Confirmar">
                     </form>
 
 
-<!-- Aqui voy a dejar la consulta para sacar la foto de perfil -->
+                    <!-- Aqui voy a dejar la consulta para sacar la foto de perfil -->
 
-<?php
+                    <?php
 
-$foto = $con->prepare("SELECT foto FROM usuario Where id_documento = $codigo");
-$foto->execute();
+                    $foto = $con->prepare("SELECT foto FROM usuario Where id_documento = $codigo");
+                    $foto->execute();
 
-$resultado = $foto->fetch(PDO::FETCH_ASSOC);
-$fotoActual = $resultado['foto'];
+                    $resultado = $foto->fetch(PDO::FETCH_ASSOC);
+                    $fotoActual = $resultado['foto'];
 
-$mostar = "../../uploads/" . $fotoActual;
-$usu = "../../uploads/usu.png";
+                    $mostar = "../../uploads/" . $fotoActual;
+                    $usu = "../../uploads/usu.png";
 
 
-?>
+                    ?>
 
                     <div class="fotoPerfil">
                         <div class="ContainerImagen">
-                            <img class="personaAzul" id="fotoUsuario"  src="<?php echo !empty($resultado['foto']) ? $mostar : $usu  ?>" alt="Foto de perfil">
-                            
+                            <img class="personaAzul" id="fotoUsuario" src="<?php echo !empty($resultado['foto']) ? $mostar : $usu  ?>" alt="Foto de perfil" onerror="this.src='../../uploads/usu.png'">
+
                             <div class="containerr">
-                                <form action="../../uploads/upload.php" style="margin-top: 6px;" method="POST" enctype="multipart/form-data">
+                                <form action="../../uploads/upload.php" style="margin-top: 6px;" method="POST" enctype="multipart/form-data" id="form-foto">
                                     <label class="custom-file-upload">
-                                        <input type="file" name="foto" id="fileInput" onchange="previewFoto(event)" />
+                                        <input type="file" name="foto" id="fileInput" onchange="document.getElementById('form-foto').submit()" />
                                         Subir Foto
                                     </label>
-                                    <button type="submit" class="guardar" id="botonGuardar"  name="submit">Guardar</button>
                                 </form>
                             </div>
                         </div>
@@ -153,49 +212,144 @@ $usu = "../../uploads/usu.png";
 
                 </div>
 
-                <img  class="imgConfig" src="../../assets/img/configuracion/imgconfi.png" alt="Img configuraciones" width="400px" height="400px">
-            </section>        
+                <img class="imgConfig" src="../../assets/img/configuracion/imgconfi.webp" alt="Img configuraciones" width="400px" height="400px">
+            </section>
 
+            <!------------------------------------------------ MODAL DE CAMBIAR CONTRA ----------------------------------->
+    
+            <div class="modalAgregar" id="modalAgregar">
+                <div class="contenedormodalAgregar">
+                    <div class="headermodalAgregar" style="background-color:#63AEE8;">
+                        <h3>Cambiar Contraseña</h3>
+                        <button class="cerrarmodalAgregar" id="cerrarmodalAgregar">&times;</button>
+                    </div>
+                    <div class="cuerpomodalAgregar">
+                        <form action="" method="post" id="formCambiar">
+                            <div class="campo-formulario">
+                                <label for="nom_marca" >Contraseña Actual</label>
+                                <input class="input-modal" type="password" id="contra-anti" name="contra-anti" placeholder="Digite su contraseña">
+                            </div>
+                            <div class="campo-formulario">
+                                <label for="tipomarca">Contraseña Nueva</label>
+                                <input class="input-modal" type="password" id="contra-nueva" name="contra-nueva" placeholder="Digite su nueva contraseña">
+                            </div>
+                        
+                            <div class="botonesmodalAgregar">
+                                <button type="button" class="cancelar-btn" id="cancelarBuscar">Cancelar</button>
+                                <button type="submit" name="submitCambiar" class="buscar-btn">Cambiar</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
         </main>
-            
-        </div>
-        
-        
-        
-        
-    <script src="pruebas/script.js"></script>
+
+    </div>
+
+
+
+
+   
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
-    <script src="../../js/js.js"></script>
+   
 
 
     <script>
+        const modalAgregar = document.getElementById('modalAgregar');
+        const abrirBuscar = document.getElementById('abrirCambiar');
+        const cerrarmodalAgregar = document.getElementById('cerrarmodalAgregar');
+        const cancelarBuscar = document.getElementById('cancelarBuscar');
+
+        function cerrarBuscar() {
+            modalAgregar.style.visibility = 'hidden';
+            modalAgregar.style.opacity = '0';
+        }
+
+        function abrirBuscarFunction() {
+            modalAgregar.style.visibility = 'visible';
+            modalAgregar.style.opacity = '1';
+        }
+
+        function cerrarBuscar(){
+            modalAgregar.style.visibility = 'hidden';
+            modalAgregar.style.opacity = '0';
+        }
+
+        abrirBuscar.addEventListener('click', abrirBuscarFunction);
+        cerrarmodalAgregar.addEventListener('click', cerrarBuscar);
+        cancelarBuscar.addEventListener('click', cerrarBuscar);
+
+        function limitar(elemento, limite) {
+            elemento.addEventListener("input", () => {
+                if (elemento.value.length > limite) {
+                    elemento.value = elemento.value.substring(0, limite)
+                }
+
+            })
+        }
+
         let documento = document.getElementById('documento');
         documento.disabled = true;
 
-        let botonGuardar = document.getElementById("botonGuardar");
+        let rol = document.getElementById('rol');
+        rol.readonly = true;
 
+        const nombre = document.getElementById('nombre');
+        nombre.readonly = true;
+        
+        limitar(nombre, 50);
+        
+        
+        const correo = document.getElementById("correo")
+        limitar(correo, 50);
+    
+        const formCambiar = document.getElementById('formCambiar');
+        const contraNueva= document.getElementById("contra-nueva");
+        const contraActual = document.getElementById("contra-anti");
+     
+       const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+       const formulario = document.getElementById('formConfig');
+       const contra = /^(?=.*[A-Z])(?=.*\d)[A-Za-z\d@#$!%?&]{6,12}$/;
 
-        function previewFoto(event){
-            const fileInput = event.target;
-            const file = fileInput.files[0];
-            const fotoUsuario = document.getElementById("fotoUsuario");
-
-            if (file){
-                const reader = new FileReader()
-                reader.onload = function(e){
-                    fotoUsuario.src = e.target.result
-                }
-
-                botonGuardar.classList.add("botonGuardarActivo")
-                reader.readAsDataURL(file);
-            }else{
-                fotoUsuario.src = "<?php echo $usu; ?>"
+        formCambiar.addEventListener("submit", function (e) {
+            if (contraActual.value.trim() === '' || contraNueva.value.trim() === '') {
+                e.preventDefault();
+                mostrarModal('mistake', 'Todos los campos de contraseña son obligatorios', '');
             }
-        }
+            if (!contra.test(contraNueva.value)) {
+                e.preventDefault();
+                mostrarModal("mistake", "La contraseña debe tener mínimo 6 caracteres, una mayúscula y un número", '');
+                return;
+            }
+        })
+
+       
+        correo.addEventListener("blur", function () {
+            
+            if (!regex.test(this.value)) {
+                mostrarModal("mistake", "Correo no válido, letras,numeros y caracteres especiales permitidos",'');
+            
+                   console.log("entro aca");
+            }
+               console.log("entro aca");
+        });
+        
+        formulario.addEventListener("submit", function (e) {
+            
+            if (!regex.test(correo.value)) {
+                e.preventDefault(); // Detiene el envío
+                mostrarModal("mistake", "No se puede enviar el formulario. Correo inválido.");
+            }
+        });
+
+     
+
+
+      
+           
     </script>
 
-    </body>
-    </html>
+</body>
 
-    
+</html>

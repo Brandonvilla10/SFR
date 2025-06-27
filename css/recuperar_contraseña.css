@@ -60,7 +60,7 @@ a {
     }
 
     .env_correo{
-        background-image: url("../assets/img/Base_White.png");
+        background-image: url("../assets/img/Base_White.webp");
         background-size: cover;
         background-repeat: no-repeat;
         width: 295px;
@@ -255,3 +255,81 @@ a {
     }
 
 }
+.volver{
+    position: absolute;
+    top: 10px;
+    left: 35px;
+    font-size: clamp(1.5rem, 2.5vw, 4rem);
+   
+
+}
+
+.env_correo{
+    position: relative;
+}
+
+.botonVolverInicial{
+    position: absolute;
+    top: 10px;
+    left: 30px;
+    display: flex;
+    padding: 1px 7px 0px 4px;
+    background-color: #1c8f05;
+    z-index: 4000;
+    transition: .3s ease;
+    border:  none   ;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+}
+
+
+.volverTexto{
+    columns: white;
+    visibility: hidden;
+    opacity: 1;
+    width: 1px;
+    color: white;
+    font-size: 1.4rem;
+    font-weight: 700;
+}
+
+@keyframes aparecerTexto {
+    from{
+        opacity: 0;
+        transform: translate(-50px);
+    }to{
+        opacity: 1;
+        visibility: visible;
+        transform: translate(10);
+    }
+}
+
+.flecha{
+    font-weight: 700;
+    transition: 0.2s;
+    
+}
+.botonVolverInicial:hover{
+    padding: 1px 70px 0px 7px;
+    transition: .3s ease;
+
+    .flecha{
+        transform: rotate(180deg);
+
+    }
+
+    .volverTexto{
+        animation: aparecerTexto 0.5s ease-in-out forwards;
+        width: 20px;
+      
+    }
+
+}
+
+
+.MensajeVolver{
+    font-size: clamp(0.8rem, 2.5vw, 1.6rem);
+    font-weight: 700;
+}
+

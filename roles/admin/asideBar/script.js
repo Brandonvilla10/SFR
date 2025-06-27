@@ -1,3 +1,6 @@
+
+window.addEventListener("DOMContentLoaded" , () => {
+    
 let aside = document.getElementById("barraLateral");
 let texto = document.querySelectorAll(".seccionTexto");
 let seccion = document.querySelectorAll(".seccion");
@@ -6,7 +9,7 @@ let fotoPersona = document.getElementById("iconoPersona");
 
 
 
-if(window.innerWidth >= 320 && window.innerWidth <= 720){
+if(window.innerWidth >= 320 && window.innerWidth <= 800){
 
     const hamburguesa = document.getElementById('abrir');
     const barralateral = document.getElementById('barraLateral');
@@ -16,6 +19,7 @@ if(window.innerWidth >= 320 && window.innerWidth <= 720){
             enlace.style.pointerEvents = 'none' 
         });
     
+
     
     
     hamburguesa.addEventListener("click", () => {
@@ -50,7 +54,7 @@ if(window.innerWidth >= 320 && window.innerWidth <= 720){
 
 
 
-if(window.innerWidth >= 768){
+if(window.innerWidth >= 801){
 aside.addEventListener("mouseover", () => {
     texto.forEach((element) => {
         element.style.visibility = "visible"; 
@@ -82,3 +86,4 @@ aside.addEventListener("mouseout", () => {
 
 }
 
+})

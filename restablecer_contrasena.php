@@ -1,9 +1,9 @@
-
 <?php 
+session_start();
 require_once("database/database.php");
 $conexion = new database;
 $con = $conexion->conectar();
-session_start();
+include('roles/admin/components/alert.php');
 
 $correo = $_SESSION['correo'];
 
@@ -21,8 +21,12 @@ if(isset($_POST['submit'])){
         $sql->bindParam(':contrasena', $contraseñaHash, PDO::PARAM_STR);
         $sql->execute();
 
-        echo "<script>alert('Cambio hecho con exito')</script>";  
-        header("Location: template/destruirSesion.php");
+        echo "  
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                mostrarModal('success', 'Cambio hecho con exito', 'index.php');
+            });
+        </script>";
         exit();
     }
 }
@@ -50,6 +54,9 @@ if(!isset($correo)){
     <section class="form_place">
 
         <section class ="env_correo">
+
+            
+
             <form action="" method="post" class="datos_form">
             <h1 style="padding-bottom: 20px; color: rgba(58, 170, 53, 255);">Recuperar contraseña</h1>  
                 
@@ -64,7 +71,7 @@ if(!isset($correo)){
 
     </section>
 
-     <img src="assets/img/recuperarContraseña/Image_RC.png" class="imgPersonitas" alt="Imagen de recuperación de contraseña">
+     <img src="assets/img/recuperarContraseña/Image_RC.webp" class="imgPersonitas" alt="Imagen de recuperación de contraseña">
 
 
 

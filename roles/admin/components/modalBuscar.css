@@ -1,0 +1,148 @@
+/* Estilos para el Modal de Buscar Usuario */
+.modalBuscar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1001;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.1s ease;
+}
+
+.modalBuscar.estadoDeobjetos {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.contenedorModalBuscar {
+    width: 450px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+    transform: translateY(0);
+    transition: transform 0.3s ease;
+}
+
+.headerModalBuscar {
+    background-color: #003366;
+    color: white;
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.headerModalBuscar h3 {
+    margin: 0;
+    font-size: 1.2rem;
+}
+
+.cerrarModalBuscar {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 0;
+    line-height: 1;
+}
+
+.cuerpoModalBuscar {
+    padding: 20px;
+}
+
+.campo-formulario {
+    margin-bottom: 20px;
+}
+
+.campo-formulario label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: #333;
+}
+
+.input-modal {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 14px;
+    box-sizing: border-box;
+    transition: border-color 0.3s;
+}
+
+.input-modal:focus {
+    border-color: #63AEE8;
+    outline: none;
+}
+
+.botonesModalBuscar {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.buscar-btn {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    font-size: 14px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.buscar-btn:hover {
+    background-color: #218838;
+}
+
+#user_id {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 14px;
+    box-sizing: border-box;
+    transition: border-color 0.3s;
+  }
+
+  .cancelar-btn {
+    background-color: #f1f1f1;
+    color: #333;
+    border: none;
+    padding: 10px 15px;
+    font-size: 14px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+  }
+
+/* Estilos responsivos para el modal */
+@media (max-width: 500px) {
+    .contenedorModalBuscar {
+        width: 90%;
+        max-width: 400px;
+    }
+    
+    .headerModalBuscar {
+        padding: 12px;
+    }
+    
+    .cuerpoModalBuscar {
+        padding: 15px;
+    }
+    
+    .input-modal {
+        padding: 10px;
+    }
+}

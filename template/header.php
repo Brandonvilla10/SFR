@@ -3,7 +3,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="icon"  href="../assets/img/LogoFR.png" type="image/png">
+    <link rel="icon"  href="../assets/img/Logo.png" type="image/png">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 </head>
 <body>
@@ -12,7 +12,7 @@
 
     <div class="Logo-Titulo">
 
-        <img src="assets/img/LogoFR.png"  alt="Aqui va el logo SFR" width="60px" height="80px">
+        <img src="assets/img/LogoFR.webp"  alt="Aqui va el logo SFR" width="60px" height="80px">
     
         <div class="SENA_FAST_REGISTER">
             <p>FAST REGISTER</p>
@@ -125,7 +125,7 @@
         .menu-header{
             opacity: 0;
             visibility: hidden;
-            position: absolute;
+            position: fixed;
             top: 0;
             right: 0;
             bottom: 0;

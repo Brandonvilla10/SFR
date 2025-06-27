@@ -12,14 +12,14 @@ $con = $conexion->conectar();
 try {
     $nombre = $_SESSION['nombre'];
     $con->exec("SET @documento_generador = '$nombre'");
-
+    
     if (empty($nombre)) {
         // Si sigue vacía, establecer un valor predeterminado
         $con->exec("SET @documento_generador = 'Usuario Sistema'");
     }
 } catch (Exception $e) {
-    echo '<p>Error al definir el documento generador: ' . htmlspecialchars($e->getMessage()) . '</p>';
-    exit;
+echo '<p>Error al definir el documento generador: ' . htmlspecialchars($e->getMessage()) . '</p>';
+exit;
 }
 
 $codigo = isset($_SESSION['documento']) ? $_SESSION['documento'] : '';
@@ -34,7 +34,7 @@ $limite_registros = 5;
 $start_record = ($page - 1) * $limite_registros;
 
 // Contar total de registros
-$consulta_total = $con->prepare("SELECT COUNT(*) FROM usuario WHERE id_estado != 4");
+$consulta_total = $con->prepare("SELECT COUNT(*) FROM objetos WHERE id_estado != 4");
 $consulta_total->execute();
 $total_filas = $consulta_total->fetchColumn();
 $paginas = ceil($total_filas / $limite_registros);
@@ -103,7 +103,6 @@ if (isset($_POST["agregarSubmit"])) {
         $contraseña = $_POST['contraseña'];
         $id_rol = $_POST['id_rol'];
 
-       
         if (empty($id_documento) || empty($nombre_completo) || empty($correo) || empty($contraseña) || empty($id_rol)) {
             echo "
             <script>
@@ -122,14 +121,6 @@ if (isset($_POST["agregarSubmit"])) {
         $nuevoUser->bindParam(':contrasena', $hasPassword);
         $nuevoUser->bindParam(':id_rol', $id_rol);
         $nuevoUser->execute();
-
-         if(!empty($_POST['fichaUsuario'])){
-            $id_ficha = $_POST['fichaUsuario'];
-
-            $detalleInsert = $con->prepare("INSERT INTO detallematricula (id_ficha, id_documento, id_estado) 
-            VALUES ($id_ficha,$id_documento,1)");
-            $detalleInsert->execute();
-        }
         echo "
         <script>
            document.addEventListener('DOMContentLoaded', function () {
@@ -160,7 +151,7 @@ if (isset($_POST["agregarSubmit"])) {
     <link rel="stylesheet" href="css/usuario.css">
     <link rel="stylesheet" href="asideBar/asidebar.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-
+    
 </head>
 
 <body>
@@ -179,7 +170,7 @@ if (isset($_POST["agregarSubmit"])) {
                     <p style="color:#858585">Administra los usuarios segun tu necesidad</p>
                 </div>
 
-
+               
 
                 <div class="EliminarUsuarioDiv">
                     <button class="buscar_objeto_titulo" id="botonEliminar" type="button">
@@ -195,7 +186,7 @@ if (isset($_POST["agregarSubmit"])) {
                 <!-- el modal empieza a partid de aca -->
             </div>
 
-
+            
 
 
             <!-- Modal para Eliminar Usuario -->
@@ -287,27 +278,10 @@ if (isset($_POST["agregarSubmit"])) {
                                     ?>
                                 </select>
                             </div>
-                            <div class="campo-formulario" id="fichaNuevo">
-                                <label for="fichaNuevo">Ficha</label>
-                                <select name="fichaUsuario" id="fichaUsuario" >
-                                    <option value="" disabled selected>Seleccione una ficha</option>
-                                    <?php
-                                    $consultaFichas = $con->prepare("SELECT * FROM fichas WHERE n_ficha != 1");
-                                    $consultaFichas->execute();
-                                    $fichas = $consultaFichas->fetchAll(PDO::FETCH_ASSOC);
-                                    foreach ($fichas as $ficha) {
-                                        echo "<option value='" . $ficha['n_ficha'] . "'>" . $ficha['n_ficha'] . "</option>";
-                                    }
-                                    ?>
-
-                                </select>
-                            </div>
-
                             <div class="botonesModalAgregar">
                                 <button type="button" class="cancelar-btn" id="cancelarAgregar">Cancelar</button>
                                 <button type="submit" name="agregarSubmit" class="agregar-btn">Agregar Usuario</button>
                             </div>
-
                         </form>
                     </div>
                 </div>
@@ -399,26 +373,8 @@ if (isset($_POST["agregarSubmit"])) {
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 
     <script>
-        
-        const id_rol = document.getElementById("id_rol");
-        const fichaNuevo = document.getElementById("fichaNuevo");
-
-        const fichaUsuario = document.getElementById("fichaUsuario")
-
-        fichaNuevo.style.visibility = "hidden"; fichaNuevo.style.opacity = 0;
-        
-        id_rol.addEventListener("change", () => {
-            if(id_rol.value == 2){
-                fichaNuevo.style.visibility = "visible"; fichaNuevo.style.opacity = 1;
-            }else{
-                fichaNuevo.style.visibility = "hidden"; fichaNuevo.style.opacity = 0;
-                fichaUsuario.value = null
-            }
-        })
-
-
         function desplegar(userId) {
-
+            
             let dropdowns = document.getElementsByClassName("dropdown-content");
             for (let i = 0; i < dropdowns.length; i++) {
                 let openDropdown = dropdowns[i];
@@ -426,11 +382,11 @@ if (isset($_POST["agregarSubmit"])) {
                     openDropdown.classList.remove('show');
                 }
             }
-
+            
             document.getElementById("myDropdown_" + userId).classList.toggle("show");
         }
 
-
+        
         window.onclick = function(event) {
             if (!event.target.matches('.dropbtn, .dropbtn *')) {
                 let dropdowns = document.getElementsByClassName("dropdown-content");
@@ -444,70 +400,70 @@ if (isset($_POST["agregarSubmit"])) {
             }
         }
 
-        document.getElementById('formAgregarUsuario').addEventListener('submit', function(e) {
+document.getElementById('formAgregarUsuario').addEventListener('submit', function(e) {
+    
+    const documento = document.getElementById('id_documento');
+    const nombre = document.getElementById('nombre_completo');
+    const correo = document.getElementById('correo');
+    const password = document.getElementById('contraseñaCrearUsuario');
+    const rol = document.getElementById('id_rol');
 
-            const documento = document.getElementById('id_documento');
-            const nombre = document.getElementById('nombre_completo');
-            const correo = document.getElementById('correo');
-            const password = document.getElementById('contraseñaCrearUsuario');
-            const rol = document.getElementById('id_rol');
+    if(documento.value.length < 8 || documento.value.length > 10) {
+        e.preventDefault();
+        mostrarModal('mistake', 'El documento debe tener entre 8 y 10 dígitos', null);
+        return;
+    }
 
-            if (documento.value.length < 8 || documento.value.length > 10) {
-                e.preventDefault();
-                mostrarModal('mistake', 'El documento debe tener entre 8 y 10 dígitos', '' );
-                return;
-            }
+  
+    if(!/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]{3,50}$/.test(nombre.value)) {
+        e.preventDefault();
+        mostrarModal('mistake', 'El nombre solo debe contener letras y espacios (3-50 caracteres)', null);
+        return;
+    }
 
+    
+    if(!/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/.test(correo.value)) {
+        e.preventDefault();
+        mostrarModal('mistake', 'Ingrese un correo electrónico válido', null);
+        return;
+    }
 
-            if (!/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]{3,50}$/.test(nombre.value)) {
-                e.preventDefault();
-                mostrarModal('mistake', 'El nombre solo debe contener letras y espacios (3-50 caracteres)', '');
-                return;
-            }
+    
+    if(password.value.length < 8) {
+        e.preventDefault();
+        mostrarModal('mistake', 'La contraseña debe tener al menos 8 caracteres', null);
+        return;
+    }
 
+    if(!/(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])/.test(password.value)) {
+        e.preventDefault();
+        mostrarModal('mistake', 'La contraseña debe contener al menos una mayúscula, una minúscula y un número', null);
+        return;
+    }
 
-            if (!/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/.test(correo.value)) {
-                e.preventDefault();
-                mostrarModal('mistake', 'Ingrese un correo electrónico válido', '');
-                return;
-            }
-
-
-            if (password.value.length < 8) {
-                e.preventDefault();
-                mostrarModal('mistake', 'La contraseña debe tener al menos 8 caracteres', '' );
-                return;
-            }
-
-            if (!/(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])/.test(password.value)) {
-                e.preventDefault();
-                mostrarModal('mistake', 'La contraseña debe contener al menos una mayúscula, una minúscula y un número', '');
-                return;
-            }
-
-
-            if (!rol.value) {
-                e.preventDefault();
-                mostrarModal('mistake', 'Debe seleccionar un rol', '');
-                return;
-            }
-        });
-
-
-        document.getElementById('id_documento').addEventListener('input', function(e) {
-            if (this.value.length > 10) {
-                this.value = this.value.slice(0, 10);
-            }
-
-            this.value = this.value.replace(/[^0-9]/g, '');
-        });
+    
+    if(!rol.value) {
+        e.preventDefault();
+        mostrarModal('mistake', 'Debe seleccionar un rol', null);
+        return;
+    }
+});
 
 
-        document.getElementById('nombre_completo').addEventListener('input', function(e) {
-            // Only allow letters, spaces and accents
-            this.value = this.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, '');
-        });
+document.getElementById('id_documento').addEventListener('input', function(e) {
+    if(this.value.length > 10) {
+        this.value = this.value.slice(0, 10);
+    }
+  
+    this.value = this.value.replace(/[^0-9]/g, '');
+});
 
+
+document.getElementById('nombre_completo').addEventListener('input', function(e) {
+    // Only allow letters, spaces and accents
+    this.value = this.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, '');
+});
+    
 
 
         //<----------------------------- FILTRO PARA BUSCAR POR EL DOCUMENTO DE LA PERSONA ---------------------------> 
@@ -531,7 +487,7 @@ if (isset($_POST["agregarSubmit"])) {
             INNER JOIN estado ON estado.id_estado = u.id_estado
             WHERE id_documento LIKE '%${usuario_buscado}%' LIMIT 5`;
 
-            fetch('fetch/busquedaBarra.php', {
+            fetch('fetch/BusquedaBarra.php', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'

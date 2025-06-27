@@ -151,8 +151,8 @@ if (isset($_POST['submitmarca'])) {
             </div>
 
             <hr class="separador">
-            <div class="contenido_tabla" id="contenido">
-                <input class="BOTON_FILTRAR" placeholder="Filtrar marcas por nombre" oninput="filtrarPorMarca(this.value)">
+            <div class="contenido_tabla">
+                <input class="BOTON_FILTRAR" placeholder="Filtrar vehiculo por placa" oninput="filtrarPorPlaca(this.value)">
 
                 <?php if ($consulta->rowCount() == 0) { ?>
                     <div class="notificacion">
@@ -203,7 +203,7 @@ if (isset($_POST['submitmarca'])) {
                     <?php endif; ?>
                 </div>
                 
-            <button class="footer-button animate-button" onclick="window.history.back();">Regresar</button>
+            <button class="footer-button animate-button" onclick="window.location.href='../datos.php'">Regresar</button>
            
             </div>
            
@@ -289,6 +289,30 @@ if (isset($_POST['submitmarca'])) {
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
     <script>
+        function filtrarPorPlaca(placa) {
+
+            const soloLetras = placa.replace(/[^a-zA-Z]/g, '');
+            const vehiculos = document.querySelectorAll('.vehiculos');
+            // Converti todo a minusculas 
+            const placa_buscada = soloLetras.toLowerCase();
+
+            vehiculos.forEach(vehiculo => {
+                const celdaPlaca = vehiculo.querySelectorAll('h4')[0];
+
+                if (celdaPlaca) {
+                    const textoPlaca = celdaPlaca.textContent || celdaPlaca.innerText;
+                    const letrasPlaca = textoPlaca.replace(/[^a-zA-Z]/g, '').toLowerCase();
+
+                    if (letrasPlaca.includes(placa_buscada)) {
+                        vehiculo.style.display = '';
+                    } else {
+                        vehiculo.style.display = 'none';
+                    }
+                }
+            });
+        }
+    </script>
+    <script>
         document.addEventListener('DOMContentLoaded', function() {
             const encabezado = document.querySelector('.encabezado');
             if (encabezado && encabezado.querySelectorAll('h4').length === 2) {
@@ -299,58 +323,6 @@ if (isset($_POST['submitmarca'])) {
 
             }
         });
-        
-        
-        
-        const contenido = document.getElementById('contenido');
-
-                function filtrarPorMarca(global) {
-
-                    const soloN = global.replace(/[0-9]/, '');
-                    const vehiculos = document.querySelectorAll('.vehiculos');
-                    // Converti todo a minusculas 
-                    const general = soloN.toLowerCase();
-
-
-                    let consulta = `SELECT * FROM marca  INNER JOIN tipomarca ON tipomarca.id_tipo_marca = marca.id_tipo_marca WHERE id_estado != 4 and nombre_marca LIKE '%${general}%' LIMIT 5`;
-
-                    fetch('../fetch/busquedaBarra.php', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json'
-                            },
-                            body: JSON.stringify({
-                                consulta: consulta
-                            })
-                        })
-                        .then((response) => response.json())
-                        .then(data => {
-                            if (data.error) {
-                                const vehiculos = document.querySelectorAll('.vehiculos');
-                                vehiculos.forEach(vehiculo => {
-                                    vehiculo.remove();
-                                });
-                            } else {
-                                const vehiculos = document.querySelectorAll('.vehiculos');
-                                vehiculos.forEach(vehiculo => {
-                                    vehiculo.remove();
-                                });
-                                data.forEach(generales => {
-                                    const cartas = document.createElement('div');
-                                    cartas.classList.add('vehiculos');
-                                    cartas.innerHTML = '';
-                                    cartas.innerHTML = ` 
-                                    <h4>${generales.id_marca}</h4>
-                                    <h4>${generales.nombre_marca}</h4>
-                                    <h4>${generales.nombre_marca}</h4>
-                                    `;
-
-                                    const paginacion = document.getElementById('paginacion');
-                                    contenido.insertBefore(cartas, paginacion);
-                                });
-                            }
-                        });
-                }
     </script>
 
 </body>

@@ -110,8 +110,7 @@ if (isset($_POST['submitCambiar'])) {
     <title>Configuracion</title>
     <link rel="stylesheet" href="css/configuracion.css">
     <link rel="stylesheet" href="asidebar/asidebar.css">
-    <link rel="stylesheet" href="components/modalAgregar.css">
-    
+
 </head>
 
 <body>

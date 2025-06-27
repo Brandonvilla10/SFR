@@ -24,7 +24,6 @@ try {
     $usuario = $user->fetch(PDO::FETCH_ASSOC);
 
     // CONSULTO LA RUTA
-    
 
     $_SESSION['objeto_buscado'] = $id_serial;
     $_SESSION['objetos_usu'] = $id_documento;
@@ -55,9 +54,9 @@ try {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EDICION DE OBJETOS</title>
+    <link rel="stylesheet" href="../admin/css/editar_objeto.css">
     <link rel="stylesheet" href="asideBar/asidebar.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    <link rel="stylesheet" href="./css/editar_objeto.css">
 </head>
 
 <body>
@@ -160,10 +159,7 @@ try {
 
                                 <div class="form-actions">
                                     <input type="submit" name="enviar" class="btn-submit">
-                                    
- 
-                                    <a href="<?php echo $ruta; ?>"  class="btn-return">← Volver</a>
-
+                                    <a href="<?php echo $ruta; ?>" class="btn-return">← Volver</a>
 
                                 </div>
 
@@ -218,9 +214,6 @@ try {
         exit();
     }
     ?>
-    
-   
-
     <script>
         const name = document.getElementById("name")
         name.disabled = true;

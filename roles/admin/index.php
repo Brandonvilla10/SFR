@@ -496,7 +496,7 @@ include('components/alert.php');
                   <td><?php 
                     if(isset($fila['nombre'])) {
                       echo 'Objeto: ' . $fila['nombre'];
-                      echo '-Serial: ' . $fila['id_serial'];
+                      echo 'Serial: ' . $fila['id_serial'];
                     } else if(isset($fila['id_placa'])) {
                       echo 'Vehiculo con placa: ' . $fila['id_placa']; 
                     } else {

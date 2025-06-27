@@ -49,13 +49,6 @@ if (isset($_POST['submit'])) {
         $actualizacion = $con->prepare("UPDATE usuario SET " . implode(', ', $updates) . " WHERE id_documento = :documento");
         $params[':documento'] = $codigo;
         $actualizacion->execute($params);
-         echo "
-                <script>
-                    document.addEventListener('DOMContentLoaded', function () {
-                        mostrarModal('success', 'Usuario Actualizado con exito', 'configuracion.php');
-                    });
-                </script>";
-
     } catch (PDOException $e) {
         echo "Error: " . $e->getMessage();
     }
@@ -107,7 +100,6 @@ if (isset($_POST['submitCambiar'])) {
     <title>Configuracion</title>
     <link rel="stylesheet" href="css/configuracion.css">
     <link rel="stylesheet" href="asideBar/asidebar.css">
-    <link rel="stylesheet" href="components/modalAgregar.css">
 
 </head>
 
@@ -133,11 +125,11 @@ if (isset($_POST['submitCambiar'])) {
             <section class="mainConfig">
                 <div class="configuracion">
 
-                    <form action="" method="POST" class="formConfig" id="formConfig">
+                    <form action="" method="POST" class="formConfig">
                         <input name="nombre_completo" type="text" class="inpustConfig" id="nombre" placeholder="<?php echo $fila['nombre_completo']; ?>" readonly>
                         <input name="id_documento" id="documento" class="inpustConfig" placeholder="<?php echo 'Documento: ' . $fila['id_documento']; ?>" type="Number" readonly>
                         <input name="id_rol" class="inpustConfig" id="rol" value="<?php echo $fila['nombre_rol']; ?>" readonly>
-                        <input name="correo" id="correo" class="inpustConfig" value="<?php echo $fila['correo'];  ?>" type="email">
+                        <input name="correo" id="correo" class="inpustConfig" value="<?php echo $fila['correo'];  ?>" type="Email">
                         <h4 class="change" id="abrirCambiar">¿Deseas cambiar la contraseña?</h4>
                         <input type="submit" name="submit" class="enviarConfig" value="Confirmar">
                     </form>
@@ -257,7 +249,7 @@ if (isset($_POST['submitCambiar'])) {
         const nombre = document.getElementById('nombre');
         nombre.readOnly = true;
         limitar(nombre, 50);
-        const correo = document.getElementById("correo")
+        const correo = document.getElementById('correo')
         limitar(correo, 50);
 
         const formCambiar = document.getElementById('formCambiar');
@@ -265,7 +257,6 @@ if (isset($_POST['submitCambiar'])) {
         const contraActual = document.getElementById("contra-anti");
         const formulario = document.getElementById('formConfig');
         const contra = /^(?=.*[A-Z])(?=.*\d)[A-Za-z\d@#$!%?&]{6,12}$/;
-        const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
         formCambiar.addEventListener("submit", function (e) {
             if (contraActual.value.trim() === '' || contraNueva.value.trim() === '') {
@@ -279,13 +270,14 @@ if (isset($_POST['submitCambiar'])) {
             }
         })
 
-        formulario.addEventListener("submit", function (e) {
-            
-            if (!regex.test(correo.value)) {
-                e.preventDefault(); // Detiene el envío
-                mostrarModal("mistake", "No se puede enviar el formulario. Correo inválido.");
-            }
-        });
+        correo.addEventListener("input", function () {
+            const regex = /^[a-zA-Z0-9_.+-]@?[a-zA-Z0-9-]\.?[a-zA-Z0-9-.]*$/;
+
+            if (!regex.test(this.value)) {
+                // Elimina el último carácter inválido
+                this.value = this.value.slice(0, -1);
+            }
+        })
         
         let documento = document.getElementById('documento');
         documento.disabled = true;

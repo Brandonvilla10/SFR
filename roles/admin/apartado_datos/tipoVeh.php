@@ -261,7 +261,7 @@ if (isset($_POST['submittipo'])) {
 
                     let consulta = `SELECT * FROM tipovehiculo WHERE id_estado != 4 and tipovehiculo LIKE '%${general}%' LIMIT 5`;
 
-                    fetch('../fetch/busquedaBarra.php', {
+                    fetch('../fetch/BusquedaBarra.php', {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json'

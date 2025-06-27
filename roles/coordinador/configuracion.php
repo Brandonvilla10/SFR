@@ -50,14 +50,6 @@ if (isset($_POST['submit'])) {
         $actualizacion = $con->prepare("UPDATE usuario SET " . implode(', ', $updates) . " WHERE id_documento = :documento");
         $params[':documento'] = $codigo;
         $actualizacion->execute($params);
-        
-         echo "
-                <script>
-                    document.addEventListener('DOMContentLoaded', function () {
-                        mostrarModal('success', 'Usuario actualizado', 'configuracion.php');
-                    });
-                </script>";
-        exit();
     } catch (PDOException $e) {
         echo "Error: " . $e->getMessage();
     }
@@ -108,7 +100,7 @@ if (isset($_POST['submitCambiar'])) {
     <title>Configuracion</title>
     <link rel="stylesheet" href="css/configuracion.css">
     <link rel="stylesheet" href="asidebar/asidebar.css">
-    <link rel="stylesheet" href="components/modalAgregar.css">
+
 </head>
 
 <body>

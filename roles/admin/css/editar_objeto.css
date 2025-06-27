@@ -360,7 +360,7 @@ h1 {
     border: none;
     border-radius: 20px;
     font-size: 0.8rem;
-    cursor: pointer !important;
+    cursor: pointer;
     transition: all 0.3s ease;
     font-weight: 600;
     width: auto;
@@ -377,4 +377,3 @@ h1 {
     background-color: #1F618D;
     transform: translateY(-2px);
 }
-

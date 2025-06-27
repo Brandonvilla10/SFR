@@ -3,7 +3,7 @@
 session_start();
 include('../../excelComponente/generarExcel.php');
 require_once('../../database/database.php');
-
+require_once('../../includes/sesion_validar.php');
 
 // ---------------------------------------------
 
@@ -322,7 +322,6 @@ if (isset($_POST['crearExcel'])) {
 }
 
 include('components/alert.php');
-require_once('../../includes/sesion_validar.php');
 
 ?>
 
@@ -350,7 +349,7 @@ require_once('../../includes/sesion_validar.php');
     <header class="home_header">
       <div class="home_titulo">
         Bienvenido, <?php echo $nombre ?> 🎉
-        <p>Rol: Coordinador</p>
+        <p>Rol: Administrador</p>
       </div>
       <div class="home_iconos">
         <div id="notificacion-wrapper" style="position: relative; display: inline-block; cursor:pointer;">
@@ -497,7 +496,7 @@ require_once('../../includes/sesion_validar.php');
                   <td><?php 
                     if(isset($fila['nombre'])) {
                       echo 'Objeto: ' . $fila['nombre'];
-                      echo '-Serial: ' . $fila['id_serial'];
+                      echo 'Serial: ' . $fila['id_serial'];
                     } else if(isset($fila['id_placa'])) {
                       echo 'Vehiculo con placa: ' . $fila['id_placa']; 
                     } else {

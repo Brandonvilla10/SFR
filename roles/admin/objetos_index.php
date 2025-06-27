@@ -126,7 +126,7 @@ $consulta->execute();
 
                 
 
-                <button class="buscar_objeto_titulo" id="abrirBuscar">Crear Objetos</button>
+                <button class="buscar_objeto_titulo" id="abrirBuscar">Buscar Objetos por Documento</button>
             </div>
             <hr class="separador">
 
@@ -169,8 +169,7 @@ $consulta->execute();
                                 <form style="display: inline;" action="objetos_usuario.php" method="post">
                                     <input type="hidden" name="user_id" value="<?php echo $generales['id_documento']; ?>">
                                     <input type="hidden" name="nombre" value="<?php echo $generales['nombre_completo']; ?>">
-                                    <button type="submit" style="width: 25px; height: 25px; 
-                                                        border:none; border-radius: 30%; background:#2980B9; color: white; cursor: pointer; display: flex; align-items: center; justify-content: center; margin-left:5px; box-shadow: 0px 0px 4px #0000009c;"  name="objetos_submit" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">+</button>
+                                    <button type="submit" style="color: white; background-color: #4CAF50; border-radius: 50%; width: 25px; height: 25px; padding: 0; border: none; cursor: pointer; font-size: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.2); transition: all 0.3s ease;" name="objetos_submit" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">+</button>
                                 </form>
                             </h4>
                         </div>
@@ -346,16 +345,7 @@ $consulta->execute();
                                 <h4>${generales.id_documento}</h4>
                                 <h4>${generales.nombre_completo}</h4>
                                 <h4>${generales.estado}</h4>
-                                <h4 style="align-items: center; justify-content: center; display: flex;">
-                                
-                                <ion-icon name="create-outline" size="large" onclick="window.location.href='editar_objetos_usu.php?id=${generales.id_serial}&owner=${generales.id_documento}&route=objetos_index.php'"></ion-icon>
-                                <form style="display: inline;" action="objetos_usuario.php" method="post">
-                                    <input type="hidden" name="user_id" value="${generales.id_documento}">
-                                    <input type="hidden" name="nombre" value="${generales.nombre_completo}">
-                                    <button type="submit" style="width: 25px; height: 25px; 
-                                                        border:none; border-radius: 30%; background:#2980B9; color: white; cursor: pointer; display: flex; align-items: center; justify-content: center; margin-left:5px; box-shadow: 0px 0px 4px #0000009c;"  name="objetos_submit" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">+</button>
-                                </form>
-                                </h4>
+                                <h4><ion-icon name="create-outline" size="large" onclick="window.location.href='editar_objetos_usu.php?id=${generales.id_serial}&owner=${generales.id_documento}&route=objetos_index.php'"></ion-icon></h4>
                             
                                 `;
 

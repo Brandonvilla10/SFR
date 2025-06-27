@@ -13,8 +13,6 @@ $codigo = isset($_SESSION['documento']) ? $_SESSION['documento'] : '';
 $nombre = isset($_SESSION['nombre']) ? explode(" ", $_SESSION['nombre'])[0] : '';
 $rol = isset($_SESSION['rol_name']) ? $_SESSION['rol_name'] : '';
 
-
-
 try {
     $nombre = $_SESSION['nombre'];
     $con->exec("SET @documento_generador = '$nombre'");
@@ -239,6 +237,7 @@ if (isset($_POST['borrar'])) {
 
                 <label for="" class="label_titulo">Marca</label>
                 <div class="select-container" style="display: flex; align-items: center; gap: 10px;">
+                    <button type="button" class="add-marca-btn" style="width: 25px; height: 25px; border-radius: 30%; background:#34c759; color: white; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center;" onclick="window.location.href='apartado_datos/marcas.php'">+</button>
 
                     <select name="marca" id="marca" class="selectos">
                         <?php $sql = $con->prepare("SELECT * FROM marca WHERE id_tipo_marca = 2 ORDER BY nombre_marca ASC");
@@ -249,30 +248,26 @@ if (isset($_POST['borrar'])) {
                             <option value="<?php echo $marca['id_marca'] ?>"> <?php echo $marca['nombre_marca'] ?> </option>
                         <?php  } ?>
                     </select>
-                    <button type="button" class="add-marca-btn" style="width: 25px; height: 25px; 
-                                                        border:none; border-radius: 30%; background:#2980B9; color: white; cursor: pointer; display: flex; align-items: center; justify-content: center; margin-left:5px; box-shadow: 0px 0px 4px #0000009c;" onclick="window.location.href='apartado_datos/marcas.php'">+</button>
                 </div>
 
                 <label for="tipo" class="label_titulo">Tipo de Objeto</label>
                 <div style="display: flex; align-items: center; gap: 10px;">
 
-                    
+                    <button type="button" class="add-marca-btn" style="width: 25px; height: 25px; border-radius: 30%; background:#34c759; color: white; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center;" onclick="window.location.href='apartado_datos/tipoObj.php'">+</button>
 
                     <select name="tipoObjeto" id="tipo" class="selectos">
 
                         <?php $sql_3 = $con->prepare('SELECT * FROM tipoobjeto');
                         $sql_3->execute();
                         $consulta_4 = $sql_3->fetchAll();
-                        
-                        
+
+
                         foreach ($consulta_4 as $tipo) { ?>
 
                             <option value="<?php echo $tipo['id_tipoObjeto'] ?>"> <?php echo $tipo['tipoObjeto'] ?> </option>
 
                         <?php } ?>
                     </select>
-                            <button type="button" class="add-marca-btn" style="width: 25px; height: 25px; 
-                                                        border:none; border-radius: 30%; background:#2980B9; color: white; cursor: pointer; display: flex; align-items: center; justify-content: center; margin-left:5px; box-shadow: 0px 0px 4px #0000009c;" onclick="window.location.href='apartado_datos/tipoObj.php'">+</button>
                 </div>
 
                 <input type="hidden" name="user_id" value="<?php echo $_SESSION['objetos_usu'] ?>">

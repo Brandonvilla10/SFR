@@ -224,7 +224,7 @@ $usuario_foto_path = !empty($usuario['foto']) ? '../../uploads/' . $usuario['fot
 
                                     <div class="form-group">
                                         <label for="placa" class="form-label">Placa</label>
-                                        <input type="text" class="form-input" name="placa" id="placa"  placeholder="Ingrese la placa" maxlength="6">
+                                        <input type="text" class="form-input" name="placa" id="placa"  placeholder="Ingrese la placa" maxlength="7">
                                         <button type="button" class="edit-icon"><i class="bi bi-pencil-square"></i></button>
                                     </div>
 
@@ -253,8 +253,7 @@ $usuario_foto_path = !empty($usuario['foto']) ? '../../uploads/' . $usuario['fot
                                                 </option>
                                             <?php endforeach; ?>
                                         </select>
-                                        <button type="button" class="add-marca-btn" style="width: 25px; height: 25px; 
-                                                        border:none; border-radius: 30%; background:#2980B9; color: white; cursor: pointer; display: flex; align-items: center; justify-content: center; margin-left:5px; box-shadow: 0px 0px 4px #0000009c;"  onclick="window.location.href='apartado_datos/marcas.php'">+</button>
+                                        <button type="button" class="add-marca-btn" style="width: 25px; height: 25px;border:1px solid black; border-radius: 30%; background:#34c759; color: white; cursor: pointer; display: flex; align-items: center; justify-content: center; margin-left:5px" onclick="window.location.href='apartado_datos/marcas.php'">+</button>
                                         </div>
                                     </div>
 
@@ -273,8 +272,7 @@ $usuario_foto_path = !empty($usuario['foto']) ? '../../uploads/' . $usuario['fot
                                                     </option>
                                                 <?php endforeach; ?>
                                             </select>
-                                            <button type="button" class="add-marca-btn" style="width: 25px; height: 25px; 
-                                            border:none; border-radius: 30%; background:#2980B9; color: white; cursor: pointer; display: flex; align-items: center; justify-content: center; margin-left:5px; box-shadow: 0px 0px 4px #0000009c;"  onclick="window.location.href='apartado_datos/modelo.php'">+</button>
+                                            <button type="button" class="add-marca-btn" style="width: 25px; height: 25px;border:1px solid black; border-radius: 30%; background:#34c759; color: white; cursor: pointer; display: flex; align-items: center; justify-content: center; margin-left:5px" onclick="window.location.href='apartado_datos/modelo.php'">+</button>
                                         </div>
                                     </div>
 
@@ -384,32 +382,15 @@ $usuario_foto_path = !empty($usuario['foto']) ? '../../uploads/' . $usuario['fot
         
         document.getElementById('grid-form').addEventListener('submit', function(event) {
             
-            const placa = document.getElementById('placa').value.toUpperCase();;
+            const placa = document.getElementById('placa').value;
             const modelo = document.getElementById('modelo').value;
             const marca = document.getElementById('marca').value;
             const caracte = document.getElementById('caracteristicas').value;
             const tipoVehiculo =  document.getElementById('tipoVehiculo').value;
             
-            const tipoSeleccionado = document.querySelector(`#tipoVehiculo option[value="${tipoVehiculo}"]`).textContent.trim().toLowerCase();
-            
-            let placaValida = false;
-            
             if (!placa || !tipoVehiculo || !marca || !modelo || !caracte) {
                 event.preventDefault(); 
                 mostrarModal('mistake', 'Hay campos del formulario vacios', '');
-            }
-            
-            if (tipoSeleccionado === 'motocicleta' || tipoSeleccionado === 'moto') {
-                placaValida = /^[A-Z]{3}[0-9]{2}[A-Z]$/.test(placa); 
-                
-            } else {
-                placaValida = /^[A-Z]{3}[0-9]{3}$/.test(placa);
-            }
-        
-            if (!placaValida) {
-                event.preventDefault();
-                mostrarModal('mistake', 'La placa no tiene un formato valido para el tipo de vehiculo seleccionado', '');
-                return;
             }
         });
     

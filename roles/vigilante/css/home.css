@@ -182,8 +182,8 @@ html,body{
     /* Estilos para la tabla de usuarios */
     .ingresos_usuarios{
         position: relative;
-        height: 80%;
-        max-height: 810px;
+        height: 45%;
+        max-height: 310px;
         background-color: #FFFFFF;
         width: auto ;
         box-sizing: border-box;
@@ -572,8 +572,8 @@ html,body{
     /* AQUI TERMINA LO DE LAS GRAFICAS Y EMPIZA LO DE LA TABLA  */
     .ingresos_usuarios{
         position: static;
-        height: 85%;
-        max-height: 810px;
+        height: 45%;
+        max-height: 310px;
         background-color: #FFFFFF;
         width: auto ;
         box-sizing: border-box;

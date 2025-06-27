@@ -11,13 +11,10 @@ $con = $conexion->conectar();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SFR | Login</title>
-
-
-    
+    <title>SFR</title>
+    <link rel="icon" type="image/png" href="Logo.png" >
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/footer.css">   
-
 </head>
 <body>
 

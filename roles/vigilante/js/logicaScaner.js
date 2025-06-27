@@ -7,14 +7,6 @@ import {
   limpiarObservaciones,
 } from "./modalObservacion.js";
 
-
-//   contedores aqui van declarados
-let informacionUsuario = document.getElementById("informacionUsuario");
-let contenedorObjetos = document.getElementById("contenedorObjetos");
-let contenedorVehiculos = document.getElementById("contenedorVehiculos");
-
-// ----------------------------------------------------------------------------------------
-
 let alerta = document.getElementById("alerta");
 let alertaBienvenida = document.getElementById("alertaBienvenida");
 
@@ -85,7 +77,7 @@ async function registrarEntrada() {
     alerta.style.background = respuestaUsuario.color;
     setTimeout(() => {
       alerta.classList.remove("aparecer");
-    }, 3000);
+    }, 2000);
     // ------------------------------------------------------------------
 
     // este fetch se va a encargar del registro de los objetos tambien, estoy enviando un objeto para poder identificar el array y a quien se le va a asignar
@@ -230,16 +222,6 @@ function scanQR() {
 
     // Si se encontró un código QR
     if (code) {
-      
-      entradaObjetos = [];
-      entradavehiculos = [];
-      limpiarObservaciones();
-
-      informacionUsuario.innerHTML = "";
-      contenedorObjetos.innerHTML = "";
-      contenedorVehiculos.innerHTML = "";
-      
-
       const regex = /^\d{6,}$/;
 
       if (regex.test(code.data)) {
@@ -250,10 +232,13 @@ function scanQR() {
         }, 7);
 
         logicaInformacion(code.data);
+
+
       } else {
         stopCamera();
         videoContainer.style.background = "red";
-        cerrar()
+        
+          cerrar()
       }
     }
   }
@@ -298,13 +283,22 @@ function logicaInformacion(parametroDocumento) {
       body: parametroDocumento,
     });
 
-    
+
+    //   contedores aqui van declarados
+    let informacionUsuario = document.getElementById("informacionUsuario");
+    let contenedorObjetos = document.getElementById("contenedorObjetos");
+    let contenedorVehiculos = document.getElementById("contenedorVehiculos");
+
+    // ----------------------------------------------------------------------------------------
+
+
+
     // declaracion de variables segun la respuesta del documento ./fetch/consultaáraModal
     let respuesta = await datos.json();
 
-    if (respuesta.error) {
-      cerrar();
-      location.reload();
+    if(respuesta.error){
+      cerrar()
+      location.reload()
     }
 
     if (respuesta.innactivo == true) {
@@ -314,7 +308,7 @@ function logicaInformacion(parametroDocumento) {
       alerta.style.background = "red";
       setTimeout(() => {
         alerta.classList.remove("aparecer");
-      }, 3000);
+      }, 2000);
 
       cerrar();
     }
@@ -329,7 +323,7 @@ function logicaInformacion(parametroDocumento) {
     contenedorVehiculos.innerHTML = "";
 
     // -------------------------------------------------------
-
+    
     informacionUsuario.innerHTML += `
         <div onclick="cerrar()" class="divCerrar"><span class="cerrar" >X</span></div> 
                   <img src="../../uploads/${

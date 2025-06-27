@@ -302,7 +302,7 @@
 }
 
 /* Estilos para el select */
-select#id_rol, select#fichaUsuario {
+select#id_rol {
   width: 100%;
   padding: 12px;
   border: 1px solid #ddd;

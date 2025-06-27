@@ -253,7 +253,14 @@ if(isset($_POST['editarBoton'])){
                     foreach ($consulta_4 as $tipo) {?>
 
                         <option value="<?php echo $tipo['id_tipoObjeto']?>"> <?php echo $tipo['tipoObjeto']?> </option>
-                  
+                    $sql_3->execute();
+                    $consulta_4 = $sql_3->fetchAll();
+
+
+                    foreach ($consulta_4 as $tipo) { ?>
+
+                        <option value="<?php echo $tipo['id_tipoObjeto'] ?>"> <?php echo $tipo['tipoObjeto'] ?> </option>
+
                     <?php } ?>
                 </select>
 

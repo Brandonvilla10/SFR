@@ -262,7 +262,7 @@ if (isset($_POST['submitprograma'])) {
 
                     let consulta = `SELECT * FROM programa WHERE nombrePrograma LIKE '%${general}%' LIMIT 6`;
 
-                    fetch('../fetch/busquedaBarra.php', {
+                    fetch('../fetch/BusquedaBarra.php', {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json'

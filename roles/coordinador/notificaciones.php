@@ -2,6 +2,7 @@
 session_start();
 require_once('../../database/database.php');
 include('components/alert.php');
+include('components/loading.php');
 include('../../includes/sesion_validar.php');
 
 $conexion = new database;
@@ -72,6 +73,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['marcar_leidas'])) {
 </div>
 
 <script>
+//DIV DE FONDO 
+    window.addEventListener('load', function() {
+        fondo = document.getElementById('fondo');
+        setTimeout(function() {
+            fondo.classList.add('fade-out');
+        }, 1000); 
+
+        setTimeout(function() {
+           fondo.style.display = 'none';
+                
+        }, 1200); // Cambia el valor a 1000 si deseas que se muestre durante 1 segundo
+            
+
+    });
+    
 document.getElementById('toggleFiltros').addEventListener('click', () => {
     const filtros = document.getElementById('filtrosOpcionales');
     const boton = document.getElementById('toggleFiltros');

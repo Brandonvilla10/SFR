@@ -6,8 +6,9 @@ $conexion = new database;
 $con = $conexion->conectar();
 include('../../../includes/sesion_validar_datos.php');
 
-if (isset($_POST['documento'])) {
-    $documento = $_POST['documento'];
+if (isset($_POST['documento']) || isset($_GET['documento'])) {
+    
+    $documento = isset($_POST['documento']) ? $_POST['documento'] : $_GET['documento'];
     $sql = $con->prepare("SELECT id_documento, nombre_completo FROM usuario WHERE id_documento = ?");
     $sql->execute([$documento]);
 

@@ -13,17 +13,19 @@ $codigo = isset($_SESSION['documento']) ? $_SESSION['documento'] : '';
 $nombre = isset($_SESSION['nombre']) ? explode(" ", $_SESSION['nombre'])[0] : '';
 $rol = isset($_SESSION['rol_name']) ? $_SESSION['rol_name'] : '';
 
+
+
 try {
     $nombre = $_SESSION['nombre'];
     $con->exec("SET @documento_generador = '$nombre'");
-    
+
     if (empty($nombre)) {
         // Si sigue vacía, establecer un valor predeterminado
         $con->exec("SET @documento_generador = 'Usuario Sistema'");
     }
 } catch (Exception $e) {
-echo '<p>Error al definir el documento generador: ' . htmlspecialchars($e->getMessage()) . '</p>';
-exit;
+    echo '<p>Error al definir el documento generador: ' . htmlspecialchars($e->getMessage()) . '</p>';
+    exit;
 }
 
 if (isset($_POST['objetos_submit'])) {
@@ -230,38 +232,48 @@ if (isset($_POST['borrar'])) {
 
                 <label for="foto" class="label_titulo">Foto</label>
 
-                <input type="file" id="foto" name="foto" class="data_input">
+                <input type="file" id="foto" name="foto" class="data_input" accept=".jpg,.jpeg,.png">
 
                 <label for="" class="label_titulo">Caracteristicas</label>
                 <textarea class="input_caracteristica" id="caracteristicas" name="caracteristica" placeholder="Escribe aquí..." maxlength="120"></textarea>
 
                 <label for="" class="label_titulo">Marca</label>
-                <select name="marca" id="marca" class="selectos">
+                <div class="select-container" style="display: flex; align-items: center; gap: 10px;">
 
-                    <?php $sql = $con->prepare("SELECT * FROM marca WHERE id_tipo_marca = 2 ORDER BY nombre_marca ASC");
-                    $sql->execute();
-                    $consulta_2 = $sql->fetchAll();
+                    <select name="marca" id="marca" class="selectos">
+                        <?php $sql = $con->prepare("SELECT * FROM marca WHERE id_tipo_marca = 2 ORDER BY nombre_marca ASC");
+                        $sql->execute();
+                        $consulta_2 = $sql->fetchAll();
 
-                    foreach ($consulta_2 as $marca) { ?>
-                        <option value="<?php echo $marca['id_marca'] ?>"> <?php echo $marca['nombre_marca'] ?> </option>
-                    <?php  } ?>
+                        foreach ($consulta_2 as $marca) { ?>
+                            <option value="<?php echo $marca['id_marca'] ?>"> <?php echo $marca['nombre_marca'] ?> </option>
+                        <?php  } ?>
+                    </select>
+                    <button type="button" class="add-marca-btn" style="width: 25px; height: 25px; 
+                                                        border:none; border-radius: 30%; background:#2980B9; color: white; cursor: pointer; display: flex; align-items: center; justify-content: center; margin-left:5px; box-shadow: 0px 0px 4px #0000009c;" onclick="window.location.href='apartado_datos/marcas.php'">+</button>
+                </div>
 
-                </select>
+                <label for="tipo" class="label_titulo">Tipo de Objeto</label>
+                <div style="display: flex; align-items: center; gap: 10px;">
 
-                <label for="tipo">Tipo de Objeto</label>
-                <select name="tipoObjeto" id="tipo" class="selectos">
+                    
 
-                    <?php $sql_3 = $con->prepare('SELECT * FROM tipoobjeto');
-                    $sql_3->execute();
-                    $consulta_4 = $sql_3->fetchAll();
+                    <select name="tipoObjeto" id="tipo" class="selectos">
 
+                        <?php $sql_3 = $con->prepare('SELECT * FROM tipoobjeto');
+                        $sql_3->execute();
+                        $consulta_4 = $sql_3->fetchAll();
+                        
+                        
+                        foreach ($consulta_4 as $tipo) { ?>
 
-                    foreach ($consulta_4 as $tipo) { ?>
+                            <option value="<?php echo $tipo['id_tipoObjeto'] ?>"> <?php echo $tipo['tipoObjeto'] ?> </option>
 
-                        <option value="<?php echo $tipo['id_tipoObjeto'] ?>"> <?php echo $tipo['tipoObjeto'] ?> </option>
-
-                    <?php } ?>
-                </select>
+                        <?php } ?>
+                    </select>
+                            <button type="button" class="add-marca-btn" style="width: 25px; height: 25px; 
+                                                        border:none; border-radius: 30%; background:#2980B9; color: white; cursor: pointer; display: flex; align-items: center; justify-content: center; margin-left:5px; box-shadow: 0px 0px 4px #0000009c;" onclick="window.location.href='apartado_datos/tipoObj.php'">+</button>
+                </div>
 
                 <input type="hidden" name="user_id" value="<?php echo $_SESSION['objetos_usu'] ?>">
 
@@ -293,7 +305,7 @@ if (isset($_POST['borrar'])) {
             //     })
             // })
 
-            function mostrarConfirmacion(valorBoton,mensaje, callback) {
+            function mostrarConfirmacion(valorBoton, mensaje, callback) {
                 mensajeConfirmacion.textContent = mensaje;
                 callbackConfirmacion = callback;
                 modalConfirmacion.style.visibility = 'visible';
@@ -323,36 +335,36 @@ if (isset($_POST['borrar'])) {
             document.addEventListener('DOMContentLoaded', function() {
                 const form = document.getElementById('formCrearObjeto');
                 const botonEnviar = document.getElementById('CrearObjeto');
-                
+
                 form.addEventListener('submit', function(e) {
-                    
+
                     e.preventDefault();
-                    
+
                     const serial = document.getElementById('serial').value;
                     const nombre = document.getElementById('nombre').value;
                     const foto = document.getElementById('foto').value;
                     const caracteristicas = document.getElementById('caracteristicas').value;
                     const marca = document.getElementById('marca').value;
                     const tipo = document.getElementById('tipo').value;
-                    
+
                     // expresiones
-                    
+
                     const serialExp = /^[A-Z0-9\-]{3,20}$/i;
                     const nombreExp = /^[A-Za-z\s]{4,20}$/;
-                    
+
                     if (!serialExp.test(serial)) {
-                        
+
                         mostrarModal('mistake', 'El serial no es valido. Solo letras, numeros y guiones. Mínimo 3 caracteres.');
-                        
-                        
+
+
                         return;
                     }
-                    
+
                     if (!nombreExp.test(nombre)) {
                         mostrarModal('mistake', 'El nombre no es valido. Solo letras, numeros y espacios, mínimo 4 caracteres.');
                         return;
                     }
-                    
+
                     if (foto === '') {
                         mostrarModal('mistake', 'Debes seleccionar una imagen para el objeto.');
 
@@ -370,9 +382,9 @@ if (isset($_POST['borrar'])) {
                     }
 
                     // Confirmación final
-                        form.submit(); // Todo OK, se envía
-                    
-                    
+                    form.submit(); // Todo OK, se envía
+
+
 
                 });
             });

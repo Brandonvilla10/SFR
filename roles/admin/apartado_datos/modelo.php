@@ -85,10 +85,9 @@ if (isset($_POST['submitmodelo'])) {
         echo "
         <script>
             document.addEventListener('DOMContentLoaded', function () {
-                mostrarModal('mistake', 'Modelo ya existente','modelo.php');
+                mostrarModal('mistake', 'Modelo ya existente',);
             });
         </script>";
-        exit();
     } else {
         $modelo = $con->prepare("INSERT INTO modelo (fecha_modelo,id_estado) VALUES (:modelo,1)");
         $modelo->bindParam(':modelo', $añoModelo);
@@ -96,10 +95,9 @@ if (isset($_POST['submitmodelo'])) {
         echo "
         <script>
             document.addEventListener('DOMContentLoaded', function () {
-                mostrarModal('success', 'Modelo agregado exitosamente','modelo.php');
+                mostrarModal('success', 'Modelo agregado exitosamente',);
             });
         </script>";
-        exit();
     }
 }
 ?>
@@ -186,7 +184,7 @@ if (isset($_POST['submitmodelo'])) {
                     <?php endif; ?>
                 </div>
                 
-            <button class="footer-button animate-button" onclick="window.location.href='../datos.php'">Regresar</button>
+            <button class="footer-button animate-button" onclick="window.history.go(-2);">Regresar</button>
            
             </div>
                 <!--<--------------------------------------------------------- MODAL AGREGAR --------------------------------------------------->
@@ -270,7 +268,7 @@ if (isset($_POST['submitmodelo'])) {
 
                     let consulta = `SELECT * FROM modelo WHERE id_estado != 4 and fecha_modelo LIKE '%${general}%' LIMIT 5`;
 
-                    fetch('../fetch/BusquedaBarra.php', {
+                    fetch('../fetch/busquedaBarra.php', {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json'

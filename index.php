@@ -11,9 +11,13 @@ $con = $conexion->conectar();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SFR</title>
+    <title>SFR | Login</title>
+
+
+    
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/footer.css">   
+
 </head>
 <body>
 
@@ -36,7 +40,7 @@ $con = $conexion->conectar();
             <form action="includes/sesion_start.php" id="formulario" method="POST" >
 
                 <div class="datos">
-                    <input type="number" class="datosLogin" name="documento" id="documento" placeholder="Documento">
+                    <input type="number" class="datosLogin"  name="documento" id="documento" placeholder="Documento">
                     <p class="error" id="errorDocumento"></p>
 
                     <input type="password" class="datosLogin" name="password" id="contraseña" placeholder="Contraseña">
@@ -70,13 +74,13 @@ $con = $conexion->conectar();
 
 
     <div class="social-bar">
-        <a href="https://www.facebook.com" target="_blank" class="social-icon">
+        <a href="https://www.tiktok.com" target="_blank" class="social-icon">
             <img src="assets/img/iconosRedesSociales/tik-tok.webp" width="28px" height="28px alt="">
         </a>
-        <a href="https://www.instagram.com" target="_blank" class="social-icon">
+        <a href="https://www.facebook.com" target="_blank" class="social-icon">
             <img src="assets/img/iconosRedesSociales/facebook.webp" width="28px" height="28px alt="">
         </a>
-        <a href="https://www.tiktok.com" class="social-icon">
+        <a href="https://www.instagram.com" class="social-icon">
             <img src="assets/img/iconosRedesSociales/logotipo-de-instagram.webp"  width="28px" height="28px">
         </a>
     </div>
@@ -159,5 +163,7 @@ function actualizarBoton(){
        validarContraseña = incorrecto(passRegex,contraseña,errorContraseña,"Contraseña Incorrecta",validarContraseña)   
        actualizarBoton()
     })
+
+
 
 </script>

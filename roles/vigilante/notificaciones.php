@@ -4,6 +4,7 @@ session_start();
 require_once('../../database/database.php');
 require_once('../../includes/sesion_validar.php');
 include('components/alert.php');
+include('components/loading.php');
 // --------------------------------------------------------
 
 
@@ -96,6 +97,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['marcar_leidas'])) {
 <script nomodule src="https://unpkg.com/ionicons @7.1.0/dist/ionicons/ionicons.js"></script>
 
 <script>
+    //DIV DE FONDO 
+    window.addEventListener('load', function() {
+        fondo = document.getElementById('fondo');
+        setTimeout(function() {
+            fondo.classList.add('fade-out');
+        }, 1000); 
+
+        setTimeout(function() {
+           fondo.style.display = 'none';
+                
+        }, 1200); // Cambia el valor a 1000 si deseas que se muestre durante 1 segundo
+            
+
+    });
+    
 // Función para alternar la visibilidad de los filtros adicionales
 document.getElementById('toggleFiltros').addEventListener('click', () => {
     const filtros = document.getElementById('filtrosOpcionales'); // Obtiene el contenedor de filtros

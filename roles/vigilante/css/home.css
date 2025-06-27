@@ -1,177 +1,238 @@
-* {
+*{
     padding: 0;
     margin: 0;
 }
 
-html,
-body {
-    height: 100vh;
-    /* Altura completa de la ventana del navegador */
-    width: 100vw;
-    /* Ancho completo de la ventana del navegador */
-    background-color: #f7f7f7;
-    /* Fondo gris claro */
+html,body{
+    height: 100vh;  /* Altura completa de la ventana del navegador */
+    width: 100vw;   /* Ancho completo de la ventana del navegador */
+    background-color: #f7f7f7;  /* Fondo gris claro */
     overflow-x: hidden;
 }
 
-:root {
-    --colorAzul: #63AEE8
+
+:root{
+    --colorAzul : #63AEE8 
 }
 
 ::-webkit-scrollbar {
-    width: 6px;
-    height: 10px;
-}
-
- ::-webkit-scrollbar-thumb {
-    background-color: #63AEE8;
+    width: 6px;   
+    height: 10px;  
+  }
+  
+  
+  ::-webkit-scrollbar-thumb {
+    background-color: #63AEE8; 
     border-radius: 10px;
-}
-
- ::-webkit-scrollbar-track {
+  }
+  
+  
+  ::-webkit-scrollbar-track {
     background-color: transparent;
-}
+  }
 
 
 /* Contenedor principal con diseño en grid */
-
-.container_grid {
+.container_grid{
     display: grid;
-    grid-template: "sidebar header " 100px "sidebar main" auto / auto auto;
-    /* Define el grid con dos columnas */
+    grid-template: 
+    "sidebar header " 100px
+    "sidebar main" auto 
+    / auto auto;  /* Define el grid con dos columnas */
     width: 100%;
     height: 100%;
     overflow-x: hidden;
 }
 
 
-/* Ajustes para pantallas más grandes que 767px (tabletas y escritorios) */
 
+/* Ajustes para pantallas más grandes que 767px (tabletas y escritorios) */
 @media (min-width: 767px) {
-    .container_grid {
+    .container_grid{
         display: grid;
-        grid-template: "sidebar header" 130px "sidebar main" auto / 100px 1fr;
-        /* El grid se ajusta para dispositivos más grandes */
+        grid-template: 
+        "sidebar header" 130px
+        "sidebar main" auto 
+        / 100px 1fr;  /* El grid se ajusta para dispositivos más grandes */
         width: 100%;
         height: 100%;
     }
+
     /* Estilos para el encabezado */
-    .home_header {
+    .home_header{
         grid-area: header;
         display: flex;
         margin: 0;
         padding: 15px 30px 0 30px;
-        background: #FFFFFF;
-        /* Fondo blanco */
+        background: #FFFFFF;  /* Fondo blanco */
         width: auto;
         height: 100px;
-        justify-content: space-between;
-        /* Espacio entre los elementos */
+        justify-content: space-between;  /* Espacio entre los elementos */
         align-items: center;
     }
-    .home_titulo {
+
+    .home_titulo{
         font-size: 20px;
         font-weight: 800;
     }
-    .home_titulo p {
+
+    .home_titulo p{
         font-size: 20px;
         font-weight: 300;
     }
+
     /* Estilos para los íconos del encabezado */
-    .home_iconos {
+    .home_iconos{
         display: flex;
         font-size: 30px;
         margin: 10px;
         gap: 15px;
         color: #4F4F4F;
-        align-items: center;
-        /* Íconos en gris oscuro */
+        align-items: center;  /* Íconos en gris oscuro */
     }
+
     /* asignar el area para la barra lateral */
-    .aside_barra {
+    .aside_barra{
         grid-area: sidebar;
     }
+
     /* Ajustes para el contenido principal (gráficas y tabla) */
-    .grid_contenido_plantilla {
+    .grid_contenido_plantilla{
         grid-area: main;
         display: flex;
         flex-direction: column;
         gap: 15px;
     }
-    .ingresos_usuarios::after {
+
+    /* Configuración de las gráficas */
+    .graficas{
+        display: grid;
+        grid-template: 
+        "barras dona" 1fr / 50% 50%;  /* 60% para la gráfica de barras, 40% para la gráfica de dona */
+        width: 100%;
+        height: 50%;
+        min-height: 348px;
+    }
+
+    .grafica_barras{
+        position: relative; 
+        padding: 15px;
+        margin: 23px;
+        grid-area: barras;
+        justify-self: stretch;
+        background-color: #FFFFFF;  /* Fondo blanco para la gráfica */
+        box-sizing: border-box;
+        display: flex;
+        text-align: center;
+        justify-content: center;
+        border-radius: 15px;
+        min-width: 395px;
+        max-height: 300px;
+        overflow: hidden;
+        
+    }
+
+   .grafica_barras::after, .grafica_dona::after , .ingresos_usuarios::after{
         content: "";
         position: absolute;
         top: 0;
         left: 0;
         width: 4px;
         height: 100%;
-        background: linear-gradient(to bottom, #3498db, #2980b9);
-        /* Gradiente azul claro */
+        background: linear-gradient(to bottom, #3498db, #2980b9);  /* Gradiente azul claro */
         border-radius: 0 15px 15px 0;
         transform: scaleY(0);
-        transform-origin: top;
+        transform-origin:top;
         transition: transform 0.4s ease;
+    
+   }
+   .grafica_barras.animar::after, .grafica_dona.animar::after, .ingresos_usuarios.animar::after  {
+        transform: scaleY(1); /* se expande */
     }
-    .ingresos_usuarios.animar::after {
-        transform: scaleY(1);
-        /* se expande */
-    }
+
+
     /* Tamaño de las gráficas */
-    #barras {
+    #barras{
         width: 100px;
         height: 100px;
     }
-    #donut {
+
+    #donut{
         width: 100px;
         height: 100px;
     }
-    /* Estilos para la tabla de usuarios */
-    .ingresos_usuarios {
+
+    .grafica_dona{
         position: relative;
-        height: 45%;
-        max-height: 310px;
-        background-color: #FFFFFF;
-        width: auto;
+        grid-area: dona;
+        background: #FFFFFF;
+        padding: 15px;
+        margin: 23px;
         box-sizing: border-box;
-        margin: 0 20px 0 20px;
+        display: flex;
+        text-align: center;
+        justify-content: center;
+        align-items: center;
+        border-radius: 15px;
+        min-width: 248px;
+        max-height: 300px;
+        overflow: hidden;
+    }
+
+    /* Estilos para la tabla de usuarios */
+    .ingresos_usuarios{
+        position: relative;
+        height: 80%;
+        max-height: 810px;
+        background-color: #FFFFFF;
+        width: auto ;
+        box-sizing: border-box;
+        margin:  0 20px 0 20px;
         padding: 15px;
         border-radius: 25px;
         overflow: hidden;
     }
-    .descripcion_tabla {
+
+    .descripcion_tabla{
         padding-left: 20px;
     }
+
     /* Ajustes para la tabla */
-    .tabla_home {
+    .tabla_home{
         margin-top: 10px;
         height: 200px;
         overflow-y: auto;
     }
-    .tabla_users {
+
+    .tabla_users{
         width: 100%;
         table-layout: fixed;
         padding: 5px;
         border-collapse: collapse;
         font-size: 14px;
     }
-    .tabla_users thead {
+
+    .tabla_users thead{
         background-color: #f7f7f7;
     }
-    .tabla_users th {
+
+    .tabla_users th{
         color: #4F4F4F;
         border-bottom: 3px solid #4F4F4F;
         padding: 5px;
     }
-    .tabla_users td {
+
+    .tabla_users td{
         border-bottom: 2px solid #f7f7f7;
         padding: 10px;
         text-align: center;
     }
-    .reportes {
+
+    .reportes{
         border-radius: 10px;
-        background-color: rgba(71, 70, 70, 0.185);
+        background-color:rgba(71, 70, 70, 0.185) ;
         border: transparent;
-        padding: 1rem;
+        padding:1rem;
         font-weight: 500;
         cursor: pointer;
     }
@@ -179,107 +240,195 @@ body {
 
 
 /* Ajuste de alturas para pantallas más grandes */
+@media (min-height:900px) {
+    .grafica_barras {
+        max-height: 338px;
+    }
+    
+    .grafica_dona {
+        max-height: 338px;
+    }
+
+    .graficas{
+        min-height: 381px;
+        height: 50%;
+    }
+}
 
 @media (min-width:768px) {
-    .container_grid {
+    
+    .container_grid{
         display: grid;
-        grid-template: "sidebar header" 130px "sidebar main" auto / auto 1fr;
-        /* El grid se ajusta para dispositivos más grandes */
+        grid-template: 
+            "sidebar header" 130px
+            "sidebar main" auto 
+            / auto 1fr;  /* El grid se ajusta para dispositivos más grandes */
         width: 100%;
         height: 100%;
     }
 }
 
-@media (min-width:320px),
-(max-width:320px) {
-    .container_grid {
-        display: grid;
-        grid-template: "header" 90px "main" auto "sidebar" auto /auto;
-        width: 100%;
-        height: 100%;
+
+
+@media (min-width:320px), (max-width:320px){
+
+    .container_grid{
+    display: grid;
+    grid-template: 
+        "header" 90px
+        "main" auto 
+        "sidebar" auto
+        /auto;
+    width: 100%;
+    height: 100%;
     }
-    .aside_barra {
+    
+    .aside_barra{
         grid-area: sidebar;
     }
-    .grid_contenido_plantilla {
+    .grid_contenido_plantilla{
         grid-area: main;
     }
+
 }
 
-@media (min-width:320px),
-(max-width:320px) {
-    .container_grid {
+@media (min-width:320px),(max-width:320px){
+    .container_grid{
         display: grid;
-        grid-template: "sidebar header" 130px "sidebar main" auto / auto 1fr;
+        grid-template: 
+            "sidebar header" 130px
+            "sidebar main" auto 
+            /
+            auto 1fr;
         width: 100%;
         height: 100%;
         min-height: 600px;
     }
-    .home_header {
-        grid-area: header;
-        display: flex;
-        margin: 0;
-        padding: 15px 30px 0 30px;
-        background: #FFFFFF;
-        width: auto;
-        height: 100px;
-        justify-content: space-between;
-        align-items: center;
-    }
-    .home_titulo {
-        font-size: 20px;
-        font-weight: 800;
-    }
-    .home_titulo p {
-        font-size: 20px;
-        font-weight: 300;
-    }
-    .home_iconos {
-        display: flex;
-        font-size: 30px;
-        margin: 10px;
-        gap: 15px;
-        color: #4F4F4F;
-    }
-    .aside_barra {
+
+        .home_header{
+            grid-area: header;
+            display: flex;
+            margin: 0;
+            padding: 15px 30px 0 30px;
+            background: #FFFFFF;
+            width: auto;
+            height: 100px;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .home_titulo{
+            font-size: 20px;
+            font-weight: 800;
+    
+        }
+        
+        .home_titulo p{
+            font-size: 20px;
+            font-weight: 300;
+        
+        }
+        .home_iconos{
+            display: flex;
+            font-size: 30px;
+            margin: 10px;
+            gap: 15px;
+            color: #4F4F4F;   
+        }
+
+        
+    .aside_barra{
         grid-area: sidebar;
     }
-    /* CAMBIOS DEL HOME GRAFICAS */
-    .grid_contenido_plantilla {
+
+     /* CAMBIOS DEL HOME GRAFICAS */
+     .grid_contenido_plantilla{
         grid-area: main;
         display: flex;
         flex-direction: column;
         gap: 15px;
     }
-    #barras {
+
+    .graficas{
+        display: grid;
+        grid-template: 
+        "barras" 300px
+        "dona" 300px  / 1fr;
+        width: 100%;
+        height: 50%;
+        min-height: 600px;
+      
+    }
+
+
+    .grafica_barras{
+        padding: 15px;
+        margin: 23px;
+        grid-area: barras;
+        justify-self: stretch;
+        background-color: #FFFFFF;
+        box-sizing: border-box;
+        display: flex;
+        text-align: center;
+        justify-content: center;
+        border-radius: 15px;
+        min-width: 248px;
+        max-height: 300px;
+    
+    }
+
+    #barras{
         width: 100px;
         height: 100px;
     }
-    #donut {
+
+    #donut{
         width: 100px;
         height: 100px;
     }
-    .ingresos_usuarios {
+
+
+    .grafica_dona{
+        grid-area: dona;
+        background: #FFFFFF;
+        padding: 15px;
+        margin: 23px;
+        box-sizing: border-box;
+        display: flex;
+        text-align: center;
+        justify-content: center;
+        align-items: center;
+        border-radius: 15px;
+        min-width: 248px;
+        max-height: 300px;
+    }
+
+    .ingresos_usuarios{
         display: block;
         height: 45%;
         max-height: 310px;
         background-color: #FFFFFF;
-        width: auto;
+        width: auto ;
         box-sizing: border-box;
-        margin: 0 20px 0 20px;
+        margin:  0 20px 0 20px;
         padding: 15px;
         border-radius: 25px;
     }
-    .descripcion_tabla {
+
+
+    .descripcion_tabla{
         padding-left: 20px;
     }
-    .tabla_home {
+
+    .tabla_home{
         margin-top: 10px;
         height: 200px;
         overflow-y: auto;
         overflow-x: auto;
+       
+       
     }
-    .tabla_users {
+    .tabla_users{
         width: 100%;
         table-layout: fixed;
         padding: 5px;
@@ -287,31 +436,41 @@ body {
         font-size: 9px;
         min-width: 315px;
     }
-    .tabla_users thead {
+
+    .tabla_users thead{
         background-color: #f7f7f7;
     }
-    .tabla_users th {
+    .tabla_users th{
         color: #4F4F4F;
         border-bottom: 3px solid #4F4F4F;
         padding: 5px;
     }
-    .tabla_users td {
+
+    .tabla_users td{
         border-bottom: 2px solid #f7f7f7;
         padding: 10px;
         text-align: center;
     }
 }
 
+
 @media (min-width: 767px) {
-    .container_grid {
-        display: grid;
-        grid-template: "sidebar header" 130px "sidebar main" auto / auto 1fr;
-        width: 100%;
-        height: 100%;
-        min-height: 758px;
+    .container_grid{
+    display: grid;
+    grid-template: 
+        "sidebar header" 130px
+        "sidebar main" auto 
+        /
+        auto 1fr;
+    width: 100%;
+    height: 100%;
+    min-height: 758px;
     }
-    /* CAMBIOS DEL HOME HEADER  */
-    .home_header {
+
+        /* CAMBIOS DEL HOME HEADER  */
+
+    
+    .home_header{
         grid-area: header;
         display: flex;
         margin: 0;
@@ -322,76 +481,137 @@ body {
         justify-content: space-between;
         align-items: center;
     }
-    .home_titulo {
+    
+    .home_titulo{
         font-size: 20px;
         font-weight: 800;
+
     }
-    .home_titulo p {
+    
+    .home_titulo p{
         font-size: 20px;
         font-weight: 300;
+    
     }
-    .home_iconos {
+    .home_iconos{
         display: flex;
         font-size: 30px;
         margin: 10px;
         gap: 15px;
-        color: #4F4F4F;
+        color: #4F4F4F;   
     }
+
+
     /* HASTA AQUI VAN LOS CAMBIOS  */
-    .aside_barra {
+
+    .aside_barra{
         grid-area: sidebar;
     }
-    /* CAMBIOS DEL HOME GRAFICAS */
-    .grid_contenido_plantilla {
+
+     /* CAMBIOS DEL HOME GRAFICAS */
+    .grid_contenido_plantilla{
         grid-area: main;
         display: flex;
         flex-direction: column;
         gap: 15px;
     }
-    #barras {
-        width: 100px;
-        height: 100px;
+
+    .graficas{
+        display: grid;
+        grid-template: 
+        "barras dona" 1fr / 50% 50%;
+        width: 100%;
+        height: 50%;
+        min-height: 348px;
+      
     }
-    #donut {
-        width: 100px;
-        height: 100px;
-    }
-    /* AQUI TERMINA LO DE LAS GRAFICAS Y EMPIZA LO DE LA TABLA  */
-    .ingresos_usuarios {
-        position: static;
-        height: 45%;
-        max-height: 310px;
+
+
+    .grafica_barras{
+        padding: 15px;
+        margin: 23px;
+        grid-area: barras;
+        justify-self: stretch;
         background-color: #FFFFFF;
-        width: auto;
         box-sizing: border-box;
-        margin: 0 20px 0 20px;
+        display: flex;
+        text-align: center;
+        justify-content: center;
+        border-radius: 15px;
+        min-width: 395px;
+        max-height: 300px;
+    
+    }
+
+    #barras{
+        width: 100px;
+        height: 100px;
+    }
+
+    #donut{
+        width: 100px;
+        height: 100px;
+    }
+
+
+    .grafica_dona{
+        grid-area: dona;
+        background: #FFFFFF;
+        padding: 15px;
+        margin: 23px;
+        box-sizing: border-box;
+        display: flex;
+        text-align: center;
+        justify-content: center;
+        align-items: center;
+        border-radius: 15px;
+        min-width: 248px;
+        max-height: 300px;
+    }
+
+    /* AQUI TERMINA LO DE LAS GRAFICAS Y EMPIZA LO DE LA TABLA  */
+    .ingresos_usuarios{
+        position: static;
+        height: 85%;
+        max-height: 810px;
+        background-color: #FFFFFF;
+        width: auto ;
+        box-sizing: border-box;
+        margin:  0 20px 0 20px;
         padding: 15px;
         border-radius: 25px;
     }
-    .descripcion_tabla {
+
+
+    .descripcion_tabla{
         padding-left: 20px;
     }
-    .tabla_home {
+
+    .tabla_home{
         margin-top: 10px;
         height: 200px;
         overflow-y: auto;
+
+        
     }
-    .tabla_users {
+    .tabla_users{
         width: 100%;
         table-layout: fixed;
         padding: 5px;
         border-collapse: collapse;
         font-size: 14px;
     }
-    .tabla_users thead {
+
+    .tabla_users thead{
         background-color: #f7f7f7;
     }
-    .tabla_users th {
+    .tabla_users th{
         color: #4F4F4F;
         border-bottom: 3px solid #4F4F4F;
         padding: 5px;
     }
-    .tabla_users td {
+
+    .tabla_users td{
         border-bottom: 2px solid #f7f7f7;
         padding: 10px;
         text-align: center;
@@ -400,6 +620,23 @@ body {
 
 
 /* AJUSTE DE ALTURAS */
+
+@media (min-height:900px) {
+    .grafica_barras {
+        max-height: 338px;
+
+    }
+
+    .grafica_dona {
+        max-height: 338px;
+    }
+
+    .graficas{
+        min-height: 381px;
+        height: 50%;
+    }
+    
+}
 
 .excelBoton, .pdfBoton{
     background-color: transparent;

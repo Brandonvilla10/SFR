@@ -1,25 +1,34 @@
 <?php
+// Validaciones e includes----------------------------
 session_start();
 require_once('../../database/database.php');
 include 'components/alert.php';
 include('../../includes/sesion_validar.php');
+// ----------------------------------------------------
+
+
 $conexion = new database;
 $con = $conexion->conectar();
 
 
+// Establecer la variable @documento_generador en MySQL desde la sesión
 try {
-    $nombre = $_SESSION['nombre'];
-    $con->exec("SET @documento_generador = '$nombre'");
-    
-    if (empty($nombre)) {
+    $sql = $con->prepare("SELECT nombre_completo FROM usuario WHERE id_documento = $_SESSION[documento]");
+    $sql->execute();
+    $nombre = $sql->fetch(PDO::FETCH_ASSOC);
+    $con->exec("SET @documento_generador = '$nombre[nombre_completo]'");
+
+    // Verificar que la variable se haya establecido correctamente
+    $check = $con->query("SELECT @documento_generador as nombre");
+    $result = $check->fetch(PDO::FETCH_ASSOC);
+    if (empty($result['nombre'])) {
         // Si sigue vacía, establecer un valor predeterminado
         $con->exec("SET @documento_generador = 'Usuario Sistema'");
     }
 } catch (Exception $e) {
-echo '<p>Error al definir el documento generador: ' . htmlspecialchars($e->getMessage()) . '</p>';
-exit;
+    echo '<p>Error al definir el documento generador: ' . htmlspecialchars($e->getMessage()) . '</p>';
+    exit;
 }
-
 
 $origen = isset($_GET['origen']) ? $_GET['origen'] : '';
 $user_id = isset($_GET['user_id']) ? $_GET['user_id'] : '';
@@ -136,14 +145,15 @@ $usuario_foto_path = !empty($usuario['foto']) ? '../../uploads/' . $usuario['fot
 
                 <?php if (!$usuario): ?>
 
-                    <!-- form usuario -->
+            <!----------------------------------- Seccion derecha informacion del usuario ------------------------------->
+
                     <div class="search-user-container" style="width: 100%; max-width: 500px; margin: 70px auto; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); background-color: #5DADE2;">
                         <h2 style="color: white; text-align: center; margin-bottom: 20px;">Buscar Usuario</h2>
 
                         <form action="" method="POST">
                             <div class="form-group">
                                 <label for="id_documento" class="form-label">Documento del Usuario</label>
-                                <input type="text" class="form-input" id="id_documento" name="id_documento" required placeholder="Ingrese el documento del usuario">
+                                <input type="text" class="form-input" id="id_documento" name="id_documento"  placeholder="Ingrese el documento del usuario">
                             </div>
                             <input type="submit" class="btn-submit" name="buscar_usuario" value="BUSCAR USUARIO">
                         </form>
@@ -162,6 +172,10 @@ $usuario_foto_path = !empty($usuario['foto']) ? '../../uploads/' . $usuario['fot
                                 <p><strong>Documento:</strong> <?php echo $usuario['id_documento']; ?></p>
                             </div>
                         </div>
+
+        <!---------------------------------------Fin Seccion usuario ---------------------------------------->
+
+        <!---------------------------------------CONTENIDO DEL VEHICUlO ---------------------------------------->
 
                         <div class="form-container">
                             <div class="image-preview">
@@ -189,12 +203,12 @@ $usuario_foto_path = !empty($usuario['foto']) ? '../../uploads/' . $usuario['fot
                             </div>
 
                             <div class="form-inputs">
-                                <form action="" method="POST" class="grid-form">
+                                <form action="" method="POST" class="grid-form" id="grid-form" >
                                     <input type="hidden" name="id_documento" value="<?php echo $usuario['id_documento']; ?>">
 
                                     <div class="form-group">
                                         <label for="id_tipoVehiculo" class="form-label">Tipo de Vehiculo</label>
-                                        <select class="form-input" id="id_tipoVehiculo" name="id_tipoVehiculo" required>
+                                        <select class="form-input" name="id_tipoVehiculo" id="tipoVehiculo" >
                                             <option value="">Seleccione Tipo</option>
                                             <?php
                                             $consulta_tipos = $con->prepare("SELECT * FROM tipovehiculo ORDER BY tipoVehiculo");
@@ -210,7 +224,7 @@ $usuario_foto_path = !empty($usuario['foto']) ? '../../uploads/' . $usuario['fot
 
                                     <div class="form-group">
                                         <label for="placa" class="form-label">Placa</label>
-                                        <input type="text" class="form-input" id="placa" name="placa" required placeholder="Ingrese la placa" maxlength="7">
+                                        <input type="text" class="form-input" name="placa" id="placa"  placeholder="Ingrese la placa" maxlength="6">
                                         <button type="button" class="edit-icon"><i class="bi bi-pencil-square"></i></button>
                                     </div>
 
@@ -225,10 +239,12 @@ $usuario_foto_path = !empty($usuario['foto']) ? '../../uploads/' . $usuario['fot
 
                                     <div class="form-group">
                                         <label for="id_marca" class="form-label">Marca</label>
-                                        <select class="form-input" id="id_marca" name="id_marca" required>
+                                        <div style="display:flex; width:100%; justify-content:center;align-items:center;">
+                                            
+                                        <select class="form-input" name="id_marca" id="marca" >
                                             <option value="">Seleccione Marca</option>
                                             <?php
-                                            $consulta_marcas = $con->prepare("SELECT * FROM marca WHERE id_tipo_marca = 1 ORDER BY nombre_marca");
+                                            $consulta_marcas = $con->prepare("SELECT * FROM marca where id_tipo_marca = 1 ORDER BY nombre_marca");
                                             $consulta_marcas->execute();
                                             $marcas = $consulta_marcas->fetchAll(PDO::FETCH_ASSOC);
                                             foreach ($marcas as $marca): ?>
@@ -237,22 +253,25 @@ $usuario_foto_path = !empty($usuario['foto']) ? '../../uploads/' . $usuario['fot
                                                 </option>
                                             <?php endforeach; ?>
                                         </select>
+                                        </div>
                                     </div>
 
                                     <div class="form-group">
                                         <label for="id_modelo" class="form-label">Modelo</label>
-                                        <select class="form-input" id="id_modelo" name="id_modelo" required>
-                                            <option value="">Seleccione Modelo</option>
-                                            <?php
-                                            $consulta_modelos = $con->prepare("SELECT * FROM modelo ORDER BY fecha_modelo DESC");
-                                            $consulta_modelos->execute();
-                                            $modelos = $consulta_modelos->fetchAll(PDO::FETCH_ASSOC);
-                                            foreach ($modelos as $modelo): ?>
-                                                <option value="<?php echo $modelo['id_modelo']; ?>">
-                                                    <?php echo $modelo['fecha_modelo']; ?>
-                                                </option>
-                                            <?php endforeach; ?>
-                                        </select>
+                                        <div style="display:flex; width:100%; justify-content:center;align-items:center;"> 
+                                            <select class="form-input" name="id_modelo" id="modelo" >
+                                                <option value="">Seleccione Modelo</option>
+                                                <?php
+                                                $consulta_modelos = $con->prepare("SELECT * FROM modelo ORDER BY fecha_modelo DESC");
+                                                $consulta_modelos->execute();
+                                                $modelos = $consulta_modelos->fetchAll(PDO::FETCH_ASSOC);
+                                                foreach ($modelos as $modelo): ?>
+                                                    <option value="<?php echo $modelo['id_modelo']; ?>">
+                                                        <?php echo $modelo['fecha_modelo']; ?>
+                                                    </option>
+                                                <?php endforeach; ?>
+                                            </select>
+                                        </div>
                                     </div>
 
                                     <div class="form-actions">
@@ -262,6 +281,8 @@ $usuario_foto_path = !empty($usuario['foto']) ? '../../uploads/' . $usuario['fot
                                 </form>
                             </div>
                         </div>
+
+                         <!--------------------------------------- FIN DEL CONTENIDO DEL VEHICUlO ---------------------------------------->
                     </div>
                 <?php endif; ?>
             </div>
@@ -342,24 +363,52 @@ $usuario_foto_path = !empty($usuario['foto']) ? '../../uploads/' . $usuario['fot
             placas.addEventListener('input', function() {
                 let value = this.value.toUpperCase();
 
-                // Elimina todo lo que no sea letra o número
                 value = value.replace(/[^A-Z0-9]/g, '');
 
-                // Si empieza con número, limpiar el campo
                 if (value.length > 0 && /^[0-9]/.test(value)) {
                     this.value = '';
                     return;
                 }
 
-                // Extraer letras y números (sin importar el orden)
-                const letras = value.replace(/[^A-Z]/g, '').slice(0, 3);
-                const numeros = value.replace(/[^0-9]/g, '').slice(0, 3);
+                value = value.slice(0, 6);
 
-                // Construir el valor final sin guion
-                this.value = letras + numeros;
+                this.value = value;
             });
         }
+
         
+        
+        document.getElementById('grid-form').addEventListener('submit', function(event) {
+            
+            const placa = document.getElementById('placa').value.toUpperCase();;
+            const modelo = document.getElementById('modelo').value;
+            const marca = document.getElementById('marca').value;
+            const caracte = document.getElementById('caracteristicas').value;
+            const tipoVehiculo =  document.getElementById('tipoVehiculo').value;
+            
+            const tipoSeleccionado = document.querySelector(`#tipoVehiculo option[value="${tipoVehiculo}"]`).textContent.trim().toLowerCase();
+            
+            let placaValida = false;
+            
+            if (!placa || !tipoVehiculo || !marca || !modelo || !caracte) {
+                event.preventDefault(); 
+                mostrarModal('mistake', 'Hay campos del formulario vacios', '');
+            }
+            
+            if (tipoSeleccionado === 'motocicleta' || tipoSeleccionado === 'moto') {
+                placaValida = /^[A-Z]{3}[0-9]{2}[A-Z]$/.test(placa); 
+                
+            } else {
+                placaValida = /^[A-Z]{3}[0-9]{3}$/.test(placa);
+            }
+        
+            if (!placaValida) {
+                event.preventDefault();
+                mostrarModal('mistake', 'La placa no tiene un formato valido para el tipo de vehiculo seleccionado', '');
+                return;
+            }
+        });
+    
     </script>
 </body>
 

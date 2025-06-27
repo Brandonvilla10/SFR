@@ -238,7 +238,7 @@ if (isset($_POST['submittipo'])) {
                 cerrarmodalAgregar.addEventListener('click', cerrarBuscar);
                 cancelarBuscar.addEventListener('click', cerrarBuscar);
             </script>
-            <?php include("../components/modaEliminar.php"); ?>
+          
 
             <script>
                 const abrirEliminar = document.getElementById('abrirEliminar');
@@ -266,7 +266,7 @@ if (isset($_POST['submittipo'])) {
 
                     let consulta = `SELECT * FROM tipoobjeto WHERE id_estado != 4 and tipoObjeto LIKE '%${general}%' LIMIT 5`;
 
-                    fetch('../fetch/BusquedaBarra.php', {
+                    fetch('../fetch/busquedaBarra.php', {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json'

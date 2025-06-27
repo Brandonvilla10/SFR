@@ -1,7 +1,7 @@
 <?php
 session_start();
 require_once('../../database/database.php');
-include 'components/alert.php';
+include ('components/alert.php');
 $conexion = new database;
 $con = $conexion->conectar();
 include('../../includes/sesion_validar.php');
@@ -174,7 +174,7 @@ $usuario_foto_path = !empty($resultado['foto']) ? $mostrar : $usu;
                                         <span>Subir foto</span>
                                     </div>
                                     <form action="../../uploadsGlobal/uploadVehiculos.php" method="POST" enctype="multipart/form-data" id="form-card-photo">
-                                        <input type="hidden" name="direccion" value="../roles/aprendiz/editar_vehiculo.php">
+                                        <input type="hidden" name="direccion" value="../roles/coordinador/editar_vehiculo.php">
                                         <input type="hidden" name="tipo_foto" value="tarjeta">
                                         <input type="hidden" name="ruta" value="editar_vehiculo.php">
                                         <input type="file" name="foto" onchange="document.getElementById('form-card-photo').submit()">

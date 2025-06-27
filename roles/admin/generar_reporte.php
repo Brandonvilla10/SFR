@@ -18,13 +18,22 @@ $params = [];
 switch ($modulo) {
     case 'objetos':
         $query = "
-            SELECT r.fechaEntrada, u.nombre_completo, o.nombre AS objeto, r.fechaSalida, 'N/A' as documento_generador
+            SELECT r.fechaEntrada, u.nombre_completo, 
+                   CONCAT('Ingreso de objeto: \"', o.nombre, '\" con serial ', o.id_serial) AS objeto, 
+                   r.fechaSalida,
+                   CASE 
+                       WHEN r.fechaSalida IS NULL OR r.fechaSalida = '0000-00-00 00:00:00' THEN 
+                           CONCAT('Observaciones de entrada: ', COALESCE(r.observaciones, 'Sin observaciones'))
+                       ELSE 
+                           CONCAT('Observaciones de entrada: ', COALESCE(r.observaciones, 'Sin observaciones'), 
+                                  ' | Observaciones de salida: ', COALESCE(r.observacionesSalida, 'Sin observaciones'))
+                   END as observaciones_mostrar
             FROM registroentradaobjetos r
             INNER JOIN objetos o ON r.id_serial = o.id_serial
             INNER JOIN usuario u ON o.id_documento = u.id_documento
             WHERE r.fechaEntrada BETWEEN :inicio AND :fin
         ";
-        $columnas = ['Fecha Ingreso', 'Persona', 'Objeto', 'Fecha Salida', 'Administrador'];
+        $columnas = ['Fecha Ingreso', 'Persona', 'Descripción', 'Fecha Salida', 'Observaciones'];
         $params = [
             ':inicio' => $fecha_inicio . ' 00:00:00',
             ':fin' => $fecha_fin . ' 23:59:59'
@@ -46,15 +55,22 @@ switch ($modulo) {
 
     case 'vehiculos':
         $query = "
-            SELECT r.fechaEntrada, u.nombre_completo, v.id_placa, r.fechaSalida, n.documento_generador
-            FROM notificaciones n
-            INNER JOIN registroentradavehiculos r ON n.id_afectado = r.id_registroVehiculo
+            SELECT r.fechaEntrada, u.nombre_completo, 
+                   CONCAT('Ingreso de vehículo con placa: ', v.id_placa, ' perteneciente a ') AS objeto, 
+                   r.fechaSalida,
+                   CASE 
+                       WHEN r.fechaSalida IS NULL OR r.fechaSalida = '0000-00-00 00:00:00' THEN 
+                           CONCAT('Observaciones de entrada: ', COALESCE(r.observaciones, 'Sin observaciones'))
+                       ELSE 
+                           CONCAT('Observaciones de entrada: ', COALESCE(r.observaciones, 'Sin observaciones'), 
+                                  ' | Observaciones de salida: ', COALESCE(r.observacionesSalida, 'Sin observaciones'))
+                   END as observaciones_mostrar
+            FROM registroentradavehiculos r
             INNER JOIN vehiculos v ON r.id_placa = v.id_placa
             INNER JOIN usuario u ON v.id_documento = u.id_documento
-            WHERE n.tabla_afectada = 'registro_entrada_vehiculos'
-              AND r.fechaEntrada BETWEEN :inicio AND :fin
+            WHERE r.fechaEntrada BETWEEN :inicio AND :fin
         ";
-        $columnas = ['Fecha Ingreso', 'Persona', 'Placa', 'Fecha Salida', 'Administrador'];
+        $columnas = ['Fecha Ingreso', 'Persona', 'Descripción', 'Fecha Salida', 'Observaciones'];
         $params = [
             ':inicio' => $fecha_inicio . ' 00:00:00',
             ':fin' => $fecha_fin . ' 23:59:59'
@@ -74,14 +90,15 @@ switch ($modulo) {
 
     case 'personas':
         $query = "
-            SELECT r.fechaEntrada, u.nombre_completo, n.descripcion, r.fechaSalida, n.documento_generador
-            FROM notificaciones n
-            INNER JOIN registroentradapersona r ON n.id_afectado = r.id_registro
+            SELECT r.fechaEntrada, u.nombre_completo, 
+                   CONCAT('Ingreso de persona: ',' con documento ', r.id_documento) as descripcion, 
+                   r.fechaSalida,
+                   'Sin observaciones de entrada y salida' as observaciones_mostrar
+            FROM registroentradapersona r
             INNER JOIN usuario u ON r.id_documento = u.id_documento
-            WHERE n.tabla_afectada = 'registroentreadapersona'
-              AND r.fechaEntrada BETWEEN :inicio AND :fin
+            WHERE r.fechaEntrada BETWEEN :inicio AND :fin
         ";
-        $columnas = ['Fecha Ingreso', 'Persona', 'Descripción', 'Fecha Salida', 'Administrador'];
+        $columnas = ['Fecha Ingreso', 'Persona', 'Descripción', 'Fecha Salida', 'Observaciones'];
         $params = [
             ':inicio' => $fecha_inicio . ' 00:00:00',
             ':fin' => $fecha_fin . ' 23:59:59'
@@ -131,44 +148,59 @@ switch ($modulo) {
         }
         
         $query = "
-        SELECT r.fechaEntrada, u.nombre_completo, o.nombre AS descripcion, r.fechaSalida, n.documento_generador 
-        FROM notificaciones n
-        INNER JOIN registroentradaobjetos r ON n.id_afectado = r.id_registroObjeto
+        SELECT r.fechaEntrada, u.nombre_completo, 
+               CONCAT('Ingreso de objeto: \"', o.nombre, '\" con serial ', o.id_serial) as descripcion, 
+               r.fechaSalida,
+               CASE 
+                   WHEN r.fechaSalida IS NULL OR r.fechaSalida = '0000-00-00 00:00:00' THEN 
+                       CONCAT('Observaciones de entrada: ', COALESCE(r.observaciones, 'Sin observaciones'))
+                   ELSE 
+                       CONCAT('Observaciones de entrada: ', COALESCE(r.observaciones, 'Sin observaciones'), 
+                              ' | Observaciones de salida: ', COALESCE(r.observacionesSalida, 'Sin observaciones'))
+               END as observaciones_mostrar
+        FROM registroentradaobjetos r
         INNER JOIN objetos o ON r.id_serial = o.id_serial
         INNER JOIN usuario u ON o.id_documento = u.id_documento
-        WHERE n.tabla_afectada = 'registro_entrada_objetos'
-          AND r.fechaEntrada BETWEEN :inicio1 AND :fin1 $whereFiltro1
+        WHERE r.fechaEntrada BETWEEN :inicio1 AND :fin1 $whereFiltro1
 
-        UNION ALL
+        UNION
 
-        SELECT r.fechaEntrada, u.nombre_completo, v.id_placa AS descripcion, r.fechaSalida, n.documento_generador 
-        FROM notificaciones n
-        INNER JOIN registroentradavehiculos r ON n.id_afectado = r.id_registroVehiculo
+        SELECT r.fechaEntrada, u.nombre_completo, 
+               CONCAT('Ingreso de vehículo con placa: ', v.id_placa) as descripcion, 
+               r.fechaSalida,
+               CASE 
+                   WHEN r.fechaSalida IS NULL OR r.fechaSalida = '0000-00-00 00:00:00' THEN 
+                       CONCAT('Observaciones de entrada: ', COALESCE(r.observaciones, 'Sin observaciones'))
+                   ELSE 
+                       CONCAT('Observaciones de entrada: ', COALESCE(r.observaciones, 'Sin observaciones'), 
+                              ' | Observaciones de salida: ', COALESCE(r.observacionesSalida, 'Sin observaciones'))
+               END as observaciones_mostrar
+        FROM registroentradavehiculos r
         INNER JOIN vehiculos v ON r.id_placa = v.id_placa
         INNER JOIN usuario u ON v.id_documento = u.id_documento
-        WHERE n.tabla_afectada = 'registro_entrada_vehiculos'
-          AND r.fechaEntrada BETWEEN :inicio2 AND :fin2 $whereFiltro2
+        WHERE r.fechaEntrada BETWEEN :inicio2 AND :fin2 $whereFiltro2
 
-        UNION ALL
+        UNION
 
-        SELECT r.fechaEntrada, u.nombre_completo, n.descripcion, r.fechaSalida, n.documento_generador
-        FROM notificaciones n
-        INNER JOIN registroentradapersona r ON n.id_afectado = r.id_registro
+        SELECT r.fechaEntrada, u.nombre_completo, 
+               CONCAT('Ingreso de persona: ',' con documento ', r.id_documento) as descripcion, 
+               r.fechaSalida,
+               'Sin observaciones de entrada y salida' as observaciones_mostrar
+        FROM registroentradapersona r
         INNER JOIN usuario u ON r.id_documento = u.id_documento
-        WHERE n.tabla_afectada = 'registroentreadapersona'
-          AND r.fechaEntrada BETWEEN :inicio3 AND :fin3 $whereFiltro3
+        WHERE r.fechaEntrada BETWEEN :inicio3 AND :fin3 $whereFiltro3
 
         ORDER BY fechaEntrada DESC
         ";
-        $columnas = ['Fecha Ingreso', 'Persona', 'Descripción', 'Fecha Salida', 'Administrador'];
+        $columnas = ['Fecha Ingreso', 'Persona', 'Descripción', 'Fecha Salida', 'Observaciones'];
         break;
+    
 }
 
 $stmt = $con->prepare($query);
 
 // Debug: Uncomment these lines if you need to debug the query and parameters
 // echo "Query: " . $query . "\n";
-// echo "Params: " . print_r($params, true) . "\n";
 
 foreach ($params as $key => $value) {
     $stmt->bindValue($key, $value);
@@ -211,7 +243,7 @@ class CustomPDF extends TCPDF {
         $this->SetAutoPageBreak(false, 0);
         $pageWidth = $this->getPageWidth();
         $pageHeight = $this->getPageHeight();
-        $this->Image('imgAdmin/Reporte_plantilla.jpg', 
+        $this->Image('imgAdmin/Reporte_plantilla.png', 
                   0,  // X: desde el borde izquierdo
                   0,  // Y: desde el borde superior
                   $pageWidth, 

@@ -79,10 +79,7 @@ if (isset($_POST["objetos_submit"])) {
                     <p>Administra los vehiculos segun tu necesidad</p>
                 </div>
 
-                
-                <button class="buscar_objeto_titulo" onclick="plantilla2()">Agregar</button>
-
-                <button class="buscar_objeto_titulo" id="abrirBuscar">Buscar Vehiculos</button>
+                <button class="buscar_objeto_titulo" id="abrirBuscar">Crear Vehiculos</button>
 
 
 
@@ -134,12 +131,25 @@ if (isset($_POST["objetos_submit"])) {
                     </div>
                     <?php foreach ($consulta as $filas) { ?>
                         <div class="vehiculos">
+                            
                             <h4><img src="../../uploads/<?php echo $filas['veh_pic'] ?>" alt="img" height="60px" width="60px" onerror="this.src='../../uploads/default_vehiculos.png'"></h4>
                             <h4><?php echo htmlentities($filas['id_placa']); ?></h4>
                             <h4><?php echo $filas['id_documento']; ?></h4>
                             <h4><?php echo $filas['nombre_completo']; ?></h4>
                             <h4><?php echo $filas['estado']; ?></h4>
-                            <h4><ion-icon name="create-outline" size="large" onclick="window.location.href='editar_vehiculo.php?placa=<?php echo $filas['id_placa']; ?>'"></ion-icon></h4>
+                            <h4 style="
+    align-items: center;
+    justify-content: center;
+    display: flex;
+">
+                                <ion-icon name="create-outline" size="large" onclick="window.location.href='editar_vehiculo.php?placa=<?php echo $filas['id_placa']; ?>'"></ion-icon>
+                                <form style="display: inline;"  method="post">
+                                    <input type="hidden" name="user_id" value="<?php echo $filas['id_documento']; ?>">
+                                    <input type="hidden" name="nombre" value="<?php echo $filas['nombre_completo']; ?>">
+                                    <button type="submit" style="width: 25px; height: 25px; 
+                                                        border:none; border-radius: 30%; background:#2980B9; color: white; cursor: pointer; display: flex; align-items: center; justify-content: center; margin-left:5px; box-shadow: 0px 0px 4px #0000009c;"  name="objetos_submit" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">+</button>
+                                </form>
+                            </h4>
                         </div>
                     <?php } ?>
                 <?php } ?>
@@ -189,63 +199,6 @@ if (isset($_POST["objetos_submit"])) {
                         <input type="number" name="user_id" required class="vehiculos_input">
 
                         <input type="submit" value="Continuar" class="vehiculos_submit" name="vehiculos_submit">
-                    </form>
-                </div>
-            </div>
-
-            <div class="buscar_user estadoDevehiculos" id="estado-vehiculos2">
-                <button class="vehiculos_cerrar_button" id="close-vehiculos2" onclick="retirarPlantilla2()"><i class="bi bi-x-lg"></i></button>
-                <div class="img_fondo">
-                    <form class="inside_img_fondo" method="post">
-                        <h1>¿Que deseas agregar?</h1>
-
-                        <input type="button" value="Vehiculo" class="vehiculos_submit" onclick="window.location.href='aggVehiculo.php'">
-
-                        <input type="button" value="Marca" class="vehiculos_submit" onclick="window.location.href='apartado_datos/marcas.php'">
-
-                        <input type="button" value="Modelo" class="vehiculos_submit" onclick="window.location.href='apartado_datos/modelo.php'">
-                    </form>
-                </div>
-            </div>
-
-            <!-- Formulario para agregar marca -->
-            <div class="buscar_user estadoDevehiculos" id="formulario-marca">
-                <button class="vehiculos_cerrar_button" onclick="cerrarFormularioVehiculo()"><i class="bi bi-x-lg"></i></button>
-                <div class="img_fondo">
-                    <form action="" class="inside_img_fondo" method="post" enctype="multipart/form-data">
-                        <h1>Registrar Marca</h1>
-
-                        <input type="text" name="marca" required class="vehiculos_input" placeholder="Nombre de la marca">
-
-                        <div style="display: flex; justify-content: space-between; width: 100%; margin-top: 15px;">
-                            <input type="button" value="Volver" class="vehiculos_submit" style="background-color: #63AEE8" onclick="volverAOpciones()">
-                            <input type="submit" value="Registrar" class="vehiculos_submit" name="submitmarca">
-                        </div>
-                    </form>
-                </div>
-            </div>
-
-            <!-- Formulario para agregar modelo -->
-            <div class="buscar_user estadoDevehiculos" id="formulario-modelo">
-                <button class="vehiculos_cerrar_button" onclick="cerrarFormularioModelo()"><i class="bi bi-x-lg"></i></button>
-                <div class="img_fondo">
-                    <form action="" class="inside_img_fondo" method="post">
-                        <h1>Registrar Modelo</h1>
-
-                        <select name="nombre_modelo" required class="vehiculos_input">
-                            <option value="">Seleccione el año del modelo</option>
-                            <?php
-                            $current_year = date('Y');
-                            for ($year = $current_year; $year >= 1800; $year--) {
-                                echo "<option value='$year'>$year</option>";
-                            }
-                            ?>
-                        </select>
-
-                        <div style="display: flex; justify-content: space-between; width: 100%; margin-top: 15px;">
-                            <input type="button" value="Volver" class="vehiculos_submit" style="background-color: #63AEE8" onclick="volverAOpciones()">
-                            <input type="submit" value="Registrar" class="vehiculos_submit" name="modelo">
-                        </div>
                     </form>
                 </div>
             </div>
@@ -305,13 +258,7 @@ if (isset($_POST["objetos_submit"])) {
                     plant.classList.add('estadoDevehiculos');
                 }
 
-                function plantilla2() {
-                    plant2.classList.remove('estadoDevehiculos');
-                }
-
-                function retirarPlantilla2() {
-                    plant2.classList.add('estadoDevehiculos');
-                }
+               
 
                 function mostrarFormularioVehiculo() {
                     plant2.classList.add('estadoDevehiculos');
@@ -378,7 +325,7 @@ if (isset($_POST["objetos_submit"])) {
                     WHERE v.id_estado != 4 and v.id_placa LIKE '%${placa_buscada}%' LIMIT 5`;
 
 
-                    fetch('fetch/BusquedaBarra.php', {
+                    fetch('fetch/busquedaBarra.php', {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json'
@@ -411,7 +358,23 @@ if (isset($_POST["objetos_submit"])) {
                                     <h4>${generales.id_documento}</h4>
                                     <h4>${generales.nombre_completo}</h4>
                                     <h4>${generales.estado}</h4>
-                                    <h4><ion-icon name="create-outline" size="large" onclick="window.location.href='editar_vehiculo.php?placa=${generales.id_placa}'"></ion-icon></h4>
+                                    <h4 style="align-items: center; justify-content: center; display: flex;">
+                                    
+                                        <ion-icon name="create-outline" size="large" onclick="window.location.href='editar_vehiculo.php?placa=${generales.id_placa}'"></ion-icon>
+                                        
+                                        <form style="display: inline;"  method="post">
+                                            <input type="hidden" name="user_id" value="${generales.id_documento}">
+                                            <input type="hidden" name="nombre" value="${generales.nombre}">
+                                            <button type="submit" style="width: 25px; height: 25px; 
+                                                        border:none; border-radius: 30%; background:#2980B9; color: white; cursor: pointer; display: flex; align-items: center; justify-content: center; margin-left:5px; box-shadow: 0px 0px 4px #0000009c;"  name="objetos_submit" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">+</button>
+                                        </form>
+                                        
+                                        
+                                        
+                                        
+                                        
+                                        
+                                    </h4>
                             
                                     `;
 

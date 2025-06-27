@@ -31,7 +31,7 @@ if (isset($_POST['submit'])) {
             $_SESSION['rol_name'] = "Administrador";
             echo " <script> window.location.href='../roles/admin/index.php' </script>";
             exit();
-        } elseif ($_SESSION['rol'] == 2 || $_SESSION['rol'] == 3  || $_SESSION['rol'] == 4) {
+        } elseif ($_SESSION['rol'] == 2 || $_SESSION['rol'] == 3  || $_SESSION['rol'] == 4 || $_SESSION['rol'] == 7) {
 
             switch ($_SESSION['rol']) {
                 case 2:
@@ -44,11 +44,14 @@ if (isset($_POST['submit'])) {
                 case 4:
                     $_SESSION['rol_name'] = "Instructor";
                     break;
+                case 7:
+                     $_SESSION['rol_name'] = "Invitado";
+                     break;
                 default:
                     echo "<script>window.location = './sesion_destroy.php   '</script>";
                     break;
             }
-            echo " <script> window.location.href='../roles/aprendiz/index.php'</script>";
+            echo " <script> window.location.href='../roles/usuario/index.php'</script>";
             exit();
         } elseif ($_SESSION['rol'] == 6) {
 

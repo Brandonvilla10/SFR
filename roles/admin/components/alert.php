@@ -205,9 +205,6 @@
             transform: translateY(0) scale(1);
         }
     }
-    @media (max-width:500px) {
-        .modal-global-error{
-            scale: 1.6;
-        }
-    }
+
+   
 </style>

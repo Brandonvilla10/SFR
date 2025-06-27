@@ -34,7 +34,7 @@ include('../../includes/sesion_validar.php');
                 <button class="cerrarModal" id="cerrarModalObservaciones">×</button>
             </div>
             <div class="cuerpoModal">
-                <textarea id="textoObservacion" placeholder="Escribe tus observaciones aquí..."></textarea>
+                <textarea id="textoObservacion" maxlength="50" placeholder="Escribe tus observaciones aquí..."></textarea>
                 <div class="botonesModal">
                     <button class="submit-btn" id="guardarObservacion">Guardar</button>
                     <button class="cancelar-btn" id="cancelarObservacion">Cancelar</button>
@@ -52,7 +52,7 @@ include('../../includes/sesion_validar.php');
         </div>
 
         <aside class="aside_barra">
-            <?php include('asidebar/asideBar.php') ?>
+            <?php include('asideBar/asideBar.php') ?>
         </aside>
 
 

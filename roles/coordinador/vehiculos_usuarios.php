@@ -2,7 +2,7 @@
 // VALIDACIONES E INCLUDES---------------------
 session_start();
 include('../../database/database.php');
-include('./components/alert.php');
+include('components/alert.php');
 include('../../includes/sesion_validar.php');
 // ---------------------------------------------
 $conexion = new database;

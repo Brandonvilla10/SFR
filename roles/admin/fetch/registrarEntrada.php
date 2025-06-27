@@ -1,7 +1,9 @@
 <?php
 include('../../../database/database.php');
+
 $conexion = new database;
 $con = $conexion->conectar();
+$con->exec("SET time_zone = '-05:00'");
 session_start();
 try {
     $nombre = $_SESSION['nombre'];
@@ -15,6 +17,7 @@ try {
 echo '<p>Error al definir el documento generador: ' . htmlspecialchars($e->getMessage()) . '</p>';
 exit;
 }
+
 
 $id_documento = json_decode(file_get_contents('php://input', true));
 $regex = '/^\d{8,}$/';

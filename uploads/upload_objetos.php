@@ -24,7 +24,7 @@ if (isset($_POST['submit']) || isset($_FILES['foto'])) {
     
     if (in_array($fileExt, $allowedExtensions)) {
         if ($fileError === 0) {
-            if ($fileSize < 2 * 1024 * 1024) {
+            if ($fileSize < 3 * 1024 * 1024) {
                 $newFileName = uniqid('', true) . "." . $fileExt;
                 $fileDestination = $uploadDir . $newFileName;
 

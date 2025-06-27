@@ -1,6 +1,9 @@
 <?php 
 include('database/database.php'); 
 include('roles/admin/components/alert.php');
+
+
+
 ?>
 
 <!DOCTYPE html>
@@ -22,14 +25,14 @@ $con = $conex->conectar();
 
 if(isset($_POST["botoncito"])){
 
-    $nombre = $_POST['nombreCompleto'];
+    $nombre = ucwords(strtolower($_POST['nombreCompleto']));
     $documento = $_POST['documento'];
     $correo  = $_POST['correo'];
     $contrasena = $_POST['contrasena'];
     $ficha = 1;
     $codigo = $_POST['documento'];
     $estado = 1;
-    $rol = 2;
+    $rol = 7;
 
 
     $encriptacion = password_hash($contrasena,PASSWORD_DEFAULT,array("pass"=>12));
@@ -37,7 +40,7 @@ if(isset($_POST["botoncito"])){
     $validacion = $con->prepare("SELECT * FROM usuario where id_documento = '$documento' or correo = '$correo'");
     $validacion -> execute();
 
-    $fila = $validacion->fetchAll(PDO::FETCH_ASSOC);
+    $fila = $validacion->fetch(PDO::FETCH_ASSOC);
 
     if($fila){
         echo "  
@@ -128,13 +131,13 @@ if(isset($_POST["botoncito"])){
     </section>
 
     <div class="social-bar">
-        <a href="https://www.facebook.com" target="_blank" class="social-icon">
+        <a href="https://www.tik-tok.com" target="_blank" class="social-icon">
             <img src="assets/img/iconosRedesSociales/tik-tok.webp" width="28px" height="28px" alt="">
         </a>
-        <a href="https://www.instagram.com" target="_blank" class="social-icon">
+        <a href="https://www.facebook.com" target="_blank" class="social-icon">
             <img src="assets/img/iconosRedesSociales/facebook.webp" width="28px" height="28px" alt="">
         </a>
-        <a href="https://www.tiktok.com" class="social-icon">
+        <a href="https://www.instagram.com" class="social-icon">
             <img src="assets/img/iconosRedesSociales/logotipo-de-instagram.webp"  width="28px" height="28px" alt="">
         </a>
     </div>

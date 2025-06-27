@@ -44,6 +44,10 @@ html,body{
     overflow-x: hidden;
 }
 
+tr:hover{
+    background-color: #bfe2fd;
+    
+}
 
 
 /* Ajustes para pantallas más grandes que 767px (tabletas y escritorios) */
@@ -200,7 +204,7 @@ html,body{
     /* Ajustes para la tabla */
     .tabla_home{
         margin-top: 10px;
-        height: 200px;
+        height: auto;
         overflow-y: auto;
     }
 
@@ -210,6 +214,7 @@ html,body{
         padding: 5px;
         border-collapse: collapse;
         font-size: 14px;
+        overflow: hidden;
     }
 
     .tabla_users thead{
@@ -224,7 +229,7 @@ html,body{
 
     .tabla_users td{
         border-bottom: 2px solid #f7f7f7;
-        padding: 10px;
+        padding: 15px;
         text-align: center;
     }
 
@@ -413,6 +418,7 @@ html,body{
         margin:  0 20px 0 20px;
         padding: 15px;
         border-radius: 25px;
+        overflow: auto;
     }
 
 
@@ -422,7 +428,7 @@ html,body{
 
     .tabla_home{
         margin-top: 10px;
-        height: 200px;
+        height: auto;
         overflow-y: auto;
         overflow-x: auto;
        
@@ -448,7 +454,7 @@ html,body{
 
     .tabla_users td{
         border-bottom: 2px solid #f7f7f7;
-        padding: 10px;
+        padding: 15px;
         text-align: center;
     }
 }
@@ -571,7 +577,7 @@ html,body{
 
     /* AQUI TERMINA LO DE LAS GRAFICAS Y EMPIZA LO DE LA TABLA  */
     .ingresos_usuarios{
-        position: static;
+        
         height: 45%;
         max-height: 310px;
         background-color: #FFFFFF;
@@ -589,7 +595,7 @@ html,body{
 
     .tabla_home{
         margin-top: 10px;
-        height: 200px;
+        height: auto;
         overflow-y: auto;
 
         
@@ -613,7 +619,7 @@ html,body{
 
     .tabla_users td{
         border-bottom: 2px solid #f7f7f7;
-        padding: 10px;
+        padding: 15px;
         text-align: center;
     }
 }

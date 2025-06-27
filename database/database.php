@@ -20,6 +20,9 @@ class database{
             ];
 
             $pdo = new PDO($cone,$this->user ,$this->password,$opcion);
+            
+            $pdo->exec("SET time_zone = '-05:00'");
+
 
             return $pdo;
 

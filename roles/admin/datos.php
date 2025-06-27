@@ -152,22 +152,6 @@ $codigo = isset($_SESSION['documento']) ? $_SESSION['documento'] : '';
                     </div>
                 </div>
             </div>
-            <div class="object-card" onclick="window.location.href='apartado_datos/estado.php'">
-                <div class="object-header">
-                    <div class="object-icon">
-                        <img src="../../assets/img/datos/datos.webp">
-                    </div>
-                    <div class="object-title">
-                        <div class="object-name">Estados</div>
-                    </div>
-                </div>
-                <div class="object-details">
-                    <div class="detail-item">
-                        <span class="detail-label">Podras visualizar, editar, eliminar y crear estados</span>
-                        <i class="bi bi-arrow-right"></i>
-                    </div>
-                </div>
-            </div>
             <div class="object-card" onclick="window.location.href='apartado_datos/codigoQR.php'">
                 <div class="object-header">
                     <div class="object-icon">

@@ -87,9 +87,10 @@
     .main {
         margin: 7% 10%;
     }
-    * {
-        text-align: left;
-    }
+   
+   .descrip{
+       text-align: left;
+   }
     .tituloContactanos {
         text-align: left;
     }

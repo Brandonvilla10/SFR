@@ -4,6 +4,19 @@ $conexion = new database;
 $con = $conexion->conectar();
 session_start();
 
+try {
+    $nombre = $_SESSION['nombre'];
+    $con->exec("SET @documento_generador = '$nombre'");
+    
+    if (empty($nombre)) {
+        // Si sigue vacía, establecer un valor predeterminado
+        $con->exec("SET @documento_generador = 'Usuario Sistema'");
+    }
+} catch (Exception $e) {
+echo '<p>Error al definir el documento generador: ' . htmlspecialchars($e->getMessage()) . '</p>';
+exit;
+}
+
 header('Content-Type: application/json');
 
 $datos = file_get_contents('php://input');

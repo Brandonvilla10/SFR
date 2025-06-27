@@ -75,12 +75,29 @@ if (isset($_POST['submit'])) {
             $updates[] = 'id_rol = :id_rol';
             $params[':id_rol'] = $_POST['id_rol'];
         }
-        if (!empty($_POST['fichaActual'])) {
-            $insertarDetalle = $con->prepare("INSERT INTO detallematricula (id_documento, id_ficha, id_estado) VALUES (:id_documento, :id_ficha, 1)");
-            $insertarDetalle->bindParam(':id_documento', $documentoVentana, PDO::PARAM_STR);
-            $insertarDetalle->bindParam(':id_ficha', $_POST['fichaActual'], PDO::PARAM_STR);
-            $insertarDetalle->execute();
+      if (!empty($_POST['fichaActual'])) {
+            $fichaNueva = $_POST['fichaActual'];
+
+            $consultaExistencia = $con->prepare("SELECT id_detalle FROM detallematricula WHERE id_documento = :id_documento AND id_estado = 1");
+            $consultaExistencia->bindParam(':id_documento', $documentoVentana, PDO::PARAM_STR);
+            $consultaExistencia->execute();
+            $fichaActiva = $consultaExistencia->fetch(PDO::FETCH_ASSOC);
+
+            if ($fichaActiva) {
+                
+                $actualizarFicha = $con->prepare("UPDATE detallematricula SET id_ficha = :id_ficha WHERE id_detalle = :id_detalle");
+                $actualizarFicha->bindParam(':id_ficha', $fichaNueva, PDO::PARAM_STR);
+                $actualizarFicha->bindParam(':id_detalle', $fichaActiva['id_detalle'], PDO::PARAM_INT);
+                $actualizarFicha->execute();
+            } else {
+                
+                $insertarDetalle = $con->prepare("INSERT INTO detallematricula (id_documento, id_ficha, id_estado) VALUES (:id_documento, :id_ficha, 1)");
+                $insertarDetalle->bindParam(':id_documento', $documentoVentana, PDO::PARAM_STR);
+                $insertarDetalle->bindParam(':id_ficha', $fichaNueva, PDO::PARAM_STR);
+                $insertarDetalle->execute();
+            }
         }
+
 
         // Ejecutar actualización si hay datos
         if (!empty($updates)) {
@@ -216,7 +233,7 @@ $usu = "../../uploads/usu.png";
 
 
                                         <label for="rol" class="form-label">rol</label>
-                                        <select name="id_rol" id="" class="form-input">
+                                        <select name="id_rol" id="id_rol" class="form-input">
                                             <option value="<?php echo $fila['id_rol']; ?>">
                                                 <?php echo $fila['nombre_rol']; ?>
                                             </option>
@@ -241,12 +258,19 @@ $usu = "../../uploads/usu.png";
                                         $sqlficha->execute();
                                         $resultado = $sqlficha->fetch(PDO::FETCH_ASSOC);
 
-                                        ?>
+                                        
+                                        if($fila['id_rol'] == 2){ ?>
+                                            
+                                            
+                                        
+                                        
+                                        
+                                        
 
                                         <label for="ficha" class="form-label">Ficha</label>
 
-                                        <div class="buscarFicha" id="buscarFicha">
-                                            <input name="fichaActual" id="fichaActual" type="number" readonly value="<?php echo ($resultado) ? $resultado['id_ficha'] : "No Asignada"  ?>">
+                                      <div class="buscarFicha" id="buscarFicha">
+                                            <input name="fichaActual" id="fichaActual" type="number" readonly value="<?php echo ($resultado) ? $resultado['id_ficha'] : 0 ?>">
 
                                             <div class="fichaContenido">
 
@@ -271,6 +295,9 @@ $usu = "../../uploads/usu.png";
                                             </div>
                                         </div>
                                     </div>
+                                        
+                                        <?php }?>
+                                    </div>
 
                                     <div class="form-actions">
                                         <input type="submit" name="submit" class="btn-submit">
@@ -293,20 +320,23 @@ $usu = "../../uploads/usu.png";
 
         <script>
             document.addEventListener('DOMContentLoaded', function() {
-                const buscarFicha = document.getElementById("buscarFicha");
+              const buscarFicha = document.getElementById("buscarFicha");
                 const fichaContenido = document.querySelector(".fichaContenido");
-
+                
                 buscarFicha.addEventListener("click", () => {
-                    if (fichaContenido.style.visibility == "hidden") {
-                        fichaContenido.style.visibility = "visible"
-                        fichaContenido.style.opacity = 1
+                    const computedStyle = window.getComputedStyle(fichaContenido);
+                
+                    if (computedStyle.visibility === "hidden") {
+                        fichaContenido.style.visibility = "visible";
+                        fichaContenido.style.opacity = 1;
                     } else {
-                        fichaContenido.style.visibility = "hidden"
-                        fichaContenido.style.opacity = 0
+                        fichaContenido.style.visibility = "hidden";
+                        fichaContenido.style.opacity = 0;
                     }
+                });
 
-
-                })
+                const id_rol = document.getElementById("id_rol")
+              
 
                 fichaContenido.addEventListener("click", (e) => {
                     e.stopPropagation()
@@ -378,6 +408,14 @@ $usu = "../../uploads/usu.png";
                     });
                 });
             }
+
+            id_rol.addEventListener("change", () => {
+                if (id_rol.value == 2) {
+                    buscarFicha.style.visibility = "visible"
+                } else {
+                    buscarFicha.style.visibility = "hidden"; fichaActual.value = null
+                }
+            })
 
 
 

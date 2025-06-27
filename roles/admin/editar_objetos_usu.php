@@ -118,28 +118,34 @@ $consulta_1 = $objetos_1->fetch();
                                 <div class="form-group">
 
                                     <label for="" class="form-label">Marca</label>
-                                    <select name="marca_nueva" id="" class="form-input">
+                                    <div style="display:flex; width:100%; align-items:center">
+
+                                        <select name="marca_nueva" id="" class="form-input">
 
 
-                                        <option value="<?php echo $consulta_1['id_marca'] ?> ">
-                                            <?php echo $consulta_1['nombre_marca'] ?>
-                                        </option>
+                                            <option value="<?php echo $consulta_1['id_marca'] ?> ">
+                                                <?php echo $consulta_1['nombre_marca'] ?>
+                                            </option>
 
-                                        <?php
-                                        $sql = $con->prepare("SELECT * FROM marca WHERE id_tipo_marca = 2 and id_marca != '$consulta_1[id_marca]' ORDER BY nombre_marca ASC");
-                                        $sql->execute();
+                                            <?php
+                                            $sql = $con->prepare("SELECT * FROM marca WHERE id_tipo_marca = 2 and id_marca != '$consulta_1[id_marca]' ORDER BY nombre_marca ASC");
+                                            $sql->execute();
 
-                                        $consulta_2 = $sql->fetchAll();
+                                            $consulta_2 = $sql->fetchAll();
 
-                                        foreach ($consulta_2 as $marca) { ?>
+                                            foreach ($consulta_2 as $marca) { ?>
 
-                                            <option value="<?php echo $marca['id_marca'] ?>"> <?php echo $marca['nombre_marca'] ?> </option>
-
-
-                                        <?php  } ?>
+                                                <option value="<?php echo $marca['id_marca'] ?>"> <?php echo $marca['nombre_marca'] ?> </option>
 
 
-                                    </select>
+                                            <?php  } ?>
+
+
+                                        </select>
+
+                                        <button type="button" class="add-marca-btn" style="width: 25px; height: 25px; 
+                                            border:none; border-radius: 30%; background:#2980B9; color: white; cursor: pointer; display: flex; align-items: center; justify-content: center; margin-left:5px; box-shadow: 0px 0px 4px #0000009c;" onclick="window.location.href='apartado_datos/marcas.php'">+</button>
+                                    </div>
                                 </div>
 
                                 <div class="form-group">
@@ -194,18 +200,18 @@ $consulta_1 = $objetos_1->fetch();
     //  ENVIO DE LOS DATOS MEDIANTE PHP 
     if (isset($_POST['enviar'])) {
 
-        
+
         try {
             $nombre = $_SESSION['nombre'];
             $con->exec("SET @documento_generador = '$nombre'");
-            
+
             if (empty($nombre)) {
                 // Si sigue vacía, establecer un valor predeterminado
                 $con->exec("SET @documento_generador = 'Usuario Sistema'");
             }
         } catch (Exception $e) {
-        echo '<p>Error al definir el documento generador: ' . htmlspecialchars($e->getMessage()) . '</p>';
-        exit;
+            echo '<p>Error al definir el documento generador: ' . htmlspecialchars($e->getMessage()) . '</p>';
+            exit;
         }
 
         $ruta = $_GET['route'];
@@ -239,7 +245,7 @@ $consulta_1 = $objetos_1->fetch();
                 if (elemento.value.length > limite) {
                     elemento.value = elemento.value.substring(0, limite)
                 }
-                
+
             })
         }
 
@@ -247,8 +253,8 @@ $consulta_1 = $objetos_1->fetch();
         const nombreObjeto = document.getElementById("nombreObjeto")
         const caracteristicaObjeto = document.getElementById("caracteristicaObjeto")
 
-        limitar(nombreObjeto,50)
-        limitar(caracteristicaObjeto,50)
+        limitar(nombreObjeto, 50)
+        limitar(caracteristicaObjeto, 50)
 
         const imagen = document.getElementById('imagen_objeto');
         const input = document.getElementById('fileUpload')

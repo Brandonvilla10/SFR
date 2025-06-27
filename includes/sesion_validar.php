@@ -6,7 +6,7 @@ function validarSesionRol($tipo, $rol){
 
     if($rol == 2){
 
-        if(!in_array($tipo, [2,3,4])){
+        if(!in_array($tipo, [2,3,4,7])){
             echo "<script>
                     alert('Rol no permitido');
                     window.location.href = '../../includes/sesion_destroy.php';

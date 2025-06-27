@@ -32,39 +32,44 @@ $rol =$_SESSION['rol_name'];
         <hr class="white">
 
         <a href="./index.php"> <div class="seccion" id="seccion">
-         <img class="icono" src="asidebar/icons/home.png" alt="home">
+         <img class="icono" src="asideBar/icons/home.png" alt="home">
             <p class="seccionTexto">Inicio</p>
         </div></a>
 
         <a href="./objetos_usuario.php"> <div class="seccion">
-            <img class="icono" src="asidebar/icons/objetos.png" alt="">
+            <img class="icono" src="asideBar/icons/objetos.png" alt="">
             <p class="seccionTexto">Objetos</p>
         </div></a>
 
         <a href="./vehiculos_usuarios.php"> <div class="seccion">
-            <img class="icono" src="asidebar/icons/carroBlanco.png" alt="">
+            <img class="icono" src="asideBar/icons/carroBlanco.png" alt="">
             <p class="seccionTexto">Vehiculos</p>
         </div></a>
 
         <a href="./scanner.php"> <div class="seccion">
-            <img class="icono" src="asidebar/icons/escanearBlanco.png" alt="">
+            <img class="icono" src="asideBar/icons/escanearBlanco.png" alt="">
             <p class="seccionTexto">Escanear</p>
+        </div></a>
+        
+             <a href="./codigoQR.php"> <div class="seccion">
+            <img class="icono" src="asideBar/icons/generar.png" alt="">
+            <p class="seccionTexto">Generar QR</p>
         </div></a>
 
         <hr class="white">
 
         <a href="./notificaciones.php"> <div class="seccion">
-            <img class="icono" src="asidebar/icons/notificaciones.png" alt="">
+            <img class="icono" src="asideBar/icons/notificaciones.png" alt="">
             <p class="seccionTexto">Notificaciones</p>
         </div></a>
 
         <a href="./configuracion.php"> <div class="seccion">
-            <img class="icono" src="asidebar/icons/configuraciones.png" alt="">
+            <img class="icono" src="asideBar/icons/configuraciones.png" alt="">
             <p class="seccionTexto">Configuraciones</p>
         </div></a>
 
         <a href="../../includes/sesion_destroy.php"> <div class="seccion">
-            <img class="icono" src="asidebar/icons/salir.png" alt="">
+            <img class="icono" src="asideBar/icons/Salir.png" alt="">
             <p class="seccionTexto">Salir</p>
         </div></a>
 
@@ -98,6 +103,6 @@ $rol =$_SESSION['rol_name'];
 
 
 </script>
-    <script src="./asidebar/script.js"></script>
+    <script src="./asideBar/script.js"></script>
 </body>
 </html>

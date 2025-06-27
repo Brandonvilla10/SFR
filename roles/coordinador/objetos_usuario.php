@@ -1,10 +1,10 @@
 <?php
 session_start();
 require_once('../../database/database.php');
-include '../admin/components/alert.php';
+include ('components/alert.php');
+include('../../includes/sesion_validar.php');
 $conexion = new database;
 $con = $conexion->conectar();
-include('../../includes/sesion_validar.php');
 
 $codigo = isset($_SESSION['documento']) ? $_SESSION['documento'] : '';
 $nombre = isset($_SESSION['nombre']) ? explode(" ", $_SESSION['nombre'])[0] : '';
@@ -224,7 +224,7 @@ if(isset($_POST['editarBoton'])){
 
                 <label for="foto" class="label_titulo">Foto</label>
 
-                <input type="file" id="foto" name="foto" class="data_input">
+                <input type="file" id="foto" name="foto" class="data_input" accept=".jpg,.jpeg,.png">
 
                 <label for="" class="label_titulo">Caracteristicas</label>
                 <textarea class="input_caracteristica" id="caracteristicas" name="caracteristica" placeholder="Escribe aquí..."></textarea>
@@ -242,7 +242,7 @@ if(isset($_POST['editarBoton'])){
 
                 </select>
 
-                <label for="tipo">Tipo de Objeto</label>
+                <label for="tipo" class="label_titulo">Tipo de Objeto</label>
                 <select name="tipoObjeto" id="tipo" class="selectos">
 
                     <?php $sql_3 = $con->prepare('SELECT * FROM tipoobjeto ORDER BY tipoObjeto ASC');

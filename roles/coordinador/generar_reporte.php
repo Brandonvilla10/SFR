@@ -18,13 +18,19 @@ $params = [];
 switch ($modulo) {
     case 'objetos':
         $query = "
-            SELECT r.fechaEntrada, u.nombre_completo, o.nombre AS objeto, r.fechaSalida, 'N/A' as documento_generador
+            SELECT r.fechaEntrada, u.nombre_completo, o.nombre AS objeto, r.fechaSalida,
+                   CASE 
+                       WHEN r.fechaSalida IS NULL OR r.fechaSalida = '0000-00-00 00:00:00' THEN 
+                           COALESCE(r.observaciones, 'Sin observaciones')
+                       ELSE 
+                           COALESCE(r.observacionesSalida, 'Sin observaciones')
+                   END as observaciones_mostrar
             FROM registroentradaobjetos r
             INNER JOIN objetos o ON r.id_serial = o.id_serial
             INNER JOIN usuario u ON o.id_documento = u.id_documento
             WHERE r.fechaEntrada BETWEEN :inicio AND :fin
         ";
-        $columnas = ['Fecha Ingreso', 'Persona', 'Objeto', 'Fecha Salida', 'Administrador'];
+        $columnas = ['Fecha Ingreso', 'Persona', 'Objeto', 'Fecha Salida', 'Observaciones'];
         $params = [
             ':inicio' => $fecha_inicio . ' 00:00:00',
             ':fin' => $fecha_fin . ' 23:59:59'
@@ -46,15 +52,19 @@ switch ($modulo) {
 
     case 'vehiculos':
         $query = "
-            SELECT r.fechaEntrada, u.nombre_completo, v.id_placa, r.fechaSalida, n.documento_generador
-            FROM notificaciones n
-            INNER JOIN registroentradavehiculos r ON n.id_afectado = r.id_registroVehiculo
+            SELECT r.fechaEntrada, u.nombre_completo, v.id_placa AS objeto, r.fechaSalida,
+                   CASE 
+                       WHEN r.fechaSalida IS NULL OR r.fechaSalida = '0000-00-00 00:00:00' THEN 
+                           COALESCE(r.observaciones, 'Sin observaciones')
+                       ELSE 
+                           COALESCE(r.observacionesSalida, 'Sin observaciones')
+                   END as observaciones_mostrar
+            FROM registroentradavehiculos r
             INNER JOIN vehiculos v ON r.id_placa = v.id_placa
             INNER JOIN usuario u ON v.id_documento = u.id_documento
-            WHERE n.tabla_afectada = 'registro_entrada_vehiculos'
-              AND r.fechaEntrada BETWEEN :inicio AND :fin
+            WHERE r.fechaEntrada BETWEEN :inicio AND :fin
         ";
-        $columnas = ['Fecha Ingreso', 'Persona', 'Placa', 'Fecha Salida', 'Administrador'];
+        $columnas = ['Fecha Ingreso', 'Persona', 'Placa', 'Fecha Salida', 'Observaciones'];
         $params = [
             ':inicio' => $fecha_inicio . ' 00:00:00',
             ':fin' => $fecha_fin . ' 23:59:59'
@@ -74,14 +84,13 @@ switch ($modulo) {
 
     case 'personas':
         $query = "
-            SELECT r.fechaEntrada, u.nombre_completo, n.descripcion, r.fechaSalida, n.documento_generador
-            FROM notificaciones n
-            INNER JOIN registroentradapersona r ON n.id_afectado = r.id_registro
+            SELECT r.fechaEntrada, u.nombre_completo, 'Persona' as descripcion, r.fechaSalida,
+                   'Sin observaciones' as observaciones_mostrar
+            FROM registroentradapersona r
             INNER JOIN usuario u ON r.id_documento = u.id_documento
-            WHERE n.tabla_afectada = 'registroentreadapersona'
-              AND r.fechaEntrada BETWEEN :inicio AND :fin
+            WHERE r.fechaEntrada BETWEEN :inicio AND :fin
         ";
-        $columnas = ['Fecha Ingreso', 'Persona', 'Descripción', 'Fecha Salida', 'Administrador'];
+        $columnas = ['Fecha Ingreso', 'Persona', 'Descripción', 'Fecha Salida', 'Observaciones'];
         $params = [
             ':inicio' => $fecha_inicio . ' 00:00:00',
             ':fin' => $fecha_fin . ' 23:59:59'
@@ -98,7 +107,6 @@ switch ($modulo) {
         break;
 
     default: // todos
-        $whereFiltro1 = $whereFiltro2 = $whereFiltro3 = '';
         $params = [
             ':inicio1' => $fecha_inicio . ' 00:00:00',
             ':fin1' => $fecha_fin . ' 23:59:59',
@@ -107,66 +115,90 @@ switch ($modulo) {
             ':inicio3' => $fecha_inicio . ' 00:00:00',
             ':fin3' => $fecha_fin . ' 23:59:59'
         ];
+        
+        $whereFiltro1 = '';
+        $whereFiltro2 = '';
+        $whereFiltro3 = '';
+        
         if ($filtro !== '') {
-            $whereFiltro1 = " AND (o.id_serial = :filtro1 OR o.nombre LIKE :filtroLike1 OR u.nombre_completo LIKE :filtroLike1 OR o.id_documento = :filtro1)";
-            $whereFiltro2 = " AND (v.id_placa = :filtro2 OR u.nombre_completo LIKE :filtroLike2 OR v.id_documento = :filtro2)";
-            $whereFiltro3 = " AND (r.id_documento = :filtro3 OR u.nombre_completo LIKE :filtroLike3)";
+            $whereFiltro1 = " AND (o.id_serial = :filtro1 OR o.nombre LIKE :filtroLike1 OR u.nombre_completo LIKE :filtroLikeU1 OR o.id_documento = :filtroDoc1)";
+            $whereFiltro2 = " AND (v.id_placa = :filtro2 OR u.nombre_completo LIKE :filtroLikeU2 OR v.id_documento = :filtroDoc2)";
+            $whereFiltro3 = " AND (r.id_documento = :filtro3 OR u.nombre_completo LIKE :filtroLikeU3)";
+            
+            // Asignar parámetros únicos para cada subconsulta
             $params[':filtro1'] = $filtro;
             $params[':filtroLike1'] = "%$filtro%";
+            $params[':filtroLikeU1'] = "%$filtro%";
+            $params[':filtroDoc1'] = $filtro;
+            
             $params[':filtro2'] = $filtro;
-            $params[':filtroLike2'] = "%$filtro%";
+            $params[':filtroLikeU2'] = "%$filtro%";
+            $params[':filtroDoc2'] = $filtro;
+            
             $params[':filtro3'] = $filtro;
-            $params[':filtroLike3'] = "%$filtro%";
+            $params[':filtroLikeU3'] = "%$filtro%";
         }
+        
         $query = "
-        SELECT r.fechaEntrada, u.nombre_completo, o.nombre AS descripcion, r.fechaSalida, n.documento_generador 
-        FROM notificaciones n
-        INNER JOIN registroentradaobjetos r ON n.id_afectado = r.id_registroObjeto
+        SELECT r.fechaEntrada, u.nombre_completo, o.nombre as descripcion, r.fechaSalida,
+               CASE 
+                   WHEN r.fechaSalida IS NULL OR r.fechaSalida = '0000-00-00 00:00:00' THEN 
+                       COALESCE(r.observaciones, 'Sin observaciones')
+                   ELSE 
+                       COALESCE(r.observacionesSalida, 'Sin observaciones')
+               END as observaciones_mostrar
+        FROM registroentradaobjetos r
         INNER JOIN objetos o ON r.id_serial = o.id_serial
         INNER JOIN usuario u ON o.id_documento = u.id_documento
-        WHERE n.tabla_afectada = 'registro_entrada_objetos'
-          AND r.fechaEntrada BETWEEN :inicio1 AND :fin1 $whereFiltro1
+        WHERE r.fechaEntrada BETWEEN :inicio1 AND :fin1 $whereFiltro1
 
-        UNION ALL
+        UNION
 
-        SELECT r.fechaEntrada, u.nombre_completo, v.id_placa AS descripcion, r.fechaSalida, n.documento_generador 
-        FROM notificaciones n
-        INNER JOIN registroentradavehiculos r ON n.id_afectado = r.id_registroVehiculo
+        SELECT r.fechaEntrada, u.nombre_completo, v.id_placa as descripcion, r.fechaSalida,
+               CASE 
+                   WHEN r.fechaSalida IS NULL OR r.fechaSalida = '0000-00-00 00:00:00' THEN 
+                       COALESCE(r.observaciones, 'Sin observaciones')
+                   ELSE 
+                       COALESCE(r.observacionesSalida, 'Sin observaciones')
+               END as observaciones_mostrar
+        FROM registroentradavehiculos r
         INNER JOIN vehiculos v ON r.id_placa = v.id_placa
         INNER JOIN usuario u ON v.id_documento = u.id_documento
-        WHERE n.tabla_afectada = 'registro_entrada_vehiculos'
-          AND r.fechaEntrada BETWEEN :inicio2 AND :fin2 $whereFiltro2
+        WHERE r.fechaEntrada BETWEEN :inicio2 AND :fin2 $whereFiltro2
 
-        UNION ALL
+        UNION
 
-        SELECT r.fechaEntrada, u.nombre_completo, n.descripcion, r.fechaSalida, n.documento_generador
-        FROM notificaciones n
-        INNER JOIN registroentradapersona r ON n.id_afectado = r.id_registro
+        SELECT r.fechaEntrada, u.nombre_completo, 'Persona' as descripcion, r.fechaSalida,
+               'Sin observaciones' as observaciones_mostrar
+        FROM registroentradapersona r
         INNER JOIN usuario u ON r.id_documento = u.id_documento
-        WHERE n.tabla_afectada = 'registroentreadapersona'
-          AND r.fechaEntrada BETWEEN :inicio3 AND :fin3 $whereFiltro3
+        WHERE r.fechaEntrada BETWEEN :inicio3 AND :fin3 $whereFiltro3
 
         ORDER BY fechaEntrada DESC
         ";
-        $columnas = ['Fecha Ingreso', 'Persona', 'Descripción', 'Fecha Salida', 'Administrador'];
+        $columnas = ['Fecha Ingreso', 'Persona', 'Descripción', 'Fecha Salida', 'Observaciones'];
         break;
 }
 
-// Debug: Imprimir la consulta y parámetros (quitar en producción)
-// echo "<pre>";
-// echo "Módulo: " . $modulo . "\n";
-// echo "Filtro: '" . $filtro . "'\n";
-// echo "Query: " . $query . "\n";
-// echo "Params: " . print_r($params, true) . "\n";
-// echo "</pre>";
-// die(); // Detener ejecución para ver el debug
-
 $stmt = $con->prepare($query);
+
+// Debug: Uncomment these lines if you need to debug the query and parameters
+// echo "Query: " . $query . "\n";
+
 foreach ($params as $key => $value) {
     $stmt->bindValue($key, $value);
 }
-$stmt->execute();
-$datos = $stmt->fetchAll(PDO::FETCH_NUM);
+
+try {
+    $stmt->execute();
+    $datos = $stmt->fetchAll(PDO::FETCH_NUM);
+} catch (PDOException $e) {
+    // Manejo de errores más detallado
+    echo "Error en la consulta: " . $e->getMessage();
+    echo "<br>Query: " . $query;
+    echo "<br>Params: " . print_r($params, true);
+    exit;
+}
 
 // Reemplazar valores nulos o vacíos en la columna de salida por "Dentro del SENA"
 foreach ($datos as &$fila) {
@@ -194,7 +226,7 @@ class CustomPDF extends TCPDF {
         $this->SetAutoPageBreak(false, 0);
         $pageWidth = $this->getPageWidth();
         $pageHeight = $this->getPageHeight();
-        $this->Image('imgAdmin/Reporte_plantilla.png', 
+        $this->Image('assets/img/Reporte_plantilla.png', 
                   0,  // X: desde el borde izquierdo
                   0,  // Y: desde el borde superior
                   $pageWidth, 

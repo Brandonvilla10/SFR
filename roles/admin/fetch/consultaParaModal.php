@@ -43,7 +43,7 @@ if (!$documento) {
                             $estado = 1;
                             $consultaObjetos->bindParam(':estadoObjeto', $estado); 
                         }else if($estadoUsuario == 3){ 
-                            $estado = 2;
+                            $estado = 3;
                             $consultaObjetos->bindParam(':estadoObjeto', $estado); 
                         }
                         $consultaObjetos->execute();
@@ -63,7 +63,7 @@ if (!$documento) {
                             $estado = 1;
                             $consultaVehiculos->bindParam(':estadoVehiculo', $estado); 
                         }else if($estadoUsuario == 3){ 
-                            $estado = 2;
+                            $estado = 3;
                             $consultaVehiculos->bindParam(':estadoVehiculo', $estado); 
                         }
                         $consultaVehiculos->execute();

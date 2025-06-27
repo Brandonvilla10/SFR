@@ -1,7 +1,7 @@
 <?php
 session_start();
 include('../../database/database.php');
-include('./components/alert.php');
+include('components/alert.php');
 $conexion = new database;
 $con = $conexion->conectar();
 include('../../includes/sesion_validar.php');

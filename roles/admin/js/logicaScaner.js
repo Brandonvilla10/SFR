@@ -7,6 +7,14 @@ import {
   limpiarObservaciones,
 } from "./modalObservacion.js";
 
+
+//   contedores aqui van declarados
+let informacionUsuario = document.getElementById("informacionUsuario");
+let contenedorObjetos = document.getElementById("contenedorObjetos");
+let contenedorVehiculos = document.getElementById("contenedorVehiculos");
+
+// ----------------------------------------------------------------------------------------
+
 let alerta = document.getElementById("alerta");
 let alertaBienvenida = document.getElementById("alertaBienvenida");
 
@@ -176,7 +184,7 @@ async function startCamera() {
     scanning = true;
     scanQR();
   } catch (err) {
-    console.error("Error al acceder a la cámara:", err);
+    
     resultDiv.textContent = "Error al acceder a la cámara: " + err.message;
   }
 }
@@ -222,7 +230,17 @@ function scanQR() {
 
     // Si se encontró un código QR
     if (code) {
-      const regex = /^\d{8,}$/;
+      
+      entradaObjetos = [];
+      entradavehiculos = [];
+      limpiarObservaciones();
+
+      informacionUsuario.innerHTML = "";
+      contenedorObjetos.innerHTML = "";
+      contenedorVehiculos.innerHTML = "";
+      
+
+      const regex = /^\d{6,}$/;
 
       if (regex.test(code.data)) {
         stopCamera();
@@ -232,17 +250,10 @@ function scanQR() {
         }, 7);
 
         logicaInformacion(code.data);
-
-
       } else {
         stopCamera();
         videoContainer.style.background = "red";
-        setTimeout(() => {
-          alert(
-            "Alerta codigo qr no valido! Valor del qr ingresado -> :  " +
-              code.data
-          );
-        }, 500);
+        cerrar()
       }
     }
   }
@@ -287,22 +298,13 @@ function logicaInformacion(parametroDocumento) {
       body: parametroDocumento,
     });
 
-
-    //   contedores aqui van declarados
-    let informacionUsuario = document.getElementById("informacionUsuario");
-    let contenedorObjetos = document.getElementById("contenedorObjetos");
-    let contenedorVehiculos = document.getElementById("contenedorVehiculos");
-
-    // ----------------------------------------------------------------------------------------
-
-
-
+    
     // declaracion de variables segun la respuesta del documento ./fetch/consultaáraModal
     let respuesta = await datos.json();
 
-    if(respuesta.error){
-      cerrar()
-      location.reload()
+    if (respuesta.error) {
+      cerrar();
+      location.reload();
     }
 
     if (respuesta.innactivo == true) {
@@ -327,7 +329,7 @@ function logicaInformacion(parametroDocumento) {
     contenedorVehiculos.innerHTML = "";
 
     // -------------------------------------------------------
-    
+
     informacionUsuario.innerHTML += `
         <div onclick="cerrar()" class="divCerrar"><span class="cerrar" >X</span></div> 
                   <img src="../../uploads/${

@@ -349,8 +349,16 @@ if (isset($_POST["agregarSubmit"])) {
                                     <div id="myDropdown_<?php echo $usuario['id_documento']; ?>" class="dropdown-content">
                                         <a href="actualizar.php?documento=<?php echo $usuario['id_documento'] ?>&route=usuarios.php">Editar Usuario</a>
                                         <a href="apartado_datos/GenerarQR.php?documento=<?php echo $usuario['id_documento']; ?>">Generar QR</a>
-                                        <a href="#">Crear Vehiculos</a>
-                                        <a href="objetos_usuario.php?documento=<?php echo $usuario['id_documento'] ?>">Crear Objetos</a>
+                                        <form action="set_session.php" method="post">
+
+
+                                            <button class="crearBoton" name="documentoUsuario_vehiculo" type="submit" value="<?php echo $usuario['id_documento']; ?>">Crear Vehiculos</button>
+                                        </form>
+                                        <form action="set_session.php" method="post">
+
+
+                                            <button class="crearBoton" name="documento_usuario" type="submit" value="<?php echo $usuario['id_documento']; ?>">Crear Objetos</button>
+                                        </form>
                                     </div>
                                 </div>
                             </h4>

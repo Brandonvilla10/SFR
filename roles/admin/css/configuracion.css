@@ -65,17 +65,20 @@
     margin-top: 70px;
     width: clamp(150px, 100%, 280px);
 }
-
 .inpustConfig {
-    height: 43px;
-    border: none;
-    border-radius: 10px;
-    margin-bottom: 15px;
-    padding-left: 20px;
-    color: #003B28;
-    font-size: medium;
-    font-weight: 200;
-    text-overflow: ellipsis;
+    margin: unset !important;
+    height: 43px !important;
+    border: none !important;
+    border-radius: 10px !important;
+    margin-bottom: 15px !important;
+    padding-left: 20px !important;
+    color: #003B28 !important;
+    font-size: medium !important;
+    font-weight: 200 !important;
+    text-overflow: ellipsis !important;
+    
+    width: unset !important;
+    background-color: white !important ;
 }
 
 .inpustConfig::placeholder {

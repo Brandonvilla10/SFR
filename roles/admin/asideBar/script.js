@@ -13,7 +13,7 @@ if(window.innerWidth >= 320 && window.innerWidth <= 800){
 
     const hamburguesa = document.getElementById('abrir');
     const barralateral = document.getElementById('barraLateral');
-    const enlaces = document.querySelectorAll('a'); 
+    const enlaces = document.querySelectorAll('.seccion'); 
     
     enlaces.forEach(enlace => {
             enlace.style.pointerEvents = 'none' 

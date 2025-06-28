@@ -584,13 +584,14 @@ form.datos_basicos {
 .data_input,
 .input_caracteristica,
 .selectos {
-    width: 100%;
-    padding: 8px;
-    border: 1px solid #cce0ff;
-    border-radius: 6px;
-    background-color: white;
-    font-size: 14px;
-    color: #003366;
+    width: 100% !important; 
+    padding: 8px !important;
+    border: 1px solid #cce0ff !important;
+    border-radius: 6px !important;
+    background-color: white !important;
+    font-size: 14px !important;
+    color: #003366 !important;
+    margin: unset !important;
 }
 
 .input_caracteristica {

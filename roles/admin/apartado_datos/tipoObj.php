@@ -25,7 +25,7 @@ $consulta->bindParam(':start', $start_record, PDO::PARAM_INT);
 $consulta->bindParam(':limit', $limite_registros, PDO::PARAM_INT);
 $consulta->execute();
 
-
+$retorno =  $_SESSION['volver'];
 
 if (isset($_POST["eliminarSubmir"])) {
 
@@ -186,7 +186,7 @@ if (isset($_POST['submittipo'])) {
                     <?php endif; ?>
                 </div>
                 
-            <button class="footer-button animate-button" onclick="window.location.href='../datos.php'">Regresar</button>
+            <button class="footer-button animate-button" onclick="window.location.href='<?php echo $retorno; ?>'">Regresar</button>
 
             </div>
             <!--<--------------------------------------------------------- MODAL AGREGAR --------------------------------------------------->

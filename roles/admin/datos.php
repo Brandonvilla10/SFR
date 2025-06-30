@@ -88,7 +88,7 @@ $codigo = isset($_SESSION['documento']) ? $_SESSION['documento'] : '';
                     </div>
                 </div>
             </div>
-            <div class="object-card" onclick="window.location.href='apartado_datos/marcas.php'">
+            <div class="object-card" onclick="enviarMarca()">
                 <div class="object-header">
                     <div class="object-icon">
                         <img src="../../assets/img/datos/datos.webp">
@@ -104,7 +104,7 @@ $codigo = isset($_SESSION['documento']) ? $_SESSION['documento'] : '';
                     </div>
                 </div>
             </div>
-            <div class="object-card" onclick="window.location.href='apartado_datos/modelo.php'">
+            <div class="object-card" onclick="enviarModelo()">
                 <div class="object-header">
                     <div class="object-icon">
                         <img src="../../assets/img/datos/datos.webp">
@@ -177,6 +177,50 @@ $codigo = isset($_SESSION['documento']) ? $_SESSION['documento'] : '';
 <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
 <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 <script>
+    const retorno = window.location.href; // URL ACTUAL
+    const bodyData = 'volver=' + encodeURIComponent(retorno);
+    async function enviarMarca() {
+        console.log(bodyData);
+        try {
+            const response = await fetch('set_session_return.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: bodyData,
+            });
+            const data = await response.json();
+            if (data.success) {
+                window.location.href = 'apartado_datos/marcas.php';
+            } else {
+                alert(data.message);
+            }
+        
+        } catch (error) {
+            alert("Ocurrio un error");
+        }
+    }
+    async function enviarModelo() {
+        console.log(bodyData);
+        try {
+            const response = await fetch('set_session_return.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: bodyData,
+            });
+            const data = await response.json();
+            if (data.success) {
+                window.location.href = 'apartado_datos/modelo.php';
+            } else {
+                alert(data.message);
+            }
+        
+        } catch (error) {
+            alert("Ocurrio un error");
+        }
+    }
     // Animaciones para hacer visible las tarjetas
     document.addEventListener('DOMContentLoaded', function() {
         const cards = document.querySelectorAll('.object-card');

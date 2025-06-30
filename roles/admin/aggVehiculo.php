@@ -10,6 +10,7 @@ include('../../includes/sesion_validar.php');
 $conexion = new database;
 $con = $conexion->conectar();
 
+$retorno = $_SERVER['REQUEST_URI'];
 
 // Establecer la variable @documento_generador en MySQL desde la sesión
 try {
@@ -254,7 +255,7 @@ $usuario_foto_path = !empty($usuario['foto']) ? '../../uploads/' . $usuario['fot
                                             <?php endforeach; ?>
                                         </select>
                                         <button type="button" class="add-marca-btn" style="width: 25px; height: 25px; 
-                                                        border:none; border-radius: 30%; background:#2980B9; color: white; cursor: pointer; display: flex; align-items: center; justify-content: center; margin-left:5px; box-shadow: 0px 0px 4px #0000009c;"  onclick="window.location.href='apartado_datos/marcas.php'">+</button>
+                                                        border:none; border-radius: 30%; background:#2980B9; color: white; cursor: pointer; display: flex; align-items: center; justify-content: center; margin-left:5px; box-shadow: 0px 0px 4px #0000009c;"  onclick="enviarMarca()">+</button>
                                         </div>
                                     </div>
 
@@ -274,7 +275,7 @@ $usuario_foto_path = !empty($usuario['foto']) ? '../../uploads/' . $usuario['fot
                                                 <?php endforeach; ?>
                                             </select>
                                             <button type="button" class="add-marca-btn" style="width: 25px; height: 25px; 
-                                            border:none; border-radius: 30%; background:#2980B9; color: white; cursor: pointer; display: flex; align-items: center; justify-content: center; margin-left:5px; box-shadow: 0px 0px 4px #0000009c;"  onclick="window.location.href='apartado_datos/modelo.php'">+</button>
+                                            border:none; border-radius: 30%; background:#2980B9; color: white; cursor: pointer; display: flex; align-items: center; justify-content: center; margin-left:5px; box-shadow: 0px 0px 4px #0000009c;"  onclick="enviarModelo()">+</button>
                                         </div>
                                     </div>
 
@@ -297,6 +298,54 @@ $usuario_foto_path = !empty($usuario['foto']) ? '../../uploads/' . $usuario['fot
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 
     <script>
+        
+        //INDISPENSABLE PARA SABER A DONDE ME VOY A DEVOLVER 
+        const retorno = window.location.href; // URL ACTUAL
+        const bodyData = 'volver=' + encodeURIComponent(retorno);
+        async function enviarMarca() {
+            console.log(bodyData);
+            try {
+                const response = await fetch('set_session_return.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: bodyData,
+                });
+                const data = await response.json();
+
+                if (data.success) {
+                    window.location.href = 'apartado_datos/marcas.php';
+                } else {
+                    alert(data.message);
+                }
+            
+            } catch (error) {
+                alert("Ocurrio un error");
+            }
+        }
+        async function enviarModelo() {
+            console.log(bodyData);
+            try {
+                const response = await fetch('set_session_return.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: bodyData,
+                });
+                const data = await response.json();
+
+                if (data.success) {
+                    window.location.href = 'apartado_datos/modelo.php';
+                } else {
+                    alert(data.message);
+                }
+            
+            } catch (error) {
+                alert("Ocurrio un error");
+            }
+        }
         function limitar(elemento, limite) {
             elemento.addEventListener("input", () => {
                 if (elemento.value.length > limite) {

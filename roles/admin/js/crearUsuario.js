@@ -9,6 +9,8 @@ const  botonEliminar = document.getElementById("botonEliminar")
 const textoEliminar = document.getElementById("textoEliminar")
 const EliminarUsuario = document.getElementById("EliminarUsuario")
 
+// cuando se da clic en agregar, se revisa si ya está abierto el formulario
+// si está abierto se oculta, si no, se muestra y se cambian los estados visuales
 botonAgregar.addEventListener('click', () => {
     if (CrearUsuario.classList.contains('mostrar')) {
         CrearUsuario.classList.remove('mostrar');
@@ -29,6 +31,8 @@ botonAgregar.addEventListener('click', () => {
     }
 });
 
+// este bloque hace lo mismo que el anterior pero para el panel de eliminar usuario
+// también revisa si ya está visible, si lo está lo cierra, si no lo abre y ajusta estilos
 botonEliminar.addEventListener('click', () => {
     if (EliminarUsuario.classList.contains('mostrar')) {
         EliminarUsuario.classList.remove('mostrar');
@@ -53,8 +57,11 @@ botonEliminar.addEventListener('click', () => {
 });
 
 
-// :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::..
-
+// acá se definen las expresiones regulares para validar los campos
+// documento = solo números de 6 a 10
+// nombre = letras y espacios de 4 a 40 caracteres
+// password = debe tener mayúsculas, minúsculas, números y símbolos
+// correo = validación típica de email
 const expresiones = {
     documento: /^\d{6,10}$/,
     nombre: /^[a-zA-ZÀ-ÿ\s]{4,40}$/,
@@ -71,14 +78,14 @@ const confirmarContraseña = document.getElementById("confirmarContraseña");
 let registrarCrearUsuario = document.getElementById("registrarCrearUsuario")
 
 
-
+// al hacer clic en registrar, se validan los campos con las expresiones
+// si alguno no cumple o está vacío, no se deja enviar el formulario
 registrarCrearUsuario.addEventListener("click",(e)=>{
         
     boolVal = false
 
     if(!expresiones.nombre.test(nombre.value) || nombre.value == ""){
         boolVal = true
-        
     }
 
     if(!expresiones.correo.test(email.value) || email.value == ""){
@@ -92,19 +99,14 @@ registrarCrearUsuario.addEventListener("click",(e)=>{
         boolVal = true
     }
 
+    // esta parte valida que las contraseñas coincidan y cumplan la expresión también
     if(!expresiones.password.test(confirmarContraseña.value) || confirmarContraseña.value == "" && confirmarContraseña.value != contraseña.value){
         boolVal = true
     }
     
+    // si algo falló, se cancela el submit
     if(boolVal == true){
         e.preventDefault()
     }
 
-
-
-
-
 })
-
-
-

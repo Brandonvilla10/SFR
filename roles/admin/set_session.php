@@ -2,6 +2,7 @@
 session_start();
 header('Content-Type: application/json');
 
+// este archivo reedeclara secciones util para redirecciones rapidas
 if (isset($_POST['documento_usuario'])) {
     $_SESSION['objetos_usu'] = $_POST['documento_usuario'];
     

@@ -4,65 +4,74 @@ $conexion = new database;
 $con = $conexion->conectar();
 $con->exec("SET time_zone = '-05:00'");
 session_start();
+
 try {
+    // Se guarda el nombre del usuario de la sesión para registrar quién hace el cambio
     $nombre = $_SESSION['nombre'];
     $con->exec("SET @documento_generador = '$nombre'");
     
+    // Si el nombre no está definido, se deja como "Usuario Sistema"
     if (empty($nombre)) {
-        // Si sigue vacía, establecer un valor predeterminado
         $con->exec("SET @documento_generador = 'Usuario Sistema'");
     }
 } catch (Exception $e) {
-echo '<p>Error al definir el documento generador: ' . htmlspecialchars($e->getMessage()) . '</p>';
-exit;
+    // Si falla algo aquí, se muestra el error y se termina
+    echo '<p>Error al definir el documento generador: ' . htmlspecialchars($e->getMessage()) . '</p>';
+    exit;
 }
+
 header('Content-Type: application/json');
-// esta es la forma de recibir un array de objetos en php
+
+// Se recibe el JSON desde el frontend
 $datos = file_get_contents('php://input');
 $myObject = json_decode($datos, true);
-// aqui valido que si me este llegando un json me toco asi porque no me dejaba antes
+
+// Verificamos que el JSON esté bien formado
 if (json_last_error() !== JSON_ERROR_NONE) {
     echo json_encode(['success' => false, 'message' => 'Invalid JSON']);
     exit;
 }
-function updateObjetos($con, $id_estado, $id_serial)
-{
+
+// Función que se encarga de actualizar el estado del objeto (activo o inactivo)
+function updateObjetos($con, $id_estado, $id_serial) {
     $actualizarEstado = $con->prepare("UPDATE objetos SET id_estado = :id_estado  WHERE id_serial = :id_serial");
     $actualizarEstado->bindParam(":id_estado", $id_estado);
     $actualizarEstado->bindParam(":id_serial", $id_serial);
     $actualizarEstado->execute();
 }
-// aqui saco del array dos cosas importantes el documento y el array de objetos para poder trabajar por separado mas facil
+
+// Aquí se separan los datos que llegaron del JSON
 $documento = $myObject['documento'];
 $arrayObjetos = $myObject['array'];
 $arrayObservaciones = $myObject['observaciones'];
+
 try {
     foreach ($arrayObjetos as $id_serial) {
-        // con esta consulta hago el condicional para saber si el objeto ya esta registrado o no
+
+        // Verificamos si el objeto ya tiene un registro
         $validarEntrada = $con->prepare('SELECT fechaEntrada, id_registroObjeto, fechaSalida 
             FROM registroentradaobjetos
             WHERE id_serial = :id_serial
             ORDER BY fechaEntrada DESC 
             LIMIT 1');
-
         $validarEntrada->bindParam(':id_serial', $id_serial);
         $validarEntrada->execute();
         $ultimaEntrada = $validarEntrada->fetch(PDO::FETCH_ASSOC);
 
-        // aqui valido si el objeto ya esta registrado o no
+        // Si ya existe un registro de entrada
         if ($ultimaEntrada && $ultimaEntrada['fechaEntrada']) {
 
-            // si el objeto ya esta registrado y no tiene fecha de salida le pongo una fecha de salida al objeto
+            // Si ese registro no tiene salida, le ponemos una fecha de salida
             if (empty($ultimaEntrada['fechaSalida'])) {
                 $registro = $ultimaEntrada['id_registroObjeto'];
                 $salida = $con->prepare("UPDATE registroentradaobjetos SET fechaSalida = NOW() WHERE id_registroObjeto = :id_registroObjeto");
                 $salida->bindParam(":id_registroObjeto", $registro);
                 $salida->execute();
 
-                // con esto actualizo el estado del objeto a 1, activo para decir que esta fuera y se puede modificar
+                // Cambiamos el estado del objeto a 1 (activo)
                 updateObjetos($con, 1, $id_serial);
                 
-                // Aquí registramos las observaciones de salida si existen
+                // Si hay observaciones para este objeto, las guardamos como observación de salida
                 foreach ($arrayObservaciones as $observaciones) {
                     if ($observaciones['id'] == $id_serial) {
                         $observacion = $observaciones['observacion'];
@@ -74,16 +83,16 @@ try {
                     }
                 }
 
-                // sino entonces le registro el objeto con una fecha de entrada y sin fecha de salida, es decir que esta en el registro
             } else {
+                // Si ya tiene salida, se registra una nueva entrada
                 $registrar = $con->prepare("INSERT INTO registroentradaobjetos (fechaEntrada, id_serial) VALUES (NOW(), :id_serial)");
                 $registrar->bindParam(':id_serial', $id_serial);
                 $registrar->execute();
                 
-                // Obtener el ID del registro recién insertado
+                // Obtenemos el ID del nuevo registro
                 $id_registro = $con->lastInsertId();
                 
-                // Registrar observaciones de entrada
+                // Guardamos la observación de entrada si hay
                 foreach ($arrayObservaciones as $observaciones) {
                     if ($observaciones['id'] == $id_serial) {
                         $observacion = $observaciones['observacion'];
@@ -95,18 +104,19 @@ try {
                     }
                 }
 
-                // con esto actualizo el estado del objeto a 3, inactivo para decir que esta dentro y no se puede modificar
+                // El objeto se marca como inactivo (3) porque está dentro
                 updateObjetos($con, 3, $id_serial);
             }
+
         } else {
+            // Si no hay ningún registro anterior, se crea uno nuevo
             $registrar = $con->prepare("INSERT INTO registroentradaobjetos (fechaEntrada, id_serial) VALUES (NOW(), :id_serial)");
             $registrar->bindParam(':id_serial', $id_serial);
             $registrar->execute();
             
-            // Obtener el ID del registro recién insertado
             $id_registro = $con->lastInsertId();
             
-            // Registrar observaciones de entrada para un nuevo registro
+            // Se guarda la observación de entrada
             foreach ($arrayObservaciones as $observaciones) {
                 if ($observaciones['id'] == $id_serial) {
                     $observacion = $observaciones['observacion'];
@@ -118,12 +128,15 @@ try {
                 }
             }
 
-            // con esto actualizo el estado del objeto a 3, inactivo para decir que esta dentro y no se puede modificar
+            // Se marca como inactivo (3) porque quedó dentro
             updateObjetos($con, 3, $id_serial);
         }
     }
+
+    // si todo sale bien, se responde con éxito
     echo json_encode(['success' => true, 'message' => 'Registro completado con observaciones']);
 
 } catch (Exception $e) {
+    // si se rompe algo, se responde con error y el mensaje
     echo json_encode(['success' => false, 'message' => $e->getMessage()]);
 }

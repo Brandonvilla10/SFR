@@ -95,7 +95,7 @@ if(isset($_POST["botoncito"])){
                         <input type="email" class="datos" name="correo"  placeholder="Email"/>
                         <span class="invisible">No se permiten simbolos diferentes del @</span>
                         <input type="password" class="datos" name="contrasena" id="password" placeholder="Contraseña"/>
-                        <span class="invisible">Minimo 8 caracteres, 1 Mayuscula,1 numero </span>
+                        <span class="invisible">La contraseña debe tener minimo 6 digitos, una mayuscula, una minuscula y un simbolo especial! </span>
                         <input type="password" class="datos" name="verify" id="passVerify" placeholder="Confirmar Contraseña"/>
                         <span class="invisible">Las contraseñas no coinciden</span>
                     </div>

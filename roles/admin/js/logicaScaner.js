@@ -303,8 +303,18 @@ function logicaInformacion(parametroDocumento) {
     let respuesta = await datos.json();
 
     if (respuesta.error) {
-      cerrar();
-      location.reload();
+        alertaBienvenida.innerHTML = "Usuario no encontrado";
+
+        alerta.style.background = "red";
+        alerta.classList.add("aparecer");
+        setTimeout(() => {
+        alerta.classList.remove("aparecer");
+      }, 3000);
+      
+         cerrar();
+         
+        
+      
     }
 
     if (respuesta.innactivo == true) {
@@ -419,14 +429,12 @@ function logicaInformacion(parametroDocumento) {
                                           </div>
 
                                           <div style="display: flex; flex-direction:column; justify-content:center; width:150px; margin-left:20px;">
-                                              <p>Carateristica Del Vehiculo:</p>
-                                              <h4>${vehiculo.caracteristicas}</h4>
+                                              <h4>${vehiculo.nombre_marca}</h4>
+                                              <p style="font-size: 0.8rem">${vehiculo.caracteristicas}</p>
 
                                           </div>
 
                                           <div>
-                                              <b class="tituloCategoria">Marca:</b>
-                                              <p class="tipoObjeto">${vehiculo.nombre_marca} </p>
                                               <b class="tituloCategoria">Estado:</b>
                                               <p class="tipoObjeto"> ${vehiculo.estado} </p>
                                               <b class="tituloCategoria">Tipo:</b>

@@ -25,7 +25,7 @@ exit;
 
 
 $buscar_usu = $_SESSION['documento'];
-
+$direccion = $_SERVER['REQUEST_URI'];
 
 $mostrar = $con->prepare("SELECT * FROM  usuario WHERE id_documento = '$buscar_usu'");
 $mostrar->execute();
@@ -258,6 +258,7 @@ if(isset($_POST['editarBoton'])){
                 </select>
 
                 <input type="hidden" name="user_id" value="<?php echo $buscar_usu ?>">
+                <input type="hidden" name="direccion" value="<?php echo $direccion?>">
                 <button type="submit" id="CrearObjeto" name="CrearObjeto" class="CrearObjeto"> Crear Objeto </button>
                 <button type="button" class="regresar" onclick="cerrarModalObjetos()"> CERRAR</button>
 

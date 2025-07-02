@@ -136,16 +136,18 @@ h1 {
 }
 
 .form-input {
-    width: 100%;
-    padding: 8px 15px;
-    border-radius: 25px;
-    border: none;
-    font-size: 0.9rem;
-    box-sizing: border-box;
-    padding-right: 40px;
-    margin-bottom: 0;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    height: 36px;
+    width: 100%  !important;
+    padding: 8px 15px !important;
+    border-radius: 25px !important;
+    border: none !important;
+    font-size: 0.9rem !important;
+    box-sizing: border-box !important;
+    padding-right: 40px !important;
+    margin: 0 !important;
+    background-color: white !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+    height: 36px !important;
+
 }
 
 .form-input:focus {
@@ -286,8 +288,8 @@ h1 {
 }
 
 .form-inputs {
-    margin-top: 20px;
-    width: 90%;
+    margin-top: 20px ;
+    width: 90% ;
     max-width: 800px;
     display: grid;
     grid-template-columns: repeat(1, 1fr);
@@ -360,7 +362,7 @@ h1 {
     border: none;
     border-radius: 20px;
     font-size: 0.8rem;
-    cursor: pointer ;
+    cursor: pointer !important;
     transition: all 0.3s ease;
     font-weight: 600;
     width: auto;

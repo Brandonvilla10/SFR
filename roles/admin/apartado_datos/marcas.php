@@ -1,3 +1,4 @@
+
 <?php
 session_start();
 require_once('../../../database/database.php');
@@ -343,7 +344,7 @@ if (isset($_POST['submitmarca'])) {
                                     cartas.innerHTML = ` 
                                     <h4>${generales.id_marca}</h4>
                                     <h4>${generales.nombre_marca}</h4>
-                                    <h4>${generales.nombre_marca}</h4>
+                                    <h4>${generales.nombre_tipo_marca}</h4>
                                     `;
 
                                     const paginacion = document.getElementById('paginacion');

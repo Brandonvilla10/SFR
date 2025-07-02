@@ -273,6 +273,7 @@ if (isset($_POST['borrar'])) {
                     </select>
                             <button type="button" class="add-marca-btn" style="width: 25px; height: 25px; 
                                                         border:none; border-radius: 30%; background:#2980B9; color: white; cursor: pointer; display: flex; align-items: center; justify-content: center; margin-left:5px; box-shadow: 0px 0px 4px #0000009c;" onclick="enviarTipo()">+</button>
+   
                 </div>
 
                 <input type="hidden" name="user_id" value="<?php echo $_SESSION['objetos_usu'] ?>">
@@ -285,7 +286,7 @@ if (isset($_POST['borrar'])) {
 
         <!----------------- fin del modal------------------->
 
-        <script>
+          <script>
                 const retorno = window.location.href; // URL ACTUAL
                 const bodyData = 'volver=' + encodeURIComponent(retorno);
                 async function enviarMarca() {

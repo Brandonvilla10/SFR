@@ -88,6 +88,10 @@ $con = $conexion->conectar();
 
 
 
+<div class="cookie-alert" id="cookieAlert">
+    <span>Este sitio utiliza cookies para mejorar tu experiencia. Al continuar, aceptas su uso.</span>
+    <button onclick="acceptCookies()">Aceptar</button>
+  </div>
 
 
     <?php require_once("template/footer.html") ?>
@@ -99,10 +103,24 @@ $con = $conexion->conectar();
 </html>
 
 
+
+
 <script>
+     window.onload = function() {
+      if (!localStorage.getItem('cookiesAccepted')) {
+        document.getElementById('cookieAlert').style.display = 'flex';
+      } else {
+        document.getElementById('cookieAlert').style.display = 'none';
+      }
+    }
+
+    function acceptCookies() {
+      localStorage.setItem('cookiesAccepted', 'true');
+      document.getElementById('cookieAlert').style.display = 'none';
+    }
     // expresiones regulares para validacion de documento y contraseña
 const docRegex = /^\d{6,10}$/;
-const passRegex = /^(?=.*[A-Z])(?=.*\d)[A-Za-z\d@#$!%?&]{6,12}$/;
+const passRegex =/^(?=.*[A-Z])(?=.*\d)[A-Za-z\d@#$!%?&]{6,100}$/;
 // ------------------------------------------------------------------------------------------------
 
     const documento = document.getElementById("documento");
@@ -155,11 +173,11 @@ function actualizarBoton(){
 // e aqui los eventos de para el tema de los inputs el blur hace que cuando pierda el foco el input pues active el evento y ahi va toda la logica :)    
 
     documento.addEventListener("blur",() =>{
-        validarDocumento =  incorrecto(docRegex,documento,errorDocumento,"Error El Documento Debe Ser De 6-10 Digitos!",validarDocumento)
+        validarDocumento =  incorrecto(docRegex,documento,errorDocumento,"El Documento Debe Ser De 6-10 Digitos!",validarDocumento)
         actualizarBoton()    
     })
 
-    contraseña.addEventListener("blur",() =>{
+    contraseña.addEventListener("input",() =>{
        validarContraseña = incorrecto(passRegex,contraseña,errorContraseña,"Contraseña Incorrecta",validarContraseña)   
        actualizarBoton()
     })

@@ -18,7 +18,7 @@ if (isset($_POST['submit'])){
     
     $correo = $_POST['correo'];
 
-    $sql = $con->prepare("SELECT * FROM usuario WHERE correo = '$correo' AND id_estado = 1");
+    $sql = $con->prepare("SELECT * FROM usuario WHERE correo = '$correo'");
     $sql->execute();
     $documento = $sql->fetch(PDO::FETCH_ASSOC);
     $pagina_retorno_mistake = '../recuperar_contraseña.php';

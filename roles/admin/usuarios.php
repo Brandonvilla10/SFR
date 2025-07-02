@@ -575,7 +575,23 @@ if (isset($_POST["agregarSubmit"])) {
                         <h4>${generales.nombre_rol}</h4>
                         <h4>${generales.correo}</h4>
                         <h4>${generales.estado}</h4>
-                        <h4><ion-icon name="create-outline" size="large" onclick="window.location.href='actualizar.php?documento=${generales.id_documento}&route=usuarios.php'"></ion-icon></h4>
+                        <h4>
+                                <div class="dropdown">
+                                    <button onclick="desplegar('${generales.id_documento}')" class="dropbtn">
+                                        <ion-icon name="chevron-down-outline" size="large"></ion-icon>
+                                    </button>
+                                    <div id="myDropdown_${generales.id_documento}" class="dropdown-content">
+                                        <a href="actualizar.php?documento=${generales.id_documento}&route=usuarios.php">Editar Usuario</a>
+                                        <a href="apartado_datos/GenerarQR.php?documento=${generales.id_documento}">Generar QR</a>
+                                        <form action="set_session.php" method="post">
+                                            <button  class="crearBoton" type="submit" name="documentoUsuario_vehiculo" value="${generales.id_documento}">Crear Vehiculos</button>
+                                        </form>
+                                        <form action="set_session.php" method="post">
+                                            <button class="crearBoton" type="submit" name="documento_usuario" value="${generales.id_documento}">Crear Objetos</button>
+                                        </form>
+                                    </div>
+                                </div>
+                        </h4>
                         `;
 
 

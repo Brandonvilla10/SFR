@@ -5,7 +5,17 @@ $conexion = new database;
 $con = $conexion->conectar();
 include('roles/admin/components/alert.php');
 
-$correo = $_SESSION['correo'];
+if ($_SESSION['correo']){
+    $correo = $_SESSION['correo'];
+}else{
+    echo "  
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                mostrarModal('mistake', 'Correo no encontrado', 'index.php');
+            });
+        </script>";
+        exit();
+}
 
 if(isset($_POST['submit'])){
 
@@ -20,7 +30,7 @@ if(isset($_POST['submit'])){
         $sql->bindParam(':correo', $correo, PDO::PARAM_STR);
         $sql->bindParam(':contrasena', $contraseñaHash, PDO::PARAM_STR);
         $sql->execute();
-
+        unset($_SESSION['correo']);
         echo "  
         <script>
             document.addEventListener('DOMContentLoaded', function () {
@@ -84,7 +94,7 @@ if(!isset($correo)){
     <script>
     
 
-const passRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@#$!%*?&])[A-Za-z\d@#$!%*?&]{8,}$/;
+const passRegex = /^(?=.*[A-Z])(?=.*\d)[A-Za-z\d@#$!%?&]{6,100}$/
 
 
     const contraseña = document.getElementById("contraseña");
@@ -130,12 +140,12 @@ function actualizarBoton(){
 
 
     contraseña.addEventListener("blur",() =>{
-        validarContraseña =  incorrecto(passRegex,contraseña,errorContraseña,"La contraseña debe contener minimo una mayuscula una minuscula un numero y un simbolo especial!",validarContraseña)
+        validarContraseña =  incorrecto(passRegex,contraseña,errorContraseña,"La contraseña debe tener minimo 6 digitos, una mayuscula, una minuscula y un simbolo especial!",validarContraseña)
         actualizarBoton()    
     })
 
     confirmarContraseña.addEventListener("blur",() =>{
-       validarConfirmarContraseña = incorrecto(passRegex,confirmarContraseña,errorConfirmarContraseña,"Verifique",validarConfirmarContraseña)   
+       validarConfirmarContraseña = incorrecto(passRegex,confirmarContraseña,errorConfirmarContraseña,"Las contraseñas no coinciden",validarConfirmarContraseña)   
        actualizarBoton()
     })
 

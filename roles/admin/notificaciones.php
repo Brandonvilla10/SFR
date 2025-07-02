@@ -77,7 +77,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['marcar_leidas'])) {
                         <option value=""> Modulo </option>
                         <option value="vehiculos">Vehículos</option>
                         <option value="objetos">Objetos</option>
-                        <option value="usuarios">Usuarios</option>
                     </select>
 
                     <!-- Selector de fecha para filtrar notificaciones -->

@@ -65,6 +65,11 @@ if (isset($_POST['submit'])) {
             $_SESSION['rol_name'] = "Vigilante";
             echo "<script> window.location.href='../roles/vigilante/index.php'</script>";
             exit();
+            
+        } elseif($_SESSION['rol'] == 8){
+            $_SESSION['rol_name'] = "Super Administrador";
+            echo " <script> window.location.href='../roles/superAdmin/index.php'</script>";
+            exit();
         }
     } elseif ($fila && $fila['id_estado'] == 2) {
         echo "

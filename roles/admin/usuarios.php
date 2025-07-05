@@ -277,7 +277,7 @@ if (isset($_POST["agregarSubmit"])) {
                                     <option value="" disabled selected>Seleccione un rol</option>
                                     <?php
                                     // Consulta para obtener los roles disponibles
-                                    $consultaRoles = $con->prepare("SELECT id_rol, nombre_rol FROM rol");
+                                    $consultaRoles = $con->prepare("SELECT id_rol, nombre_rol FROM rol WHERE id_rol != 8");
                                     $consultaRoles->execute();
                                     $roles = $consultaRoles->fetchAll(PDO::FETCH_ASSOC);
 

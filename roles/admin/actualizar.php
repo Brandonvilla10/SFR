@@ -239,7 +239,7 @@ $usu = "../../uploads/usu.png";
                                             </option>
 
                                             <?php
-                                            $sqlrol = $con->prepare("SELECT * FROM rol WHERE id_rol != $fila[id_rol]");
+                                            $sqlrol = $con->prepare("SELECT * FROM rol WHERE id_rol != $fila[id_rol] AND id_rol != 8");
                                             $sqlrol->execute();
                                             $sqlrol = $sqlrol->fetchAll(PDO::FETCH_ASSOC);
 

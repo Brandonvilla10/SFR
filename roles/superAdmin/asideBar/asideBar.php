@@ -35,44 +35,24 @@ $rol =$_SESSION['rol_name'];
             <p class="seccionTexto">Inicio</p>
         </div></a>
 
-        <a href="./objetos_index.php"> <div class="seccion">
-            <img class="icono" src="asideBar/icons/objetos.png" alt="">
-            <p class="seccionTexto">Objetos</p>
-        </div></a>
-
-        <a href="./vehiculos.php"> <div class="seccion">
-            <img class="icono" src="asideBar/icons/carroBlanco.png" alt="">
-            <p class="seccionTexto">Vehiculos</p>
-        </div></a>
-
         <a href="./usuarios.php"> <div class="seccion">
             <img class="icono" src="asideBar/icons/usuarioBlanco.png" alt="">
             <p class="seccionTexto">Usuarios</p>
         </div></a>
 
-
-        <a href="./scanner.php"> <div class="seccion">
-            <img class="icono" src="asideBar/icons/escanearBlanco.png" alt="">
-            <p class="seccionTexto">Escanear</p>
+        <a href="./empresas.php"> <div class="seccion">
+            <img class="icono" src="asideBar/icons/empresa.png" alt="">
+            <p class="seccionTexto">Empresas</p>
         </div></a>
 
-        <a href="./datos.php"> <div class="seccion">
-            <img class="icono" src="asideBar/icons/datos.png" alt="">
-            <p class="seccionTexto">Datos</p>
+        <a href="./licencias.php"> <div class="seccion">
+            <img class="icono" src="asideBar/icons/licencia.png" alt="">
+            <p class="seccionTexto">Licencias</p>
         </div></a>
 
         <hr class="white">
 
-        <a href="./notificaciones.php"> <div class="seccion">
-            <img class="icono" src="asideBar/icons/notificaciones.png" alt="">
-            <p class="seccionTexto">Notificaciones</p>
-        </div></a>
-
-        <a href="./configuracion.php"> <div class="seccion">
-            <img class="icono" src="asideBar/icons/configuraciones.png" alt="">
-            <p class="seccionTexto">Configuraciones</p>
-        </div></a>
-
+        
         <a href="../../includes/sesion_destroy.php"> <div class="seccion">
             <img class="icono" src="asideBar/icons/Salir.png" alt="">
             <p class="seccionTexto">Salir</p>

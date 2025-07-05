@@ -159,7 +159,7 @@ if (isset($_POST['submitCambiar'])) {
                         <select name="id_rol" class="inpustConfig" id="rol">
                             <option value="">Rol actual: <?php echo $fila['nombre_rol']; ?></option>
                             <?php
-                            $sqlrol = $con->prepare("SELECT * FROM rol WHERE id_rol != :id_rol");
+                            $sqlrol = $con->prepare("SELECT * FROM rol WHERE id_rol != :id_rol AND id_rol != 8");
                             $sqlrol->bindParam(':id_rol', $fila['id_rol']);
                             $sqlrol->execute();
                             $sqlrol = $sqlrol->fetchAll(PDO::FETCH_ASSOC);

@@ -43,7 +43,8 @@ $paginas = ceil($total_filas / $limite_registros);
 $consulta = $con->prepare("SELECT u.id_documento, u.nombre_completo, u.correo, u.foto, estado.estado, rol.nombre_rol  FROM usuario u
     INNER JOIN rol ON u.id_rol = rol.id_rol
     INNER JOIN estado ON estado.id_estado = u.id_estado
-    WHERE u.id_estado!= 4
+    WHERE u.id_estado!= 4 AND u.id_rol != 8
+
     LIMIT :start, :limit");
 $consulta->bindParam(':start', $start_record, PDO::PARAM_INT);
 $consulta->bindParam(':limit', $limite_registros, PDO::PARAM_INT);
